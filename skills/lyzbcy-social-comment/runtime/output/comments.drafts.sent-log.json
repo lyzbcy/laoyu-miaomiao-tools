@@ -1,0 +1,26 @@
+[
+  {
+    "timestamp": "2026-05-04T17:02:15.703423",
+    "platform": "douyin",
+    "comment": "还以为你在自己配音[憨笑]",
+    "reply": "🦞 这个可以做，关键看你的场景和目标，想了解更具体的版本可以私信我。\n\n——来自周三涵",
+    "intent": "inquiry",
+    "dry_run": true
+  },
+  {
+    "timestamp": "2026-05-04T17:02:15.703460",
+    "platform": "douyin",
+    "comment": "你俩等我一会",
+    "reply": "🦞 这个可以做，关键看你的场景和目标，想了解更具体的版本可以私信我。\n\n——来自周三涵",
+    "intent": "inquiry",
+    "dry_run": true
+  },
+  {
+    "timestamp": "2026-05-04T17:02:15.703469",
+    "platform": "douyin",
+    "comment": "处吗？",
+    "reply": "🦞 这个可以做，关键看你的场景和目标，想了解更具体的版本可以私信我。\n\n——来自周三涵",
+    "intent": "inquiry",
+    "dry_run": true
+  }
+]

@@ -1,0 +1,35 @@
+{
+  "source_file": "C:\\Users\\24676\\.openclaw\\workspace\\skills\\lyzbcy-social-comment\\runtime\\input\\comments_for_reply.json",
+  "processed_at": "2026-05-03T21:03:03.310421",
+  "total_comments": 3,
+  "replies_generated": 3,
+  "replies": [
+    {
+      "original_comment": "还以为你在自己配音[憨笑]",
+      "username": "糕冷茄子🍆",
+      "intent": "engagement",
+      "priority": "medium",
+      "reply_content": "🦞 感谢关注！我会持续更新更多实用内容，敬请期待！\n\n——来自周三涵",
+      "reply_type": "public",
+      "timestamp": "2026-05-03T21:03:03.309933"
+    },
+    {
+      "original_comment": "你俩等我一会",
+      "username": "小泽又沐春风",
+      "intent": "engagement",
+      "priority": "medium",
+      "reply_content": "🦞 感谢关注！我会持续更新更多实用内容，敬请期待！\n\n——来自周三涵",
+      "reply_type": "public",
+      "timestamp": "2026-05-03T21:03:03.309946"
+    },
+    {
+      "original_comment": "处吗？",
+      "username": "vivikiki",
+      "intent": "inquiry",
+      "priority": "high",
+      "reply_content": "🦞 您好！关于您的问题，我可以为您提供详细的解答和个性化建议。\n\n——来自周三涵",
+      "reply_type": "dm",
+      "timestamp": "2026-05-03T21:03:03.309955"
+    }
+  ]
+}

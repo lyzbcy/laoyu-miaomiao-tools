@@ -1,0 +1,27 @@
+{
+  "selectedWork": {
+    "title": "7",
+    "publishText": "发布于2026年01月04日 17:55"
+  },
+  "count": 3,
+  "comments": [
+    {
+      "username": "糕冷茄子🍆",
+      "commentText": "还以为你在自己配音[憨笑]",
+      "intent": "engagement",
+      "priority": "medium"
+    },
+    {
+      "username": "小泽又沐春风", 
+      "commentText": "你俩等我一会",
+      "intent": "engagement",
+      "priority": "medium"
+    },
+    {
+      "username": "vivikiki",
+      "commentText": "处吗？",
+      "intent": "inquiry",
+      "priority": "high"
+    }
+  ]
+}

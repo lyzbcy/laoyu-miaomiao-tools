@@ -1,0 +1,10 @@
+{
+  "defaultPlatform": "douyin",
+  "defaultMode": "review",
+  "defaultVoice": "professional",
+  "outputDir": "./runtime/output",
+  "maxRepliesPerRun": 50,
+  "dryRunByDefault": true,
+  "blacklistKeywords": ["退款", "投诉", "举报", "差评"],
+  "escalationKeywords": ["律师", "维权", "曝光"]
+}

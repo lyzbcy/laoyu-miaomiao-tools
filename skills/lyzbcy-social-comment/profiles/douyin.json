@@ -1,0 +1,18 @@
+{
+  "platform": "douyin",
+  "name": "抖音",
+  "creatorUrl": "https://creator.douyin.com/creator-micro/content/manage",
+  "commentUrl": "https://creator.douyin.com/creator-micro/comment/manage",
+  "messageUrl": "https://creator.douyin.com/creator-micro/message",
+  "selectors": {
+    "replyBox": "textarea[placeholder*='回复']",
+    "submitButton": "button:has-text('发送')",
+    "commentList": ".comment-item",
+    "nextPage": ".pagination-next"
+  },
+  "sessionProfile": "douyin-creator",
+  "rateLimit": {
+    "maxRepliesPerMinute": 5,
+    "delayBetweenReplies": 1200
+  }
+}

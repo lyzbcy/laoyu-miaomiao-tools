@@ -1,0 +1,13 @@
+{
+  "name": "lyzbcy-social-comment",
+  "version": "1.1.0",
+  "author": "lyzbcy",
+  "description": "抖音和小红书评论回复工具，统一生成带固定签名格式的回复草稿",
+  "platforms": ["douyin", "xiaohongshu"],
+  "custom": true,
+  "forked_from": "douyin-comment-auto-reply@0.1.0",
+  "format": {
+    "prefix": "🦞 ",
+    "suffix": "\n\n——来自周三涵"
+  }
+}

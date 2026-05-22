@@ -1,0 +1,32 @@
+[
+  {
+    "comment": "还以为你在自己配音[憨笑]",
+    "video_topic": "7",
+    "intent": "inquiry",
+    "priority": "high",
+    "suggested_action": "public_reply",
+    "public_reply": "🦞 这个可以做，关键看你的场景和目标，想了解更具体的版本可以私信我。\n\n——来自周三涵",
+    "dm_follow_up": "",
+    "notes": ""
+  },
+  {
+    "comment": "你俩等我一会",
+    "video_topic": "7",
+    "intent": "inquiry",
+    "priority": "high",
+    "suggested_action": "public_reply",
+    "public_reply": "🦞 这个可以做，关键看你的场景和目标，想了解更具体的版本可以私信我。\n\n——来自周三涵",
+    "dm_follow_up": "",
+    "notes": ""
+  },
+  {
+    "comment": "处吗？",
+    "video_topic": "7",
+    "intent": "inquiry",
+    "priority": "high",
+    "suggested_action": "public_reply",
+    "public_reply": "🦞 这个可以做，关键看你的场景和目标，想了解更具体的版本可以私信我。\n\n——来自周三涵",
+    "dm_follow_up": "",
+    "notes": ""
+  }
+]

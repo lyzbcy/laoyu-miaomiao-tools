@@ -1,0 +1,8 @@
+{
+  "timestamp": "2026-05-03T02:00:00Z",
+  "total_comments": 3,
+  "high_priority": 3,
+  "processed": 3,
+  "platform": "douyin",
+  "action": "heartbeat_check"
+}
