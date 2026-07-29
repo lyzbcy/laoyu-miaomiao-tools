@@ -1,9 +1,0 @@
-{
-  "_comment": "自定义回复模板，会覆盖 default.json 中的对应内容",
-  "_example": {
-    "buying_intent": {
-      "public": "你的自定义回复内容",
-      "dm": "你的自定义私信内容"
-    }
-  }
-}

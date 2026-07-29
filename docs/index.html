@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>捞鱼妙妙工具 · Agent Skills 收录站</title>
+<meta name="description" content="捞鱼（lyzbcy）的 Agent Skills 收录站。每个 skill 独立打包，按需下载。本页可整页发给 AI，AI 会据此判断你需要哪个 skill 并自行下载。">
+<meta name="author" content="捞鱼工作室 lyzbcy">
+<style>
+  :root{
+    --bg:#0d1117; --card:#161b22; --border:#30363d; --text:#e6edf3; --muted:#8b949e;
+    --accent:#58a6ff; --accent-soft:rgba(88,166,255,.12); --green:#3fb950; --yellow:#d29922;
+    --code-bg:rgba(110,118,129,.18);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;line-height:1.7;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:0 20px}
+  /* HERO */
+  header.hero{padding:72px 0 48px;border-bottom:1px solid var(--border)}
+  .hero h1{font-size:2.6rem;margin:0 0 8px;letter-spacing:-.5px}
+  .hero .tag{color:var(--muted);font-size:1.05rem;margin:0 0 14px}
+  .hero .pitch{font-size:1.15rem;color:var(--text);margin:0 0 22px}
+  .hero .req{display:inline-block;background:var(--card);border:1px solid var(--border);padding:4px 12px;border-radius:20px;font-size:.85rem;color:var(--muted);margin-bottom:22px}
+  .hero .req b{color:var(--yellow)}
+  .nav-dl{display:flex;gap:12px;flex-wrap:wrap}
+  .nav-dl a{display:inline-block;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:600;font-size:.95rem;transition:transform .12s}
+  .nav-dl a:hover{transform:translateY(-1px)}
+  .nav-dl .primary{background:var(--accent);color:#000}
+  .nav-dl .secondary{background:var(--card);border:1px solid var(--border);color:var(--text)}
+  /* SECTIONS */
+  section{padding:48px 0;border-bottom:1px solid var(--border)}
+  h2{font-size:1.6rem;margin:0 0 8px;display:flex;align-items:center;gap:10px}
+  h2 .num{color:var(--accent);font-size:1rem;opacity:.7}
+  .lede{color:var(--muted);margin:0 0 28px;font-size:1.02rem}
+  /* SKILL CARD */
+  .skill{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:28px 28px 24px;margin-bottom:28px}
+  .skill-head{display:flex;align-items:center;gap:14px;margin-bottom:6px;flex-wrap:wrap}
+  .skill-head .emoji{font-size:2rem}
+  .skill-head h3{font-size:1.45rem;margin:0}
+  .skill-head .ver{color:var(--muted);font-size:.85rem;background:var(--code-bg);padding:2px 8px;border-radius:10px}
+  .skill-tag{color:var(--accent);font-size:.95rem;margin:0 0 18px}
+  .field{margin:14px 0}
+  .field .label{font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:4px}
+  .field ul{margin:6px 0 0;padding-left:22px}
+  .field li{margin:3px 0}
+  .field code{background:var(--code-bg);padding:2px 7px;border-radius:5px;font-size:.88em;color:var(--text)}
+  .prompt-box{background:var(--bg);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:8px;padding:12px 14px;font-family:"SF Mono",Menlo,Consolas,monospace;font-size:.88rem;color:var(--text);margin-top:6px;white-space:pre-wrap}
+  .dl-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;padding-top:18px;border-top:1px dashed var(--border)}
+  .btn{display:inline-block;padding:9px 16px;border-radius:8px;text-decoration:none;font-weight:600;font-size:.9rem;transition:transform .12s}
+  .btn:hover{transform:translateY(-1px)}
+  .btn-zip{background:var(--green);color:#000}
+  .btn-src{background:transparent;border:1px solid var(--border);color:var(--text)}
+  /* AI block */
+  .ai-block{background:linear-gradient(135deg,rgba(88,166,255,.08),rgba(63,185,80,.05));border:1px solid var(--border);border-radius:14px;padding:24px}
+  .ai-block h3{margin:0 0 10px;font-size:1.15rem}
+  .ai-block p{margin:0 0 10px;color:var(--text)}
+  .ai-block code{background:var(--code-bg);padding:2px 7px;border-radius:5px}
+  /* FOOTER */
+  footer{padding:36px 0 56px;text-align:center;color:var(--muted);font-size:.9rem}
+  footer a{color:var(--muted);text-decoration:none;margin:0 8px}
+  footer a:hover{color:var(--accent)}
+  .copybtn{margin-top:14px;background:var(--card);border:1px solid var(--border);color:var(--text);padding:8px 16px;border-radius:8px;cursor:pointer;font-size:.88rem;font-family:inherit}
+  .copybtn:hover{border-color:var(--accent)}
+  @media(max-width:600px){.hero h1{font-size:2rem}.skill{padding:22px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HERO -->
+<header class="hero">
+  <h1>🐟 捞鱼妙妙工具</h1>
+  <p class="tag">Agent Skills 收录站 · by 捞鱼（lyzbcy）</p>
+  <p class="pitch">把捞鱼自己用得最顺手的 Agent Skills 收录在这里。每个 skill 独立打包，想下哪个下哪个。</p>
+  <div class="req">⚠️ 需要 <b>支持 skill 的 agent 环境</b>（如 ZCode / Claude Code / OpenCode 等）</div>
+  <nav class="nav-dl">
+    <a class="primary" href="#skills">看看有哪些 skill ↓</a>
+    <a class="secondary" href="https://github.com/lyzbcy/laoyu-miaomiao-tools">GitHub 仓库</a>
+  </nav>
+</header>
+
+<!-- 这是什么 -->
+<section>
+  <h2><span class="num">01</span> 这是什么</h2>
+  <p class="lede">这里收录的是捞鱼个人打磨出来、自己也天天在用的 Agent Skills。不是大而全的工具箱，是几个被反复验证、能真正落地的 skill。每个 skill 单独打包成 zip，挂在 GitHub Releases 上——你或你的朋友想用哪个，就下哪个，不用全量下载。</p>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <h2><span class="num">02</span> 收录的 Skills（2 个）</h2>
+  <p class="lede">下面每个 skill 都写了：它是干嘛的、适合什么场景、怎么用、怎么装、在哪下载。</p>
+
+  <!-- SKILL 1: study-map -->
+  <article class="skill" id="study-map">
+    <div class="skill-head">
+      <span class="emoji">🗺️</span>
+      <h3>lyzbcy-study-map</h3>
+      <span class="ver">理解地图生成器</span>
+    </div>
+    <p class="skill-tag">把难啃的干货，拆成一张有原文依据、能追问、能复述的交互式理解地图。</p>
+
+    <div class="field">
+      <div class="label">它能做什么</div>
+      <p>把技术长文、访谈、论文、商业分析或跨学科材料，生成一份<b>自包含的 .html 理解地图</b>，帮你真正读懂内容，而不是只看摘要。核心判断全部绑定原文依据，区分事实/判断/推论/例子，带可点击的闭环题、进度条、错题回流和学习报告。<b>也适用于课程章节、真题精讲、计算题手把手演示</b>等学习场景。</p>
+    </div>
+
+    <div class="field">
+      <div class="label">适合 / 不适合</div>
+      <ul>
+        <li>✅ 技术长文、跨领域访谈、论文、投资/商业/AI/社科深度文稿</li>
+        <li>✅ 课程复习提纲、历年真题、计算题题解（课程/真题场景）</li>
+        <li>✅ 你想真正理解、而不是只要摘要的材料</li>
+        <li>❌ 纯新闻快讯、API 参数手册、只需步骤的教程</li>
+      </ul>
+    </div>
+
+    <div class="field">
+      <div class="label">怎么用（示例 prompt）</div>
+      <div class="prompt-box">用 lyzbcy 拆解这篇文章，生成一个理解地图。
+
+# 课程/真题场景：
+用 lyzbcy 把这份复习提纲 + 历年真题，生成一套手把手解题的备考网站。</div>
+    </div>
+
+    <div class="field">
+      <div class="label">怎么安装</div>
+      <p>下载 zip → 解压 → 把整个 <code>lyzbcy-study-map/</code> 文件夹放到你的 agent skills 目录（确保里面有 <code>SKILL.md</code>）。生成的 .html 可双击打开，或部署到 GitHub Pages，无需后端或构建。</p>
+    </div>
+
+    <div class="dl-row">
+      <a class="btn btn-zip" id="dl-study-map" href="#">📦 下载 lyzbcy-study-map.zip</a>
+      <a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/lyzbcy-study-map">查看源码</a>
+    </div>
+  </article>
+
+  <!-- SKILL 2: 最后的1% -->
+  <article class="skill" id="last-1-percent">
+    <div class="skill-head">
+      <span class="emoji">🎯</span>
+      <h3>lyzbcy-最后的1%</h3>
+      <span class="ver">极限执行元 skill</span>
+    </div>
+    <p class="skill-tag">把一个任务做到真正完美才停手。不计 token、不计轮数，质量是唯一第一性原理。</p>
+
+    <div class="field">
+      <div class="label">它能做什么</div>
+      <p>这是一份<b>极限执行模式</b>的元 skill。启用后，agent 会疯狂消耗 token 去把任务打磨到完美：派遣多个子代理做代码复查与结果测试、反复回读项目初心文档保持注意力、强制至少 1 小时深度打磨、中途绝不用选择题打断用户。核心防御的是<b>长任务中的注意力漂移</b>——做到第 40 分钟还记得当初为什么开始。</p>
+    </div>
+
+    <div class="field">
+      <div class="label">什么时候用</div>
+      <ul>
+        <li>✅ 一个任务值得做到"真正完美"才交付（如上线一个产品、打磨一个作品）</li>
+        <li>✅ 你愿意为质量付出大量 token 消耗</li>
+        <li>⚠️ 默认不启用，需明确触发（贴路径+明令 / 完整说出名字 / agent 判断后征得同意）</li>
+      </ul>
+    </div>
+
+    <div class="field">
+      <div class="label">怎么用（示例）</div>
+      <div class="prompt-box">请使用 lyzbcy-最后的1%，把这个项目打磨到可以上线。</div>
+    </div>
+
+    <div class="field">
+      <div class="label">怎么安装</div>
+      <p>下载 zip → 解压 → 把整个 <code>lyzbcy-最后的1%/</code> 文件夹放到你的 agent skills 目录（确保里面有 <code>SKILL.md</code>）。之后在对话里明确要求启用即可。</p>
+    </div>
+
+    <div class="dl-row">
+      <a class="btn btn-zip" id="dl-last-1-percent" href="#">📦 下载 lyzbcy-最后的1%.zip</a>
+      <a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/lyzbcy-最后的1%">查看源码</a>
+    </div>
+  </article>
+</section>
+
+<!-- AI 友好 -->
+<section>
+  <h2><span class="num">03</span> 给 AI 的说明 🤖</h2>
+  <div class="ai-block">
+    <h3>这整页可以直接发给 AI</h3>
+    <p>本页是<b>语义化、对 AI 友好</b>的介绍页。你可以直接把这一整页（或它的链接）发给你的 AI 助手，AI 就能读懂：</p>
+    <p>· 这里收录了 <code>2 个 skill</code>，分别是 <code>lyzbcy-study-map</code>（理解地图）和 <code>lyzbcy-最后的1%</code>（极限执行）。<br>
+       · 每个 skill 的用途、适用场景、用法、安装方式、下载直链都在上方写清楚了。<br>
+       · AI 可以据此判断你当前需要哪个 skill，并<b>自行下载对应的 zip 安装</b>。</p>
+    <p style="color:var(--muted);font-size:.92rem">下载链接是 GitHub Releases 直链，形如 <code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/&lt;tag&gt;/&lt;file&gt;.zip</code>。</p>
+    <button class="copybtn" onclick="copyForAI()">📋 复制给 AI 的纯文本摘要</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>捞鱼工作室 · lyzbcy · MIT License</div>
+  <div style="margin-top:8px">
+    <a href="https://github.com/lyzbcy/laoyu-miaomiao-tools">GitHub</a>·
+    <a href="https://lyzbcy.github.io">捞鱼主页</a>
+  </div>
+</footer>
+
+</div>
+
+<script>
+// release 直链填入（push 后由部署脚本/手动更新 tag）
+const RELEASES = {
+  "study-map": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.0.0/lyzbcy-study-map.zip",
+  "last-1-percent": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.1.0/lyzbcy-最后的1%.zip"
+};
+document.getElementById('dl-study-map').href = RELEASES['study-map'];
+document.getElementById('dl-last-1-percent').href = RELEASES['last-1-percent'];
+
+// 复制给 AI 的纯文本摘要
+function copyForAI(){
+  const txt = `【捞鱼妙妙工具 · Agent Skills 收录站】
+
+这里收录捞鱼（lyzbcy）的个人 Agent Skills，每个 skill 独立打包，按需下载。共 2 个 skill：
+
+1) lyzbcy-study-map（理解地图生成器）
+   - 用途：把技术长文/访谈/论文/跨学科材料，生成有原文依据、能追问、能复述的交互式 HTML 理解地图；也适用于课程复习提纲、历年真题、计算题手把手演示。
+   - 适合：想真正读懂复杂材料、备考复习的人。不适合纯新闻/API手册/只需步骤的教程。
+   - 用法示例：把原文发给 agent，说"用 lyzbcy 拆解这篇文章，生成一个理解地图"。
+   - 安装：解压后把整个文件夹放到 agent skills 目录（含 SKILL.md）。
+   - 下载：${RELEASES['study-map']}
+
+2) lyzbcy-最后的1%（极限执行元 skill）
+   - 用途：把一个任务做到真正完美才停手。启用后 agent 会疯狂消耗 token——派子代理做代码复查与测试、反复回读初心文档、强制≥1小时深度打磨、中途不打断用户。核心防御长任务注意力漂移。
+   - 适合：值得做到"真正完美"才交付的任务（如上线产品、打磨作品）。默认不启用，需明确触发。
+   - 用法示例：说"请使用 lyzbcy-最后的1%，把 X 做到完美"。
+   - 安装：解压后把整个文件夹放到 agent skills 目录（含 SKILL.md）。
+   - 下载：${RELEASES['last-1-percent']}
+
+仓库：https://github.com/lyzbcy/laoyu-miaomiao-tools
+介绍页：https://lyzbcy.github.io/laoyu-miaomiao-tools/`;
+  navigator.clipboard.writeText(txt).then(()=>{alert('已复制！直接粘贴给你的 AI 助手即可。')});
+}
+</script>
+</body>
+</html>

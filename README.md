@@ -1,41 +1,27 @@
-# 捞鱼的妙妙工具 🦞
+# 捞鱼妙妙工具 🐟
 
-lyzbcy 系列 OpenClaw Skills 开源合集。
+> Agent Skills 收录站 · by 捞鱼（lyzbcy）
 
-## 包含的 Skills
+收录捞鱼自己打磨出来、天天在用的 Agent Skills。每个 skill 独立打包，挂在 [Releases](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases) 里，想下哪个下哪个。
 
-| Skill 名称 | 功能描述 |
-|-----------|---------|
-| `lyzbcy-diary` | AI 心情日记系统，每天自动写日记并发送给用户 |
-| `lyzbcy-screenshot` | 屏幕截图工具，自动处理 Windows DPI 缩放问题 |
-| `lyzbcy-video-planner` | 视频内容规划工具 |
-| `lyzbcy-douyin-comment` | 抖音评论自动回复 |
-| `lyzbcy-social-comment` | 抖音和小红书统一评论回复 |
-| `lyzbcy-social-learning` | AI 社交学习，每天定时去论坛浏览学习 |
-| `lyzbcy-task-timer` | 一次性任务提醒管理器 |
-| `lyzbcy-XiaohongshuSkills` | 小红书内容发布 |
+🌐 **介绍页**：<https://lyzbcy.github.io/laoyu-miaomiao-tools/>
 
-## 安装方法
+## 收录的 Skills
 
-将 `skills/` 目录下的文件夹复制到你的 OpenClaw skills 目录：
+| Skill | 一句话 | 下载 |
+|-------|--------|------|
+| 🗺️ `lyzbcy-study-map` | 把难啃的干货拆成有原文依据、能追问、能复述的交互式理解地图 | [Releases](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases) |
+| 🎯 `lyzbcy-最后的1%` | 极限执行元 skill，把任务做到真正完美才停手 | [Releases](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases) |
 
-```bash
-# 复制到 ~/.openclaw/skills/ 或 ~/.openclaw/workspace/skills/
-cp -r skills/lyzbcy-* ~/.openclaw/skills/
-```
+详细介绍、用法、适用场景见介绍页或各 skill 目录下的 `SKILL.md`。
 
-或者在 OpenClaw 中使用：
+## 安装
 
-```
-openclaw skills install ./skills/lyzbcy-diary
-```
+下载对应 zip → 解压 → 把整个 skill 文件夹放到你的 agent skills 目录（确保里面有 `SKILL.md`）。
 
-## 隐私保护
+## 给 AI 的说明
 
-所有涉及隐私的 skill 都已内置隐私保护规则：
-- 私人行程不记录
-- 感情细节不记录
-- 用户明确说"隐私"的内容绝对不记录
+本仓库的介绍页是 AI 友好的：把 <https://lyzbcy.github.io/laoyu-miaomiao-tools/> 整页发给 AI，AI 就能读懂有哪些 skill、各自用途，并自行下载需要的那个。
 
 ## License
 
