@@ -87,7 +87,7 @@
 
 <!-- SKILLS -->
 <section id="skills">
-  <h2><span class="num">02</span> 收录的 Skills（3 个）</h2>
+  <h2><span class="num">02</span> 收录的 Skills（4 个）</h2>
   <p class="lede">下面每个 skill 都写了：它是干嘛的、适合什么场景、怎么用、怎么装、在哪下载。</p>
 
   <!-- SKILL 1: study-map -->
@@ -213,6 +213,48 @@
       <a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/lyzbcy-视频生成提示词润色">查看源码</a>
     </div>
   </article>
+
+  <!-- SKILL 4: 微信公众号全自动运营 -->
+  <article class="skill" id="wechat-autopublish">
+    <div class="skill-head">
+      <span class="emoji">📣</span>
+      <h3>lyzbcy-wechat-autopublish</h3>
+      <span class="ver">公众号全自动运营</span>
+    </div>
+    <p class="skill-tag">微信公众号的"发布"环节 100% 零人工——发布前一次确认，之后的一切交给机器。</p>
+
+    <div class="field">
+      <div class="label">它能做什么</div>
+      <p>一条龙自动发文：<b>取内容（可插拔内容源：周报总结/每日图片/自定义）→ 脱敏 → 发布前问一次你 → 推草稿 → 自动发布 → 回报永久链接</b>。发布走<b>三层降级</b>：①纯官方 API（freepublish，已认证号最稳）②浏览器自动化点发表（未认证号，登录态持久化复用，首次扫一次码）③人工兜底（绝不静默失败）。支持 cron 定时（如每周六 10:00 发周报）。核心脚本<b>零第三方依赖</b>（Python 标准库），自带 47 项离线测试与 dry-run 干跑。</p>
+    </div>
+
+    <div class="field">
+      <div class="label">适合 / 不适合</div>
+      <ul>
+        <li>✅ 定时自动发公众号图文/图片消息（每天生图发文、每周发学习周报）</li>
+        <li>✅ 已经能推草稿箱、但不想每天手动点"发表"的人（这正是它诞生的原因）</li>
+        <li>✅ 只想要"自动发布引擎"、内容自己生成（模块可拆开用）</li>
+        <li>❌ 需要推送到粉丝会话的"群发"营销场景（本 skill 走"发布"接口，不占群发配额也不推送）</li>
+        <li>❌ 不想配置 AppSecret/IP 白名单的人（API 通路需要一次性配置）</li>
+      </ul>
+    </div>
+
+    <div class="field">
+      <div class="label">怎么用（示例 prompt）</div>
+      <div class="prompt-box">帮我设置每周六早上 10 点自动发一篇本周 AI 学习总结到公众号，
+读我的日报目录整理，脱敏后先给我确认再发。</div>
+    </div>
+
+    <div class="field">
+      <div class="label">怎么安装</div>
+      <p>下载 zip → 解压 → 把整个 <code>lyzbcy-wechat-autopublish/</code> 文件夹放到你的 agent skills 目录（确保里面有 <code>SKILL.md</code>）。首次按 SKILL.md「首次设置清单」配置 config.json（AppID/AppSecret + IP 白名单），未认证号额外装 playwright。</p>
+    </div>
+
+    <div class="dl-row">
+      <a class="btn btn-zip" id="dl-wechat-autopublish" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.3.0/lyzbcy-wechat-autopublish.zip">📦 下载 lyzbcy-wechat-autopublish.zip</a>
+      <a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/lyzbcy-wechat-autopublish">查看源码</a>
+    </div>
+  </article>
 </section>
 
 <!-- AI 友好 -->
@@ -221,7 +263,7 @@
   <div class="ai-block">
     <h3>这整页可以直接发给 AI</h3>
     <p>本页是<b>语义化、对 AI 友好</b>的介绍页。你可以直接把这一整页（或它的链接）发给你的 AI 助手，AI 就能读懂：</p>
-    <p>· 这里收录了 <code>3 个 skill</code>，分别是 <code>lyzbcy-study-map</code>（理解地图）、<code>lyzbcy-最后的1%</code>（极限执行）和 <code>lyzbcy-视频生成提示词润色</code>（分镜润色）。<br>
+    <p>· 这里收录了 <code>4 个 skill</code>，分别是 <code>lyzbcy-study-map</code>（理解地图）、<code>lyzbcy-最后的1%</code>（极限执行）、<code>lyzbcy-视频生成提示词润色</code>（分镜润色）和 <code>lyzbcy-wechat-autopublish</code>（公众号全自动运营）。<br>
        · 每个 skill 的用途、适用场景、用法、安装方式、下载直链都在上方写清楚了。<br>
        · AI 可以据此判断你当前需要哪个 skill，并<b>自行下载对应的 zip 安装</b>。</p>
     <p style="color:var(--muted);font-size:.92rem">下载链接是 GitHub Releases 直链：</p>
@@ -229,6 +271,7 @@
       <li>lyzbcy-study-map：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.0.0/lyzbcy-study-map.zip</code></li>
       <li>lyzbcy-最后的1%：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.1.0/lyzbcy-last-1-percent.zip</code></li>
       <li>lyzbcy-视频生成提示词润色：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.2.0/lyzbcy-video-prompt-polish.zip</code></li>
+      <li>lyzbcy-wechat-autopublish：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.3.0/lyzbcy-wechat-autopublish.zip</code></li>
     </ul>
     <button class="copybtn" onclick="copyForAI()">📋 复制给 AI 的纯文本摘要</button>
   </div>
@@ -250,17 +293,19 @@
 const RELEASES = {
   "study-map": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.0.0/lyzbcy-study-map.zip",
   "last-1-percent": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.1.0/lyzbcy-last-1-percent.zip",
-  "video-prompt-polish": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.2.0/lyzbcy-video-prompt-polish.zip"
+  "video-prompt-polish": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.2.0/lyzbcy-video-prompt-polish.zip",
+  "wechat-autopublish": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.3.0/lyzbcy-wechat-autopublish.zip"
 };
 document.getElementById('dl-study-map').href = RELEASES['study-map'];
 document.getElementById('dl-last-1-percent').href = RELEASES['last-1-percent'];
 document.getElementById('dl-video-prompt-polish').href = RELEASES['video-prompt-polish'];
+document.getElementById('dl-wechat-autopublish').href = RELEASES['wechat-autopublish'];
 
 // 复制给 AI 的纯文本摘要
 function copyForAI(){
   const txt = `【捞鱼妙妙工具 · Agent Skills 收录站】
 
-这里收录捞鱼（lyzbcy）的个人 Agent Skills，每个 skill 独立打包，按需下载。共 3 个 skill：
+这里收录捞鱼（lyzbcy）的个人 Agent Skills，每个 skill 独立打包，按需下载。共 4 个 skill：
 
 1) lyzbcy-study-map（理解地图生成器）
    - 用途：把技术长文/访谈/论文/跨学科材料，生成有原文依据、能追问、能复述的交互式 HTML 理解地图；也适用于课程复习提纲、历年真题、计算题手把手演示。
@@ -277,11 +322,18 @@ function copyForAI(){
    - 下载：${RELEASES['last-1-percent']}
 
 3) lyzbcy-视频生成提示词润色（分镜提示词润色器）
-   - 用途：把 AI 视频/漫剧分镜的逐镜头提示词做“减法”——角色跟 art、场景跟场景图，提示词只留镜头语言。删掉污染形象还原的服装/五官/材质写死项，统一同场景光线/人物站位/VoiceID，核对景别与对白时长。
+   - 用途：把 AI 视频/漫剧分镜的逐镜头提示词做"减法"——角色跟 art、场景跟场景图，提示词只留镜头语言。删掉污染形象还原的服装/五官/材质写死项，统一同场景光线/人物站位/VoiceID，核对景别与对白时长。
    - 适合：润色/检查 AI 视频、漫剧、即梦/可灵/Vidu 等逐镜头生成提示词；不适合替你写剧本本身或与视频无关的普通文本。
-   - 用法示例：发分镜提示词，说“润色一下第47集场47-1的镜头1提示词”。
+   - 用法示例：发分镜提示词，说"润色一下第47集场47-1的镜头1提示词"。
    - 安装：解压后把整个文件夹放到 agent skills 目录（含 SKILL.md）。
    - 下载：${RELEASES['video-prompt-polish']}
+
+4) lyzbcy-wechat-autopublish（公众号全自动运营）
+   - 用途：微信公众号自动发文一条龙：取内容（周报/每日图/自定义内容源）→脱敏→发布前问一次用户→推草稿→自动发布→回报永久链接。发布三层降级：纯API（已认证号）/浏览器自动化（未认证号，登录态复用首次扫一次码）/人工兜底。支持 cron 定时。核心脚本零依赖+47项离线测试。
+   - 适合：定时自动发公众号（每天发图、每周发周报）；已能推草稿但不想手动点"发表"的人。不适合要"群发"推送粉丝的场景、不想配 AppSecret/IP白名单的人。
+   - 用法示例："帮我设置每周六早上10点自动发一篇本周AI学习总结到公众号，读我的日报目录整理，脱敏后先给我确认再发。"
+   - 安装：解压后把整个文件夹放到 agent skills 目录（含 SKILL.md），按 SKILL.md 首次设置清单配置 config.json。
+   - 下载：${RELEASES['wechat-autopublish']}
 
 仓库：https://github.com/lyzbcy/laoyu-miaomiao-tools
 介绍页：https://lyzbcy.github.io/laoyu-miaomiao-tools/`;

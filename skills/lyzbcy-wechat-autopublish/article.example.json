@@ -1,0 +1,12 @@
+{
+  "_说明": "发布引擎的唯一入参。复制为 article.json 使用；字段规范见 references/api-reference.md",
+  "title": "AI 周报｜8月第2周：把公众号发布自动化了",
+  "author": "捞鱼",
+  "digest": "本周做了微信公众号全自动发布 skill，三层降级策略，发布环节零人工。",
+  "content_html_file": "body.html",
+  "thumb_image": "cover.png",
+  "content_source_url": "https://github.com/lyzbcy/laoyu-miaomiao-tools",
+  "article_type": "news",
+  "need_open_comment": 0,
+  "only_fans_can_comment": 0
+}

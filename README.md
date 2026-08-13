@@ -12,6 +12,8 @@
 |-------|--------|------|
 | 🗺️ `lyzbcy-study-map` | 把难啃的干货拆成有原文依据、能追问、能复述的交互式理解地图 | [Releases](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases) |
 | 🎯 `lyzbcy-最后的1%` | 极限执行元 skill，把任务做到真正完美才停手 | [Releases](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases) |
+| 🎬 `lyzbcy-视频生成提示词润色` | AI 视频分镜提示词做减法，只留镜头语言 | [Releases](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases) |
+| 📣 `lyzbcy-wechat-autopublish` | 微信公众号全自动运营：发布环节零人工，三层降级 + cron + 发布前确认 | [Releases](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases) |
 
 详细介绍、用法、适用场景见介绍页或各 skill 目录下的 `SKILL.md`。
 

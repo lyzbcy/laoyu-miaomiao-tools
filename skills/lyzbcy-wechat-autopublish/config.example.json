@@ -1,0 +1,22 @@
+{
+  "_说明": "复制本文件为同目录 config.json 并填入真实值。config.json 已被 gitignore，凭据永不进 git。",
+  "_取值指导": {
+    "appid/secret": "公众平台→设置与开发→基本配置（AppSecret 首次需重置后复制）；同一页配置 IP 白名单，加本机公网 IP",
+    "publish_method": "api=已认证号纯API发布 | browser=推草稿+浏览器点发表 | auto=先api，48001自动降browser（推荐）",
+    "auto_confirm": "必须保持 false。仅当用户明确要求无人值守直发时由用户亲手改 true",
+    "content_source.type": "none=只用发布引擎(自带article.json) | weekly_report=周报总结 | daily_image=每日图片消息 | custom=自定义"
+  },
+  "appid": "wx你的AppID",
+  "secret": "你的AppSecret",
+  "publish_method": "auto",
+  "auto_confirm": false,
+  "content_source": {
+    "type": "none",
+    "reports_dir": "",
+    "report_glob": "*.md",
+    "desensitize": true
+  },
+  "browser": {
+    "state_file": "state/mp_storage_state.json"
+  }
+}

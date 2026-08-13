@@ -1,0 +1,11 @@
+# 凭据与登录态——永不进 git
+config.json
+state/
+mp_storage_state.json
+
+# 每次运行产物
+article.json
+*.log
+__pycache__/
+*.pyc
+.DS_Store
