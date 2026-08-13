@@ -1,7 +1,7 @@
 {
   "_说明": "复制本文件为同目录 config.json 并填入真实值。config.json 已被 gitignore，凭据永不进 git。",
   "_取值指导": {
-    "appid/secret": "公众平台→设置与开发→基本配置（AppSecret 首次需重置后复制）；同一页配置 IP 白名单，加本机公网 IP",
+    "appid/secret": "微信开发者平台 developers.weixin.qq.com→控制台（扫码登录）→开发设置（AppSecret 首次需重置后复制）；同一处配置 IP 白名单，加本机公网 IP。2025-12 起从公众平台迁移至此",
     "publish_method": "api=已认证号纯API发布 | browser=推草稿+浏览器点发表 | auto=先api，48001自动降browser（推荐）",
     "auto_confirm": "必须保持 false。仅当用户明确要求无人值守直发时由用户亲手改 true",
     "content_source.type": "none=只用发布引擎(自带article.json) | weekly_report=周报总结 | daily_image=每日图片消息 | custom=自定义"

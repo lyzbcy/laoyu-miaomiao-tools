@@ -112,7 +112,7 @@ article.json 字段与全部 API 细节见 `references/api-reference.md`；
 
 | errcode | 含义 | 处理 |
 |---|---|---|
-| 40164 | IP 不在白名单 | 公众平台→设置与开发→基本配置→IP 白名单 加本机公网 IP |
+| 40164 | IP 不在白名单 | 微信开发者平台→开发设置→IP 白名单 加本机公网 IP |
 | 40001/40014 | token 失效 | 脚本已自动重取一次；仍失败则核对 AppSecret |
 | 48001 | 无 freepublish 权限 | 未认证号 → 走方案 B 浏览器发布 |
 | 40009 | 正文图 >1MB | 压缩图片（转 jpg 质量 80）后重试 |
@@ -128,7 +128,10 @@ article.json 字段与全部 API 细节见 `references/api-reference.md`；
 
 ## 首次设置清单（新用户引导）
 
-1. 公众平台→设置与开发→基本配置：拿 AppID/AppSecret，配 IP 白名单（本机公网 IP）。
+1. **微信开发者平台**（developers.weixin.qq.com → 控制台，微信扫码登录）→ 开发设置：
+   拿 AppID/AppSecret，配 IP 白名单（本机公网 IP）。
+   > ⚠️ 2025-12-01 起「开发接口管理」已从公众平台迁移至微信开发者平台（真机实测确认），
+   > 公众平台后台只剩迁移公告；两个平台登录态不通用，开发者平台需单独扫码。
 2. 复制 `config.example.json` → 同目录 `config.json`，填入 appid/secret，选 publish_method。
    若公众号未认证（选 browser/auto），额外安装浏览器依赖：
    `pip3 install playwright && python3 -m playwright install chromium`。
