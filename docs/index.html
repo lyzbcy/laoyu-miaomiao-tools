@@ -87,7 +87,7 @@
 
 <!-- SKILLS -->
 <section id="skills">
-  <h2><span class="num">02</span> 收录的 Skills（2 个）</h2>
+  <h2><span class="num">02</span> 收录的 Skills（3 个）</h2>
   <p class="lede">下面每个 skill 都写了：它是干嘛的、适合什么场景、怎么用、怎么装、在哪下载。</p>
 
   <!-- SKILL 1: study-map -->
@@ -171,6 +171,48 @@
       <a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/lyzbcy-最后的1%">查看源码</a>
     </div>
   </article>
+
+  <!-- SKILL 3: 视频生成提示词润色 -->
+  <article class="skill" id="video-prompt-polish">
+    <div class="skill-head">
+      <span class="emoji">🎬</span>
+      <h3>lyzbcy-视频生成提示词润色</h3>
+      <span class="ver">分镜提示词润色器</span>
+    </div>
+    <p class="skill-tag">把 AI 视频 / 漫剧分镜的逐镜头提示词做“减法”——角色跟 art、场景跟场景图，提示词只留镜头语言。</p>
+
+    <div class="field">
+      <div class="label">它能做什么</div>
+      <p>把一段分镜提示词（多镜头，每镜带景别/构图/光线/情绪/配音指令）按实战规则润色：删掉会污染形象还原的<b>服装颜色/款式/材质、五官发色、写死的场景材质、身份定语</b>；统一同场景的<b>光线、人物站位、角色 VoiceID</b>；核对<b>景别与拍摄对象、对白时长与语速</b>；该回归剧本判断的（站/坐、时长）就回归剧本。每改一处都给改动说明，规则越用越准。</p>
+    </div>
+
+    <div class="field">
+      <div class="label">适合 / 不适合</div>
+      <ul>
+        <li>✅ 润色 / 修改 / 检查 AI 视频、漫剧、即梦/可灵/Vidu 等的逐镜头生成提示词</li>
+        <li>✅ 修正：服装/五官污染、场景材质写死、人物站位错乱、同场景光线跳变、语速异常、同一角色声音不连贯</li>
+        <li>✅ 让 AI 回归剧本判断人物站/坐、对白时长是否合理</li>
+        <li>❌ 替你写剧本和对白本身（那是创作，不是润色）</li>
+        <li>❌ 处理与视频生成无关的普通文本</li>
+      </ul>
+    </div>
+
+    <div class="field">
+      <div class="label">怎么用（示例 prompt）</div>
+      <div class="prompt-box">润色一下第47集场47-1的镜头1提示词：
+&lt;提示词&gt;...&lt;/提示词&gt;</div>
+    </div>
+
+    <div class="field">
+      <div class="label">怎么安装</div>
+      <p>下载 zip → 解压 → 把整个 <code>lyzbcy-视频生成提示词润色/</code> 文件夹放到你的 agent skills 目录（确保里面有 <code>SKILL.md</code>）。</p>
+    </div>
+
+    <div class="dl-row">
+      <a class="btn btn-zip" id="dl-video-prompt-polish" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.2.0/lyzbcy-视频生成提示词润色.zip">📦 下载 lyzbcy-视频生成提示词润色.zip</a>
+      <a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/lyzbcy-视频生成提示词润色">查看源码</a>
+    </div>
+  </article>
 </section>
 
 <!-- AI 友好 -->
@@ -179,13 +221,14 @@
   <div class="ai-block">
     <h3>这整页可以直接发给 AI</h3>
     <p>本页是<b>语义化、对 AI 友好</b>的介绍页。你可以直接把这一整页（或它的链接）发给你的 AI 助手，AI 就能读懂：</p>
-    <p>· 这里收录了 <code>2 个 skill</code>，分别是 <code>lyzbcy-study-map</code>（理解地图）和 <code>lyzbcy-最后的1%</code>（极限执行）。<br>
+    <p>· 这里收录了 <code>3 个 skill</code>，分别是 <code>lyzbcy-study-map</code>（理解地图）、<code>lyzbcy-最后的1%</code>（极限执行）和 <code>lyzbcy-视频生成提示词润色</code>（分镜润色）。<br>
        · 每个 skill 的用途、适用场景、用法、安装方式、下载直链都在上方写清楚了。<br>
        · AI 可以据此判断你当前需要哪个 skill，并<b>自行下载对应的 zip 安装</b>。</p>
     <p style="color:var(--muted);font-size:.92rem">下载链接是 GitHub Releases 直链：</p>
     <ul style="color:var(--muted);font-size:.9rem;margin:6px 0 0">
       <li>lyzbcy-study-map：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.0.0/lyzbcy-study-map.zip</code></li>
       <li>lyzbcy-最后的1%：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.1.0/lyzbcy-last-1-percent.zip</code></li>
+      <li>lyzbcy-视频生成提示词润色：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.2.0/lyzbcy-视频生成提示词润色.zip</code></li>
     </ul>
     <button class="copybtn" onclick="copyForAI()">📋 复制给 AI 的纯文本摘要</button>
   </div>
@@ -206,16 +249,18 @@
 // release 直链填入（push 后由部署脚本/手动更新 tag）
 const RELEASES = {
   "study-map": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.0.0/lyzbcy-study-map.zip",
-  "last-1-percent": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.1.0/lyzbcy-last-1-percent.zip"
+  "last-1-percent": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.1.0/lyzbcy-last-1-percent.zip",
+  "video-prompt-polish": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.2.0/lyzbcy-视频生成提示词润色.zip"
 };
 document.getElementById('dl-study-map').href = RELEASES['study-map'];
 document.getElementById('dl-last-1-percent').href = RELEASES['last-1-percent'];
+document.getElementById('dl-video-prompt-polish').href = RELEASES['video-prompt-polish'];
 
 // 复制给 AI 的纯文本摘要
 function copyForAI(){
   const txt = `【捞鱼妙妙工具 · Agent Skills 收录站】
 
-这里收录捞鱼（lyzbcy）的个人 Agent Skills，每个 skill 独立打包，按需下载。共 2 个 skill：
+这里收录捞鱼（lyzbcy）的个人 Agent Skills，每个 skill 独立打包，按需下载。共 3 个 skill：
 
 1) lyzbcy-study-map（理解地图生成器）
    - 用途：把技术长文/访谈/论文/跨学科材料，生成有原文依据、能追问、能复述的交互式 HTML 理解地图；也适用于课程复习提纲、历年真题、计算题手把手演示。
@@ -230,6 +275,13 @@ function copyForAI(){
    - 用法示例：说"请使用 lyzbcy-最后的1%，把 X 做到完美"。
    - 安装：解压后把整个文件夹放到 agent skills 目录（含 SKILL.md）。
    - 下载：${RELEASES['last-1-percent']}
+
+3) lyzbcy-视频生成提示词润色（分镜提示词润色器）
+   - 用途：把 AI 视频/漫剧分镜的逐镜头提示词做“减法”——角色跟 art、场景跟场景图，提示词只留镜头语言。删掉污染形象还原的服装/五官/材质写死项，统一同场景光线/人物站位/VoiceID，核对景别与对白时长。
+   - 适合：润色/检查 AI 视频、漫剧、即梦/可灵/Vidu 等逐镜头生成提示词；不适合替你写剧本本身或与视频无关的普通文本。
+   - 用法示例：发分镜提示词，说“润色一下第47集场47-1的镜头1提示词”。
+   - 安装：解压后把整个文件夹放到 agent skills 目录（含 SKILL.md）。
+   - 下载：${RELEASES['video-prompt-polish']}
 
 仓库：https://github.com/lyzbcy/laoyu-miaomiao-tools
 介绍页：https://lyzbcy.github.io/laoyu-miaomiao-tools/`;
