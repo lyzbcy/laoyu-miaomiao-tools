@@ -67,6 +67,25 @@ python3 scripts/publish_browser.py publish --title "今天的图" --state state/
 ⚠️ 后台 DOM 会改版：脚本里的选择器是"尽力而为"，失败时按「实现一」的语义步骤
 人工/agent 操作，并顺手把新选择器更新进脚本。
 
+## ⚠️ 2026-08-14 真机实测补充：未认证号的「发表」双重墙
+
+对**未认证个人号**真机实测（Edge + kimi-webbridge，发表成功一篇验证）：
+
+1. **「发表」按钮反自动化**：synthetic `el.click()`、CDP `Input.dispatchMouseEvent`
+   （含完整 moved→pressed→released 序列）、DOM 事件链（mouseover→mousedown→mouseup→click）
+   全部无法触发——平台对发表动作做了真实交互验证（疑似 isTrusted 检测）。
+   → 自动化只能走到"草稿入箱+定位到发表按钮"，**最后一下必须人点**。
+2. **发表确认扫码**：人点「发表」后，平台弹出管理员扫码确认（每次发表都要）。
+   GitHub 上两个主流自动发布项目（WeChatMediaPlatformAutomation/puppeteer、
+   blog-auto-publishing-tools/selenium）同样是人工扫码，**无合法绕过方案**。
+3. **出路对照**：
+   - 已认证号：走方案 A（freepublish API），完全无扫码无浏览器——首选
+   - 未认证号：接受"发布前扫一次码"（比全手动仍省 90% 工序），或走深水区 ↓
+   - 深水区（自担风险）：用 cookie+token 直调后台内部 CGI（appmsgpublish 模式，
+     参考 mp 后台自己的请求）。⚠️ 非公开接口、违反平台协议、有封号风险；
+     需先在浏览器 Network 里抓一次真实发表的请求格式。
+4. 分担扫码：后台「设置→安全中心」可添加**长期运营者**微信号，运营者也能扫码。
+
 ## 方案 C：人工兜底话术
 
 > 草稿已放进草稿箱：《{title}》。自动发布通道本次不可用（原因：{errcode/登录态失效}）。
