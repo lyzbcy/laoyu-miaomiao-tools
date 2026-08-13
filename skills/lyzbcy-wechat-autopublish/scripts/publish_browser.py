@@ -44,8 +44,22 @@ def _secure_state(path):
 
 
 def _logged_in(page):
-    """登录成功启发式：跳到 /cgi-bin/ 后台页。"""
-    return "/cgi-bin/" in page.url and "login" not in page.url
+    """登录成功启发式：跳到 /cgi-bin/ 后台页（带 token）。"""
+    return "/cgi-bin/" in page.url and "token=" in page.url and "login" not in page.url
+
+
+def _mp_token(page):
+    """从当前后台页 URL 提取 token 参数。"""
+    from urllib.parse import urlparse, parse_qs
+    return (parse_qs(urlparse(page.url).query).get("token") or [""])[0]
+
+
+# 2026-08-14 真机实测（Edge + 登录态复用）核对的选择器与 URL
+DRAFT_BOX_URL = ("https://mp.weixin.qq.com/cgi-bin/appmsg"
+                 "?begin=0&count=10&type=77&action=list_card"
+                 "&token={token}&lang=zh_CN")
+PUBLISH_LINK = "a.weui-desktop-link_send-multi"
+DISABLED_CLS = "weui-desktop-link_disable"
 
 
 def _shot(page, state_dir, name):
@@ -109,40 +123,50 @@ def cmd_publish(args):
             _shot(page, state_dir, "login-expired")
             browser.close()
             return 3
-        # 进草稿箱：语义化点击（DOM 改版时按 browser-playbook.md 人工走）
-        try:
-            page.get_by_text("草稿", exact=False).first.click(timeout=8000)
-        except Exception:
-            page.goto("https://mp.weixin.qq.com/cgi-bin/appmsg"
-                      "?t=media/appmsg_list&lang=zh_CN")
+        # 进草稿箱：优先用实测 URL（token 取自当前页），失败再退回语义点击
+        token = _mp_token(page)
+        if token:
+            page.goto(DRAFT_BOX_URL.format(token=token))
+        else:
+            try:
+                page.get_by_text("草稿箱", exact=False).first.click(timeout=8000)
+            except Exception:
+                page.goto("https://mp.weixin.qq.com/cgi-bin/appmsg"
+                          "?t=media/appmsg_list&lang=zh_CN")
         page.wait_for_load_state("networkidle")
         _shot(page, state_dir, "draft-list")
 
-        # 找目标标题
+        # 找目标标题所在的草稿卡片（.weui-desktop-card.weui-desktop-publish）
         try:
             row = page.get_by_text(args.title, exact=False).first
             row.scroll_into_view_if_needed(timeout=8000)
-            row.hover(timeout=8000)
+            card = row.locator(
+                "xpath=ancestor-or-self::*[contains(concat(' ',normalize-space(@class),' '),' weui-desktop-card ')]"
+            ).first
         except Exception as exc:
             print("未找到标题为 %r 的草稿：%s" % (args.title, exc), file=sys.stderr)
             _shot(page, state_dir, "draft-not-found")
             browser.close()
             return 4
 
-        # 点该行的「发表」（hover 后出现的操作按钮）
+        # 点该卡片的「发表」（实测：无需 hover，a.weui-desktop-link_send-multi）
         published = False
-        for label in ("发表", "群发"):
-            try:
-                btn = row.locator(
-                    "xpath=ancestor-or-self::*[.//text()=%r]"
-                    "//*[@role='button' or self::a or self::button]"
-                    "[.//text()=%r or @aria-label=%r]"
-                    % (args.title, label, label)).first
-                btn.click(timeout=4000)
-                published = True
-                break
-            except Exception:
-                continue
+        try:
+            btn = card.locator(PUBLISH_LINK).first
+            if DISABLED_CLS in (btn.get_attribute("class") or ""):
+                raise RuntimeError("该草稿的发表按钮处于禁用态")
+            btn.click(timeout=4000)
+            published = True
+        except Exception as exc:
+            print("定位「发表」按钮失败（%s），尝试语义兜底…" % exc, file=sys.stderr)
+        if not published:
+            for label in ("发表", "群发"):
+                try:
+                    page.get_by_text(label, exact=True).last.click(timeout=3000)
+                    published = True
+                    break
+                except Exception:
+                    continue
         if not published:
             print("自动定位「发表」按钮失败（DOM 可能改版）。"
                   "截图已存 state/logs/，请按 browser-playbook.md 人工完成最后一步，"

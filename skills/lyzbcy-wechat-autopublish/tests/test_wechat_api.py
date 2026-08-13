@@ -293,6 +293,11 @@ class TestErrorHints(unittest.TestCase):
         hint = wechat_api.errcode_hint(40001)
         self.assertIn("AppSecret", hint)
 
+    def test_40013_invalid_appid(self):
+        # 2026-08-14 真机实测：stable_token 传错 appid 返回 40013 invalid appid
+        hint = wechat_api.errcode_hint(40013)
+        self.assertIn("appid", hint.lower())
+
     def test_48001_no_permission(self):
         hint = wechat_api.errcode_hint(48001)
         self.assertIn("认证", hint)
