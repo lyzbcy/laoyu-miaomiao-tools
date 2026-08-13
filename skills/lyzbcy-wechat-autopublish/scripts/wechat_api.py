@@ -169,6 +169,7 @@ _HINTS = {
     45009: "接口调用次数超限（每日限额）",
     48001: "api 功能未授权——freepublish 仅限【已认证】公众号。未认证账号请改走浏览器发布方案，或仅推草稿后人工发布",
     53401: "发布失败：内容涉嫌违规或触发平台审核，去后台查看详情",
+    53402: "封面裁剪失败：封面图尺寸过小或比例异常，建议 900x383（2.35:1）",
     200013: "已达发布/群发次数上限",
 }
 
@@ -252,6 +253,42 @@ def validate_article(raw, base_dir=None):
 # ---------------------------------------------------------------------------
 _JPG_MAGIC = b"\xff\xd8\xff"
 _PNG_MAGIC = b"\x89PNG\r\n\x1a\n"
+
+COVER_MIN_WIDTH = 300    # 低于此宽度微信算不出 2.35:1 裁剪区（errcode 53402）
+
+
+def image_size(data):
+    """读 PNG/JPEG 的 (宽, 高)；读不出返回 None。"""
+    import struct as _s
+    if data.startswith(_PNG_MAGIC) and len(data) >= 24:
+        w, h = _s.unpack(">II", data[16:24])
+        return w, h
+    if data.startswith(_JPG_MAGIC):
+        i = 2
+        while i + 9 < len(data):
+            if data[i] != 0xFF:
+                i += 1
+                continue
+            marker = data[i + 1]
+            if marker in (0xC0, 0xC1, 0xC2, 0xC3):
+                h, w = _s.unpack(">HH", data[i + 5:i + 9])
+                return w, h
+            if marker in (0xD8, 0x01) or 0xD0 <= marker <= 0xD7:
+                i += 2
+                continue
+            seg_len = _s.unpack(">H", data[i + 2:i + 4])[0]
+            i += 2 + seg_len
+        return None
+    return None
+
+
+def check_cover_size(data, name="封面"):
+    """封面太小会让 draft/add 报 53402（封面裁剪失败），提前拦截。"""
+    size = image_size(data)
+    if size and (size[0] < COVER_MIN_WIDTH or size[1] < COVER_MIN_WIDTH * 383 // 900):
+        raise ContentImageError(
+            "%s 尺寸 %dx%d 过小：微信将报 53402（封面裁剪失败）。"
+            "建议 900x383（2.35:1）或至少 300x128" % (name, size[0], size[1]))
 
 
 def sniff_image(data, content_type=""):
@@ -458,6 +495,7 @@ def upload_thumb(cfg, token, image_path):
         data = f.read()
     if len(data) > THUMB_IMAGE_MAX_BYTES:
         raise ContentImageError("封面 %s 超过 10MB 上限" % image_path)
+    check_cover_size(data, "封面 %s" % os.path.basename(image_path))
     mime = sniff_image(data)
     name = os.path.basename(image_path) or "cover." + ("png" if mime == "image/png" else "jpg")
 

@@ -19,7 +19,23 @@ sys.path.insert(0, SCRIPTS_DIR)
 import wechat_api  # noqa: E402
 
 PNG_MAGIC = b"\x89PNG\r\n\x1a\n"
-TINY_PNG = PNG_MAGIC + b"\x00\x00\x00\rIHDR" + b"\x00" * 8  # 伪 PNG，够测魔数即可
+TINY_PNG = PNG_MAGIC + b"\x00\x00\x00\rIHDR" + b"\x00" * 8  # 伪 PNG，够测魔数即可（正文图用）
+
+
+def _make_cover_png(w=900, h=383):
+    """假封面：IHDR 头是 900x383（image_size 只读头），数据乱填——fake server 不解析。"""
+    import zlib, struct
+
+    def chunk(tag, data):
+        return (struct.pack(">I", len(data)) + tag + data
+                + struct.pack(">I", zlib.crc32(tag + data) & 0xffffffff))
+    return (PNG_MAGIC
+            + chunk(b"IHDR", struct.pack(">IIBBBBB", w, h, 8, 2, 0, 0, 0))
+            + chunk(b"IDAT", zlib.compress(b"\x00\x01\x02" * 64))
+            + chunk(b"IEND", b""))
+
+
+COVER_PNG = _make_cover_png()
 
 
 # ---------------------------------------------------------------------------
@@ -289,6 +305,11 @@ class TestErrorHints(unittest.TestCase):
         hint = wechat_api.errcode_hint(40164)
         self.assertIn("IP 白名单", hint)
 
+    def test_53402_cover_crop(self):
+        # 2026-08-14 真机实测：1x1 封面导致 draft/add 报 53402 封面裁剪失败
+        hint = wechat_api.errcode_hint(53402)
+        self.assertIn("封面", hint)
+
     def test_40001_secret_or_token(self):
         hint = wechat_api.errcode_hint(40001)
         self.assertIn("AppSecret", hint)
@@ -305,6 +326,36 @@ class TestErrorHints(unittest.TestCase):
     def test_unknown_code_has_generic(self):
         hint = wechat_api.errcode_hint(99999)
         self.assertTrue(len(hint) > 0)
+
+
+class TestCoverSizeCheck(unittest.TestCase):
+    """2026-08-14 真机实测教训：过小封面会让 draft/add 报 53402，必须提前拦截。"""
+
+    def _png(self, w, h):
+        import zlib, struct
+
+        def chunk(tag, data):
+            return (struct.pack(">I", len(data)) + tag + data
+                    + struct.pack(">I", zlib.crc32(tag + data) & 0xffffffff))
+        return (b"\x89PNG\r\n\x1a\n"
+                + chunk(b"IHDR", struct.pack(">IIBBBBB", w, h, 8, 2, 0, 0, 0))
+                + chunk(b"IDAT", zlib.compress(b"\x00\x01\x02" * (w * h)))
+                + chunk(b"IEND", b""))
+
+    def test_image_size_reads_png(self):
+        self.assertEqual(wechat_api.image_size(self._png(900, 383)), (900, 383))
+
+    def test_tiny_cover_rejected_before_upload(self):
+        with self.assertRaises(wechat_api.ContentImageError) as ctx:
+            wechat_api.check_cover_size(self._png(1, 1))
+        self.assertIn("53402", str(ctx.exception))
+
+    def test_proper_cover_passes(self):
+        wechat_api.check_cover_size(self._png(900, 383))     # 不抛即通过
+
+    def test_narrow_cover_rejected(self):
+        with self.assertRaises(wechat_api.ContentImageError):
+            wechat_api.check_cover_size(self._png(200, 100))
 
 
 # ---------------------------------------------------------------------------
@@ -344,7 +395,7 @@ class TestPublishFlow(FakeServerTestCase):
     def article(self, tmpdir):
         cover = os.path.join(tmpdir, "cover.png")
         with open(cover, "wb") as f:
-            f.write(TINY_PNG)
+            f.write(COVER_PNG)
         return {
             "title": "本周 AI 学习周报",
             "digest": "摘要",
@@ -474,7 +525,7 @@ class TestDryRun(unittest.TestCase):
             with tempfile.TemporaryDirectory() as tmp:
                 cover = os.path.join(tmp, "cover.png")
                 with open(cover, "wb") as f:
-                    f.write(TINY_PNG)
+                    f.write(COVER_PNG)
                 article = {
                     "title": "干跑测试",
                     "digest": "d",
@@ -634,7 +685,7 @@ class TestPollAndPublishMethod(FakeServerTestCase):
     def article(self, tmpdir):
         cover = os.path.join(tmpdir, "cover.png")
         with open(cover, "wb") as f:
-            f.write(TINY_PNG)
+            f.write(COVER_PNG)
         return {"title": "标题x", "digest": "d",
                 "content_html": '<img src="%s/remote/cover.png">' % self.base,
                 "thumb_image": cover}
@@ -712,7 +763,7 @@ class TestPollAndPublishMethod(FakeServerTestCase):
         with tempfile.TemporaryDirectory() as tmp:
             cover = os.path.join(tmp, '怪名字"quoted.png')
             with open(cover, "wb") as f:
-                f.write(TINY_PNG)
+                f.write(COVER_PNG)
             article = {"title": "t", "digest": "d",
                        "content_html": "<p>x</p>", "thumb_image": cover}
             wechat_api.publish_article(self.cfg(), article, poll_seconds=0.01)
