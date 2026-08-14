@@ -177,21 +177,21 @@
     <div class="skill-head">
       <span class="emoji">🎬</span>
       <h3>lyzbcy-视频生成提示词润色</h3>
-      <span class="ver">分镜提示词润色器</span>
+      <span class="ver">分镜提示词润色器 · v1.1.0</span>
     </div>
     <p class="skill-tag">把 AI 视频 / 漫剧分镜的逐镜头提示词做“减法”——角色跟 art、场景跟场景图，提示词只留镜头语言。</p>
 
     <div class="field">
       <div class="label">它能做什么</div>
-      <p>把一段分镜提示词（多镜头，每镜带景别/构图/光线/情绪/配音指令）按实战规则润色：删掉会污染形象还原的<b>服装颜色/款式/材质、五官发色、写死的场景材质、身份定语</b>；统一同场景的<b>光线、人物站位、角色 VoiceID</b>；核对<b>景别与拍摄对象、对白时长与语速</b>；该回归剧本判断的（站/坐、时长）就回归剧本。每改一处都给改动说明，规则越用越准。</p>
+      <p>把一段分镜提示词（多镜头，每镜带景别/构图/光线/情绪/配音指令）按实战规则润色：删掉会污染形象还原的<b>服装颜色/款式/材质、五官发色、写死的场景材质、身份定语</b>；统一同场景的<b>光线基调、人物站位锚点、角色 VoiceID（跨分镜全剧控死）</b>；核对<b>景别与拍摄对象、对白时长与语速</b>；<b>台词回归剧本逐句核对一字不改</b>；站位<b>三维锁死</b>（位置+姿态+相对关系）、<b>台词受话人锚定</b>、朝向用<b>正面空间描述</b>控制、<b>运动方向符合剧情意图</b>、禁写<b>眼部发光</b>描述（防模型生成镭射眼）；分镜文件首行自动标注<b>总时长</b>；每次使用前<b>自动检查版本</b>（运行副本 vs 仓库副本对比，可选更新）。每改一处都给改动说明，规则越用越准。</p>
     </div>
 
     <div class="field">
       <div class="label">适合 / 不适合</div>
       <ul>
         <li>✅ 润色 / 修改 / 检查 AI 视频、漫剧、即梦/可灵/Vidu 等的逐镜头生成提示词</li>
-        <li>✅ 修正：服装/五官污染、场景材质写死、人物站位错乱、同场景光线跳变、语速异常、同一角色声音不连贯</li>
-        <li>✅ 让 AI 回归剧本判断人物站/坐、对白时长是否合理</li>
+        <li>✅ 修正：服装/五官污染、场景材质写死、人物站位错乱、站位跨镜漂移、台词受话人错位、运动方向反逻辑、同场景光线跳变、语速异常、同一角色声音不连贯、眼神发光（镭射眼）</li>
+        <li>✅ 让 AI 回归剧本判断人物站/坐、台词原文、对白时长是否合理</li>
         <li>❌ 替你写剧本和对白本身（那是创作，不是润色）</li>
         <li>❌ 处理与视频生成无关的普通文本</li>
       </ul>
@@ -209,7 +209,7 @@
     </div>
 
     <div class="dl-row">
-      <a class="btn btn-zip" id="dl-video-prompt-polish" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.2.0/lyzbcy-video-prompt-polish.zip">📦 下载 lyzbcy-video-prompt-polish.zip</a>
+      <a class="btn btn-zip" id="dl-video-prompt-polish" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.4.0/lyzbcy-video-prompt-polish.zip">📦 下载 lyzbcy-video-prompt-polish.zip</a>
       <a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/lyzbcy-视频生成提示词润色">查看源码</a>
     </div>
   </article>
@@ -270,7 +270,7 @@
     <ul style="color:var(--muted);font-size:.9rem;margin:6px 0 0">
       <li>lyzbcy-study-map：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.0.0/lyzbcy-study-map.zip</code></li>
       <li>lyzbcy-最后的1%：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.1.0/lyzbcy-last-1-percent.zip</code></li>
-      <li>lyzbcy-视频生成提示词润色：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.2.0/lyzbcy-video-prompt-polish.zip</code></li>
+      <li>lyzbcy-视频生成提示词润色：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.4.0/lyzbcy-video-prompt-polish.zip</code></li>
       <li>lyzbcy-wechat-autopublish：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.3.2/lyzbcy-wechat-autopublish.zip</code></li>
     </ul>
     <button class="copybtn" onclick="copyForAI()">📋 复制给 AI 的纯文本摘要</button>
@@ -293,7 +293,7 @@
 const RELEASES = {
   "study-map": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.0.0/lyzbcy-study-map.zip",
   "last-1-percent": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.1.0/lyzbcy-last-1-percent.zip",
-  "video-prompt-polish": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.2.0/lyzbcy-video-prompt-polish.zip",
+  "video-prompt-polish": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.4.0/lyzbcy-video-prompt-polish.zip",
   "wechat-autopublish": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.3.2/lyzbcy-wechat-autopublish.zip"
 };
 document.getElementById('dl-study-map').href = RELEASES['study-map'];
@@ -321,8 +321,8 @@ function copyForAI(){
    - 安装：解压后把整个文件夹放到 agent skills 目录（含 SKILL.md）。
    - 下载：${RELEASES['last-1-percent']}
 
-3) lyzbcy-视频生成提示词润色（分镜提示词润色器）
-   - 用途：把 AI 视频/漫剧分镜的逐镜头提示词做"减法"——角色跟 art、场景跟场景图，提示词只留镜头语言。删掉污染形象还原的服装/五官/材质写死项，统一同场景光线/人物站位/VoiceID，核对景别与对白时长。
+3) lyzbcy-视频生成提示词润色（分镜提示词润色器 · v1.1.0）
+   - 用途：把 AI 视频/漫剧分镜的逐镜头提示词做"减法"——角色跟 art、场景跟场景图，提示词只留镜头语言。删掉污染形象还原的服装/五官/材质写死项，统一同场景光线/人物站位/VoiceID，核对景别与对白时长，台词回归剧本一字不改；站位三维锁死+台词受话人锚定+朝向正面描述+运动方向符合剧情+禁写眼部发光；分镜首行标注总时长；使用前自动检查版本。
    - 适合：润色/检查 AI 视频、漫剧、即梦/可灵/Vidu 等逐镜头生成提示词；不适合替你写剧本本身或与视频无关的普通文本。
    - 用法示例：发分镜提示词，说"润色一下第47集场47-1的镜头1提示词"。
    - 安装：解压后把整个文件夹放到 agent skills 目录（含 SKILL.md）。
