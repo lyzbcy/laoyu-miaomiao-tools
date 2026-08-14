@@ -118,6 +118,7 @@ article.json 字段与全部 API 细节见 `references/api-reference.md`；
 | 40009 | 正文图 >1MB | 压缩图片（转 jpg 质量 80）后重试 |
 | 40005 | 图片格式不支持 | 正文图仅 jpg/png |
 | 45009 | 接口日限额 | 次日再试或后台申请提额 |
+| ret=2（err_msg 空） | session 缺 publish scope（深水区直调 operate_appmsg 时） | 用户扫码登录时未触发「账号选择/允许切换」。**解法：退出登录 → 重新扫码 → 手机上选择目标公众号**（微信号绑定多账号时出现选择页；旧版为登录页「允许切换登录我的其他公众号」复选框）。无代码绕法——agent 检测到此错误必须**明确提醒用户重新登录**，不要反复重试参数 |
 
 ## 安全红线
 
@@ -135,6 +136,9 @@ article.json 字段与全部 API 细节见 `references/api-reference.md`；
 2. 复制 `config.example.json` → 同目录 `config.json`，填入 appid/secret，选 publish_method。
    若公众号未认证（选 browser/auto），额外安装浏览器依赖：
    `pip3 install playwright && python3 -m playwright install chromium`。
+   ⚠️ 浏览器扫码登录时，手机上若出现**账号选择页务必选择目标公众号**（旧版为登录页勾选
+   「允许切换登录我的其他公众号、服务号、小程序」复选框）——漏掉这步 session 会缺
+   publish scope，直调接口一律 `ret=2`，且只能重新登录解决。
 3. `token` 子命令验证通过。
 4. 用自带的 `article.example.json` + `body.html` + `cover.png`（skill 目录里有最小样例）
    跑 dry-run → 用户确认 → 真发一篇测试文验证全链路（标题类似"自动发布测试"）。
