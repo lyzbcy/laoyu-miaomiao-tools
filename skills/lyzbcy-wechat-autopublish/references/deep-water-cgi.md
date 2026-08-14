@@ -22,7 +22,30 @@
 2. **scope**：重新扫码登录（手机端选目标账号），session 即带 publish scope
 3. **fingerprint**：开网络录制 → 触发任意后台请求（navigate 列表页即可）→ 从请求里嗅探
 
-## 提交格式（待 scope 就绪后验证）
+## ✅ 2026-08-14 补充：完整发表时序（真机抓包，648+ 请求解密）
+
+个人订阅号后台「发表」= 群发通道（masssend，每日配额 1 次，quota 在 masssendpage 响应
+的 quota_detail_list）。完整时序：
+
+```
+1. GET  /cgi-bin/masssendpage?f=json&preview_appmsgid=<ID>&token=<T>&fingerprint=<FP>
+      ← 返回 operation_seq（如 1786671776_CWr3nCLckqJVS2l4）、mass_send_left、群设置
+2. POST /cgi-bin/masssend?t=ajax-response&for_check=1&is_release_publish_page=1&token=<T>（预检）
+3. POST /cgi-bin/masssend?action=check_same_material（查重）
+4. POST /cgi-bin/masssend?action=get_appmsg_copyright_stat（原创检查 ×N）
+5. POST /cgi-bin/masssend?action=check_ad（广告检查）
+6. GET  /safe/safeqrcode?ticket=<TICKET>&uuid=<UUID>&action=check&service_type=1（扫码验证）
+      · ticket 来自 GET /cgi-bin/safeqrcode?action=getticket（typeid=166，safe_check 组件）
+7. ⭐ POST /cgi-bin/masssend?t=ajax-response&is_release_publish_page=1&token=<T>&lang=zh_CN
+      ← 扫码通过后的最终提交（body 含群发参数，即零扫码重放的目标）
+8. GET  /cgi-bin/check_publish_status?msgid=<MSGID>&publish_type=1&fingerprint=<FP>（轮询终态）
+```
+
+- JS 调用签名（编辑器 bundle 解出）：`POST /cgi-bin/masssend?t=ajax-response&`+token 串，data 为参数对象
+- ⚠️ 本次抓包因缓冲冲刷未留下第 7 步的 body——**重抓时 filter 只填 `masssend`**（窄过滤防冲刷）
+- ret=2(scope) 提醒机制已进 SKILL.md 错误表与首次设置清单
+
+## 提交格式（待 quota 恢复后验证）
 
 ```
 POST /cgi-bin/operate_appmsg?sub=publish&token=<TOKEN>&lang=zh_CN&f=json
