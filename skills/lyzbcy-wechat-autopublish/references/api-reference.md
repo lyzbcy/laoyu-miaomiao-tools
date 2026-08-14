@@ -47,6 +47,8 @@
   "thumb_media_id":"...","need_open_comment":0,"only_fans_can_comment":0}]}
 ```
 - 返回 `{"media_id":"草稿ID"}`；**草稿被发布/群发后即从草稿箱移除（一次性）**。
+- ⚠️ **踩坑（2026-08-14 真机）**：content 里别用 `<code>` 标签！会让微信编辑器加载崩溃
+  （编辑页打开后空白、发表按钮不渲染）。行内代码请用 `<span style="background:#f2f3f5;padding:1px 6px;border-radius:4px;">`。
 - content 白名单清洗：仅内联 `style`，`<style>`/script/iframe 被剥离；
   `<a href>` 仅允许指向公众号图文/小程序，普通外链不可点击。
 
