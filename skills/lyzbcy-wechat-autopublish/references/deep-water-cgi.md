@@ -72,3 +72,48 @@ item_list JSON——他们全试成 ret=2 是因为 scope，参数本身可能�
 - fingerprint/scope 机制随时可能改版
 - 低频（周更）+ 本人 cookie + 常用 IP 是最低风险姿态；高频异态调用是高危
 - 失败退路：编辑页 mass_send 自动点击 + 人工扫码（GitHub 前沿水平）
+
+
+## 🏁 2026-08-14 终局结论（E1-E7 实验矩阵）
+
+用 localStorage 持久化 hook 抓到用户真实提交的完整 body（490B），字节级重放实验证明：
+
+1. **参数模板 100% 正确**（原样重放返回 720002 业务码而非 system error）
+2. **`code`（safe_check 扫码回执）一次性且绑定 appmsgid+operation_seq**：
+   换文章（E6）/复用旧 code（E1）→ 一律 `ret=-1 system error`
+3. `isFreePublish=true` = **不群发的发布**（不推送粉丝、不限次、不占每日配额）
+   ——与"群发"（每日 1 次）是两条独立通路
+4. **结论：个人未认证号的"零扫码"不可达**——微信以 code+seq 双重锁定，
+   每次发表必须管理员扫码确认。这是平台级安全设计，不是参数问题。
+5. 可达的最优自动化：推草稿全自动 → 浏览器自动导航到发表确认 →
+   **人只扫一次码（约 5 秒）** → 自动验证发布结果
+6. 已认证号不受此限（freepublish API 直发，全程零人工）
+
+### 完整提交模板（存档，供认证号迁移/接口变更时参考）
+
+```
+POST /cgi-bin/masssend?t=ajax-response&is_release_publish_page=1&token=<T>&lang=zh_CN
+X-Requested-With: XMLHttpRequest（cookie 为登录态）
+
+token=<T>&lang=zh_CN&f=json&ajax=1&fingerprint=<FP>&random=<0.x>&ack=&code=<扫码回执>
+&reprint_info=&reprint_confirm=0&list=&groupid=&sex=0&country=&province=&city=
+&send_time=0&type=10&share_page=1&synctxweibo=0&operation_seq=<seq>
+&req_id=<32位随机>&req_time=<毫秒>&sync_version=1&isFreePublish=true
+&appmsgid=<草稿id>&isMulti=0&direct_send=1&isNeedCode=true&userType=1
+```
+
+### 通用逆向工具：localStorage 持久 hook（抓任意请求体，抗页面跳转）
+
+```js
+window.__captured=[];
+const of=window.fetch;window.fetch=function(...a){const u=typeof a[0]==='string'?a[0]:(a[0]&&a[0].url)||'';
+if(u.includes('关键词')){window.__captured.push({u,b:a[1]&&a[1].body?String(a[1].body):null,t:Date.now()});
+localStorage.setItem('__cap',JSON.stringify(window.__captured));}return of.apply(this,a);};
+const oo=XMLHttpRequest.prototype.open,os=XMLHttpRequest.prototype.send;
+XMLHttpRequest.prototype.open=function(m,u){this.__u=u;return oo.apply(this,arguments);};
+XMLHttpRequest.prototype.send=function(){if(this.__u&&String(this.__u).includes('关键词')){
+window.__captured.push({u:String(this.__u),b:arguments[0]?String(arguments[0]):null,t:Date.now()});
+localStorage.setItem('__cap',JSON.stringify(window.__captured));}return os.apply(this,arguments);};
+```
+⚠️ 坑：劫持 send 时必须 `os.apply(this, arguments)`（不能用 `apply(this, b)`——b 是字符串会
+TypeError，把页面的保存/提交请求全部弄挂，表象是"保存失败"）。
