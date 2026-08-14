@@ -11,6 +11,23 @@
 > 打开 mp.weixin.qq.com **直接进后台**（无需扫码）；草稿箱、发表按钮均可用下述选择器定位。
 > 以下「实测情报」小节的选择器/URL 均来自该次实测，DOM 改版时以语义步骤为准。
 
+## ⭐ 编辑页自动发表序列（2026-08-14 真机调通，两轮点击法）
+
+未认证号从编辑页到扫码的**全自动序列**（synthetic click 即可，无需 CDP）：
+
+```
+1. el.click() 编辑页 mass_send（button/[class*=mass_send]）
+2. 等 ~3.5s → 点 .weui-desktop-dialog 主按钮（.weui-desktop-btn_primary，文案「发表」）
+3. 页面跳转 reprint_confirm=0（转载确认）→ 「发表」弹窗会自动重新弹出
+4. 再点一次主按钮
+5. ✅ safe_check 扫码弹窗出现（.safe_check / [class*=wxcheck]）→ 停下等人扫码
+6. 人扫码确认后：前端自动提交 + check_publish_status 自动轮询 → 发布完成
+```
+
+- 人工只剩第 6 步的扫码（个人未认证号的平台底线，见 deep-water-cgi.md E1-E7）
+- 监控发布完成：轮询 `appmsgpublish?sub=list` 的 publish_count 递增
+- ⚠️ 若页面跳转导致 hook 丢失，用 localStorage 持久化版（见 deep-water-cgi.md）
+
 ## 实测情报（选择器与 URL，2026-08-14 核对）
 
 | 目标 | 定位方式 |
