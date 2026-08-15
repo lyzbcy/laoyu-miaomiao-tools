@@ -14,7 +14,7 @@
 | 🎯 `lyzbcy-最后的1%` | 极限执行元 skill，把任务做到真正完美才停手 | [Releases](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases) |
 | 🎬 `lyzbcy-视频生成提示词润色` | AI 视频分镜提示词做减法，只留镜头语言 | [Releases](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases) |
 | 📣 `lyzbcy-wechat-autopublish` | 微信公众号全自动运营：发布环节零人工，三层降级 + cron + 发布前确认 | [Releases](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases) |
-| 🧪 `lyzbcy-glm53-zcode-eval` | 在受控虚拟环境或隔离工作区中评测 GLM-5.3 在 ZCode 里的指令遵循、工具路由、状态连续、工件验证和回滚能力 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.5.0/lyzbcy-glm53-zcode-eval.zip) |
+| 🧪 `lyzbcy-glm53-zcode-eval` | 默认关闭；可能让通用任务表现更保守或不灵活，只有用户明确说“请使用 LYZBCY 虚拟环境测试”才能启用 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.5.1/lyzbcy-glm53-zcode-eval.zip) |
 
 详细介绍、用法、适用场景见介绍页或各 skill 目录下的 `SKILL.md`。
 

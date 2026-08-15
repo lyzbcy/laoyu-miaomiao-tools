@@ -458,6 +458,24 @@ class PromptContractTests(unittest.TestCase):
 
 
 class PackagingTests(unittest.TestCase):
+    def test_skill_requires_explicit_activation_phrase(self):
+        skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        for phrase in [
+            "请使用 LYZBCY 虚拟环境测试",
+            "没有有效口令时，立即停止",
+            "不得运行任何测试、安装器或配置命令",
+            "引用或讨论口令不算授权",
+            "授权只适用于当前任务",
+        ]:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, skill)
+
+    def test_skill_disables_implicit_invocation(self):
+        metadata = (ROOT / "agents" / "openai.yaml").read_text(encoding="utf-8")
+        self.assertIn("policy:\n  allow_implicit_invocation: false", metadata)
+        self.assertIn("$lyzbcy-glm53-zcode-eval", metadata)
+        self.assertNotIn("请使用 LYZBCY 虚拟环境测试", metadata)
+
     def test_launchers_reference_shared_python_script(self):
         command = (ROOT / "install.command").read_text(encoding="utf-8")
         batch = (ROOT / "install.bat").read_text(encoding="utf-8")

@@ -1,4 +1,7 @@
 interface:
   display_name: "GLM-5.3 ZCode 隔离评测"
-  short_description: "受控隔离环境中的 ZCode 指令与工具调用回归评测"
-  default_prompt: "Use $lyzbcy-glm53-zcode-eval to run an isolated GLM-5.3 ZCode regression evaluation."
+  short_description: "需用户明确同意的 ZCode 指令与工具调用隔离评测"
+  default_prompt: "Use $lyzbcy-glm53-zcode-eval to explain the explicit-consent requirement and ask before activating; do not run the evaluation yet."
+
+policy:
+  allow_implicit_invocation: false

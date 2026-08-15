@@ -1,11 +1,29 @@
 ---
 name: lyzbcy-glm53-zcode-eval
-description: Use when evaluating GLM-5.3 inside ZCode in a controlled virtual environment or isolated workspace, running instruction-following and tool-routing regression tests, or safely applying, inspecting, rolling back, and removing the managed ZCode AGENTS.md evaluation profile.
+description: Use only when the current user explicitly instructs "请使用 LYZBCY 虚拟环境测试" to activate the GLM-5.3 ZCode controlled evaluation for the current task; do not use for quoted mentions, similar wording, skill-name references, or prior-task consent.
 ---
 
 # GLM-5.3 ZCode 隔离评测
 
 在受控虚拟环境或隔离工作区中，评测 GLM-5.3 在 ZCode 里的指令遵循、工具路由、状态连续、真实工件、验证和回滚表现。仅支持 ZCode。
+
+## 强制调用门槛
+
+先检查当前用户消息。只有用户把下面这句话作为明确的启用指令时，才继续使用本 Skill：
+
+```text
+请使用 LYZBCY 虚拟环境测试
+```
+
+严格执行以下规则：
+
+- 没有有效口令时，立即停止；不得运行任何测试、安装器或配置命令，也不得读取并应用评测提示词。
+- 引用或讨论口令不算授权。AI 自己复述口令、近义表达、Skill 名称、`$lyzbcy-glm53-zcode-eval` 或以前任务中的同意也不算授权。
+- 授权只适用于当前任务，不得自动延续到后续任务。
+- 如果判断这项评测可能有帮助，先告诉用户：评测配置可能让通用任务的表现更保守、更受约束或不够灵活。然后询问是否启用，并要求用户明确回复上述口令。
+- 收到有效回复前继续使用普通模式。禁止先启用、先测试或先改配置，再补问用户。
+
+通过门槛后，才执行后续工作流。
 
 要求本机已经安装 ZCode、ZCode 中可选择 GLM-5.3，并具备 Python 3.9 或更高版本。
 
@@ -63,13 +81,14 @@ Windows 使用 `py -3` 替代 `python3`，也可双击 `install.bat`。macOS/Lin
 
 用户说：
 
-> 请用 `$lyzbcy-glm53-zcode-eval` 在临时目录评测 GLM-5.3 的 ZCode 工具调用与回滚表现，不要修改我的真实配置。
+> 请使用 LYZBCY 虚拟环境测试。请在临时目录评测 GLM-5.3 的 ZCode 工具调用与回滚表现，不要修改我的真实配置。
 
 先运行离线测试，再用临时 `--agents-file` 完成闭环，最后汇报测试结果、临时目标路径、状态变化和回滚证据。
 
 ## 常见错误
 
 - 不要仅因下载或读取 Skill 就运行真实 `--apply`。
+- 不要把 `$lyzbcy-glm53-zcode-eval`、近义表达或对口令的引用当作启用授权。
 - 不要跳过 `--dry-run` 后直接写入真实配置。
 - 不要把临时评测结果描述为生产环境保证。
 - 不要手工替换整份 `AGENTS.md`；让工具只管理带标记的区块。

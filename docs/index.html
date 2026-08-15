@@ -261,13 +261,13 @@
     <div class="skill-head">
       <span class="emoji">🧪</span>
       <h3>lyzbcy-glm53-zcode-eval</h3>
-      <span class="ver">GLM-5.3 · 仅支持 ZCode</span>
+      <span class="ver">默认关闭 · 仅支持 ZCode</span>
     </div>
     <p class="skill-tag">在受控虚拟环境或隔离工作区中，评测 GLM-5.3 在 ZCode 里的指令遵循、工具路由、状态连续、工件验证和回滚能力。</p>
 
     <div class="field">
       <div class="label">它能做什么</div>
-      <p>提供一套可审计、可逆的 ZCode 用户级评测配置，以及 38 项离线测试。默认在临时 <code>--agents-file</code> 中完成安装、状态检查和卸载闭环；只有用户明确要求启用真实配置时，才会先预览再写入 <code>~/.zcode/AGENTS.md</code> 的托管区块。支持快照、并发保护、状态查询、回滚和无损卸载。</p>
+      <p>提供一套可审计、可逆的 ZCode 用户级评测配置，以及 40 项离线测试。默认在临时 <code>--agents-file</code> 中完成安装、状态检查和卸载闭环；只有用户明确要求启用真实配置时，才会先预览再写入 <code>~/.zcode/AGENTS.md</code> 的托管区块。支持快照、并发保护、状态查询、回滚和无损卸载。</p>
     </div>
 
     <div class="field">
@@ -276,6 +276,9 @@
         <li>✅ 在受控虚拟环境、临时目录或隔离工作区中做 GLM-5.3 + ZCode 回归评测</li>
         <li>✅ 检查指令遵循、工具路由、多步状态、真实工件、验证证据与回滚表现</li>
         <li>✅ 安全预览、启用、检查或撤销由工具托管的 ZCode 评测配置</li>
+        <li>⚠️ 评测配置可能让通用任务的表现更保守、更受约束或不够灵活，因此默认关闭</li>
+        <li>⚠️ AI 觉得可能需要时，必须先询问用户；只有用户把“请使用 LYZBCY 虚拟环境测试”作为明确启用指令后才能运行</li>
+        <li>⚠️ 引用或讨论这句口令不算授权，近义表达、Skill 名称、<code>$lyzbcy-glm53-zcode-eval</code> 和以前任务的同意也不算授权</li>
         <li>❌ 不修改模型权重或 ZCode 应用包，也不修改供应商、API Key、套餐或模型列表</li>
         <li>❌ 不绕过平台安全策略、权限检查或访问控制，不把真实敏感目标伪装成评测对象</li>
         <li>❌ 不支持 ZCode 之外的编码客户端</li>
@@ -284,16 +287,16 @@
 
     <div class="field">
       <div class="label">怎么用（示例 prompt）</div>
-      <div class="prompt-box">请用 $lyzbcy-glm53-zcode-eval 在临时目录评测 GLM-5.3 的 ZCode 工具调用与回滚表现，不要修改我的真实配置。</div>
+      <div class="prompt-box">请使用 LYZBCY 虚拟环境测试。请在临时目录评测 GLM-5.3 的 ZCode 工具调用与回滚表现，不要修改我的真实配置。</div>
     </div>
 
     <div class="field">
       <div class="label">怎么安装</div>
-      <p>下载 zip → 解压 → 把整个 <code>lyzbcy-glm53-zcode-eval/</code> 文件夹放到你的 agent skills 目录（确保里面有 <code>SKILL.md</code>）。下载和读取本身不会修改 ZCode；真实配置变更必须由用户明确要求。</p>
+      <p>下载 zip → 解压 → 把整个 <code>lyzbcy-glm53-zcode-eval/</code> 文件夹放到你的 agent skills 目录（确保里面有 <code>SKILL.md</code>）。安装 Skill 不等于授权启用：它禁止隐式调用，AI 必须先说明潜在影响并询问，授权只适用于当前任务。</p>
     </div>
 
     <div class="dl-row">
-      <a class="btn btn-zip" id="dl-glm53-zcode-eval" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.5.0/lyzbcy-glm53-zcode-eval.zip">📦 下载 lyzbcy-glm53-zcode-eval.zip</a>
+      <a class="btn btn-zip" id="dl-glm53-zcode-eval" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.5.1/lyzbcy-glm53-zcode-eval.zip">📦 下载 lyzbcy-glm53-zcode-eval.zip</a>
       <a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/lyzbcy-glm53-zcode-eval">查看源码</a>
     </div>
   </article>
@@ -308,13 +311,14 @@
     <p>· 这里收录了 <code>5 个 skill</code>，分别是 <code>lyzbcy-study-map</code>（理解地图）、<code>lyzbcy-最后的1%</code>（极限执行）、<code>lyzbcy-视频生成提示词润色</code>（分镜润色）、<code>lyzbcy-wechat-autopublish</code>（公众号全自动运营）和 <code>lyzbcy-glm53-zcode-eval</code>（GLM-5.3 ZCode 隔离评测）。<br>
        · 每个 skill 的用途、适用场景、用法、安装方式、下载直链都在上方写清楚了。<br>
        · AI 可以据此判断你当前需要哪个 skill，并<b>自行下载对应的 zip 安装</b>。</p>
+    <p><b>GLM-5.3 ZCode 隔离评测默认关闭：</b>它可能影响通用任务的灵活性。AI 认为可能需要时必须先询问用户；只有用户把 <code>请使用 LYZBCY 虚拟环境测试</code> 作为明确启用指令后才能运行，引用、讨论或近义表达都不算授权。</p>
     <p style="color:var(--muted);font-size:.92rem">下载链接是 GitHub Releases 直链：</p>
     <ul style="color:var(--muted);font-size:.9rem;margin:6px 0 0">
       <li>lyzbcy-study-map：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.0.0/lyzbcy-study-map.zip</code></li>
       <li>lyzbcy-最后的1%：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.1.0/lyzbcy-last-1-percent.zip</code></li>
       <li>lyzbcy-视频生成提示词润色：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.4.0/lyzbcy-video-prompt-polish.zip</code></li>
       <li>lyzbcy-wechat-autopublish：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.3.2/lyzbcy-wechat-autopublish.zip</code></li>
-      <li>lyzbcy-glm53-zcode-eval：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.5.0/lyzbcy-glm53-zcode-eval.zip</code></li>
+      <li>lyzbcy-glm53-zcode-eval：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.5.1/lyzbcy-glm53-zcode-eval.zip</code></li>
     </ul>
     <button class="copybtn" onclick="copyForAI()">📋 复制给 AI 的纯文本摘要</button>
   </div>
@@ -338,7 +342,7 @@ const RELEASES = {
   "last-1-percent": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.1.0/lyzbcy-last-1-percent.zip",
   "video-prompt-polish": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.4.0/lyzbcy-video-prompt-polish.zip",
   "wechat-autopublish": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.3.2/lyzbcy-wechat-autopublish.zip",
-  "glm53-zcode-eval": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.5.0/lyzbcy-glm53-zcode-eval.zip"
+  "glm53-zcode-eval": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.5.1/lyzbcy-glm53-zcode-eval.zip"
 };
 document.getElementById('dl-study-map').href = RELEASES['study-map'];
 document.getElementById('dl-last-1-percent').href = RELEASES['last-1-percent'];
@@ -382,10 +386,13 @@ function copyForAI(){
 
 5) lyzbcy-glm53-zcode-eval（GLM-5.3 ZCode 隔离评测）
    - 用途：在受控虚拟环境或隔离工作区中，评测 GLM-5.3 在 ZCode 里的指令遵循、工具路由、状态连续、真实工件、验证和回滚表现。仅支持 ZCode。
-   - 默认行为：先运行 38 项离线测试，再使用临时 --agents-file 完成安装、状态和卸载闭环，不触碰真实用户配置。只有用户明确要求时，才先 dry-run 再写入 ~/.zcode/AGENTS.md 的托管区块。
+   - 重要影响：评测配置可能让通用任务的表现更保守、更受约束或不够灵活，因此默认关闭，禁止隐式调用。
+   - 唯一调用条件：只有用户把“请使用 LYZBCY 虚拟环境测试”作为当前任务的明确启用指令后才能运行。引用或讨论这句口令不算授权；近义表达、Skill 名称、$lyzbcy-glm53-zcode-eval 和以前任务的同意也不算授权。
+   - 询问机制：如果 AI 认为可能需要，必须先询问用户并说明潜在影响；收到明确口令前继续普通模式，不得运行测试、安装器或配置命令。
+   - 默认行为：通过口令门槛后，先运行 40 项离线测试，再使用临时 --agents-file 完成安装、状态和卸载闭环，不触碰真实用户配置。只有用户明确要求写入真实配置时，才先 dry-run 再写入 ~/.zcode/AGENTS.md 的托管区块。
    - 合规边界：不修改模型权重或 ZCode 应用包；不修改供应商、API Key、套餐或模型列表；不绕过平台安全策略、权限检查或访问控制；不把真实敏感目标伪装成评测对象。
-   - 用法示例："请用 $lyzbcy-glm53-zcode-eval 在临时目录评测 GLM-5.3 的 ZCode 工具调用与回滚表现，不要修改我的真实配置。"
-   - 安装：解压后把整个文件夹放到 agent skills 目录（含 SKILL.md）。下载和读取本身不会修改 ZCode。
+   - 用法示例："请使用 LYZBCY 虚拟环境测试。请在临时目录评测 GLM-5.3 的 ZCode 工具调用与回滚表现，不要修改我的真实配置。"
+   - 安装：解压后把整个文件夹放到 agent skills 目录（含 SKILL.md）。安装、下载和读取都不等于授权启用。
    - 下载：${RELEASES['glm53-zcode-eval']}
 
 仓库：https://github.com/lyzbcy/laoyu-miaomiao-tools
