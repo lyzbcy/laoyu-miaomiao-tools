@@ -87,7 +87,7 @@
 
 <!-- SKILLS -->
 <section id="skills">
-  <h2><span class="num">02</span> 收录的 Skills（4 个）</h2>
+  <h2><span class="num">02</span> 收录的 Skills（5 个）</h2>
   <p class="lede">下面每个 skill 都写了：它是干嘛的、适合什么场景、怎么用、怎么装、在哪下载。</p>
 
   <!-- SKILL 1: study-map -->
@@ -255,6 +255,48 @@
       <a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/lyzbcy-wechat-autopublish">查看源码</a>
     </div>
   </article>
+
+  <!-- SKILL 5: GLM-5.3 ZCode 隔离评测 -->
+  <article class="skill" id="glm53-zcode-eval">
+    <div class="skill-head">
+      <span class="emoji">🧪</span>
+      <h3>lyzbcy-glm53-zcode-eval</h3>
+      <span class="ver">GLM-5.3 · 仅支持 ZCode</span>
+    </div>
+    <p class="skill-tag">在受控虚拟环境或隔离工作区中，评测 GLM-5.3 在 ZCode 里的指令遵循、工具路由、状态连续、工件验证和回滚能力。</p>
+
+    <div class="field">
+      <div class="label">它能做什么</div>
+      <p>提供一套可审计、可逆的 ZCode 用户级评测配置，以及 38 项离线测试。默认在临时 <code>--agents-file</code> 中完成安装、状态检查和卸载闭环；只有用户明确要求启用真实配置时，才会先预览再写入 <code>~/.zcode/AGENTS.md</code> 的托管区块。支持快照、并发保护、状态查询、回滚和无损卸载。</p>
+    </div>
+
+    <div class="field">
+      <div class="label">适合 / 不适合</div>
+      <ul>
+        <li>✅ 在受控虚拟环境、临时目录或隔离工作区中做 GLM-5.3 + ZCode 回归评测</li>
+        <li>✅ 检查指令遵循、工具路由、多步状态、真实工件、验证证据与回滚表现</li>
+        <li>✅ 安全预览、启用、检查或撤销由工具托管的 ZCode 评测配置</li>
+        <li>❌ 不修改模型权重或 ZCode 应用包，也不修改供应商、API Key、套餐或模型列表</li>
+        <li>❌ 不绕过平台安全策略、权限检查或访问控制，不把真实敏感目标伪装成评测对象</li>
+        <li>❌ 不支持 ZCode 之外的编码客户端</li>
+      </ul>
+    </div>
+
+    <div class="field">
+      <div class="label">怎么用（示例 prompt）</div>
+      <div class="prompt-box">请用 $lyzbcy-glm53-zcode-eval 在临时目录评测 GLM-5.3 的 ZCode 工具调用与回滚表现，不要修改我的真实配置。</div>
+    </div>
+
+    <div class="field">
+      <div class="label">怎么安装</div>
+      <p>下载 zip → 解压 → 把整个 <code>lyzbcy-glm53-zcode-eval/</code> 文件夹放到你的 agent skills 目录（确保里面有 <code>SKILL.md</code>）。下载和读取本身不会修改 ZCode；真实配置变更必须由用户明确要求。</p>
+    </div>
+
+    <div class="dl-row">
+      <a class="btn btn-zip" id="dl-glm53-zcode-eval" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.5.0/lyzbcy-glm53-zcode-eval.zip">📦 下载 lyzbcy-glm53-zcode-eval.zip</a>
+      <a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/lyzbcy-glm53-zcode-eval">查看源码</a>
+    </div>
+  </article>
 </section>
 
 <!-- AI 友好 -->
@@ -263,7 +305,7 @@
   <div class="ai-block">
     <h3>这整页可以直接发给 AI</h3>
     <p>本页是<b>语义化、对 AI 友好</b>的介绍页。你可以直接把这一整页（或它的链接）发给你的 AI 助手，AI 就能读懂：</p>
-    <p>· 这里收录了 <code>4 个 skill</code>，分别是 <code>lyzbcy-study-map</code>（理解地图）、<code>lyzbcy-最后的1%</code>（极限执行）、<code>lyzbcy-视频生成提示词润色</code>（分镜润色）和 <code>lyzbcy-wechat-autopublish</code>（公众号全自动运营）。<br>
+    <p>· 这里收录了 <code>5 个 skill</code>，分别是 <code>lyzbcy-study-map</code>（理解地图）、<code>lyzbcy-最后的1%</code>（极限执行）、<code>lyzbcy-视频生成提示词润色</code>（分镜润色）、<code>lyzbcy-wechat-autopublish</code>（公众号全自动运营）和 <code>lyzbcy-glm53-zcode-eval</code>（GLM-5.3 ZCode 隔离评测）。<br>
        · 每个 skill 的用途、适用场景、用法、安装方式、下载直链都在上方写清楚了。<br>
        · AI 可以据此判断你当前需要哪个 skill，并<b>自行下载对应的 zip 安装</b>。</p>
     <p style="color:var(--muted);font-size:.92rem">下载链接是 GitHub Releases 直链：</p>
@@ -272,6 +314,7 @@
       <li>lyzbcy-最后的1%：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.1.0/lyzbcy-last-1-percent.zip</code></li>
       <li>lyzbcy-视频生成提示词润色：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.4.0/lyzbcy-video-prompt-polish.zip</code></li>
       <li>lyzbcy-wechat-autopublish：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.3.2/lyzbcy-wechat-autopublish.zip</code></li>
+      <li>lyzbcy-glm53-zcode-eval：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.5.0/lyzbcy-glm53-zcode-eval.zip</code></li>
     </ul>
     <button class="copybtn" onclick="copyForAI()">📋 复制给 AI 的纯文本摘要</button>
   </div>
@@ -294,18 +337,20 @@ const RELEASES = {
   "study-map": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.0.0/lyzbcy-study-map.zip",
   "last-1-percent": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.1.0/lyzbcy-last-1-percent.zip",
   "video-prompt-polish": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.4.0/lyzbcy-video-prompt-polish.zip",
-  "wechat-autopublish": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.3.2/lyzbcy-wechat-autopublish.zip"
+  "wechat-autopublish": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.3.2/lyzbcy-wechat-autopublish.zip",
+  "glm53-zcode-eval": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.5.0/lyzbcy-glm53-zcode-eval.zip"
 };
 document.getElementById('dl-study-map').href = RELEASES['study-map'];
 document.getElementById('dl-last-1-percent').href = RELEASES['last-1-percent'];
 document.getElementById('dl-video-prompt-polish').href = RELEASES['video-prompt-polish'];
 document.getElementById('dl-wechat-autopublish').href = RELEASES['wechat-autopublish'];
+document.getElementById('dl-glm53-zcode-eval').href = RELEASES['glm53-zcode-eval'];
 
 // 复制给 AI 的纯文本摘要
 function copyForAI(){
   const txt = `【捞鱼妙妙工具 · Agent Skills 收录站】
 
-这里收录捞鱼（lyzbcy）的个人 Agent Skills，每个 skill 独立打包，按需下载。共 4 个 skill：
+这里收录捞鱼（lyzbcy）的个人 Agent Skills，每个 skill 独立打包，按需下载。共 5 个 skill：
 
 1) lyzbcy-study-map（理解地图生成器）
    - 用途：把技术长文/访谈/论文/跨学科材料，生成有原文依据、能追问、能复述的交互式 HTML 理解地图；也适用于课程复习提纲、历年真题、计算题手把手演示。
@@ -334,6 +379,14 @@ function copyForAI(){
    - 用法示例："帮我设置每周六早上10点自动发一篇本周AI学习总结到公众号，读我的日报目录整理，脱敏后先给我确认再发。"
    - 安装：解压后把整个文件夹放到 agent skills 目录（含 SKILL.md），按 SKILL.md 首次设置清单配置 config.json。
    - 下载：${RELEASES['wechat-autopublish']}
+
+5) lyzbcy-glm53-zcode-eval（GLM-5.3 ZCode 隔离评测）
+   - 用途：在受控虚拟环境或隔离工作区中，评测 GLM-5.3 在 ZCode 里的指令遵循、工具路由、状态连续、真实工件、验证和回滚表现。仅支持 ZCode。
+   - 默认行为：先运行 38 项离线测试，再使用临时 --agents-file 完成安装、状态和卸载闭环，不触碰真实用户配置。只有用户明确要求时，才先 dry-run 再写入 ~/.zcode/AGENTS.md 的托管区块。
+   - 合规边界：不修改模型权重或 ZCode 应用包；不修改供应商、API Key、套餐或模型列表；不绕过平台安全策略、权限检查或访问控制；不把真实敏感目标伪装成评测对象。
+   - 用法示例："请用 $lyzbcy-glm53-zcode-eval 在临时目录评测 GLM-5.3 的 ZCode 工具调用与回滚表现，不要修改我的真实配置。"
+   - 安装：解压后把整个文件夹放到 agent skills 目录（含 SKILL.md）。下载和读取本身不会修改 ZCode。
+   - 下载：${RELEASES['glm53-zcode-eval']}
 
 仓库：https://github.com/lyzbcy/laoyu-miaomiao-tools
 介绍页：https://lyzbcy.github.io/laoyu-miaomiao-tools/`;
