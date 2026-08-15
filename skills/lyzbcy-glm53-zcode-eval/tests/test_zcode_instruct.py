@@ -477,8 +477,8 @@ class PackagingTests(unittest.TestCase):
         self.assertTrue(os.access(ROOT / "install.command", os.X_OK))
         self.assertTrue(os.access(ROOT / "zcode-instruct.py", os.X_OK))
 
-    def test_readme_documents_all_lifecycle_commands(self):
-        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    def test_skill_documents_all_lifecycle_commands(self):
+        skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
         for phrase in [
             "GLM-5.3",
             "ZCode",
@@ -490,7 +490,7 @@ class PackagingTests(unittest.TestCase):
             "Python 3.9",
         ]:
             with self.subTest(phrase=phrase):
-                self.assertIn(phrase, readme)
+                self.assertIn(phrase, skill)
 
     def test_version_matches_installer_default(self):
         version = (ROOT / "VERSION").read_text(encoding="utf-8").strip()

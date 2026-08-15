@@ -7,6 +7,8 @@ description: Use when evaluating GLM-5.3 inside ZCode in a controlled virtual en
 
 在受控虚拟环境或隔离工作区中，评测 GLM-5.3 在 ZCode 里的指令遵循、工具路由、状态连续、真实工件、验证和回滚表现。仅支持 ZCode。
 
+要求本机已经安装 ZCode、ZCode 中可选择 GLM-5.3，并具备 Python 3.9 或更高版本。
+
 ## 安全边界
 
 - 默认使用临时 `--agents-file` 执行评测，不触碰真实用户配置。
