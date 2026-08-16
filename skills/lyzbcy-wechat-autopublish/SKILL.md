@@ -27,6 +27,7 @@ description: 全自动运营微信公众号。当用户提到公众号自动发�
 | **A：纯 API** | stable_token → uploadimg/add_material → draft/add → freepublish/submit → get 轮询 | **已认证**公众号（个人主体/未认证号无权限） | `scripts/wechat_api.py publish` |
 | **B：浏览器** | API 只推草稿（`--draft-only`）→ 浏览器自动化进草稿箱点"发表" | 未认证账号 | `references/browser-playbook.md` |
 | **C：人工兜底** | API 只推草稿 → 通知用户手动点发表 | A、B 都失败 | 绝不静默失败，明确告知卡点 |
+| **D：iPhone 镜像** ⭐ | 手机端管理员通道（天然免扫码）+ macOS 镜像坐标点击 | 任何号（含未认证）| `scripts/publish_iphone.py`，见 `references/iphone-mirroring.md` |
 
 判定：config.json 的 `publish_method` = `api` / `browser` / `auto`（默认，先 A 遇 48001 降 B）。
 

@@ -1,0 +1,26 @@
+{
+  "_说明": "iPhone 镜像发文的相对坐标表（相对镜像窗口，0-1 比例，窗口位置变化不影响）。2026-08-16 真机校准，13 步全命中。校准环境：iPhone 镜像窗口 + iOS 微信 + 公众号手机端。微信改版后需重新校准（找有视觉的 AI）。",
+  "_校准条件": "iPhone 主屏幕为初始态；镜像窗口 bounds 运行时动态获取",
+  "anchors": {
+    "search_pill":      {"x": 0.50,  "y": 0.842, "desc": "主屏 Spotlight 搜索胶囊（Dock 上方）"},
+    "first_result":     {"x": 0.402, "y": 0.214, "desc": "Spotlight 第一个结果（微信 App）"},
+    "wechat_search":    {"x": 0.902, "y": 0.064, "desc": "微信右上角搜索放大镜"},
+    "mp_result":        {"x": 0.449, "y": 0.217, "desc": "公众号搜索结果第一项"},
+    "publish_entry":    {"x": 0.770, "y": 0.836, "desc": "公众号资料页底部「发文章」"},
+    "title_field":      {"x": 0.402, "y": 0.150, "desc": "编辑器标题输入区"},
+    "body_field":       {"x": 0.402, "y": 0.357, "desc": "编辑器正文输入区"},
+    "done_btn":         {"x": 0.909, "y": 0.064, "desc": "编辑器右上角「完成」"},
+    "publish_submit":   {"x": 0.402, "y": 0.920, "desc": "预览页底部「发表」大按钮"},
+    "confirm_ok":       {"x": 0.581, "y": 0.556, "desc": "确认弹窗「确定」（右侧按钮）"},
+    "know_it":          {"x": 0.500, "y": 0.675, "desc": "「已加入发表队列」提示的「知道了」"}
+  },
+  "timings_seconds": {
+    "after_search_pill": 1.5, "after_paste": 2.0, "after_open_app": 3.0,
+    "after_click_result": 3.0, "editor_ready": 3.5, "after_done": 3.0,
+    "after_submit": 4.0
+  },
+  "search_terms": {
+    "app": "微信",
+    "official_account": "捞鱼的博客"
+  }
+}
