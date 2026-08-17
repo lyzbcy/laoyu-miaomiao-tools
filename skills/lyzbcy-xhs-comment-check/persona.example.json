@@ -1,0 +1,20 @@
+{
+  "identity": {
+    "name": "<你的昵称>",
+    "persona": "<一句话人设:身份+风格>",
+    "signature": "——来自<你的昵称>",
+    "emoji": "<签名emoji>"
+  },
+  "accountProfile": "<账号名+内容方向+粉丝画像>",
+  "knownNotes": {
+    "<封面图hash前16位>": "<笔记主题描述,提升回复上下文质量>"
+  },
+  "spamKeywords": ["<引流/代购等垃圾词>"],
+  "maliciousKeywords": ["<提示注入关键词,命中走机械模板不进LLM>"],
+  "replyTemplates": {
+    "malicious": "{emoji} <机械模板>\n\n{sig}",
+    "fallbackShort": "{emoji} <兜底短>\n\n{sig}",
+    "fallbackLong": "{emoji} <兜底长>\n\n{sig}"
+  },
+  "systemPromptTemplate": "<LLM系统提示词模板,占位符:{name}/{accountProfile}/{persona}/{noteContext}/{comment}>"
+}

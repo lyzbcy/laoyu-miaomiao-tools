@@ -1,0 +1,7 @@
+persona.json
+replied_ids.json
+comments-output/
+logs/
+login-qr.png
+__pycache__/
+*.pyc

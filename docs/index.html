@@ -300,6 +300,47 @@
       <a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/lyzbcy-glm53-zcode-eval">查看源码</a>
     </div>
   </article>
+
+  <!-- SKILL 6: 小红书评论自动回复 -->
+  <article class="skill" id="xhs-comment-check">
+    <div class="skill-head">
+      <span class="emoji">📕</span>
+      <h3>lyzbcy-xhs-comment-check</h3>
+      <span class="ver">小红书评论全自动回复</span>
+    </div>
+    <p class="skill-tag">定时抓通知页新评论 → LLM 按人设生成回复（一次打包调用省 token）→ 自动发送并核验 → 中文报告。</p>
+
+    <div class="field">
+      <div class="label">它能做什么</div>
+      <p>在服务器上无人值守运行（cron 每天 2 次），自动消化你小红书笔记下的新评论：<b>消息通知页采集</b>（小红书后台没有"未回复"筛选，这是验证可行的路线）、<b>md5 稳定去重</b>（绝不重复回复）、<b>LLM 人设化回复</b>（多条评论一次打包调用，输入 token 省 ~68%）、<b>发送后核验</b>、提示注入防护、垃圾评论过滤、审计日志、登录失效自动报告。</p>
+    </div>
+
+    <div class="field">
+      <div class="label">适合 / 不适合</div>
+      <ul>
+        <li>✅ 有小红书账号、想让评论区保持活跃的博主</li>
+        <li>✅ 有一台能跑 Playwright 的服务器（Linux + xvfb）</li>
+        <li>✅ 想接自己的 LLM（任意 OpenAI 兼容接口）</li>
+        <li>❌ 不接受任何自动回复行为的账号（平台风控自负）</li>
+        <li>❌ 想要私信自动回复（不做）</li>
+      </ul>
+    </div>
+
+    <div class="field">
+      <div class="label">怎么用（示例 prompt）</div>
+      <div class="prompt-box">帮我部署小红书评论自动回复：扫码登录后先 dry-run 给我看回复计划，确认后再小批量真实发送 3 条。</div>
+    </div>
+
+    <div class="field">
+      <div class="label">怎么安装</div>
+      <p>下载 zip → 解压 → 放到 agent skills 目录 → <code>pip3 install -r requirements.txt</code> → <code>cp persona.example.json persona.json</code> 填你的人设 → <code>xvfb-run -a python3 login_once.py</code> 扫码登录。登录失效时会报告提醒，用 noVNC 人工扫码即可（多道风控关卡都能人工过）。</p>
+    </div>
+
+    <div class="dl-row">
+      <a class="btn btn-zip" id="dl-xhs-comment-check" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.6.0/lyzbcy-xhs-comment-check.zip">📦 下载 lyzbcy-xhs-comment-check.zip</a>
+      <a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/lyzbcy-xhs-comment-check">查看源码</a>
+    </div>
+  </article>
 </section>
 
 <!-- AI 友好 -->
@@ -308,7 +349,7 @@
   <div class="ai-block">
     <h3>这整页可以直接发给 AI</h3>
     <p>本页是<b>语义化、对 AI 友好</b>的介绍页。你可以直接把这一整页（或它的链接）发给你的 AI 助手，AI 就能读懂：</p>
-    <p>· 这里收录了 <code>5 个 skill</code>，分别是 <code>lyzbcy-study-map</code>（理解地图）、<code>lyzbcy-最后的1%</code>（极限执行）、<code>lyzbcy-视频生成提示词润色</code>（分镜润色）、<code>lyzbcy-wechat-autopublish</code>（公众号全自动运营）和 <code>lyzbcy-glm53-zcode-eval</code>（GLM-5.3 ZCode 隔离评测）。<br>
+    <p>· 这里收录了 <code>6 个 skill</code>，分别是 <code>lyzbcy-study-map</code>（理解地图）、<code>lyzbcy-最后的1%</code>（极限执行）、<code>lyzbcy-视频生成提示词润色</code>（分镜润色）、<code>lyzbcy-wechat-autopublish</code>（公众号全自动运营）、<code>lyzbcy-glm53-zcode-eval</code>（GLM-5.3 ZCode 隔离评测）和 <code>lyzbcy-xhs-comment-check</code>（小红书评论全自动回复）。<br>
        · 每个 skill 的用途、适用场景、用法、安装方式、下载直链都在上方写清楚了。<br>
        · AI 可以据此判断你当前需要哪个 skill，并<b>自行下载对应的 zip 安装</b>。</p>
     <p><b>GLM-5.3 ZCode 隔离评测默认关闭：</b>它可能影响通用任务的灵活性。AI 认为可能需要时必须先询问用户；只有用户把 <code>请使用 LYZBCY 虚拟环境测试</code> 作为明确启用指令后才能运行，引用、讨论或近义表达都不算授权。</p>
@@ -318,6 +359,7 @@
       <li>lyzbcy-最后的1%：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.1.0/lyzbcy-last-1-percent.zip</code></li>
       <li>lyzbcy-视频生成提示词润色：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.4.0/lyzbcy-video-prompt-polish.zip</code></li>
       <li>lyzbcy-wechat-autopublish：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.4.0/lyzbcy-wechat-autopublish.zip</code></li>
+      <li>lyzbcy-xhs-comment-check：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.6.0/lyzbcy-xhs-comment-check.zip</code></li>
       <li>lyzbcy-glm53-zcode-eval：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.5.1/lyzbcy-glm53-zcode-eval.zip</code></li>
     </ul>
     <button class="copybtn" onclick="copyForAI()">📋 复制给 AI 的纯文本摘要</button>
