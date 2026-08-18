@@ -475,8 +475,13 @@ function copyForAI(){
     el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash');
     setTimeout(function(){ el.focus({ preventScroll: true }); }, 400);
   }
-  var initial = resolve(location.hash);
-  if (initial) focusSkill(initial);
+  function start(){
+    var initial = resolve(location.hash);
+    if (initial) focusSkill(initial);
+  }
+  // 等浏览器完成原生锚点滚动后再定位，避免 smooth scroll 被 load 时的滚动重置打断
+  if (document.readyState === 'complete') setTimeout(start, 0);
+  else window.addEventListener('load', function(){ setTimeout(start, 50); });
   window.addEventListener('hashchange', function(){ focusSkill(resolve(location.hash)); });
 
   // 每张卡片生成「复制直达链接」按钮
