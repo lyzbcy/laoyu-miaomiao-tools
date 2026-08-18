@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>跳转中… · 捞鱼妙妙工具</title>
+<script>
+// 路径式直达链接兜底：/laoyu-miaomiao-tools/<工具名> → /laoyu-miaomiao-tools/#<工具名>
+(function(){
+  var base = '/laoyu-miaomiao-tools/';
+  var p = location.pathname;
+  var seg = p.slice(p.lastIndexOf('/') + 1).replace(/\.html?$/i, '').trim();
+  if (seg) {
+    location.replace(base + '#' + seg);
+  } else {
+    location.replace(base);
+  }
+})();
+</script>
+</head>
+<body style="margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;text-align:center;padding-top:18vh">
+  <p style="font-size:1.1rem">正在跳转到对应工具…</p>
+  <p style="color:#8b949e">如果没有自动跳转，点这里 → <a style="color:#58a6ff" href="/laoyu-miaomiao-tools/">捞鱼妙妙工具</a></p>
+</body>
+</html>

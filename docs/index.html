@@ -61,6 +61,10 @@
   footer a:hover{color:var(--accent)}
   .copybtn{margin-top:14px;background:var(--card);border:1px solid var(--border);color:var(--text);padding:8px 16px;border-radius:8px;cursor:pointer;font-size:.88rem;font-family:inherit}
   .copybtn:hover{border-color:var(--accent)}
+  /* 锚点直达：#工具名 定位后高亮聚焦 */
+  .skill.flash{border-color:var(--accent);animation:anchor-fade 3s ease forwards}
+  @keyframes anchor-fade{0%{box-shadow:0 0 0 4px rgba(88,166,255,.35)}70%{box-shadow:0 0 0 6px rgba(88,166,255,.12)}100%{box-shadow:0 0 0 0 transparent}}
+  .btn-share{background:var(--accent-soft);border:1px solid var(--accent);color:var(--accent);cursor:pointer;font-family:inherit}
   @media(max-width:600px){.hero h1{font-size:2rem}.skill{padding:22px}}
 </style>
 </head>
@@ -87,11 +91,11 @@
 
 <!-- SKILLS -->
 <section id="skills">
-  <h2><span class="num">02</span> 收录的 Skills（5 个）</h2>
+  <h2><span class="num">02</span> 收录的 Skills（6 个）</h2>
   <p class="lede">下面每个 skill 都写了：它是干嘛的、适合什么场景、怎么用、怎么装、在哪下载。</p>
 
   <!-- SKILL 1: study-map -->
-  <article class="skill" id="study-map">
+  <article class="skill" id="study-map" data-name="lyzbcy-study-map">
     <div class="skill-head">
       <span class="emoji">🗺️</span>
       <h3>lyzbcy-study-map</h3>
@@ -134,7 +138,7 @@
   </article>
 
   <!-- SKILL 2: 最后的1% -->
-  <article class="skill" id="last-1-percent">
+  <article class="skill" id="last-1-percent" data-name="lyzbcy-最后的1%">
     <div class="skill-head">
       <span class="emoji">🎯</span>
       <h3>lyzbcy-最后的1%</h3>
@@ -173,7 +177,7 @@
   </article>
 
   <!-- SKILL 3: 视频生成提示词润色 -->
-  <article class="skill" id="video-prompt-polish">
+  <article class="skill" id="video-prompt-polish" data-name="lyzbcy-视频生成提示词润色">
     <div class="skill-head">
       <span class="emoji">🎬</span>
       <h3>lyzbcy-视频生成提示词润色</h3>
@@ -215,7 +219,7 @@
   </article>
 
   <!-- SKILL 4: 微信公众号全自动运营 -->
-  <article class="skill" id="wechat-autopublish">
+  <article class="skill" id="wechat-autopublish" data-name="lyzbcy-wechat-autopublish">
     <div class="skill-head">
       <span class="emoji">📣</span>
       <h3>lyzbcy-wechat-autopublish</h3>
@@ -257,7 +261,7 @@
   </article>
 
   <!-- SKILL 5: GLM-5.3 ZCode 隔离评测 -->
-  <article class="skill" id="glm53-zcode-eval">
+  <article class="skill" id="glm53-zcode-eval" data-name="lyzbcy-glm53-zcode-eval">
     <div class="skill-head">
       <span class="emoji">🧪</span>
       <h3>lyzbcy-glm53-zcode-eval</h3>
@@ -302,7 +306,7 @@
   </article>
 
   <!-- SKILL 6: 小红书评论自动回复 -->
-  <article class="skill" id="xhs-comment-check">
+  <article class="skill" id="xhs-comment-check" data-name="lyzbcy-xhs-comment-check">
     <div class="skill-head">
       <span class="emoji">📕</span>
       <h3>lyzbcy-xhs-comment-check</h3>
@@ -351,6 +355,7 @@
     <p>本页是<b>语义化、对 AI 友好</b>的介绍页。你可以直接把这一整页（或它的链接）发给你的 AI 助手，AI 就能读懂：</p>
     <p>· 这里收录了 <code>6 个 skill</code>，分别是 <code>lyzbcy-study-map</code>（理解地图）、<code>lyzbcy-最后的1%</code>（极限执行）、<code>lyzbcy-视频生成提示词润色</code>（分镜润色）、<code>lyzbcy-wechat-autopublish</code>（公众号全自动运营）、<code>lyzbcy-glm53-zcode-eval</code>（GLM-5.3 ZCode 隔离评测）和 <code>lyzbcy-xhs-comment-check</code>（小红书评论全自动回复）。<br>
        · 每个 skill 的用途、适用场景、用法、安装方式、下载直链都在上方写清楚了。<br>
+       · 每个 skill 都有<b>直达链接</b>：在本页 URL 后加 <code>#工具名</code>（如 <code>#lyzbcy-视频生成提示词润色</code>）或 <code>#英文id</code>（如 <code>#video-prompt-polish</code>），打开即自动滚动到该工具并高亮；每张卡片的「🔗 复制直达链接」按钮可直接复制。<br>
        · AI 可以据此判断你当前需要哪个 skill，并<b>自行下载对应的 zip 安装</b>。</p>
     <p><b>GLM-5.3 ZCode 隔离评测默认关闭：</b>它可能影响通用任务的灵活性。AI 认为可能需要时必须先询问用户；只有用户把 <code>请使用 LYZBCY 虚拟环境测试</code> 作为明确启用指令后才能运行，引用、讨论或近义表达都不算授权。</p>
     <p style="color:var(--muted);font-size:.92rem">下载链接是 GitHub Releases 直链：</p>
@@ -441,6 +446,57 @@ function copyForAI(){
 介绍页：https://lyzbcy.github.io/laoyu-miaomiao-tools/`;
   navigator.clipboard.writeText(txt).then(()=>{alert('已复制！直接粘贴给你的 AI 助手即可。')});
 }
+
+// —— 锚点直达：# 后接 skill 名称或英文 id 均可定位、滚动并高亮 ——
+(function(){
+  function norm(s){
+    s = s || '';
+    try { s = decodeURIComponent(s); } catch(e) {}
+    return s.trim().toLowerCase();
+  }
+  function resolve(hash){
+    var q = norm((hash || '').replace(/^#/, ''));
+    if (!q) return null;
+    var cards = [].slice.call(document.querySelectorAll('article.skill'));
+    for (var i = 0; i < cards.length; i++) {
+      var id = norm(cards[i].id), name = norm(cards[i].getAttribute('data-name') || '');
+      if (q === id || q === name) return cards[i];
+    }
+    for (i = 0; i < cards.length; i++) {
+      var id2 = norm(cards[i].id), name2 = norm(cards[i].getAttribute('data-name') || '');
+      if (q.indexOf(id2) > -1 || q.indexOf(name2) > -1 || id2.indexOf(q) > -1 || name2.indexOf(q) > -1) return cards[i];
+    }
+    return null;
+  }
+  function focusSkill(el){
+    if (!el) return;
+    el.setAttribute('tabindex', '-1');
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash');
+    setTimeout(function(){ el.focus({ preventScroll: true }); }, 400);
+  }
+  var initial = resolve(location.hash);
+  if (initial) focusSkill(initial);
+  window.addEventListener('hashchange', function(){ focusSkill(resolve(location.hash)); });
+
+  // 每张卡片生成「复制直达链接」按钮
+  [].slice.call(document.querySelectorAll('.dl-row')).forEach(function(row){
+    var card = row.closest('article.skill');
+    var name = card.getAttribute('data-name') || card.id;
+    var btn = document.createElement('button');
+    btn.className = 'btn btn-share';
+    btn.type = 'button';
+    btn.textContent = '🔗 复制直达链接';
+    btn.onclick = function(){
+      var url = location.origin + location.pathname + '#' + encodeURIComponent(name);
+      navigator.clipboard.writeText(url).then(function(){
+        btn.textContent = '✅ 已复制';
+        setTimeout(function(){ btn.textContent = '🔗 复制直达链接'; }, 1600);
+      });
+    };
+    row.appendChild(btn);
+  });
+})();
 </script>
 </body>
 </html>
