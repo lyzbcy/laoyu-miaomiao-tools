@@ -2,506 +2,622 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>捞鱼妙妙工具 · Agent Skills 收录站</title>
-<meta name="description" content="捞鱼（lyzbcy）的 Agent Skills 收录站。每个 skill 独立打包，按需下载。本页可整页发给 AI，AI 会据此判断你需要哪个 skill 并自行下载。">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="捞鱼妙妙工具 · 捞鱼（lyzbcy）做的 AI Skill、软件、趣味测试和学习资料合集。整页可发给 AI，AI 会自行判断你需要哪个工具。">
 <meta name="author" content="捞鱼工作室 lyzbcy">
+<title>捞鱼妙妙工具 · Skill / 软件 / 测试 / 学习</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Poppins:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg:#0d1117; --card:#161b22; --border:#30363d; --text:#e6edf3; --muted:#8b949e;
-    --accent:#58a6ff; --accent-soft:rgba(88,166,255,.12); --green:#3fb950; --yellow:#d29922;
-    --code-bg:rgba(110,118,129,.18);
-  }
-  *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;line-height:1.7;-webkit-font-smoothing:antialiased}
-  .wrap{max-width:880px;margin:0 auto;padding:0 20px}
-  /* HERO */
-  header.hero{padding:72px 0 48px;border-bottom:1px solid var(--border)}
-  .hero h1{font-size:2.6rem;margin:0 0 8px;letter-spacing:-.5px}
-  .hero .tag{color:var(--muted);font-size:1.05rem;margin:0 0 14px}
-  .hero .pitch{font-size:1.15rem;color:var(--text);margin:0 0 22px}
-  .hero .req{display:inline-block;background:var(--card);border:1px solid var(--border);padding:4px 12px;border-radius:20px;font-size:.85rem;color:var(--muted);margin-bottom:22px}
-  .hero .req b{color:var(--yellow)}
-  .nav-dl{display:flex;gap:12px;flex-wrap:wrap}
-  .nav-dl a{display:inline-block;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:600;font-size:.95rem;transition:transform .12s}
-  .nav-dl a:hover{transform:translateY(-1px)}
-  .nav-dl .primary{background:var(--accent);color:#000}
-  .nav-dl .secondary{background:var(--card);border:1px solid var(--border);color:var(--text)}
-  /* SECTIONS */
-  section{padding:48px 0;border-bottom:1px solid var(--border)}
-  h2{font-size:1.6rem;margin:0 0 8px;display:flex;align-items:center;gap:10px}
-  h2 .num{color:var(--accent);font-size:1rem;opacity:.7}
-  .lede{color:var(--muted);margin:0 0 28px;font-size:1.02rem}
-  /* SKILL CARD */
-  .skill{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:28px 28px 24px;margin-bottom:28px}
-  .skill-head{display:flex;align-items:center;gap:14px;margin-bottom:6px;flex-wrap:wrap}
-  .skill-head .emoji{font-size:2rem}
-  .skill-head h3{font-size:1.45rem;margin:0}
-  .skill-head .ver{color:var(--muted);font-size:.85rem;background:var(--code-bg);padding:2px 8px;border-radius:10px}
-  .skill-tag{color:var(--accent);font-size:.95rem;margin:0 0 18px}
-  .field{margin:14px 0}
-  .field .label{font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:4px}
-  .field ul{margin:6px 0 0;padding-left:22px}
-  .field li{margin:3px 0}
-  .field code{background:var(--code-bg);padding:2px 7px;border-radius:5px;font-size:.88em;color:var(--text)}
-  .prompt-box{background:var(--bg);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:8px;padding:12px 14px;font-family:"SF Mono",Menlo,Consolas,monospace;font-size:.88rem;color:var(--text);margin-top:6px;white-space:pre-wrap}
-  .dl-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;padding-top:18px;border-top:1px dashed var(--border)}
-  .btn{display:inline-block;padding:9px 16px;border-radius:8px;text-decoration:none;font-weight:600;font-size:.9rem;transition:transform .12s}
-  .btn:hover{transform:translateY(-1px)}
-  .btn-zip{background:var(--green);color:#000}
-  .btn-src{background:transparent;border:1px solid var(--border);color:var(--text)}
-  /* AI block */
-  .ai-block{background:linear-gradient(135deg,rgba(88,166,255,.08),rgba(63,185,80,.05));border:1px solid var(--border);border-radius:14px;padding:24px}
-  .ai-block h3{margin:0 0 10px;font-size:1.15rem}
-  .ai-block p{margin:0 0 10px;color:var(--text)}
-  .ai-block code{background:var(--code-bg);padding:2px 7px;border-radius:5px}
-  /* FOOTER */
-  footer{padding:36px 0 56px;text-align:center;color:var(--muted);font-size:.9rem}
-  footer a{color:var(--muted);text-decoration:none;margin:0 8px}
-  footer a:hover{color:var(--accent)}
-  .copybtn{margin-top:14px;background:var(--card);border:1px solid var(--border);color:var(--text);padding:8px 16px;border-radius:8px;cursor:pointer;font-size:.88rem;font-family:inherit}
-  .copybtn:hover{border-color:var(--accent)}
-  /* 锚点直达：#工具名 定位后高亮聚焦 */
-  .skill.flash{border-color:var(--accent);animation:anchor-fade 3s ease forwards}
-  @keyframes anchor-fade{0%{box-shadow:0 0 0 4px rgba(88,166,255,.35)}70%{box-shadow:0 0 0 6px rgba(88,166,255,.12)}100%{box-shadow:0 0 0 0 transparent}}
-  .btn-share{background:var(--accent-soft);border:1px solid var(--accent);color:var(--accent);cursor:pointer;font-family:inherit}
-  @media(max-width:600px){.hero h1{font-size:2rem}.skill{padding:22px}}
+:root{
+  --cream:#FAF6EB; --paper:#F3EDDD; --forest:#1E3A24; --sky:#BCD8EE;
+  --sage:#AFCDA8; --ink:#1A2018; --marker:#F5E08A; --brick:#B5482A;
+  --font-display:"Archivo Black","Noto Sans SC","PingFang SC",sans-serif;
+  --font-head:"Poppins","Noto Sans SC","PingFang SC",sans-serif;
+  --font-body:-apple-system,"PingFang SC","Noto Sans SC",sans-serif;
+  --radius-card:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font-body);background:var(--cream);color:var(--ink);line-height:1.7;min-height:100vh;}
+/* HERO */
+.header{text-align:center;padding:56px 20px 20px;}
+.header .mascot{width:96px;height:96px;object-fit:contain;margin:0 auto 10px;display:block;filter:drop-shadow(3px 3px 0 rgba(30,58,36,.2));}
+.header h1{font-family:var(--font-display);font-size:40px;color:var(--forest);margin-bottom:8px;letter-spacing:-.5px;}
+.header .pitch{font-size:17px;color:#555;max-width:560px;margin:0 auto 8px;}
+.header .sub{font-size:13px;color:#6b6b6b;margin-bottom:18px;}
+.header .badge{display:inline-block;background:var(--marker);color:var(--forest);border:2px solid var(--forest);border-radius:999px;padding:5px 14px;font-size:13px;font-weight:700;font-family:var(--font-head);}
+/* SECTIONS */
+.chapters{max-width:1080px;margin:0 auto;padding:8px 24px 40px;}
+.group-title{font-family:var(--font-display);font-size:16px;color:var(--forest);margin:36px 0 14px;letter-spacing:1px;display:flex;align-items:center;gap:8px;}
+.group-title:first-child{margin-top:0;}
+.group-title::after{content:"";flex:1;height:2px;background:var(--sage);border-radius:2px;}
+.group-desc{font-size:13px;color:#666;margin:-6px 0 16px;}
+.cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.cards-grid.tools{grid-template-columns:repeat(3,1fr);}
+.cards-grid.tests{grid-template-columns:repeat(2,1fr);}
+/* CARD */
+.chapter-card{display:block;background:var(--paper);border-radius:var(--radius-card);padding:22px;text-decoration:none;color:var(--ink);transition:.2s;border-left:6px solid var(--sage);height:100%;}
+.chapter-card:hover{transform:translateY(-4px);box-shadow:0 6px 18px rgba(30,58,36,.12);border-left-color:var(--forest);}
+.chapter-num{font-family:var(--font-display);font-size:12px;color:var(--brick);margin-bottom:4px;letter-spacing:1px;}
+.chapter-title{font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--forest);margin-bottom:6px;}
+.chapter-desc{font-size:13px;color:#555;line-height:1.55;}
+.chapter-desc strong{color:var(--forest);}
+.chapter-meta{display:flex;gap:10px;margin-top:10px;font-size:11px;color:#6b6b6b;flex-wrap:wrap;}
+.chapter-meta span{display:flex;align-items:center;gap:3px;}
+.chapter-action{margin-top:12px;display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;color:var(--brick);}
+.chapter-card:hover .chapter-action{gap:8px;}
+/* 复制按钮（用于 skill 卡片） */
+.copy-btn{margin-top:14px;display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:2px solid var(--forest);border-radius:999px;background:#fff;color:var(--forest);font-family:var(--font-body);font-size:12px;font-weight:700;cursor:pointer;transition:.15s;}
+.copy-btn:hover{background:var(--marker);transform:translateY(-1px);box-shadow:2px 2px 0 rgba(30,58,36,.25);}
+.copy-btn.copied{background:var(--sage);border-color:var(--forest);}
+.copy-btn .ic{font-size:14px;}
+/* code 块（skill 详情里的 prompt） */
+.prompt-box{margin-top:12px;background:#1A2018;color:#e6edf3;border-radius:8px;padding:12px 14px;font-family:"SF Mono",Menlo,Consolas,monospace;font-size:11.5px;line-height:1.6;white-space:pre-wrap;word-break:break-word;display:none;}
+.prompt-box.show{display:block;}
+.prompt-box .ph{color:var(--marker);font-weight:700;}
+/* 顶部更新时间条 */
+.update-line{margin-top:14px;font-size:12.5px;color:#6b6b6b;display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center;}
+.update-line .v-tag{display:inline-block;background:var(--forest);color:var(--cream);padding:2px 9px;border-radius:999px;font-size:11px;font-weight:700;font-family:var(--font-head);letter-spacing:.3px;}
+.update-line .v-date{color:#555;}
+.update-line .v-changelog-link{color:var(--brick);cursor:pointer;text-decoration:underline;font-weight:600;border:none;background:none;font-family:inherit;font-size:inherit;padding:0;}
+.update-line .v-changelog-link:hover{color:var(--forest);}
+/* 更新记录模态框（复用 promo-overlay 视觉，与「关于捞鱼」统一）*/
+.changelog-overlay{position:fixed;inset:0;background:rgba(26,32,24,.55);z-index:10000;display:none;align-items:center;justify-content:center;padding:20px;overflow-y:auto;}
+.changelog-overlay.show{display:flex;}
+.changelog-card{background:var(--cream);border:3px solid var(--forest);border-radius:18px;padding:0;max-width:520px;width:100%;box-shadow:8px 8px 0 rgba(30,58,36,.2);position:relative;animation:promoPop .25s ease;margin:auto;max-height:80vh;display:flex;flex-direction:column;}
+.changelog-head{padding:16px 22px;background:var(--forest);color:var(--cream);font-family:var(--font-display);font-size:15px;letter-spacing:1px;display:flex;align-items:center;justify-content:space-between;border-radius:15px 15px 0 0;flex-shrink:0;}
+.changelog-body{padding:8px 22px 18px;overflow-y:auto;}
+.changelog-item{padding:14px 0;border-bottom:1px dashed #D4C4A8;}
+.changelog-item:last-child{border-bottom:none;}
+.changelog-item-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px;}
+.changelog-item .iv{font-family:var(--font-head);font-weight:700;font-size:13px;color:var(--brick);background:rgba(181,72,42,.1);padding:2px 9px;border-radius:999px;}
+.changelog-item .idate{font-size:11.5px;color:#888;}
+.changelog-item .ititle{font-size:13px;color:#555;font-weight:600;}
+.changelog-item .idesc{font-size:13.5px;color:#444;line-height:1.7;margin:6px 0 0;}
+.changelog-item .idesc ul{margin:0;padding-left:18px;}
+.changelog-item .idesc li{margin:3px 0;}
+.changelog-close{position:absolute;top:10px;right:14px;background:none;border:none;font-size:24px;color:var(--cream);cursor:pointer;line-height:1;padding:4px;opacity:.7;}
+.changelog-close:hover{opacity:1;}
+/* FOOTER */
+.footer{text-align:center;padding:28px 20px 80px;font-size:13px;color:#888;border-top:1px solid #D4C4A8;}
+.footer a{color:var(--brick);text-decoration:underline;font-weight:700;}
+/* 响应式 */
+@media(max-width:900px){.cards-grid,.cards-grid.tools{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:600px){
+  .header h1{font-size:30px;}
+  .cards-grid,.cards-grid.tools,.cards-grid.tests{grid-template-columns:1fr;}
+  .chapter-card{padding:20px;}
+  .promo-bar{right:12px;bottom:calc(12px + env(safe-area-inset-bottom));}
+  .promo-btn{padding:8px 12px;font-size:13px;}
+  .promo-card{padding:22px 16px;max-width:100%;}
+  .promo-grid{grid-template-columns:1fr;gap:12px;}
+  .promo-cell-sub{min-height:auto;}
+  .promo-cell img{max-width:160px;}
+}
+
+/* —— promo 导流入口（复刻 weshoto promo.css 完整版：浮条 + 模态框）—— */
+.promo-bar{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:9999;display:flex;flex-direction:column;gap:10px;align-items:flex-end;}
+.promo-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 16px;border-radius:999px;border:2px solid var(--forest);background:var(--marker);color:var(--forest);font-weight:700;font-size:14px;font-family:var(--font-body);cursor:pointer;box-shadow:3px 3px 0 rgba(30,58,36,.25);transition:transform .15s,box-shadow .15s;text-decoration:none;line-height:1.2;}
+.promo-btn:hover{transform:translateY(-2px);box-shadow:4px 5px 0 rgba(30,58,36,.3);}
+.promo-btn .emoji{font-size:16px;}
+/* 模态框遮罩 */
+.promo-overlay{position:fixed;inset:0;background:rgba(26,32,24,.55);z-index:10000;display:none;align-items:center;justify-content:center;padding:20px;overflow-y:auto;}
+.promo-overlay.show{display:flex;}
+.promo-card{background:var(--cream);border:3px solid var(--forest);border-radius:18px;padding:28px 28px 24px;max-width:440px;width:100%;box-shadow:8px 8px 0 rgba(30,58,36,.2);position:relative;animation:promoPop .25s ease;margin:auto;}
+@keyframes promoPop{from{transform:scale(.85);opacity:0;}to{transform:scale(1);opacity:1;}}
+.promo-close{position:absolute;top:10px;right:14px;background:none;border:none;font-size:26px;color:var(--forest);cursor:pointer;line-height:1;padding:4px;opacity:.6;}
+.promo-close:hover{opacity:1;}
+/* ① 作者介绍 */
+.promo-author{display:flex;align-items:center;gap:14px;margin-bottom:12px;}
+.promo-avatar{width:72px;height:72px;border-radius:50%;border:3px solid var(--forest);object-fit:cover;flex-shrink:0;background:#fffaf0;}
+.promo-author-info{flex:1;min-width:0;}
+.promo-author-info .promo-tag{display:inline-block;background:var(--brick);color:var(--marker);font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;margin-bottom:4px;}
+.promo-card h2{font-family:var(--font-display);color:var(--forest);font-size:20px;margin-bottom:2px;}
+.promo-tagline{font-size:12px !important;color:rgba(26,32,24,.65) !important;margin-bottom:0 !important;font-style:italic;}
+.promo-desc{font-size:14px;color:var(--ink);line-height:1.7;margin-bottom:14px;}
+/* Hero link（作者主页大按钮）*/
+.promo-link{display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:12px;border:2px solid var(--forest);background:#fffaf0;color:var(--forest);text-decoration:none;font-weight:600;font-size:14px;transition:background .15s,transform .15s;}
+.promo-link:hover{background:var(--sky);transform:translateX(3px);}
+.promo-link .icon{font-size:20px;flex-shrink:0;}
+.promo-link small{display:block;font-weight:400;font-size:12px;color:rgba(26,32,24,.6);margin-top:2px;}
+.promo-link-hero{margin-bottom:18px;background:var(--marker);}
+/* ②③④ 三入口卡片网格 */
+.promo-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.promo-cell{background:#fffaf0;border:2px solid var(--forest);border-radius:12px;padding:12px 10px;text-align:center;}
+.promo-cell-head{font-weight:700;font-size:13px;color:var(--forest);margin-bottom:6px;display:flex;align-items:center;justify-content:center;gap:4px;}
+.promo-cell-head .icon{font-size:16px;}
+.promo-cell-sub{font-size:11px !important;color:rgba(26,32,24,.7) !important;line-height:1.5 !important;margin-bottom:8px !important;min-height:50px;}
+.promo-cell img{width:100%;max-width:110px;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:8px;border:2px solid var(--forest);display:block;margin:0 auto;}
+.promo-sticker-preview{display:flex;justify-content:center;gap:4px;margin-bottom:8px;}
+.promo-sticker-preview img{width:34px;height:34px;max-width:none;aspect-ratio:auto;object-fit:contain;border:none;border-radius:4px;margin:0;}
+.promo-cell-tip{font-size:10px !important;color:rgba(26,32,24,.55) !important;margin-top:6px !important;margin-bottom:0 !important;line-height:1.4 !important;}
+.promo-thanks{text-align:center;font-size:13px !important;color:var(--brick) !important;font-weight:700;margin-top:18px !important;margin-bottom:0 !important;}
+/* 复制成功提示 toast */
+.toast{position:fixed;left:50%;bottom:calc(32px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);background:var(--forest);color:var(--cream);padding:12px 22px;border-radius:999px;font-size:14px;font-weight:600;opacity:0;pointer-events:none;transition:.25s;z-index:10001;box-shadow:0 6px 20px rgba(0,0,0,.2);}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 </style>
 </head>
 <body>
-<div class="wrap">
 
-<!-- HERO -->
-<header class="hero">
-  <h1>🐟 捞鱼妙妙工具</h1>
-  <p class="tag">Agent Skills 收录站 · by 捞鱼（lyzbcy）</p>
-  <p class="pitch">把捞鱼自己用得最顺手的 Agent Skills 收录在这里。每个 skill 独立打包，想下哪个下哪个。</p>
-  <div class="req">⚠️ 需要 <b>支持 skill 的 agent 环境</b>（如 ZCode / Claude Code / OpenCode 等）</div>
-  <nav class="nav-dl">
-    <a class="primary" href="#skills">看看有哪些 skill ↓</a>
-    <a class="secondary" href="https://github.com/lyzbcy/laoyu-miaomiao-tools">GitHub 仓库</a>
-  </nav>
-</header>
-
-<!-- 这是什么 -->
-<section>
-  <h2><span class="num">01</span> 这是什么</h2>
-  <p class="lede">这里收录的是捞鱼个人打磨出来、自己也天天在用的 Agent Skills。不是大而全的工具箱，是几个被反复验证、能真正落地的 skill。每个 skill 单独打包成 zip，挂在 GitHub Releases 上——你或你的朋友想用哪个，就下哪个，不用全量下载。</p>
-</section>
-
-<!-- SKILLS -->
-<section id="skills">
-  <h2><span class="num">02</span> 收录的 Skills（6 个）</h2>
-  <p class="lede">下面每个 skill 都写了：它是干嘛的、适合什么场景、怎么用、怎么装、在哪下载。</p>
-
-  <!-- SKILL 1: study-map -->
-  <article class="skill" id="study-map" data-name="lyzbcy-study-map">
-    <div class="skill-head">
-      <span class="emoji">🗺️</span>
-      <h3>lyzbcy-study-map</h3>
-      <span class="ver">理解地图生成器</span>
-    </div>
-    <p class="skill-tag">把难啃的干货，拆成一张有原文依据、能追问、能复述的交互式理解地图。</p>
-
-    <div class="field">
-      <div class="label">它能做什么</div>
-      <p>把技术长文、访谈、论文、商业分析或跨学科材料，生成一份<b>自包含的 .html 理解地图</b>，帮你真正读懂内容，而不是只看摘要。核心判断全部绑定原文依据，区分事实/判断/推论/例子，带可点击的闭环题、进度条、错题回流和学习报告。<b>也适用于课程章节、真题精讲、计算题手把手演示</b>等学习场景。</p>
-    </div>
-
-    <div class="field">
-      <div class="label">适合 / 不适合</div>
-      <ul>
-        <li>✅ 技术长文、跨领域访谈、论文、投资/商业/AI/社科深度文稿</li>
-        <li>✅ 课程复习提纲、历年真题、计算题题解（课程/真题场景）</li>
-        <li>✅ 你想真正理解、而不是只要摘要的材料</li>
-        <li>❌ 纯新闻快讯、API 参数手册、只需步骤的教程</li>
-      </ul>
-    </div>
-
-    <div class="field">
-      <div class="label">怎么用（示例 prompt）</div>
-      <div class="prompt-box">用 lyzbcy 拆解这篇文章，生成一个理解地图。
-
-# 课程/真题场景：
-用 lyzbcy 把这份复习提纲 + 历年真题，生成一套手把手解题的备考网站。</div>
-    </div>
-
-    <div class="field">
-      <div class="label">怎么安装</div>
-      <p>下载 zip → 解压 → 把整个 <code>lyzbcy-study-map/</code> 文件夹放到你的 agent skills 目录（确保里面有 <code>SKILL.md</code>）。生成的 .html 可双击打开，或部署到 GitHub Pages，无需后端或构建。</p>
-    </div>
-
-    <div class="dl-row">
-      <a class="btn btn-zip" id="dl-study-map" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.0.0/lyzbcy-study-map.zip">📦 下载 lyzbcy-study-map.zip</a>
-      <a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/lyzbcy-study-map">查看源码</a>
-    </div>
-  </article>
-
-  <!-- SKILL 2: 最后的1% -->
-  <article class="skill" id="last-1-percent" data-name="lyzbcy-最后的1%">
-    <div class="skill-head">
-      <span class="emoji">🎯</span>
-      <h3>lyzbcy-最后的1%</h3>
-      <span class="ver">极限执行元 skill</span>
-    </div>
-    <p class="skill-tag">把一个任务做到真正完美才停手。不计 token、不计轮数，质量是唯一第一性原理。</p>
-
-    <div class="field">
-      <div class="label">它能做什么</div>
-      <p>这是一份<b>极限执行模式</b>的元 skill。启用后，agent 会疯狂消耗 token 去把任务打磨到完美：派遣多个子代理做代码复查与结果测试、反复回读项目初心文档保持注意力、强制至少 1 小时深度打磨、中途绝不用选择题打断用户。核心防御的是<b>长任务中的注意力漂移</b>——做到第 40 分钟还记得当初为什么开始。</p>
-    </div>
-
-    <div class="field">
-      <div class="label">什么时候用</div>
-      <ul>
-        <li>✅ 一个任务值得做到"真正完美"才交付（如上线一个产品、打磨一个作品）</li>
-        <li>✅ 你愿意为质量付出大量 token 消耗</li>
-        <li>⚠️ 默认不启用，需明确触发（贴路径+明令 / 完整说出名字 / agent 判断后征得同意）</li>
-      </ul>
-    </div>
-
-    <div class="field">
-      <div class="label">怎么用（示例）</div>
-      <div class="prompt-box">请使用 lyzbcy-最后的1%，把这个项目打磨到可以上线。</div>
-    </div>
-
-    <div class="field">
-      <div class="label">怎么安装</div>
-      <p>下载 zip → 解压 → 把整个 <code>lyzbcy-最后的1%/</code> 文件夹放到你的 agent skills 目录（确保里面有 <code>SKILL.md</code>）。之后在对话里明确要求启用即可。</p>
-    </div>
-
-    <div class="dl-row">
-      <a class="btn btn-zip" id="dl-last-1-percent" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.1.0/lyzbcy-last-1-percent.zip">📦 下载 lyzbcy-last-1-percent.zip</a>
-      <a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/lyzbcy-最后的1%">查看源码</a>
-    </div>
-  </article>
-
-  <!-- SKILL 3: 视频生成提示词润色 -->
-  <article class="skill" id="video-prompt-polish" data-name="lyzbcy-视频生成提示词润色">
-    <div class="skill-head">
-      <span class="emoji">🎬</span>
-      <h3>lyzbcy-视频生成提示词润色</h3>
-      <span class="ver">分镜提示词润色器 · v1.1.0</span>
-    </div>
-    <p class="skill-tag">把 AI 视频 / 漫剧分镜的逐镜头提示词做“减法”——角色跟 art、场景跟场景图，提示词只留镜头语言。</p>
-
-    <div class="field">
-      <div class="label">它能做什么</div>
-      <p>把一段分镜提示词（多镜头，每镜带景别/构图/光线/情绪/配音指令）按实战规则润色：删掉会污染形象还原的<b>服装颜色/款式/材质、五官发色、写死的场景材质、身份定语</b>；统一同场景的<b>光线基调、人物站位锚点、角色 VoiceID（跨分镜全剧控死）</b>；核对<b>景别与拍摄对象、对白时长与语速</b>；<b>台词回归剧本逐句核对一字不改</b>；站位<b>三维锁死</b>（位置+姿态+相对关系）、<b>台词受话人锚定</b>、朝向用<b>正面空间描述</b>控制、<b>运动方向符合剧情意图</b>、禁写<b>眼部发光</b>描述（防模型生成镭射眼）；分镜文件首行自动标注<b>总时长</b>；每次使用前<b>自动检查版本</b>（运行副本 vs 仓库副本对比，可选更新）。每改一处都给改动说明，规则越用越准。</p>
-    </div>
-
-    <div class="field">
-      <div class="label">适合 / 不适合</div>
-      <ul>
-        <li>✅ 润色 / 修改 / 检查 AI 视频、漫剧、即梦/可灵/Vidu 等的逐镜头生成提示词</li>
-        <li>✅ 修正：服装/五官污染、场景材质写死、人物站位错乱、站位跨镜漂移、台词受话人错位、运动方向反逻辑、同场景光线跳变、语速异常、同一角色声音不连贯、眼神发光（镭射眼）</li>
-        <li>✅ 让 AI 回归剧本判断人物站/坐、台词原文、对白时长是否合理</li>
-        <li>❌ 替你写剧本和对白本身（那是创作，不是润色）</li>
-        <li>❌ 处理与视频生成无关的普通文本</li>
-      </ul>
-    </div>
-
-    <div class="field">
-      <div class="label">怎么用（示例 prompt）</div>
-      <div class="prompt-box">润色一下第47集场47-1的镜头1提示词：
-&lt;提示词&gt;...&lt;/提示词&gt;</div>
-    </div>
-
-    <div class="field">
-      <div class="label">怎么安装</div>
-      <p>下载 zip → 解压 → 把整个 <code>lyzbcy-视频生成提示词润色/</code> 文件夹放到你的 agent skills 目录（确保里面有 <code>SKILL.md</code>）。</p>
-    </div>
-
-    <div class="dl-row">
-      <a class="btn btn-zip" id="dl-video-prompt-polish" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.4.0/lyzbcy-video-prompt-polish.zip">📦 下载 lyzbcy-video-prompt-polish.zip</a>
-      <a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/lyzbcy-视频生成提示词润色">查看源码</a>
-    </div>
-  </article>
-
-  <!-- SKILL 4: 微信公众号全自动运营 -->
-  <article class="skill" id="wechat-autopublish" data-name="lyzbcy-wechat-autopublish">
-    <div class="skill-head">
-      <span class="emoji">📣</span>
-      <h3>lyzbcy-wechat-autopublish</h3>
-      <span class="ver">公众号全自动运营</span>
-    </div>
-    <p class="skill-tag">微信公众号的"发布"环节 100% 零人工——发布前一次确认，之后的一切交给机器。</p>
-
-    <div class="field">
-      <div class="label">它能做什么</div>
-      <p>一条龙自动发文：<b>取内容（可插拔内容源：周报总结/每日图片/自定义）→ 脱敏 → 发布前问一次你 → 推草稿 → 自动发布 → 回报永久链接</b>。发布走<b>三层降级</b>：①纯官方 API（freepublish，已认证号最稳）②浏览器自动化点发表（未认证号，登录态持久化复用，首次扫一次码）③人工兜底（绝不静默失败）。支持 cron 定时（如每周六 10:00 发周报）。核心脚本<b>零第三方依赖</b>（Python 标准库），自带 47 项离线测试与 dry-run 干跑。</p>
-    </div>
-
-    <div class="field">
-      <div class="label">适合 / 不适合</div>
-      <ul>
-        <li>✅ 定时自动发公众号图文/图片消息（每天生图发文、每周发学习周报）</li>
-        <li>✅ 已经能推草稿箱、但不想每天手动点"发表"的人（这正是它诞生的原因）</li>
-        <li>✅ 只想要"自动发布引擎"、内容自己生成（模块可拆开用）</li>
-        <li>❌ 需要推送到粉丝会话的"群发"营销场景（本 skill 走"发布"接口，不占群发配额也不推送）</li>
-        <li>❌ 不想配置 AppSecret/IP 白名单的人（API 通路需要一次性配置）</li>
-      </ul>
-    </div>
-
-    <div class="field">
-      <div class="label">怎么用（示例 prompt）</div>
-      <div class="prompt-box">帮我设置每周六早上 10 点自动发一篇本周 AI 学习总结到公众号，
-读我的日报目录整理，脱敏后先给我确认再发。</div>
-    </div>
-
-    <div class="field">
-      <div class="label">怎么安装</div>
-      <p>下载 zip → 解压 → 把整个 <code>lyzbcy-wechat-autopublish/</code> 文件夹放到你的 agent skills 目录（确保里面有 <code>SKILL.md</code>）。首次按 SKILL.md「首次设置清单」配置 config.json（AppID/AppSecret + IP 白名单），未认证号额外装 playwright。</p>
-    </div>
-
-    <div class="dl-row">
-      <a class="btn btn-zip" id="dl-wechat-autopublish" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.4.0/lyzbcy-wechat-autopublish.zip">📦 下载 lyzbcy-wechat-autopublish.zip</a>
-      <a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/lyzbcy-wechat-autopublish">查看源码</a>
-    </div>
-  </article>
-
-  <!-- SKILL 5: GLM-5.3 ZCode 隔离评测 -->
-  <article class="skill" id="glm53-zcode-eval" data-name="lyzbcy-glm53-zcode-eval">
-    <div class="skill-head">
-      <span class="emoji">🧪</span>
-      <h3>lyzbcy-glm53-zcode-eval</h3>
-      <span class="ver">默认关闭 · 仅支持 ZCode</span>
-    </div>
-    <p class="skill-tag">在受控虚拟环境或隔离工作区中，评测 GLM-5.3 在 ZCode 里的指令遵循、工具路由、状态连续、工件验证和回滚能力。</p>
-
-    <div class="field">
-      <div class="label">它能做什么</div>
-      <p>提供一套可审计、可逆的 ZCode 用户级评测配置，以及 40 项离线测试。默认在临时 <code>--agents-file</code> 中完成安装、状态检查和卸载闭环；只有用户明确要求启用真实配置时，才会先预览再写入 <code>~/.zcode/AGENTS.md</code> 的托管区块。支持快照、并发保护、状态查询、回滚和无损卸载。</p>
-    </div>
-
-    <div class="field">
-      <div class="label">适合 / 不适合</div>
-      <ul>
-        <li>✅ 在受控虚拟环境、临时目录或隔离工作区中做 GLM-5.3 + ZCode 回归评测</li>
-        <li>✅ 检查指令遵循、工具路由、多步状态、真实工件、验证证据与回滚表现</li>
-        <li>✅ 安全预览、启用、检查或撤销由工具托管的 ZCode 评测配置</li>
-        <li>⚠️ 评测配置可能让通用任务的表现更保守、更受约束或不够灵活，因此默认关闭</li>
-        <li>⚠️ AI 觉得可能需要时，必须先询问用户；只有用户把“请使用 LYZBCY 虚拟环境测试”作为明确启用指令后才能运行</li>
-        <li>⚠️ 引用或讨论这句口令不算授权，近义表达、Skill 名称、<code>$lyzbcy-glm53-zcode-eval</code> 和以前任务的同意也不算授权</li>
-        <li>❌ 不修改模型权重或 ZCode 应用包，也不修改供应商、API Key、套餐或模型列表</li>
-        <li>❌ 不绕过平台安全策略、权限检查或访问控制，不把真实敏感目标伪装成评测对象</li>
-        <li>❌ 不支持 ZCode 之外的编码客户端</li>
-      </ul>
-    </div>
-
-    <div class="field">
-      <div class="label">怎么用（示例 prompt）</div>
-      <div class="prompt-box">请使用 LYZBCY 虚拟环境测试。请在临时目录评测 GLM-5.3 的 ZCode 工具调用与回滚表现，不要修改我的真实配置。</div>
-    </div>
-
-    <div class="field">
-      <div class="label">怎么安装</div>
-      <p>下载 zip → 解压 → 把整个 <code>lyzbcy-glm53-zcode-eval/</code> 文件夹放到你的 agent skills 目录（确保里面有 <code>SKILL.md</code>）。安装 Skill 不等于授权启用：它禁止隐式调用，AI 必须先说明潜在影响并询问，授权只适用于当前任务。</p>
-    </div>
-
-    <div class="dl-row">
-      <a class="btn btn-zip" id="dl-glm53-zcode-eval" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.5.1/lyzbcy-glm53-zcode-eval.zip">📦 下载 lyzbcy-glm53-zcode-eval.zip</a>
-      <a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/lyzbcy-glm53-zcode-eval">查看源码</a>
-    </div>
-  </article>
-
-  <!-- SKILL 6: 小红书评论自动回复 -->
-  <article class="skill" id="xhs-comment-check" data-name="lyzbcy-xhs-comment-check">
-    <div class="skill-head">
-      <span class="emoji">📕</span>
-      <h3>lyzbcy-xhs-comment-check</h3>
-      <span class="ver">小红书评论全自动回复</span>
-    </div>
-    <p class="skill-tag">定时抓通知页新评论 → LLM 按人设生成回复（一次打包调用省 token）→ 自动发送并核验 → 中文报告。</p>
-
-    <div class="field">
-      <div class="label">它能做什么</div>
-      <p>在服务器上无人值守运行（cron 每天 2 次），自动消化你小红书笔记下的新评论：<b>消息通知页采集</b>（小红书后台没有"未回复"筛选，这是验证可行的路线）、<b>md5 稳定去重</b>（绝不重复回复）、<b>LLM 人设化回复</b>（多条评论一次打包调用，输入 token 省 ~68%）、<b>发送后核验</b>、提示注入防护、垃圾评论过滤、审计日志、登录失效自动报告。</p>
-    </div>
-
-    <div class="field">
-      <div class="label">适合 / 不适合</div>
-      <ul>
-        <li>✅ 有小红书账号、想让评论区保持活跃的博主</li>
-        <li>✅ 有一台能跑 Playwright 的服务器（Linux + xvfb）</li>
-        <li>✅ 想接自己的 LLM（任意 OpenAI 兼容接口）</li>
-        <li>❌ 不接受任何自动回复行为的账号（平台风控自负）</li>
-        <li>❌ 想要私信自动回复（不做）</li>
-      </ul>
-    </div>
-
-    <div class="field">
-      <div class="label">怎么用（示例 prompt）</div>
-      <div class="prompt-box">帮我部署小红书评论自动回复：扫码登录后先 dry-run 给我看回复计划，确认后再小批量真实发送 3 条。</div>
-    </div>
-
-    <div class="field">
-      <div class="label">怎么安装</div>
-      <p>下载 zip → 解压 → 放到 agent skills 目录 → <code>pip3 install -r requirements.txt</code> → <code>cp persona.example.json persona.json</code> 填你的人设 → <code>xvfb-run -a python3 login_once.py</code> 扫码登录。登录失效时会报告提醒，用 noVNC 人工扫码即可（多道风控关卡都能人工过）。</p>
-    </div>
-
-    <div class="dl-row">
-      <a class="btn btn-zip" id="dl-xhs-comment-check" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.6.0/lyzbcy-xhs-comment-check.zip">📦 下载 lyzbcy-xhs-comment-check.zip</a>
-      <a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/lyzbcy-xhs-comment-check">查看源码</a>
-    </div>
-  </article>
-</section>
-
-<!-- AI 友好 -->
-<section>
-  <h2><span class="num">03</span> 给 AI 的说明 🤖</h2>
-  <div class="ai-block">
-    <h3>这整页可以直接发给 AI</h3>
-    <p>本页是<b>语义化、对 AI 友好</b>的介绍页。你可以直接把这一整页（或它的链接）发给你的 AI 助手，AI 就能读懂：</p>
-    <p>· 这里收录了 <code>6 个 skill</code>，分别是 <code>lyzbcy-study-map</code>（理解地图）、<code>lyzbcy-最后的1%</code>（极限执行）、<code>lyzbcy-视频生成提示词润色</code>（分镜润色）、<code>lyzbcy-wechat-autopublish</code>（公众号全自动运营）、<code>lyzbcy-glm53-zcode-eval</code>（GLM-5.3 ZCode 隔离评测）和 <code>lyzbcy-xhs-comment-check</code>（小红书评论全自动回复）。<br>
-       · 每个 skill 的用途、适用场景、用法、安装方式、下载直链都在上方写清楚了。<br>
-       · 每个 skill 都有<b>直达链接</b>：在本页 URL 后加 <code>#工具名</code>（如 <code>#lyzbcy-视频生成提示词润色</code>）或 <code>#英文id</code>（如 <code>#video-prompt-polish</code>），打开即自动滚动到该工具并高亮；每张卡片的「🔗 复制直达链接」按钮可直接复制。<br>
-       · AI 可以据此判断你当前需要哪个 skill，并<b>自行下载对应的 zip 安装</b>。</p>
-    <p><b>GLM-5.3 ZCode 隔离评测默认关闭：</b>它可能影响通用任务的灵活性。AI 认为可能需要时必须先询问用户；只有用户把 <code>请使用 LYZBCY 虚拟环境测试</code> 作为明确启用指令后才能运行，引用、讨论或近义表达都不算授权。</p>
-    <p style="color:var(--muted);font-size:.92rem">下载链接是 GitHub Releases 直链：</p>
-    <ul style="color:var(--muted);font-size:.9rem;margin:6px 0 0">
-      <li>lyzbcy-study-map：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.0.0/lyzbcy-study-map.zip</code></li>
-      <li>lyzbcy-最后的1%：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.1.0/lyzbcy-last-1-percent.zip</code></li>
-      <li>lyzbcy-视频生成提示词润色：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.4.0/lyzbcy-video-prompt-polish.zip</code></li>
-      <li>lyzbcy-wechat-autopublish：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.4.0/lyzbcy-wechat-autopublish.zip</code></li>
-      <li>lyzbcy-xhs-comment-check：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.6.0/lyzbcy-xhs-comment-check.zip</code></li>
-      <li>lyzbcy-glm53-zcode-eval：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.5.1/lyzbcy-glm53-zcode-eval.zip</code></li>
-    </ul>
-    <button class="copybtn" onclick="copyForAI()">📋 复制给 AI 的纯文本摘要</button>
+<div class="header">
+  <img class="mascot" src="https://lyzbcy.github.io/weshoto-study/img/sticker/mascot.png" alt="捞鱼妙妙工具吉祥物 logo">
+  <div class="badge">🤖 AI 可整页读取</div>
+  <h1 style="margin-top:14px;">捞鱼妙妙工具</h1>
+  <p class="pitch">捞鱼（lyzbcy）做的 <strong>AI Skill · 软件 · 趣味测试 · 学习资料 · 排名</strong> 合集。挑一个进去看看 👇</p>
+  <p class="sub">把整页发给 AI，AI 会自己判断你需要哪个工具并帮你部署。</p>
+  <div class="update-line">
+    <span class="v-tag" id="pageVersion">v1.4.0</span>
+    <span class="v-date">最近更新 <time id="updateDate">2026-08-18</time></span>
+    <button class="v-changelog-link" id="changelogToggle" aria-expanded="false" aria-controls="changelogPanel">📜 更新记录</button>
   </div>
-</section>
+</div>
 
-<!-- FOOTER -->
-<footer>
-  <div>捞鱼工作室 · lyzbcy · MIT License</div>
-  <div style="margin-top:8px">
-    <a href="https://github.com/lyzbcy/laoyu-miaomiao-tools">GitHub</a>·
-    <a href="https://lyzbcy.github.io">捞鱼主页</a>
+<div class="chapters">
+
+  <!-- ========== ① skills 合集 ========== -->
+  <div class="group-title">🤖 AI Skills 合集</div>
+  <p class="group-desc">把链接发给小龙虾 / 爱马仕 / Codex / Claude Code，让它放好这个 skill，下次直接用。</p>
+  <div class="cards-grid">
+
+    <div class="chapter-card" style="border-left-color:#7C3AED;">
+      <div class="chapter-num">📄 自动写实验报告</div>
+      <div class="chapter-title">自动写精美实验报告</div>
+      <div class="chapter-desc">把要求丢给 AI，调用 <strong>experiment-report-skill</strong> 自动产出排版精美的实验报告。支持小龙虾、爱马仕、Codex、Claude Code 等。</div>
+      <div class="chapter-meta"><span>📄 排版精美</span><span>🤖 一键生成</span></div>
+      <a class="chapter-action" href="https://github.com/lyzbcy/experiment-report-skill" target="_blank" rel="noopener">↗ GitHub 仓库</a>
+    </div>
+
+    <div class="chapter-card" style="border-left-color:#B5482A;">
+      <div class="chapter-num">🦞 自动写 &amp; 发布番茄小说</div>
+      <div class="chapter-title">自动写小说脚本</div>
+      <div class="chapter-desc">已开源。把仓库发给你的小龙虾，让 🦞 根据 <strong>README 部署</strong>，自动写并发布番茄小说。</div>
+      <div class="chapter-meta"><span>📚 自动连载</span><span>📤 一键发布</span></div>
+      <a class="chapter-action" href="https://github.com/lyzbcy/fanqie-publisher" target="_blank" rel="noopener">↗ GitHub 仓库</a>
+    </div>
+
+    <div class="chapter-card" style="border-left-color:#2563EB;">
+      <div class="chapter-num">💬 自动回复抖音评论</div>
+      <div class="chapter-title">抖音评论自动回复</div>
+      <div class="chapter-desc">每小时自动检查抖音评论并智能回复。支持<strong>灵魂设定</strong>、定时 cron、首次扫码登录后保留状态。</div>
+      <div class="chapter-meta"><span>⏰ 每小时</span><span>🎭 灵魂设定</span><span>🔓 免登录</span></div>
+      <a class="chapter-action" href="https://github.com/lyzbcy/douyin-comment-automation" target="_blank" rel="noopener">↗ GitHub 仓库</a>
+      <button class="copy-btn" data-copy="dy" aria-label="复制抖音评论 skill 部署提示词到剪贴板"><span class="ic">📋</span><span class="copy-label">复制部署提示词</span></button>
+      <pre class="prompt-box" id="prompt-dy"><span class="ph">把下面这段发给你的 AI agent：</span>
+
+请阅读并 clone "https://github.com/lyzbcy/douyin-comment-automation" 到 skill 的合适位置
+
+创建 cron，避开整点（ai 心跳高峰期），每小时调用一次这个抖音评论检查 skill，对抖音评论进行检查
+
+- 第一次使用说明
+  - 如果账号是第一次使用，请务必提醒你的主人需要先扫码登录抖音创作者后台，这样才能保留登录状态，方便 ai 下次自己调用
+- 角色说明
+  - 为了让 agent 回复更有灵性，你需要将自己的灵魂设定放入 skill 对应的 env 文件中，同时要告诉你的主人你做了这个操作，并且询问你的主人对于当前的灵魂是否有需要更改的地方</pre>
+    </div>
+
+    <a class="chapter-card" href="https://lyzbcy.github.io/laoyu-miaomiao-tools/" target="_blank" rel="noopener" style="border-left-color:#16A34A;">
+      <div class="chapter-num">📦 Skills 收录站</div>
+      <div class="chapter-title">捞鱼妙妙工具（暗色站）</div>
+      <div class="chapter-desc">每个 skill <strong>独立打包、按需下载</strong>。整页可发给 AI，AI 会据此判断你需要哪个 skill 并自行下载。</div>
+      <div class="chapter-meta"><span>📥 按需下载</span><span>🤖 AI 自动识别</span><span>📦 独立打包</span></div>
+      <div class="chapter-action">↗ 打开收录站</div>
+    </a>
+
   </div>
-</footer>
+
+  <!-- ========== ② 软件合集 ========== -->
+  <div class="group-title">🛠️ 软件合集</div>
+  <p class="group-desc">浏览器即用的在线小软件，点开就能跑。</p>
+  <div class="cards-grid tools">
+
+    <a class="chapter-card" href="https://lyzbcy.github.io/yijian-toudi/" target="_blank" rel="noopener" style="border-left-color:#1E3A24;">
+      <div class="chapter-num">📮 求职投递</div>
+      <div class="chapter-title">一键投递各大厂</div>
+      <div class="chapter-desc">一份信息，<strong>批量投递各大厂</strong>。省去重复填表的痛苦。</div>
+      <div class="chapter-meta"><span>🏭 多厂</span><span>⚡ 批量</span></div>
+      <div class="chapter-action">↗ 立即使用</div>
+    </a>
+
+    <a class="chapter-card" href="https://lyzbcy.github.io/local-run-frontend/" target="_blank" rel="noopener" style="border-left-color:#2563EB;">
+      <div class="chapter-num">💻 本地跑前端</div>
+      <div class="chapter-title">本地便捷测试前端项目</div>
+      <div class="chapter-desc">一键启动任意前端项目，<strong>零文件侵入</strong>。自动识别项目类型、端口管理。</div>
+      <div class="chapter-meta"><span>🔍 自动识别</span><span>📁 不写文件</span></div>
+      <div class="chapter-action">↗ 立即使用</div>
+    </a>
+
+    <a class="chapter-card" href="https://lyzbcy.github.io/sticker-maker/" target="_blank" rel="noopener" style="border-left-color:#DB2777;">
+      <div class="chapter-num">🎨 表情包制作</div>
+      <div class="chapter-title">表情包一键制作</div>
+      <div class="chapter-desc">把你的角色变成一整套微信表情包。<strong>base 图、故事生图、自动切图抠图</strong>，到微信上架素材一个软件搞定。</div>
+      <div class="chapter-meta"><span>🧑‍🎨 角色管理</span><span>📚 故事生图</span><span>↗️ 微信上架</span></div>
+      <div class="chapter-action">↗ 立即使用</div>
+    </a>
+
+    <a class="chapter-card" href="https://lyzbcy.github.io/laoyu-tagger/" target="_blank" rel="noopener" style="border-left-color:#F59E0B;">
+      <div class="chapter-num">🎵 捞鱼打标工具</div>
+      <div class="chapter-title">BGM/音效 打标</div>
+      <div class="chapter-desc">把 BGM 和音效建成<strong>自己的标签库</strong>。边听边打标、剪映缓存自动同步、一键整理导出，数据全在自己电脑。</div>
+      <div class="chapter-meta"><span>🎧 边听边打标</span><span>🔄 剪映同步</span><span>📦 一键导出</span></div>
+      <div class="chapter-action">↗ 立即使用</div>
+    </a>
+
+  </div>
+
+  <!-- ========== 🍜 从夯到拉排名 ========== -->
+  <div class="group-title">🍜 从夯到拉排名</div>
+  <p class="group-desc">捞鱼亲测排名，从「夯」到「拉」逐档打分，仅供参考、欢迎吵架。</p>
+  <div class="cards-grid">
+
+    <a class="chapter-card" href="https://lyzbcy.github.io/posts/%E6%96%B9%E4%BE%BF%E9%9D%A2%E4%BB%8E%E5%A4%AF%E5%88%B0%E6%8B%89%E6%8E%92%E5%90%8D/" target="_blank" rel="noopener" style="border-left-color:#B5482A;">
+      <div class="chapter-num">🍜 方便面排名</div>
+      <div class="chapter-title">方便面从夯到拉排名</div>
+      <div class="chapter-desc">大学时把教育超市<strong>每个口味的泡面都尝了一遍</strong>。海鲜拉面汤达人、安徽板面、茄皇拌面……逐款打分。</div>
+      <div class="chapter-meta"><span>🍜 逐款亲测</span><span>📊 夯→拉分档</span></div>
+      <div class="chapter-action">↗ 看排名</div>
+    </a>
+
+    <a class="chapter-card" href="https://lyzbcy.github.io/posts/%E6%B1%9F%E5%8D%97%E5%A4%A7%E5%AD%A6%E7%AC%AC%E4%BA%94%E5%85%AD%E9%A3%9F%E5%A0%82-%E5%A4%A7%E6%82%A6%E5%9F%8E-%E6%98%9F%E5%85%89-%E4%BB%8E%E5%A4%AF%E5%88%B0%E6%8B%89%E6%8E%92%E5%90%8D/" target="_blank" rel="noopener" style="border-left-color:#1E3A24;">
+      <div class="chapter-num">🏫 食堂档口排名</div>
+      <div class="chapter-title">江南大学第五六食堂从夯到拉</div>
+      <div class="chapter-desc">江南大学第五六食堂（大悦城、星光）<strong>每个档口逐个排</strong>。半将麻辣烫、各类盖饭……和走位器一起讨论得出。</div>
+      <div class="chapter-meta"><span>🏫 每档必排</span><span>👥 双人讨论</span></div>
+      <div class="chapter-action">↗ 看排名</div>
+    </a>
+
+  </div>
+
+  <!-- ========== ③ 好玩的测试 ========== -->
+  <div class="group-title">🎯 好玩的测试</div>
+  <p class="group-desc">开盲盒式趣味测试，测完有惊喜。</p>
+  <div class="cards-grid tests">
+
+    <a class="chapter-card" href="https://lyzbcy.github.io/gaokao-time-machine/#/" target="_blank" rel="noopener" style="border-left-color:#DB2777;">
+      <div class="chapter-num">🎓 高考时光机</div>
+      <div class="chapter-title">放 2026 年，你的高考分数值多少分？</div>
+      <div class="chapter-desc">输入分数，看看<strong>换到 2026 年能上什么学校</strong>。穿越一下，可能惊喜也可能扎心。</div>
+      <div class="chapter-meta"><span>⏰ 时光机</span><span>📊 分数换算</span></div>
+      <div class="chapter-action">↗ 开始测试</div>
+    </a>
+
+    <a class="chapter-card" href="https://lyzbcy.github.io/jiahao-test/" target="_blank" rel="noopener" style="border-left-color:#F5E08A;">
+      <div class="chapter-num">😎 嘉豪值测试</div>
+      <div class="chapter-title">测测你的本命嘉豪值</div>
+      <div class="chapter-desc">测试你的<strong>豪意值</strong>，看看你有多"嘉豪"。开盲盒抽称号。</div>
+      <div class="chapter-meta"><span>😎 豪意值</span><span>🎁 盲盒称号</span></div>
+      <div class="chapter-action">↗ 开始测试</div>
+    </a>
+
+  </div>
+
+  <!-- ========== ④ 学习资料 ========== -->
+  <div class="group-title">📚 学习资料</div>
+  <p class="group-desc">捞鱼拆的交互式理解地图，有官方文档依据、能交互、能复盘。</p>
+  <div class="cards-grid">
+
+    <a class="chapter-card" href="https://lyzbcy.github.io/general-knowledge/" target="_blank" rel="noopener" style="border-left-color:#7C3AED;">
+      <div class="chapter-num">📖 通用知识</div>
+      <div class="chapter-title">通用知识 · 学习地图合集</div>
+      <div class="chapter-desc">跨领域通用知识理解地图。当前包含<strong>考驾照</strong>等栏目，持续更新中。</div>
+      <div class="chapter-meta"><span>🚗 考驾照</span><span>🆕 持续更新</span></div>
+      <div class="chapter-action">↗ 进入学习</div>
+    </a>
+
+    <a class="chapter-card" href="https://lyzbcy.github.io/computer-knowledge/" target="_blank" rel="noopener" style="border-left-color:#2563EB;">
+      <div class="chapter-num">💻 计算机知识</div>
+      <div class="chapter-title">计算机知识 · 学习地图合集</div>
+      <div class="chapter-desc">Vue3、企微 JSAPI、Python、一人开发、研发岗培训等<strong>计算机基础到进阶</strong>栏目。</div>
+      <div class="chapter-meta"><span>💚 Vue3</span><span>📱 企微JSAPI</span><span>🐍 Python</span></div>
+      <div class="chapter-action">↗ 进入学习</div>
+    </a>
+
+    <a class="chapter-card" href="https://lyzbcy.github.io/os-study/" target="_blank" rel="noopener" style="border-left-color:#1E3A24;">
+      <div class="chapter-num">🏫 学校课程</div>
+      <div class="chapter-title">操作系统极速备考</div>
+      <div class="chapter-desc">操作系统<strong>理解地图</strong>。把难懂的概念拆成能交互的图，期末极速备考。</div>
+      <div class="chapter-meta"><span>⚡ 极速备考</span><span>🗺️ 理解地图</span></div>
+      <div class="chapter-action">↗ 进入学习</div>
+    </a>
+
+  </div>
 
 </div>
 
+<!-- ========== 更新记录模态框（点顶部「更新记录」弹出，不再跳到底部）========== -->
+<div class="changelog-overlay" id="changelogPanel" role="dialog" aria-modal="true" aria-label="更新记录">
+  <div class="changelog-card">
+    <div class="changelog-head">
+      <span>📜 更新记录</span>
+      <span style="font-size:11px;font-weight:400;opacity:.8;">共 6 个版本</span>
+      <button class="changelog-close" id="changelogClose" aria-label="关闭">×</button>
+    </div>
+    <div class="changelog-body">
+
+      <div class="changelog-item">
+        <div class="changelog-item-head">
+          <span class="iv">v1.4.0</span>
+          <span class="ititle">软件合集新增「捞鱼打标工具」</span>
+          <span class="idate">2026-08-18</span>
+        </div>
+        <div class="idesc">
+          <ul>
+            <li>🎵 BGM/音效边听边打标，音乐音效按时长自动分类，人工改过永不覆盖</li>
+            <li>🔄 剪映缓存自动同步、软件内一键更新、整理导出/超级导入三件套</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="changelog-item">
+        <div class="changelog-item-head">
+          <span class="iv">v1.3.1</span>
+          <span class="ititle">AI Skills 合集新增收录站入口</span>
+          <span class="idate">2026-08-02</span>
+        </div>
+        <div class="idesc">
+          <ul>
+            <li>📦 AI Skills 合集新增「捞鱼妙妙工具（暗色站）」入口 —— 每个 skill 独立打包、按需下载，整页可发给 AI 自动识别</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="changelog-item">
+        <div class="changelog-item-head">
+          <span class="iv">v1.3.0</span>
+          <span class="ititle">更新记录改为弹窗</span>
+          <span class="idate">2026-08-01</span>
+        </div>
+        <div class="idesc">
+          <ul>
+            <li>📜 「更新记录」从页面底部折叠面板升级为弹出模态框，点顶部按钮直接弹出，不用再滚到底</li>
+            <li>🎨 与「关于捞鱼」弹窗视觉统一（同款遮罩 + 居中卡片 + 关闭按钮）</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="changelog-item">
+        <div class="changelog-item-head">
+          <span class="iv">v1.2.0</span>
+          <span class="ititle">「关于捞鱼」升级为模态框</span>
+          <span class="idate">2026-08-01</span>
+        </div>
+        <div class="idesc">
+          <ul>
+            <li>🐟 「关于捞鱼」按钮改为弹窗：作者介绍、主页入口、QQ 群、赞赏、微信表情包四区块</li>
+            <li>🖼️ 复刻 weshoto-study promo 模态框，资源改为绝对 URL 避免跨域 404</li>
+            <li>⚡ 点击时才加载二维码图（lazy inject），首屏更快</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="changelog-item">
+        <div class="changelog-item-head">
+          <span class="iv">v1.1.0</span>
+          <span class="ititle">加内容 + 上线版本系统</span>
+          <span class="idate">2026-08-01</span>
+        </div>
+        <div class="idesc">
+          <ul>
+            <li>🛠️ 软件合集新增「表情包一键制作」(sticker-maker)</li>
+            <li>🍜 新增「从夯到拉排名」栏目：方便面排名、江南大学第五六食堂排名</li>
+            <li>🔧 上线版本号 + 顶部「最近更新」+ 本更新记录面板</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="changelog-item">
+        <div class="changelog-item-head">
+          <span class="iv">v1.0.0</span>
+          <span class="ititle">首次发布</span>
+          <span class="idate">2026-08-01</span>
+        </div>
+        <div class="idesc">
+          <ul>
+            <li>🎉 仿照 weshoto-study 奶油卡片风上线妙妙工具合集</li>
+            <li>4 大块：AI Skills 合集、软件合集、好玩的测试、学习资料，共 10 张卡</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  由 <a href="https://lyzbcy.github.io/" target="_blank" rel="noopener">捞鱼</a> 制作 · 妙妙工具合集<br>
+  Skill / 软件 / 测试 / 学习 · 持续更新中
+</div>
+
+<!-- 导流入口（复刻 weshoto promo） -->
+<div class="promo-bar">
+  <button class="promo-btn" id="promoAboutBtn" aria-label="关于捞鱼（打开作者介绍）"><span class="emoji">🐟</span>关于捞鱼</button>
+</div>
+
+<!-- 复制成功 toast -->
+<div class="toast" id="toast" role="status" aria-live="polite">✅ 已复制！去发给你的 AI 吧</div>
+
+<!-- 捞鱼工作室导流模态框（复刻 weshoto promo.js，BASE 改为绝对 URL 避免跨域 404）-->
 <script>
-// release 直链填入（push 后由部署脚本/手动更新 tag）
-const RELEASES = {
-  "study-map": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.0.0/lyzbcy-study-map.zip",
-  "last-1-percent": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.1.0/lyzbcy-last-1-percent.zip",
-  "video-prompt-polish": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.4.0/lyzbcy-video-prompt-polish.zip",
-  "wechat-autopublish": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.4.0/lyzbcy-wechat-autopublish.zip",
-  "glm53-zcode-eval": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.5.1/lyzbcy-glm53-zcode-eval.zip"
-};
-document.getElementById('dl-study-map').href = RELEASES['study-map'];
-document.getElementById('dl-last-1-percent').href = RELEASES['last-1-percent'];
-document.getElementById('dl-video-prompt-polish').href = RELEASES['video-prompt-polish'];
-document.getElementById('dl-wechat-autopublish').href = RELEASES['wechat-autopublish'];
-document.getElementById('dl-glm53-zcode-eval').href = RELEASES['glm53-zcode-eval'];
+(function () {
+  "use strict";
+  // 站点根路径：本页部署在 help.wshoto.com，必须用绝对 URL 指回 weshoto-study 的资源
+  var BASE = "https://lyzbcy.github.io/weshoto-study/";
+  var CONFIG = {
+    studio: "捞鱼工作室",
+    author: "捞鱼",
+    tagline: "一个弱小但有梦想的开发者",
+    home: "https://lyzbcy.github.io/",
+    about: "https://lyzbcy.github.io/about/",
+    avatar: "https://s41.ax1x.com/2025/12/05/pZmPZPH.png",
+    qqGroupImg: BASE + "img/qq-group.jpg",
+    qqGroupTip: "📱 长按或扫码加群 · 也可以直接搜索群号",
+    rewardImg: BASE + "img/reward-qr.jpg",
+    rewardTip: "📱 长按或扫码赞赏 · 金额随意，心意到就好",
+    stickerQr: BASE + "img/sticker/sticker-qr.png",
+    stickerTip: "📱 长按或扫码 · 微信里也能用这些表情"
+  };
 
-// 复制给 AI 的纯文本摘要
-function copyForAI(){
-  const txt = `【捞鱼妙妙工具 · Agent Skills 收录站】
-
-这里收录捞鱼（lyzbcy）的个人 Agent Skills，每个 skill 独立打包，按需下载。共 5 个 skill：
-
-1) lyzbcy-study-map（理解地图生成器）
-   - 用途：把技术长文/访谈/论文/跨学科材料，生成有原文依据、能追问、能复述的交互式 HTML 理解地图；也适用于课程复习提纲、历年真题、计算题手把手演示。
-   - 适合：想真正读懂复杂材料、备考复习的人。不适合纯新闻/API手册/只需步骤的教程。
-   - 用法示例：把原文发给 agent，说"用 lyzbcy 拆解这篇文章，生成一个理解地图"。
-   - 安装：解压后把整个文件夹放到 agent skills 目录（含 SKILL.md）。
-   - 下载：${RELEASES['study-map']}
-
-2) lyzbcy-最后的1%（极限执行元 skill）
-   - 用途：把一个任务做到真正完美才停手。启用后 agent 会疯狂消耗 token——派子代理做代码复查与测试、反复回读初心文档、强制≥1小时深度打磨、中途不打断用户。核心防御长任务注意力漂移。
-   - 适合：值得做到"真正完美"才交付的任务（如上线产品、打磨作品）。默认不启用，需明确触发。
-   - 用法示例：说"请使用 lyzbcy-最后的1%，把 X 做到完美"。
-   - 安装：解压后把整个文件夹放到 agent skills 目录（含 SKILL.md）。
-   - 下载：${RELEASES['last-1-percent']}
-
-3) lyzbcy-视频生成提示词润色（分镜提示词润色器 · v1.1.0）
-   - 用途：把 AI 视频/漫剧分镜的逐镜头提示词做"减法"——角色跟 art、场景跟场景图，提示词只留镜头语言。删掉污染形象还原的服装/五官/材质写死项，统一同场景光线/人物站位/VoiceID，核对景别与对白时长，台词回归剧本一字不改；站位三维锁死+台词受话人锚定+朝向正面描述+运动方向符合剧情+禁写眼部发光；分镜首行标注总时长；使用前自动检查版本。
-   - 适合：润色/检查 AI 视频、漫剧、即梦/可灵/Vidu 等逐镜头生成提示词；不适合替你写剧本本身或与视频无关的普通文本。
-   - 用法示例：发分镜提示词，说"润色一下第47集场47-1的镜头1提示词"。
-   - 安装：解压后把整个文件夹放到 agent skills 目录（含 SKILL.md）。
-   - 下载：${RELEASES['video-prompt-polish']}
-
-4) lyzbcy-wechat-autopublish（公众号全自动运营）
-   - 用途：微信公众号自动发文一条龙：取内容（周报/每日图/自定义内容源）→脱敏→发布前问一次用户→推草稿→自动发布→回报永久链接。发布三层降级：纯API（已认证号）/浏览器自动化（未认证号，登录态复用首次扫一次码）/人工兜底。支持 cron 定时。核心脚本零依赖+47项离线测试。
-   - 适合：定时自动发公众号（每天发图、每周发周报）；已能推草稿但不想手动点"发表"的人。不适合要"群发"推送粉丝的场景、不想配 AppSecret/IP白名单的人。
-   - 用法示例："帮我设置每周六早上10点自动发一篇本周AI学习总结到公众号，读我的日报目录整理，脱敏后先给我确认再发。"
-   - 安装：解压后把整个文件夹放到 agent skills 目录（含 SKILL.md），按 SKILL.md 首次设置清单配置 config.json。
-   - 下载：${RELEASES['wechat-autopublish']}
-
-5) lyzbcy-glm53-zcode-eval（GLM-5.3 ZCode 隔离评测）
-   - 用途：在受控虚拟环境或隔离工作区中，评测 GLM-5.3 在 ZCode 里的指令遵循、工具路由、状态连续、真实工件、验证和回滚表现。仅支持 ZCode。
-   - 重要影响：评测配置可能让通用任务的表现更保守、更受约束或不够灵活，因此默认关闭，禁止隐式调用。
-   - 唯一调用条件：只有用户把“请使用 LYZBCY 虚拟环境测试”作为当前任务的明确启用指令后才能运行。引用或讨论这句口令不算授权；近义表达、Skill 名称、$lyzbcy-glm53-zcode-eval 和以前任务的同意也不算授权。
-   - 询问机制：如果 AI 认为可能需要，必须先询问用户并说明潜在影响；收到明确口令前继续普通模式，不得运行测试、安装器或配置命令。
-   - 默认行为：通过口令门槛后，先运行 40 项离线测试，再使用临时 --agents-file 完成安装、状态和卸载闭环，不触碰真实用户配置。只有用户明确要求写入真实配置时，才先 dry-run 再写入 ~/.zcode/AGENTS.md 的托管区块。
-   - 合规边界：不修改模型权重或 ZCode 应用包；不修改供应商、API Key、套餐或模型列表；不绕过平台安全策略、权限检查或访问控制；不把真实敏感目标伪装成评测对象。
-   - 用法示例："请使用 LYZBCY 虚拟环境测试。请在临时目录评测 GLM-5.3 的 ZCode 工具调用与回滚表现，不要修改我的真实配置。"
-   - 安装：解压后把整个文件夹放到 agent skills 目录（含 SKILL.md）。安装、下载和读取都不等于授权启用。
-   - 下载：${RELEASES['glm53-zcode-eval']}
-
-仓库：https://github.com/lyzbcy/laoyu-miaomiao-tools
-介绍页：https://lyzbcy.github.io/laoyu-miaomiao-tools/`;
-  navigator.clipboard.writeText(txt).then(()=>{alert('已复制！直接粘贴给你的 AI 助手即可。')});
-}
-
-// —— 锚点直达：# 后接 skill 名称或英文 id 均可定位、滚动并高亮 ——
-(function(){
-  function norm(s){
-    s = s || '';
-    try { s = decodeURIComponent(s); } catch(e) {}
-    return s.trim().toLowerCase();
+  function injectModal() {
+    if (document.getElementById("promoOverlay")) return;
+    var ov = document.createElement("div");
+    ov.id = "promoOverlay";
+    ov.className = "promo-overlay";
+    ov.innerHTML =
+      '<div class="promo-card">' +
+        '<button class="promo-close" id="promoClose" aria-label="关闭">×</button>' +
+        '<div class="promo-author">' +
+          '<img class="promo-avatar" src="' + CONFIG.avatar + '" alt="捞鱼头像">' +
+          '<div class="promo-author-info">' +
+            '<span class="promo-tag">由 ' + CONFIG.studio + ' 制作</span>' +
+            '<h2>🐟 捞鱼</h2>' +
+            '<p class="promo-tagline">' + CONFIG.tagline + '</p>' +
+          '</div>' +
+        '</div>' +
+        '<p class="promo-desc">这个工具合集由<strong>捞鱼</strong>独立制作。捞鱼还在做更多好玩的东西——AI Skill、趣味测试、微信表情包、学习工具。</p>' +
+        '<a class="promo-link promo-link-hero" href="' + CONFIG.about + '" target="_blank" rel="noopener">' +
+          '<span class="icon">🏠</span><span>了解更多关于捞鱼<small>个人主页 · ' + CONFIG.home.replace(/^https?:\/\//, '') + '</small></span>' +
+        '</a>' +
+        '<div class="promo-grid">' +
+          '<div class="promo-cell">' +
+            '<div class="promo-cell-head"><span class="icon">💬</span>加入 QQ 群</div>' +
+            '<p class="promo-cell-sub">反馈建议、找作者补数据、单纯想认识捞鱼？扫码进群一起玩 🎉</p>' +
+            '<img src="' + CONFIG.qqGroupImg + '" alt="QQ群二维码">' +
+            '<p class="promo-cell-tip">' + CONFIG.qqGroupTip + '</p>' +
+          '</div>' +
+          '<div class="promo-cell">' +
+            '<div class="promo-cell-head"><span class="icon">☕</span>请作者喝咖啡</div>' +
+            '<p class="promo-cell-sub">如果这些工具对你有帮助，欢迎请捞鱼喝杯咖啡 ☕</p>' +
+            '<img src="' + CONFIG.rewardImg + '" alt="赞赏二维码">' +
+            '<p class="promo-cell-tip">' + CONFIG.rewardTip + '</p>' +
+          '</div>' +
+          '<div class="promo-cell">' +
+            '<div class="promo-cell-head"><span class="icon">😺</span>微信表情包</div>' +
+            '<p class="promo-cell-sub">星星布丁系列，扫码即可在微信使用 ✨</p>' +
+            '<div class="promo-sticker-preview">' +
+              '<img src="' + BASE + 'img/sticker/stars/snicker.png" alt="偷笑">' +
+              '<img src="' + BASE + 'img/sticker/stars/cheer.png" alt="加油">' +
+              '<img src="' + BASE + 'img/sticker/stars/thanks.png" alt="谢谢">' +
+            '</div>' +
+            '<img src="' + CONFIG.stickerQr + '" alt="微信表情包二维码">' +
+            '<p class="promo-cell-tip">' + CONFIG.stickerTip + '</p>' +
+          '</div>' +
+        '</div>' +
+        '<p class="promo-thanks">感谢每一份支持 🙏</p>' +
+      '</div>';
+    document.body.appendChild(ov);
+    document.getElementById("promoClose").addEventListener("click", closeModal);
+    ov.addEventListener("click", function (e) { if (e.target === ov) closeModal(); });
   }
-  function resolve(hash){
-    var q = norm((hash || '').replace(/^#/, ''));
-    if (!q) return null;
-    var cards = [].slice.call(document.querySelectorAll('article.skill'));
-    for (var i = 0; i < cards.length; i++) {
-      var id = norm(cards[i].id), name = norm(cards[i].getAttribute('data-name') || '');
-      if (q === id || q === name) return cards[i];
-    }
-    for (i = 0; i < cards.length; i++) {
-      var id2 = norm(cards[i].id), name2 = norm(cards[i].getAttribute('data-name') || '');
-      if (q.indexOf(id2) > -1 || q.indexOf(name2) > -1 || id2.indexOf(q) > -1 || name2.indexOf(q) > -1) return cards[i];
-    }
-    return null;
-  }
-  function focusSkill(el){
-    if (!el) return;
-    el.setAttribute('tabindex', '-1');
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash');
-    setTimeout(function(){ el.focus({ preventScroll: true }); }, 400);
-  }
-  function start(){
-    var initial = resolve(location.hash);
-    if (initial) focusSkill(initial);
-  }
-  // 等浏览器完成原生锚点滚动后再定位，避免 smooth scroll 被 load 时的滚动重置打断
-  if (document.readyState === 'complete') setTimeout(start, 0);
-  else window.addEventListener('load', function(){ setTimeout(start, 50); });
-  window.addEventListener('hashchange', function(){ focusSkill(resolve(location.hash)); });
 
-  // 每张卡片生成「复制直达链接」按钮
-  [].slice.call(document.querySelectorAll('.dl-row')).forEach(function(row){
-    var card = row.closest('article.skill');
-    var name = card.getAttribute('data-name') || card.id;
-    var btn = document.createElement('button');
-    btn.className = 'btn btn-share';
-    btn.type = 'button';
-    btn.textContent = '🔗 复制直达链接';
-    btn.onclick = function(){
-      var url = location.origin + location.pathname + '#' + encodeURIComponent(name);
-      navigator.clipboard.writeText(url).then(function(){
-        btn.textContent = '✅ 已复制';
-        setTimeout(function(){ btn.textContent = '🔗 复制直达链接'; }, 1600);
-      });
-    };
-    row.appendChild(btn);
-  });
+  function openModal() {
+    injectModal();
+    var ov = document.getElementById("promoOverlay");
+    if (ov) ov.classList.add("show");
+  }
+  function closeModal() {
+    var ov = document.getElementById("promoOverlay");
+    if (ov) ov.classList.remove("show");
+  }
+  window.Promo = { open: openModal, close: closeModal };
+
+  function init() {
+    var btn = document.getElementById("promoAboutBtn");
+    if (btn) btn.addEventListener("click", openModal);
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
 })();
 </script>
+
+<script>
+(function(){
+  "use strict";
+  // 抖音评论 skill 部署提示词复制
+  var copyBtns = document.querySelectorAll('.copy-btn[data-copy]');
+  var toast = document.getElementById('toast');
+
+  function showToast(msg){
+    if(msg) toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(function(){ toast.classList.remove('show'); }, 2000);
+  }
+
+  copyBtns.forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      if(btn.classList.contains('copied')) return;   // 防重复点击
+      var key = btn.getAttribute('data-copy');
+      var box = document.getElementById('prompt-' + key);
+      if(!box) return;
+      var text = box.textContent.replace(/^把下面这段发给你的 AI agent：/, '').trim();
+      var labelEl = btn.querySelector('.copy-label');
+      var origLabel = labelEl ? labelEl.textContent : '';
+
+      function done(){
+        if(labelEl){ labelEl.textContent = '已复制 ✓'; }
+        btn.classList.add('copied');
+        showToast('✅ 已复制！去发给你的 AI 吧');
+        setTimeout(function(){
+          if(labelEl){ labelEl.textContent = origLabel; }
+          btn.classList.remove('copied');
+        }, 2000);
+      }
+
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(done).catch(function(){ fallbackCopy(text, done); });
+      } else {
+        fallbackCopy(text, done);
+      }
+    });
+  });
+
+  function fallbackCopy(text, cb){
+    try{
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed'; ta.style.top = '0'; ta.style.left = '0'; ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.focus(); ta.select();
+      var ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+      if(ok){ cb(); } else { showToast('❌ 复制失败，请手动长按选中下方提示词'); }
+    }catch(err){ showToast('❌ 复制失败：' + err.message); }
+  }
+
+  // —— 更新记录面板：展开/收起 + URL hash 自动展开 ——
+  // —— 更新记录模态框：弹出/关闭 + 点遮罩关闭 + ESC 关闭 ——
+  var panel = document.getElementById('changelogPanel');
+  var toggle = document.getElementById('changelogToggle');
+  var closeBtn = document.getElementById('changelogClose');
+
+  function openChangelog(){
+    if(!panel) return;
+    panel.classList.add('show');
+    if(toggle) toggle.setAttribute('aria-expanded', 'true');
+  }
+  function closeChangelog(){
+    if(!panel) return;
+    panel.classList.remove('show');
+    if(toggle) toggle.setAttribute('aria-expanded', 'false');
+  }
+
+  if(toggle && panel){
+    toggle.addEventListener('click', openChangelog);
+    if(closeBtn) closeBtn.addEventListener('click', closeChangelog);
+    // 点遮罩关闭
+    panel.addEventListener('click', function(e){ if(e.target === panel) closeChangelog(); });
+    // ESC 关闭
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeChangelog(); });
+    // URL 带 #changelog 时自动弹出
+    if(location.hash === '#changelog' || location.hash === '#更新记录'){
+      setTimeout(openChangelog, 100);
+    }
+  }
+})();
+</script>
+
 </body>
 </html>
