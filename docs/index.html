@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="no-js">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>document.documentElement.classList.remove('no-js');</script>
 <title>捞鱼妙妙工具 · Agent Skills 收录站</title>
 <meta name="description" content="捞鱼（lyzbcy）的 Agent Skills 收录站。每个 skill 独立打包，按需下载。本页可整页发给 AI，AI 会据此判断你需要哪个 skill 并自行下载。">
 <meta name="author" content="捞鱼工作室 lyzbcy">
@@ -13,8 +14,9 @@
     --code-bg:rgba(110,118,129,.18);
   }
   *{box-sizing:border-box}
+  code{overflow-wrap:anywhere} /* 长直链 URL 在窄屏可断行，防横向溢出 */
   body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;line-height:1.7;-webkit-font-smoothing:antialiased}
-  .wrap{max-width:880px;margin:0 auto;padding:0 20px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
   /* HERO */
   header.hero{padding:72px 0 48px;border-bottom:1px solid var(--border)}
   .hero h1{font-size:2.6rem;margin:0 0 8px;letter-spacing:-.5px}
@@ -29,10 +31,61 @@
   .nav-dl .secondary{background:var(--card);border:1px solid var(--border);color:var(--text)}
   /* SECTIONS */
   section{padding:48px 0;border-bottom:1px solid var(--border)}
+  #skills{scroll-margin-top:20px}
   h2{font-size:1.6rem;margin:0 0 8px;display:flex;align-items:center;gap:10px}
   h2 .num{color:var(--accent);font-size:1rem;opacity:.7}
   .lede{color:var(--muted);margin:0 0 28px;font-size:1.02rem}
-  /* SKILL CARD */
+
+  /* ============ 商品化：搜索 + 网格 + 分页 ============ */
+  .shop-toolbar{display:flex;gap:14px;align-items:center;margin-bottom:22px;flex-wrap:wrap}
+  .search-box{position:relative;flex:1;min-width:230px;max-width:380px}
+  #skill-search{width:100%;background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:10px;padding:10px 38px 10px 40px;font-size:.95rem;font-family:inherit;transition:border-color .15s,box-shadow .15s}
+  #skill-search:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(88,166,255,.15)}
+  .search-box .mag{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:1rem;pointer-events:none}
+  .search-clear{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);font-size:1rem;cursor:pointer;padding:4px 6px;border-radius:6px;display:none;line-height:1}
+  .search-clear:hover{color:var(--text);background:var(--code-bg)}
+  .search-box.has-value .search-clear{display:block}
+  .shop-count{color:var(--muted);font-size:.9rem}
+
+  .shop-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  @media(max-width:900px){.shop-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:600px){.shop-grid{grid-template-columns:1fr}}
+
+  .card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;display:flex;flex-direction:column;transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease;animation:card-in .3s ease both;animation-delay:calc(var(--i,0)*35ms)}
+  @keyframes card-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .card:hover,.card:focus-visible{transform:translateY(-4px);border-color:var(--accent);box-shadow:0 10px 28px rgba(88,166,255,.16);outline:none}
+
+  /* 卡面大图（banner）：默认渐变 + 大 emoji 水印；data-banner 有图时自动用图 */
+  .banner-art{position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .banner-art .big{font-size:3.1rem;line-height:1;position:relative;z-index:1;filter:drop-shadow(0 5px 14px rgba(0,0,0,.45))}
+  .banner-art .mark{position:absolute;right:-12px;bottom:-24px;font-size:6.5rem;line-height:1;opacity:.15;user-select:none}
+  .banner-art::after{content:'';position:absolute;inset:0;background:radial-gradient(140px 90px at 72% 16%,rgba(255,255,255,.18),transparent 70%)}
+  .card-banner{height:118px;border-bottom:1px solid var(--border)}
+  .card-banner.img .big,.card-banner.img .mark{display:none}
+
+  .card-body{padding:14px 16px 16px;display:flex;flex-direction:column;flex:1}
+  .card-title-row{display:flex;align-items:flex-start;gap:8px}
+  .card-title-row .icon{font-size:1.25rem;line-height:1.5;flex:none}
+  .card-title-row h3{font-size:1.02rem;margin:0;flex:1;min-width:0;overflow-wrap:anywhere}
+  .card-ver{display:inline-block;color:var(--muted);font-size:.74rem;background:var(--code-bg);padding:2px 8px;border-radius:10px;margin-top:8px;align-self:flex-start}
+  .card-tag{color:var(--muted);font-size:.88rem;margin:10px 0 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;flex:1}
+  .card-more{margin-top:12px;color:var(--accent);font-size:.85rem;font-weight:600}
+
+  .shop-empty{text-align:center;color:var(--muted);padding:56px 0 20px;font-size:1rem}
+
+  .pager{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:30px;flex-wrap:wrap}
+  .pager button{background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:8px;min-width:38px;height:38px;padding:0 12px;cursor:pointer;font-size:.92rem;font-family:inherit;transition:border-color .12s,color .12s}
+  .pager button:hover:not(:disabled):not(.cur){border-color:var(--accent);color:var(--accent)}
+  .pager button.cur{background:var(--accent);border-color:var(--accent);color:#000;font-weight:700}
+  .pager button:disabled{opacity:.35;cursor:default}
+  .pager .dots{color:var(--muted);padding:0 2px}
+
+  /* 详情数据源：默认隐藏，无 JS 时还原为长卡列表（AI / 爬虫始终可读源码） */
+  .skill-detail{display:none}
+  .no-js .skill-detail{display:block}
+  .no-js .shop-toolbar,.no-js .shop-grid,.no-js .shop-empty,.no-js .pager{display:none}
+
+  /* SKILL CARD（长卡样式：无 JS 降级 + 弹窗详情复用） */
   .skill{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:28px 28px 24px;margin-bottom:28px}
   .skill-head{display:flex;align-items:center;gap:14px;margin-bottom:6px;flex-wrap:wrap}
   .skill-head .emoji{font-size:2rem}
@@ -50,6 +103,25 @@
   .btn:hover{transform:translateY(-1px)}
   .btn-zip{background:var(--green);color:#000}
   .btn-src{background:transparent;border:1px solid var(--border);color:var(--text)}
+  .btn-share{background:var(--accent-soft);border:1px solid var(--accent);color:var(--accent);cursor:pointer;font-family:inherit}
+
+  /* 详情弹窗（[hidden] 必须显式赢过 display:flex，否则遮罩常显） */
+  body.modal-open{overflow:hidden}
+  .modal-mask[hidden]{display:none}
+  .modal-mask{position:fixed;inset:0;background:rgba(1,4,9,.78);backdrop-filter:blur(4px);z-index:100;display:flex;align-items:flex-start;justify-content:center;padding:4vh 16px;overflow-y:auto}
+  .modal{background:var(--card);border:1px solid var(--border);border-radius:16px;max-width:760px;width:100%;margin:auto 0;position:relative;animation:modal-pop .2s ease;overflow:hidden}
+  @keyframes modal-pop{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .modal-banner{height:150px;border-bottom:1px solid var(--border)}
+  .modal-banner .big{font-size:3.6rem}
+  .modal-banner.img .big,.modal-banner.img .mark{display:none}
+  .modal-close{position:absolute;top:12px;right:12px;z-index:2;width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:rgba(13,17,23,.65);color:var(--text);font-size:1rem;cursor:pointer;transition:border-color .12s}
+  .modal-close:hover{border-color:var(--accent);color:var(--accent)}
+  .modal-body{padding:22px 28px 28px}
+  .modal-detail{background:none;border:none;padding:0;margin:0}
+  .modal-detail .skill-head .emoji{display:none} /* banner 已有大图，标题行只留名称和标签 */
+  .modal-detail .dl-row{border-top:none;padding-top:8px}
+  @media(max-width:600px){.modal-body{padding:18px 18px 22px}.modal-banner{height:118px}.modal-banner .big{font-size:2.8rem}}
+
   /* AI block */
   .ai-block{background:linear-gradient(135deg,rgba(88,166,255,.08),rgba(63,185,80,.05));border:1px solid var(--border);border-radius:14px;padding:24px}
   .ai-block h3{margin:0 0 10px;font-size:1.15rem}
@@ -61,10 +133,8 @@
   footer a:hover{color:var(--accent)}
   .copybtn{margin-top:14px;background:var(--card);border:1px solid var(--border);color:var(--text);padding:8px 16px;border-radius:8px;cursor:pointer;font-size:.88rem;font-family:inherit}
   .copybtn:hover{border-color:var(--accent)}
-  /* 锚点直达：#工具名 定位后高亮聚焦 */
   .skill.flash{border-color:var(--accent);animation:anchor-fade 3s ease forwards}
   @keyframes anchor-fade{0%{box-shadow:0 0 0 4px rgba(88,166,255,.35)}70%{box-shadow:0 0 0 6px rgba(88,166,255,.12)}100%{box-shadow:0 0 0 0 transparent}}
-  .btn-share{background:var(--accent-soft);border:1px solid var(--accent);color:var(--accent);cursor:pointer;font-family:inherit}
   @media(max-width:600px){.hero h1{font-size:2rem}.skill{padding:22px}}
 </style>
 </head>
@@ -89,13 +159,30 @@
   <p class="lede">这里收录的是捞鱼个人打磨出来、自己也天天在用的 Agent Skills。不是大而全的工具箱，是几个被反复验证、能真正落地的 skill。每个 skill 单独打包成 zip，挂在 GitHub Releases 上——你或你的朋友想用哪个，就下哪个，不用全量下载。</p>
 </section>
 
-<!-- SKILLS -->
+<!-- SKILLS：商品化网格 -->
 <section id="skills">
-  <h2><span class="num">02</span> 收录的 Skills（6 个）</h2>
-  <p class="lede">下面每个 skill 都写了：它是干嘛的、适合什么场景、怎么用、怎么装、在哪下载。</p>
+  <h2><span class="num">02</span> 收录的 Skills（<span id="skill-count">6</span> 个）</h2>
+  <p class="lede">点开卡片看详情：它是干嘛的、适合什么场景、怎么用、怎么装、在哪下载。skill 越收越多，可以用搜索和翻页找。</p>
+
+  <div class="shop-toolbar">
+    <div class="search-box" id="search-box">
+      <span class="mag">🔍</span>
+      <input id="skill-search" type="search" placeholder="搜关键词，如：公众号 / 地图 / 提示词…" autocomplete="off" aria-label="搜索 skill">
+      <button class="search-clear" id="search-clear" type="button" aria-label="清空搜索">✕</button>
+    </div>
+    <span class="shop-count" id="shop-count"></span>
+  </div>
+
+  <div class="shop-grid" id="shop-grid"></div>
+  <div class="shop-empty" id="shop-empty" hidden>😕 没有找到匹配的 skill，换个关键词试试</div>
+  <nav class="pager" id="pager" aria-label="skill 分页"></nav>
+
+  <noscript><p class="lede" style="margin-top:24px">当前浏览器未启用 JavaScript，下面以列表展示全部 skill 的完整详情。</p></noscript>
+
+  <!-- ====== 详情数据源（静态保留，页面源码对 AI / 爬虫始终完整可读；JS 读取它渲染上方网格） ====== -->
 
   <!-- SKILL 1: study-map -->
-  <article class="skill" id="study-map" data-name="lyzbcy-study-map">
+  <article class="skill skill-detail" id="study-map" data-name="lyzbcy-study-map" data-grad="linear-gradient(135deg,#0d3b66 0%,#1f6feb 58%,#58a6ff 100%)">
     <div class="skill-head">
       <span class="emoji">🗺️</span>
       <h3>lyzbcy-study-map</h3>
@@ -138,7 +225,7 @@
   </article>
 
   <!-- SKILL 2: 最后的1% -->
-  <article class="skill" id="last-1-percent" data-name="lyzbcy-最后的1%">
+  <article class="skill skill-detail" id="last-1-percent" data-name="lyzbcy-最后的1%" data-grad="linear-gradient(135deg,#6e1e1e 0%,#c9302c 58%,#f85149 100%)">
     <div class="skill-head">
       <span class="emoji">🎯</span>
       <h3>lyzbcy-最后的1%</h3>
@@ -177,7 +264,7 @@
   </article>
 
   <!-- SKILL 3: 视频生成提示词润色 -->
-  <article class="skill" id="video-prompt-polish" data-name="lyzbcy-视频生成提示词润色">
+  <article class="skill skill-detail" id="video-prompt-polish" data-name="lyzbcy-视频生成提示词润色" data-grad="linear-gradient(135deg,#3b1d78 0%,#8957e5 58%,#bc8cff 100%)">
     <div class="skill-head">
       <span class="emoji">🎬</span>
       <h3>lyzbcy-视频生成提示词润色</h3>
@@ -219,7 +306,7 @@
   </article>
 
   <!-- SKILL 4: 微信公众号全自动运营 -->
-  <article class="skill" id="wechat-autopublish" data-name="lyzbcy-wechat-autopublish">
+  <article class="skill skill-detail" id="wechat-autopublish" data-name="lyzbcy-wechat-autopublish" data-grad="linear-gradient(135deg,#0e4429 0%,#196c2e 58%,#3fb950 100%)">
     <div class="skill-head">
       <span class="emoji">📣</span>
       <h3>lyzbcy-wechat-autopublish</h3>
@@ -261,7 +348,7 @@
   </article>
 
   <!-- SKILL 5: GLM-5.3 ZCode 隔离评测 -->
-  <article class="skill" id="glm53-zcode-eval" data-name="lyzbcy-glm53-zcode-eval">
+  <article class="skill skill-detail" id="glm53-zcode-eval" data-name="lyzbcy-glm53-zcode-eval" data-grad="linear-gradient(135deg,#08555e 0%,#0aa1a1 58%,#39c5cf 100%)">
     <div class="skill-head">
       <span class="emoji">🧪</span>
       <h3>lyzbcy-glm53-zcode-eval</h3>
@@ -306,7 +393,7 @@
   </article>
 
   <!-- SKILL 6: 小红书评论自动回复 -->
-  <article class="skill" id="xhs-comment-check" data-name="lyzbcy-xhs-comment-check">
+  <article class="skill skill-detail" id="xhs-comment-check" data-name="lyzbcy-xhs-comment-check" data-grad="linear-gradient(135deg,#6e1226 0%,#d13438 58%,#ff7b72 100%)">
     <div class="skill-head">
       <span class="emoji">📕</span>
       <h3>lyzbcy-xhs-comment-check</h3>
@@ -354,8 +441,8 @@
     <h3>这整页可以直接发给 AI</h3>
     <p>本页是<b>语义化、对 AI 友好</b>的介绍页。你可以直接把这一整页（或它的链接）发给你的 AI 助手，AI 就能读懂：</p>
     <p>· 这里收录了 <code>6 个 skill</code>，分别是 <code>lyzbcy-study-map</code>（理解地图）、<code>lyzbcy-最后的1%</code>（极限执行）、<code>lyzbcy-视频生成提示词润色</code>（分镜润色）、<code>lyzbcy-wechat-autopublish</code>（公众号全自动运营）、<code>lyzbcy-glm53-zcode-eval</code>（GLM-5.3 ZCode 隔离评测）和 <code>lyzbcy-xhs-comment-check</code>（小红书评论全自动回复）。<br>
-       · 每个 skill 的用途、适用场景、用法、安装方式、下载直链都在上方写清楚了。<br>
-       · 每个 skill 都有<b>直达链接</b>：在本页 URL 后加 <code>#工具名</code>（如 <code>#lyzbcy-视频生成提示词润色</code>）或 <code>#英文id</code>（如 <code>#video-prompt-polish</code>），打开即自动滚动到该工具并高亮；每张卡片的「🔗 复制直达链接」按钮可直接复制。<br>
+       · 每个 skill 的用途、适用场景、用法、安装方式、下载直链都在各 skill 的详情里写清楚了（页面上点卡片即可查看，页面源码同样包含全部信息）。<br>
+       · 每个 skill 都有<b>直达链接</b>：在本页 URL 后加 <code>#工具名</code>（如 <code>#lyzbcy-视频生成提示词润色</code>）或 <code>#英文id</code>（如 <code>#video-prompt-polish</code>），打开即自动弹出该工具的详情；详情弹窗里的「🔗 复制直达链接」按钮可直接复制。<br>
        · AI 可以据此判断你当前需要哪个 skill，并<b>自行下载对应的 zip 安装</b>。</p>
     <p><b>GLM-5.3 ZCode 隔离评测默认关闭：</b>它可能影响通用任务的灵活性。AI 认为可能需要时必须先询问用户；只有用户把 <code>请使用 LYZBCY 虚拟环境测试</code> 作为明确启用指令后才能运行，引用、讨论或近义表达都不算授权。</p>
     <p style="color:var(--muted);font-size:.92rem">下载链接是 GitHub Releases 直链：</p>
@@ -382,6 +469,15 @@
 
 </div>
 
+<!-- 详情弹窗 -->
+<div class="modal-mask" id="modal-mask" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <button class="modal-close" id="modal-close" type="button" aria-label="关闭详情">✕</button>
+    <div class="modal-banner banner-art" id="modal-banner"></div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
 <script>
 // release 直链填入（push 后由部署脚本/手动更新 tag）
 const RELEASES = {
@@ -389,19 +485,19 @@ const RELEASES = {
   "last-1-percent": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.1.0/lyzbcy-last-1-percent.zip",
   "video-prompt-polish": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.4.0/lyzbcy-video-prompt-polish.zip",
   "wechat-autopublish": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.4.0/lyzbcy-wechat-autopublish.zip",
-  "glm53-zcode-eval": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.5.1/lyzbcy-glm53-zcode-eval.zip"
+  "glm53-zcode-eval": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.5.1/lyzbcy-glm53-zcode-eval.zip",
+  "xhs-comment-check": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.6.0/lyzbcy-xhs-comment-check.zip"
 };
-document.getElementById('dl-study-map').href = RELEASES['study-map'];
-document.getElementById('dl-last-1-percent').href = RELEASES['last-1-percent'];
-document.getElementById('dl-video-prompt-polish').href = RELEASES['video-prompt-polish'];
-document.getElementById('dl-wechat-autopublish').href = RELEASES['wechat-autopublish'];
-document.getElementById('dl-glm53-zcode-eval').href = RELEASES['glm53-zcode-eval'];
+for (var rid in RELEASES) {
+  var el = document.getElementById('dl-' + rid);
+  if (el) el.href = RELEASES[rid];
+}
 
 // 复制给 AI 的纯文本摘要
 function copyForAI(){
   const txt = `【捞鱼妙妙工具 · Agent Skills 收录站】
 
-这里收录捞鱼（lyzbcy）的个人 Agent Skills，每个 skill 独立打包，按需下载。共 5 个 skill：
+这里收录捞鱼（lyzbcy）的个人 Agent Skills，每个 skill 独立打包，按需下载。共 6 个 skill：
 
 1) lyzbcy-study-map（理解地图生成器）
    - 用途：把技术长文/访谈/论文/跨学科材料，生成有原文依据、能追问、能复述的交互式 HTML 理解地图；也适用于课程复习提纲、历年真题、计算题手把手演示。
@@ -442,65 +538,273 @@ function copyForAI(){
    - 安装：解压后把整个文件夹放到 agent skills 目录（含 SKILL.md）。安装、下载和读取都不等于授权启用。
    - 下载：${RELEASES['glm53-zcode-eval']}
 
+6) lyzbcy-xhs-comment-check（小红书评论全自动回复）
+   - 用途：服务器无人值守运行（cron 每天 2 次），自动回复小红书笔记下的新评论：消息通知页采集 → md5 稳定去重（绝不重复回复）→ LLM 按人设生成回复（多条一次打包调用，输入 token 省 ~68%）→ 发送后核验，带提示注入防护、垃圾评论过滤、审计日志、登录失效自动报告，产出中文报告。
+   - 适合：有小红书账号、想让评论区保持活跃的博主；有一台能跑 Playwright 的服务器（Linux + xvfb）；想接自己的 LLM（任意 OpenAI 兼容接口）。不适合不接受任何自动回复行为的账号、想自动回复私信的人。
+   - 用法示例："帮我部署小红书评论自动回复：扫码登录后先 dry-run 给我看回复计划，确认后再小批量真实发送 3 条。"
+   - 安装：解压后放到 agent skills 目录 → pip3 install -r requirements.txt → cp persona.example.json persona.json 填人设 → xvfb-run -a python3 login_once.py 扫码登录。
+   - 下载：${RELEASES['xhs-comment-check']}
+
 仓库：https://github.com/lyzbcy/laoyu-miaomiao-tools
 介绍页：https://lyzbcy.github.io/laoyu-miaomiao-tools/`;
   navigator.clipboard.writeText(txt).then(()=>{alert('已复制！直接粘贴给你的 AI 助手即可。')});
 }
 
-// —— 锚点直达：# 后接 skill 名称或英文 id 均可定位、滚动并高亮 ——
+// ============ 商品化：网格 + 分页 + 搜索 + 详情弹窗 ============
+// 数据源是上方隐藏的 article.skill-detail（单一数据源：文案只在 HTML 里维护一份）
 (function(){
+  var PAGE_SIZE = 9;
+
+  var grid = document.getElementById('shop-grid');
+  var pager = document.getElementById('pager');
+  var emptyBox = document.getElementById('shop-empty');
+  var searchInput = document.getElementById('skill-search');
+  var searchBox = document.getElementById('search-box');
+  var searchClear = document.getElementById('search-clear');
+  var countEl = document.getElementById('shop-count');
+  var countTitle = document.getElementById('skill-count');
+  var mask = document.getElementById('modal-mask');
+  var modalBanner = document.getElementById('modal-banner');
+  var modalBody = document.getElementById('modal-body');
+  var closeBtn = document.getElementById('modal-close');
+
+  // —— 从静态详情卡提取数据（emoji / 标签 / 简介直接读 DOM，不重复维护） ——
+  var SKILLS = [].slice.call(document.querySelectorAll('article.skill-detail')).map(function(a){
+    return {
+      id: a.id,
+      name: a.getAttribute('data-name') || a.id,
+      grad: a.getAttribute('data-grad') || 'linear-gradient(135deg,#21262d,#30363d)',
+      banner: a.getAttribute('data-banner') || '',   // 预留：以后填卡面图 URL
+      icon: a.getAttribute('data-icon') || '',       // 预留：以后填小图 URL
+      emoji: (a.querySelector('.skill-head .emoji') || {}).textContent || '🧩',
+      ver: (a.querySelector('.skill-head .ver') || {}).textContent || '',
+      tagline: (a.querySelector('.skill-tag') || {}).textContent || '',
+      el: a
+    };
+  });
+  if (countTitle) countTitle.textContent = SKILLS.length;
+
+  var filtered = SKILLS.slice();
+  var page = 1;
+
+  function totalPages(){ return Math.max(1, Math.ceil(filtered.length / PAGE_SIZE)); }
+  function clampPage(){ page = Math.min(Math.max(1, page), totalPages()); }
+
+  // —— banner（卡面大图）：有图用图，没图用渐变 + emoji 水印 ——
+  function fillBanner(node, s, cls){
+    node.className = cls + ' banner-art';
+    node.innerHTML = '<span class="mark">' + s.emoji + '</span><span class="big">' + s.emoji + '</span>';
+    if (s.banner) {
+      node.classList.add('img');
+      node.style.background = 'center/cover no-repeat url("' + s.banner + '")';
+    } else {
+      node.style.background = s.grad;
+    }
+  }
+
+  // —— 网格渲染 ——
+  function renderGrid(){
+    grid.innerHTML = '';
+    var start = (page - 1) * PAGE_SIZE;
+    var slice = filtered.slice(start, start + PAGE_SIZE);
+    slice.forEach(function(s, i){
+      var card = document.createElement('article');
+      card.className = 'card';
+      card.tabIndex = 0;
+      card.setAttribute('role', 'button');
+      card.setAttribute('aria-label', '查看 ' + s.name + ' 详情');
+      card.style.setProperty('--i', i);
+      var banner = document.createElement('div');
+      fillBanner(banner, s, 'card-banner');
+      card.appendChild(banner);
+      var body = document.createElement('div');
+      body.className = 'card-body';
+      var iconHtml = s.icon ? '<img class="icon" src="' + s.icon + '" alt="" width="22" height="22">' : '<span class="icon">' + s.emoji + '</span>';
+      body.innerHTML =
+        '<div class="card-title-row">' + iconHtml + '<h3>' + s.name + '</h3></div>' +
+        (s.ver ? '<span class="card-ver">' + s.ver + '</span>' : '') +
+        '<p class="card-tag">' + s.tagline + '</p>' +
+        '<div class="card-more">查看详情 →</div>';
+      card.appendChild(body);
+      card.addEventListener('click', function(){ openModal(s); });
+      card.addEventListener('keydown', function(e){
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(s); }
+      });
+      grid.appendChild(card);
+    });
+    emptyBox.hidden = filtered.length !== 0;
+    var total = totalPages();
+    countEl.textContent = filtered.length === SKILLS.length
+      ? '共 ' + SKILLS.length + ' 个'
+      : '匹配 ' + filtered.length + ' / ' + SKILLS.length + ' 个';
+  }
+
+  // —— 分页渲染（页码多时窗口化省略） ——
+  function pageList(p, tp){
+    var set = [1, tp, p, p - 1, p + 1].filter(function(n){ return n >= 1 && n <= tp; });
+    var uniq = []; set.sort(function(a,b){return a-b;}).forEach(function(n){ if (uniq.indexOf(n) < 0) uniq.push(n); });
+    var out = [], last = 0;
+    uniq.forEach(function(n){
+      if (n - last > 1) out.push('…');
+      out.push(n); last = n;
+    });
+    return out;
+  }
+  function renderPager(){
+    var tp = totalPages();
+    pager.innerHTML = '';
+    if (tp <= 1) return;
+    function mk(txt, target, opts){
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = txt;
+      if (opts && opts.dots) { b.className = 'dots'; b.disabled = true; b.setAttribute('aria-hidden','true'); b.style.border='none';b.style.background='none'; }
+      else if (opts && opts.cur) { b.className = 'cur'; b.disabled = true; b.setAttribute('aria-current','page'); }
+      else {
+        b.addEventListener('click', function(){ goToPage(target); });
+        if (opts && opts.prev) b.setAttribute('aria-label','上一页');
+        if (opts && opts.next) b.setAttribute('aria-label','下一页');
+      }
+      pager.appendChild(b);
+    }
+    mk('‹', page - 1, { prev: true });
+    pageList(page, tp).forEach(function(it){
+      if (it === '…') mk('…', 0, { dots: true });
+      else mk(String(it), it, it === page ? { cur: true } : null);
+    });
+    mk('›', page + 1, { next: true });
+    var prev = pager.firstChild, next = pager.lastChild;
+    prev.disabled = page <= 1;
+    next.disabled = page >= tp;
+  }
+  function goToPage(p){
+    page = p; clampPage();
+    renderGrid(); renderPager();
+    document.getElementById('skills').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // —— 搜索 ——
+  function applyFilter(){
+    var q = (searchInput.value || '').trim().toLowerCase();
+    if (!q) { filtered = SKILLS.slice(); }
+    else {
+      filtered = SKILLS.filter(function(s){
+        var hay = [s.name, s.id, s.ver, s.tagline, s.el.textContent].join(' ').toLowerCase();
+        return hay.indexOf(q) > -1;
+      });
+    }
+    page = 1;
+    renderGrid(); renderPager();
+  }
+  searchInput.addEventListener('input', function(){
+    searchBox.classList.toggle('has-value', !!searchInput.value);
+    applyFilter();
+  });
+  searchClear.addEventListener('click', function(){
+    searchInput.value = '';
+    searchBox.classList.remove('has-value');
+    applyFilter();
+    searchInput.focus();
+  });
+
+  // —— 详情弹窗 ——
+  var lastFocus = null;
+  function openModal(s){
+    // 克隆静态详情（去掉 id，避免与源重复）
+    var clone = s.el.cloneNode(true);
+    clone.className = 'modal-detail';
+    clone.removeAttribute('id');
+    [].slice.call(clone.querySelectorAll('[id]')).forEach(function(n){ n.removeAttribute('id'); });
+    modalBody.innerHTML = '';
+    modalBody.appendChild(clone);
+    fillBanner(modalBanner, s, 'modal-banner');
+
+    // 弹窗内的「复制直达链接」
+    var row = clone.querySelector('.dl-row');
+    if (row) {
+      var btn = document.createElement('button');
+      btn.className = 'btn btn-share';
+      btn.type = 'button';
+      btn.textContent = '🔗 复制直达链接';
+      btn.onclick = function(){
+        var url = location.origin + location.pathname + '#' + encodeURIComponent(s.name);
+        navigator.clipboard.writeText(url).then(function(){
+          btn.textContent = '✅ 已复制';
+          setTimeout(function(){ btn.textContent = '🔗 复制直达链接'; }, 1600);
+        });
+      };
+      row.appendChild(btn);
+    }
+
+    lastFocus = document.activeElement;
+    mask.hidden = false;
+    document.body.classList.add('modal-open');
+    closeBtn.focus();
+    // 同步 URL 锚点（replaceState 不触发 hashchange / 不跳动）
+    try { history.replaceState(null, '', '#' + encodeURIComponent(s.name)); } catch(e) {}
+  }
+  function closeModal(){
+    mask.hidden = true;
+    document.body.classList.remove('modal-open');
+    try { history.replaceState(null, '', location.pathname + location.search); } catch(e) {}
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+  closeBtn.addEventListener('click', closeModal);
+  mask.addEventListener('click', function(e){ if (e.target === mask) closeModal(); });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && !mask.hidden) closeModal();
+  });
+
+  // —— 锚点直达：#工具名 / #英文id → 翻到所在页并弹出详情 ——
   function norm(s){
     s = s || '';
     try { s = decodeURIComponent(s); } catch(e) {}
     return s.trim().toLowerCase();
   }
-  function resolve(hash){
+  function resolveSkill(hash){
     var q = norm((hash || '').replace(/^#/, ''));
-    if (!q) return null;
-    var cards = [].slice.call(document.querySelectorAll('article.skill'));
-    for (var i = 0; i < cards.length; i++) {
-      var id = norm(cards[i].id), name = norm(cards[i].getAttribute('data-name') || '');
-      if (q === id || q === name) return cards[i];
+    if (!q || q === 'skills') return null;
+    var i, id, name;
+    for (i = 0; i < SKILLS.length; i++) {
+      id = norm(SKILLS[i].id); name = norm(SKILLS[i].name);
+      if (q === id || q === name) return SKILLS[i];
     }
-    for (i = 0; i < cards.length; i++) {
-      var id2 = norm(cards[i].id), name2 = norm(cards[i].getAttribute('data-name') || '');
-      if (q.indexOf(id2) > -1 || q.indexOf(name2) > -1 || id2.indexOf(q) > -1 || name2.indexOf(q) > -1) return cards[i];
+    for (i = 0; i < SKILLS.length; i++) {
+      id = norm(SKILLS[i].id); name = norm(SKILLS[i].name);
+      if (q.indexOf(id) > -1 || q.indexOf(name) > -1 || id.indexOf(q) > -1 || name.indexOf(q) > -1) return SKILLS[i];
     }
     return null;
   }
-  function focusSkill(el){
-    if (!el) return;
-    el.setAttribute('tabindex', '-1');
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash');
-    setTimeout(function(){ el.focus({ preventScroll: true }); }, 400);
+  function handleHash(scrollTo){
+    var s = resolveSkill(location.hash);
+    if (!s) return;
+    // 若当前搜索过滤把它滤掉了，先清空搜索
+    if (filtered.indexOf(s) < 0) {
+      searchInput.value = '';
+      searchBox.classList.remove('has-value');
+      filtered = SKILLS.slice();
+    }
+    page = Math.floor(filtered.indexOf(s) / PAGE_SIZE) + 1;
+    renderGrid(); renderPager();
+    if (scrollTo) document.getElementById('skills').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setTimeout(function(){ openModal(s); }, scrollTo ? 350 : 0);
   }
-  function start(){
-    var initial = resolve(location.hash);
-    if (initial) focusSkill(initial);
-  }
-  // 等浏览器完成原生锚点滚动后再定位，避免 smooth scroll 被 load 时的滚动重置打断
-  if (document.readyState === 'complete') setTimeout(start, 0);
-  else window.addEventListener('load', function(){ setTimeout(start, 50); });
-  window.addEventListener('hashchange', function(){ focusSkill(resolve(location.hash)); });
+  window.addEventListener('hashchange', function(){ handleHash(false); });
+  // 等浏览器完成原生锚点滚动后再定位，避免被 load 时的滚动重置打断
+  if (document.readyState === 'complete') setTimeout(function(){ handleHash(true); }, 0);
+  else window.addEventListener('load', function(){ setTimeout(function(){ handleHash(true); }, 50); });
 
-  // 每张卡片生成「复制直达链接」按钮
-  [].slice.call(document.querySelectorAll('.dl-row')).forEach(function(row){
-    var card = row.closest('article.skill');
-    var name = card.getAttribute('data-name') || card.id;
-    var btn = document.createElement('button');
-    btn.className = 'btn btn-share';
-    btn.type = 'button';
-    btn.textContent = '🔗 复制直达链接';
-    btn.onclick = function(){
-      var url = location.origin + location.pathname + '#' + encodeURIComponent(name);
-      navigator.clipboard.writeText(url).then(function(){
-        btn.textContent = '✅ 已复制';
-        setTimeout(function(){ btn.textContent = '🔗 复制直达链接'; }, 1600);
-      });
-    };
-    row.appendChild(btn);
-  });
+  // —— 初始渲染 ——
+  renderGrid(); renderPager();
+
+  // 暴露给自动化测试 / 控制台调试
+  window.__skillsUI = {
+    setPageSize: function(n){ PAGE_SIZE = n; page = 1; renderGrid(); renderPager(); },
+    goToPage: goToPage,
+    open: function(idOrName){ var s = resolveSkill('#' + idOrName); if (s) openModal(s); },
+    close: closeModal,
+    search: function(q){ searchInput.value = q; searchBox.classList.toggle('has-value', !!q); applyFilter(); }
+  };
 })();
 </script>
 </body>
