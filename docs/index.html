@@ -135,7 +135,23 @@
   .copybtn:hover{border-color:var(--accent)}
   .skill.flash{border-color:var(--accent);animation:anchor-fade 3s ease forwards}
   @keyframes anchor-fade{0%{box-shadow:0 0 0 4px rgba(88,166,255,.35)}70%{box-shadow:0 0 0 6px rgba(88,166,255,.12)}100%{box-shadow:0 0 0 0 transparent}}
-  @media(max-width:600px){.hero h1{font-size:2rem}.skill{padding:22px}}
+  /* 强制刷新 + 更新日志组件（右上角） */
+  .fr-widget{position:fixed;top:16px;right:16px;z-index:90;display:flex;flex-direction:column;align-items:flex-end;gap:8px;font-size:13px}
+  .fr-actions{display:flex;gap:8px}
+  .fr-btn{border:1px solid var(--border);background:var(--card);color:var(--text);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:13px;font-family:inherit;line-height:1.4;transition:transform .12s}
+  .fr-btn:hover{transform:translateY(-1px);border-color:var(--accent)}
+  .fr-btn-refresh{background:var(--accent);border-color:var(--accent);color:#000;font-weight:600}
+  .fr-btn-refresh.fr-new{animation:fr-pulse 1.4s ease-out infinite}
+  @keyframes fr-pulse{0%{box-shadow:0 0 0 0 rgba(88,166,255,.55)}100%{box-shadow:0 0 0 9px rgba(88,166,255,0)}}
+  .fr-panel{display:none;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;max-width:300px;box-shadow:0 8px 24px rgba(0,0,0,.45)}
+  .fr-panel.open{display:block}
+  .fr-title{font-weight:600;margin-bottom:6px}
+  .fr-panel ul{margin:0;padding-left:16px}
+  .fr-panel li{margin:4px 0;color:var(--muted);line-height:1.5}
+  .fr-state{margin-top:8px;font-size:12px;color:var(--muted)}
+  .fr-state.fr-stale{color:var(--yellow)}
+  .fr-hint{margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);color:var(--muted);font-size:12px;line-height:1.5}
+  @media(max-width:600px){.hero h1{font-size:2rem}.skill{padding:22px}.fr-widget{top:10px;right:10px}.fr-btn{padding:5px 9px;font-size:12px}}
 </style>
 </head>
 <body>
@@ -268,13 +284,13 @@
     <div class="skill-head">
       <span class="emoji">🎬</span>
       <h3>lyzbcy-视频生成提示词润色</h3>
-      <span class="ver">分镜提示词润色器 · v1.1.0</span>
+      <span class="ver">分镜提示词润色器 · v1.4.0</span>
     </div>
     <p class="skill-tag">把 AI 视频 / 漫剧分镜的逐镜头提示词做“减法”——角色跟 art、场景跟场景图，提示词只留镜头语言。</p>
 
     <div class="field">
       <div class="label">它能做什么</div>
-      <p>把一段分镜提示词（多镜头，每镜带景别/构图/光线/情绪/配音指令）按实战规则润色：删掉会污染形象还原的<b>服装颜色/款式/材质、五官发色、写死的场景材质、身份定语</b>；统一同场景的<b>光线基调、人物站位锚点、角色 VoiceID（跨分镜全剧控死）</b>；核对<b>景别与拍摄对象、对白时长与语速</b>；<b>台词回归剧本逐句核对一字不改</b>；站位<b>三维锁死</b>（位置+姿态+相对关系）、<b>台词受话人锚定</b>、朝向用<b>正面空间描述</b>控制、<b>运动方向符合剧情意图</b>、禁写<b>眼部发光</b>描述（防模型生成镭射眼）；分镜文件首行自动标注<b>总时长</b>；每次使用前<b>自动检查版本</b>（运行副本 vs 仓库副本对比，可选更新）。每改一处都给改动说明，规则越用越准。</p>
+      <p>把一段分镜提示词（多镜头，每镜带景别/构图/光线/情绪/配音指令）按实战规则润色：删掉会污染形象还原的<b>服装颜色/款式/材质、五官发色、写死的场景材质、身份定语</b>；统一同场景的<b>光线基调、人物站位锚点、角色 VoiceID（跨分镜全剧控死）</b>；核对<b>景别与拍摄对象、对白时长与语速</b>；<b>台词回归剧本逐句核对一字不改</b>；站位<b>三维锁死</b>（位置+姿态+相对关系）、<b>台词受话人锚定</b>、朝向用<b>正面空间描述</b>控制、<b>运动方向符合剧情意图</b>、禁写<b>眼部发光</b>描述（防模型生成镭射眼）；分镜文件首行自动标注<b>总时长</b>；<b>每天首次使用自动静默更新</b>（本地与线上对版，静默升级不打断使用，失败自动回退旧版）。每改一处都给改动说明，规则越用越准。</p>
     </div>
 
     <div class="field">
@@ -478,6 +494,85 @@
   </div>
 </div>
 
+<!-- ⬇ 强制刷新 + 更新日志组件：打开自动对版，版本不一致自动刷新一次（每会话最多一次，防死循环） -->
+<div id="frWidget" class="fr-widget">
+  <div class="fr-actions">
+    <button id="frRefreshBtn" class="fr-btn fr-btn-refresh" type="button" title="静态页面常有缓存，点这里强制拉取最新版">🔄 一键刷新</button>
+    <button id="frLogBtn" class="fr-btn" type="button" title="最近更新记录">🕐 <span id="frDate">—</span> 更新</button>
+  </div>
+  <div id="frPanel" class="fr-panel">
+    <div class="fr-title">📜 更新日志</div>
+    <ul id="frList"></ul>
+    <div id="frState" class="fr-state"></div>
+    <div class="fr-hint">💡 静态页面常有缓存，为看到最新内容，请勤点「一键刷新」。</div>
+  </div>
+</div>
+
+<script>
+// —— 强制刷新组件配置（发布时与 docs/version.json 同步修改）——
+window.__FR__ = {
+  id: 'laoyu-miaomiao-tools',
+  version: '2026.08.26-1',
+  registry: 'version.json',
+  changelog: [
+    '2026-08-26 lyzbcy-视频生成提示词润色 升级 v1.4.0：每天首次使用自动静默更新，失败自动回退旧版',
+    '2026-08-26 新增强制刷新与更新日志组件：打开自动对版，版本不一致自动刷新一次，也可手动一键刷新'
+  ]
+};
+(function(){
+  var CFG = window.__FR__;
+  function $(id){ return document.getElementById(id); }
+  function ssGet(k){ try { return sessionStorage.getItem(k); } catch(e) { return '1'; } }
+  function ssSet(k,v){ try { sessionStorage.setItem(k,v); } catch(e) {} }
+  function reloadUrl(v){ return location.pathname + '?v=' + encodeURIComponent(v) + location.hash; }
+
+  // 先渲染内兜底更新日志，网络结果回来再覆盖
+  function renderLog(entries, updated){
+    if (updated) $('frDate').textContent = updated.slice(5); // MM-DD
+    var ul = $('frList'); ul.innerHTML = '';
+    (entries || []).slice(0, 6).forEach(function(t){
+      var li = document.createElement('li');
+      li.textContent = t;
+      ul.appendChild(li);
+    });
+  }
+  renderLog(CFG.changelog);
+
+  $('frLogBtn').onclick = function(){ $('frPanel').classList.toggle('open'); };
+  document.addEventListener('click', function(e){
+    if (!document.getElementById('frWidget').contains(e.target)) $('frPanel').classList.remove('open');
+  });
+
+  // 一键刷新：换 URL 查询参数强制绕过 HTML 缓存（用户手动，不受会话守卫限制）
+  $('frRefreshBtn').onclick = function(){
+    location.replace(reloadUrl('t.' + Date.now()));
+  };
+
+  // 自动对版：远端版本 ≠ 本页版本 → 刷新一次；刷新后仍不一致（缓存顽固/发布错位）则停手提示手动刷新
+  var KEY = 'frAuto_' + CFG.id;
+  fetch(CFG.registry + (CFG.registry.indexOf('?') > -1 ? '&' : '?') + 't=' + Date.now(), { cache: 'no-store' })
+    .then(function(r){ return r.ok ? r.json() : Promise.reject(r.status); })
+    .then(function(j){
+      var p = j && j.pages && j.pages[CFG.id];
+      if (!p) return;
+      renderLog(p.changes, p.updated);
+      if (p.version === CFG.version) {
+        $('frState').textContent = '✓ 当前已是最新版本';
+      } else if (!ssGet(KEY)) {
+        ssSet(KEY, '1');                       // 会话守卫：本次会话只自动刷新一次，绝不死循环
+        location.replace(reloadUrl(p.version));
+      } else {
+        $('frRefreshBtn').classList.add('fr-new');
+        var st = $('frState');
+        st.textContent = '⚠ 检测到新版本但浏览器缓存顽固，请点「一键刷新」';
+        st.classList.add('fr-stale');
+        $('frPanel').classList.add('open');
+      }
+    })
+    .catch(function(){ /* 注册表拉取失败：静默，不影响页面，手动刷新仍可用 */ });
+})();
+</script>
+
 <script>
 // release 直链填入（push 后由部署脚本/手动更新 tag）
 const RELEASES = {
@@ -513,8 +608,8 @@ function copyForAI(){
    - 安装：解压后把整个文件夹放到 agent skills 目录（含 SKILL.md）。
    - 下载：${RELEASES['last-1-percent']}
 
-3) lyzbcy-视频生成提示词润色（分镜提示词润色器 · v1.1.0）
-   - 用途：把 AI 视频/漫剧分镜的逐镜头提示词做"减法"——角色跟 art、场景跟场景图，提示词只留镜头语言。删掉污染形象还原的服装/五官/材质写死项，统一同场景光线/人物站位/VoiceID，核对景别与对白时长，台词回归剧本一字不改；站位三维锁死+台词受话人锚定+朝向正面描述+运动方向符合剧情+禁写眼部发光；分镜首行标注总时长；使用前自动检查版本。
+3) lyzbcy-视频生成提示词润色（分镜提示词润色器 · v1.4.0）
+   - 用途：把 AI 视频/漫剧分镜的逐镜头提示词做"减法"——角色跟 art、场景跟场景图，提示词只留镜头语言。删掉污染形象还原的服装/五官/材质写死项，统一同场景光线/人物站位/VoiceID，核对景别与对白时长，台词回归剧本一字不改；站位三维锁死+台词受话人锚定+朝向正面描述+运动方向符合剧情+禁写眼部发光；分镜首行标注总时长；每天首次使用自动静默更新（失败回退旧版）。
    - 适合：润色/检查 AI 视频、漫剧、即梦/可灵/Vidu 等逐镜头生成提示词；不适合替你写剧本本身或与视频无关的普通文本。
    - 用法示例：发分镜提示词，说"润色一下第47集场47-1的镜头1提示词"。
    - 安装：解压后把整个文件夹放到 agent skills 目录（含 SKILL.md）。
