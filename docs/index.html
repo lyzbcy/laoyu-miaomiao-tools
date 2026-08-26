@@ -284,13 +284,13 @@
     <div class="skill-head">
       <span class="emoji">🎬</span>
       <h3>lyzbcy-视频生成提示词润色</h3>
-      <span class="ver">分镜提示词润色器 · v1.4.0</span>
+      <span class="ver">分镜提示词润色器 · v1.5.0</span>
     </div>
     <p class="skill-tag">把 AI 视频 / 漫剧分镜的逐镜头提示词做“减法”——角色跟 art、场景跟场景图，提示词只留镜头语言。</p>
 
     <div class="field">
       <div class="label">它能做什么</div>
-      <p>把一段分镜提示词（多镜头，每镜带景别/构图/光线/情绪/配音指令）按实战规则润色：删掉会污染形象还原的<b>服装颜色/款式/材质、五官发色、写死的场景材质、身份定语</b>；统一同场景的<b>光线基调、人物站位锚点、角色 VoiceID（跨分镜全剧控死）</b>；核对<b>景别与拍摄对象、对白时长与语速</b>；<b>台词回归剧本逐句核对一字不改</b>；站位<b>三维锁死</b>（位置+姿态+相对关系）、<b>台词受话人锚定</b>、朝向用<b>正面空间描述</b>控制、<b>运动方向符合剧情意图</b>、禁写<b>眼部发光</b>描述（防模型生成镭射眼）；分镜文件首行自动标注<b>总时长</b>；<b>每天首次使用自动静默更新</b>（本地与线上对版，静默升级不打断使用，失败自动回退旧版）。每改一处都给改动说明，规则越用越准。</p>
+      <p>把一段分镜提示词（多镜头，每镜带景别/构图/光线/情绪/配音指令）按实战规则润色：删掉会污染形象还原的<b>服装颜色/款式/材质、五官发色、写死的场景材质、身份定语</b>；统一同场景的<b>光线基调、人物站位锚点、角色 VoiceID（跨分镜全剧控死）</b>；核对<b>景别与拍摄对象、对白时长与语速</b>；<b>台词回归剧本逐句核对一字不改</b>；站位<b>三维锁死</b>（位置+姿态+相对关系）、<b>台词受话人锚定</b>、朝向用<b>正面空间描述</b>控制、<b>运动方向符合剧情意图</b>、禁写<b>眼部发光</b>描述（防模型生成镭射眼）；分镜文件首行自动标注<b>总时长</b>；<b>每天首次使用自动静默更新</b>（本地与线上对版，静默升级不打断使用，失败自动回退旧版）。v1.5.0 起<b>规则分域按需加载</b>（主文件更轻），并支持<b>单功能模式</b>：只调站位、只统一音色、只删污染词、只统一光线、只核时长语速、只核台词、只做抽帧验证——单功能只动选定项，其余问题只提示不修改。每改一处都给改动说明，规则越用越准。</p>
     </div>
 
     <div class="field">
@@ -299,6 +299,7 @@
         <li>✅ 润色 / 修改 / 检查 AI 视频、漫剧、即梦/可灵/Vidu 等的逐镜头生成提示词</li>
         <li>✅ 修正：服装/五官污染、场景材质写死、人物站位错乱、站位跨镜漂移、台词受话人错位、运动方向反逻辑、同场景光线跳变、语速异常、同一角色声音不连贯、眼神发光（镭射眼）</li>
         <li>✅ 让 AI 回归剧本判断人物站/坐、台词原文、对白时长是否合理</li>
+        <li>✅ 单功能使用：只调站位 / 只统一音色 / 只删污染词 / 只核时长……其余问题只提示、不顺手改</li>
         <li>❌ 替你写剧本和对白本身（那是创作，不是润色）</li>
         <li>❌ 处理与视频生成无关的普通文本</li>
       </ul>
@@ -308,6 +309,7 @@
       <div class="label">怎么用（示例 prompt）</div>
       <div class="prompt-box">润色一下第47集场47-1的镜头1提示词：
 &lt;提示词&gt;...&lt;/提示词&gt;</div>
+      <div class="prompt-box">（单功能）只统一第38集所有分镜里秦遥的 VoiceID，别的不动</div>
     </div>
 
     <div class="field">
@@ -316,7 +318,7 @@
     </div>
 
     <div class="dl-row">
-      <a class="btn btn-zip" id="dl-video-prompt-polish" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.7.0/lyzbcy-video-prompt-polish.zip">📦 下载 lyzbcy-video-prompt-polish.zip</a>
+      <a class="btn btn-zip" id="dl-video-prompt-polish" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.8.0/lyzbcy-video-prompt-polish.zip">📦 下载 lyzbcy-video-prompt-polish.zip</a>
       <a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/lyzbcy-视频生成提示词润色">查看源码</a>
     </div>
   </article>
@@ -465,7 +467,7 @@
     <ul style="color:var(--muted);font-size:.9rem;margin:6px 0 0">
       <li>lyzbcy-study-map：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.0.0/lyzbcy-study-map.zip</code></li>
       <li>lyzbcy-最后的1%：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.1.0/lyzbcy-last-1-percent.zip</code></li>
-      <li>lyzbcy-视频生成提示词润色：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.7.0/lyzbcy-video-prompt-polish.zip</code></li>
+      <li>lyzbcy-视频生成提示词润色：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.8.0/lyzbcy-video-prompt-polish.zip</code></li>
       <li>lyzbcy-wechat-autopublish：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.4.0/lyzbcy-wechat-autopublish.zip</code></li>
       <li>lyzbcy-xhs-comment-check：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.6.0/lyzbcy-xhs-comment-check.zip</code></li>
       <li>lyzbcy-glm53-zcode-eval：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.5.1/lyzbcy-glm53-zcode-eval.zip</code></li>
@@ -512,9 +514,10 @@
 // —— 强制刷新组件配置（发布时与 docs/version.json 同步修改）——
 window.__FR__ = {
   id: 'laoyu-miaomiao-tools',
-  version: '2026.08.26-2',
+  version: '2026.08.26-3',
   registry: 'version.json',
   changelog: [
+    '2026-08-26 lyzbcy-视频生成提示词润色 升级 v1.5.0：渐进式披露重构（规则分域按需加载）、新增单功能模式（只调站位/只统一音色/只删污染词等）、多文件静默更新；版本号以 skill 自身为准（release tag 另计），下载包已切 v1.8.0',
     '2026-08-26 润色 skill 下载包重打 v1.7.0（内容=v1.4.0：每日静默更新），下载链接已切换',
     '2026-08-26 lyzbcy-视频生成提示词润色 升级 v1.4.0：每天首次使用自动静默更新，失败自动回退旧版',
     '2026-08-26 新增强制刷新与更新日志组件：打开自动对版，版本不一致自动刷新一次，也可手动一键刷新'
@@ -579,7 +582,7 @@ window.__FR__ = {
 const RELEASES = {
   "study-map": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.0.0/lyzbcy-study-map.zip",
   "last-1-percent": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.1.0/lyzbcy-last-1-percent.zip",
-  "video-prompt-polish": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.7.0/lyzbcy-video-prompt-polish.zip",
+  "video-prompt-polish": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.8.0/lyzbcy-video-prompt-polish.zip",
   "wechat-autopublish": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.4.0/lyzbcy-wechat-autopublish.zip",
   "glm53-zcode-eval": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.5.1/lyzbcy-glm53-zcode-eval.zip",
   "xhs-comment-check": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.6.0/lyzbcy-xhs-comment-check.zip"
@@ -609,8 +612,8 @@ function copyForAI(){
    - 安装：解压后把整个文件夹放到 agent skills 目录（含 SKILL.md）。
    - 下载：${RELEASES['last-1-percent']}
 
-3) lyzbcy-视频生成提示词润色（分镜提示词润色器 · v1.4.0）
-   - 用途：把 AI 视频/漫剧分镜的逐镜头提示词做"减法"——角色跟 art、场景跟场景图，提示词只留镜头语言。删掉污染形象还原的服装/五官/材质写死项，统一同场景光线/人物站位/VoiceID，核对景别与对白时长，台词回归剧本一字不改；站位三维锁死+台词受话人锚定+朝向正面描述+运动方向符合剧情+禁写眼部发光；分镜首行标注总时长；每天首次使用自动静默更新（失败回退旧版）。
+3) lyzbcy-视频生成提示词润色（分镜提示词润色器 · v1.5.0）
+   - 用途：把 AI 视频/漫剧分镜的逐镜头提示词做"减法"——角色跟 art、场景跟场景图，提示词只留镜头语言。删掉污染形象还原的服装/五官/材质写死项，统一同场景光线/人物站位/VoiceID，核对景别与对白时长，台词回归剧本一字不改；站位三维锁死+台词受话人锚定+朝向正面描述+运动方向符合剧情+禁写眼部发光；分镜首行标注总时长；每天首次使用自动静默更新（失败回退旧版）。v1.5.0 起规则分域按需加载，并支持单功能模式：只调站位、只统一音色、只删污染词、只核时长等——只动选定项，其余问题只提示。
    - 适合：润色/检查 AI 视频、漫剧、即梦/可灵/Vidu 等逐镜头生成提示词；不适合替你写剧本本身或与视频无关的普通文本。
    - 用法示例：发分镜提示词，说"润色一下第47集场47-1的镜头1提示词"。
    - 安装：解压后把整个文件夹放到 agent skills 目录（含 SKILL.md）。

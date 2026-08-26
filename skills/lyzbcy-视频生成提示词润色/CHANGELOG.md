@@ -4,6 +4,18 @@
 
 格式基于 [Keep a Changelog](https://keepachangelog.com/)，版本号遵循 [Semantic Versioning](https://semver.org/)。
 
+## [1.5.0] - 2026-08-26
+
+### Changed
+
+- **渐进式披露重构**：SKILL.md 从 464 行瘦身到 ~170 行（核心信念、模式路由表、全量工作流主干、正面清单、交付格式、文件地图），规则原文零删改地分域搬入 `references/`（redlines / scene-anchor / voice / shot-tech / delivery / checklist / frame-verify / sedimentation / update），按模式按需精读，不再每次触发全量进上下文
+
+### Added
+
+- **单功能模式系统**：支持只调站位、只统一音色(VoiceID)、只删污染词、只统一光线、只核时长语速、只核台词、只做抽帧验证——单模式只动选定项，其余问题在文末"另发现"一节提示、不顺手改；frontmatter description 补单功能触发词，局部需求也能触发本 skill
+- **多文件静默更新**：自更新从"单文件覆盖"升级为 `metadata.files` manifest 驱动的整包原子更新——全部文件拉取成功才覆盖、清理孤儿文件，任一失败整体回退用旧版，杜绝主文件与规则文件版本错配
+- **版本号单一真源约定**：skill 版本以 `metadata.version` 为准；release tag（仓库全局递增号，如 v1.7.0）只是运输标签，与 skill 自身 semver 解耦；站点卡片 / 下载包 / 本地副本一律显示 skill 自身版本，杜绝"v1.4.0 内容挂 v1.7.0 标签"的漂移
+
 ## [1.4.0] - 2026-08-26
 
 ### Changed
@@ -106,4 +118,4 @@
 - **Fixed**：缺陷修复
 - **Removed**：移除的功能
 
-后续版本更新时，在 [1.1.0] 之前插入新版本记录，并同步更新 SKILL.md frontmatter 的 `metadata.version`。
+后续版本更新时，在最新版本记录之前插入新版本记录（新在前），并同步更新 SKILL.md frontmatter 的 `metadata.version`。发版前可运行仓库根目录的 `scripts/package_skill.py` 做一致性校验。

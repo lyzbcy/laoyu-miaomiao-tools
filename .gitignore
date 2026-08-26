@@ -1,0 +1,2 @@
+# 构建产物（release 资产用 scripts/package_skill.py 生成，不入库）
+dist/
