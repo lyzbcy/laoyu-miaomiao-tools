@@ -16,6 +16,7 @@
 | 📣 `lyzbcy-wechat-autopublish` | 微信公众号全自动运营：发布环节零人工，三层降级 + cron + 发布前确认 | [Releases](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases) |
 | 🧪 `lyzbcy-glm53-zcode-eval` | 默认关闭；可能让通用任务表现更保守或不灵活，只有用户明确说“请使用 LYZBCY 虚拟环境测试”才能启用 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.5.1/lyzbcy-glm53-zcode-eval.zip) |
 | 📕 `lyzbcy-xhs-comment-check` | 小红书评论全自动检查+回复：通知页采集/LLM打包生成/发送核验/防注入/审计报告 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.6.0/lyzbcy-xhs-comment-check.zip) |
+| 👔 `lyzbcy-laotian-cosleader` | 模拟结果导向 leader「老田」做直给式验收：18 条原则 + 追问式逼证据 + AI 协作铁律 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.11.0/lyzbcy-laotian-cosleader.zip) |
 
 详细介绍、用法、适用场景见介绍页或各 skill 目录下的 `SKILL.md`。
 

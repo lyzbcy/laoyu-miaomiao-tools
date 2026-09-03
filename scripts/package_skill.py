@@ -34,6 +34,7 @@ ASSET_NAMES = {
     "lyzbcy-wechat-autopublish": "lyzbcy-wechat-autopublish.zip",
     "lyzbcy-glm53-zcode-eval": "lyzbcy-glm53-zcode-eval.zip",
     "lyzbcy-xhs-comment-check": "lyzbcy-xhs-comment-check.zip",
+    "lyzbcy-laotian-cosleader": "lyzbcy-laotian-cosleader.zip",
 }
 
 # 打包时排除的运行时产物 / 系统杂项

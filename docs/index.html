@@ -177,7 +177,7 @@
 
 <!-- SKILLS：商品化网格 -->
 <section id="skills">
-  <h2><span class="num">02</span> 收录的 Skills（<span id="skill-count">6</span> 个）</h2>
+  <h2><span class="num">02</span> 收录的 Skills（<span id="skill-count">7</span> 个）</h2>
   <p class="lede">点开卡片看详情：它是干嘛的、适合什么场景、怎么用、怎么装、在哪下载。skill 越收越多，可以用搜索和翻页找。</p>
 
   <div class="shop-toolbar">
@@ -450,6 +450,47 @@
       <a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/lyzbcy-xhs-comment-check">查看源码</a>
     </div>
   </article>
+
+  <!-- SKILL 7: 老田式验收 -->
+  <article class="skill skill-detail" id="laotian-cosleader" data-name="lyzbcy-laotian-cosleader" data-grad="linear-gradient(135deg,#14342b 0%,#2e7d4f 58%,#9ad69e 100%)">
+    <div class="skill-head">
+      <span class="emoji">👔</span>
+      <h3>lyzbcy-laotian-cosleader</h3>
+      <span class="ver">老田式验收 · v1.0.0</span>
+    </div>
+    <p class="skill-tag">模拟一位结果导向的技术 leader「老田」验收你的成果：18 条真实反馈提炼的原则 + 追问式逼证据，输出一段直给反馈。</p>
+
+    <div class="field">
+      <div class="label">它能做什么</div>
+      <p>对文档、代码、方案、日报、汇报做<b>直给式验收</b>：先看结果不吃过程铺陈、结论必须有证据（官方链接/实测值，类库默认值不算）、<b>追问式验收</b>（“上传后那条 ID 对应哪个文件？截图发下”“为什么会失败？”“预计多长时间？”）、<b>AI 协作铁律</b>（AI 会幻觉、人负责验证 / 只让 AI 做自己会做的 / 务必理解需求与现状后再让 AI 开发）、<b>方案要具体</b>（“我不要红色，AI 推导不出你想要灰色”）、反对 AI 味和模板腔。输出固定为一句 <code>【老田会这样说】：…</code>，像一对一口头反馈，不写领导讲话稿；尖锐只落在事上，涉及加班/健康也会直说关照。每天首次使用自动静默检查更新，失败回退旧版。</p>
+    </div>
+
+    <div class="field">
+      <div class="label">适合 / 不适合</div>
+      <ul>
+        <li>✅ 提交 / 汇报前想先过一道严 leader 验收的工程师</li>
+        <li>✅ 写完日报、方案、技术文档，想要直给批评而不是客套话</li>
+        <li>✅ 重度用 AI 开发，怕失控，想有人盯“需求理解了没有、证据够了没有”</li>
+        <li>❌ 想拿它替代真实人类审批结论（它只是风格模拟，不代表任何真实人物）</li>
+        <li>❌ 想要情绪按摩和彩虹屁</li>
+      </ul>
+    </div>
+
+    <div class="field">
+      <div class="label">怎么用（示例 prompt）</div>
+      <div class="prompt-box">模拟老田验收一下我的周报：今天对上了需求，让 AI 按需求文档把 demo 开发完了，明天接着开发。（贴上你的内容）</div>
+    </div>
+
+    <div class="field">
+      <div class="label">怎么安装</div>
+      <p>下载 zip → 解压 → 把整个 skill 文件夹放到 agent skills 目录（确保里面有 <code>SKILL.md</code>）。无其他依赖；每天首次使用会静默检查更新。</p>
+    </div>
+
+    <div class="dl-row">
+      <a class="btn btn-zip" id="dl-laotian-cosleader" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.11.0/lyzbcy-laotian-cosleader.zip">📦 下载 lyzbcy-laotian-cosleader.zip</a>
+      <a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/lyzbcy-laotian-cosleader">查看源码</a>
+    </div>
+  </article>
 </section>
 
 <!-- AI 友好 -->
@@ -458,7 +499,7 @@
   <div class="ai-block">
     <h3>这整页可以直接发给 AI</h3>
     <p>本页是<b>语义化、对 AI 友好</b>的介绍页。你可以直接把这一整页（或它的链接）发给你的 AI 助手，AI 就能读懂：</p>
-    <p>· 这里收录了 <code>6 个 skill</code>，分别是 <code>lyzbcy-study-map</code>（理解地图）、<code>lyzbcy-最后的1%</code>（极限执行）、<code>lyzbcy-视频生成提示词润色</code>（分镜润色）、<code>lyzbcy-wechat-autopublish</code>（公众号全自动运营）、<code>lyzbcy-glm53-zcode-eval</code>（GLM-5.3 ZCode 隔离评测）和 <code>lyzbcy-xhs-comment-check</code>（小红书评论全自动回复）。<br>
+    <p>· 这里收录了 <code>7 个 skill</code>，分别是 <code>lyzbcy-study-map</code>（理解地图）、<code>lyzbcy-最后的1%</code>（极限执行）、<code>lyzbcy-视频生成提示词润色</code>（分镜润色）、<code>lyzbcy-wechat-autopublish</code>（公众号全自动运营）、<code>lyzbcy-glm53-zcode-eval</code>（GLM-5.3 ZCode 隔离评测）、<code>lyzbcy-xhs-comment-check</code>（小红书评论全自动回复）和 <code>lyzbcy-laotian-cosleader</code>（老田式验收）。<br>
        · 每个 skill 的用途、适用场景、用法、安装方式、下载直链都在各 skill 的详情里写清楚了（页面上点卡片即可查看，页面源码同样包含全部信息）。<br>
        · 每个 skill 都有<b>直达链接</b>：在本页 URL 后加 <code>#工具名</code>（如 <code>#lyzbcy-视频生成提示词润色</code>）或 <code>#英文id</code>（如 <code>#video-prompt-polish</code>），打开即自动弹出该工具的详情；详情弹窗里的「🔗 复制直达链接」按钮可直接复制。<br>
        · AI 可以据此判断你当前需要哪个 skill，并<b>自行下载对应的 zip 安装</b>。</p>
@@ -471,6 +512,7 @@
       <li>lyzbcy-wechat-autopublish：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.4.0/lyzbcy-wechat-autopublish.zip</code></li>
       <li>lyzbcy-xhs-comment-check：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.6.0/lyzbcy-xhs-comment-check.zip</code></li>
       <li>lyzbcy-glm53-zcode-eval：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.5.1/lyzbcy-glm53-zcode-eval.zip</code></li>
+      <li>lyzbcy-laotian-cosleader：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.11.0/lyzbcy-laotian-cosleader.zip</code></li>
     </ul>
     <button class="copybtn" onclick="copyForAI()">📋 复制给 AI 的纯文本摘要</button>
   </div>
@@ -514,9 +556,10 @@
 // —— 强制刷新组件配置（发布时与 docs/version.json 同步修改）——
 window.__FR__ = {
   id: 'laoyu-miaomiao-tools',
-  version: '2026.09.01-1',
+  version: '2026.09.03-1',
   registry: 'version.json',
   changelog: [
+    '2026-09-03 新收录 lyzbcy-laotian-cosleader v1.0.0（老田式验收 · 严师 leader 模拟）：18 条真实反馈提炼的验收原则——先看结果不吃过程、追问式验收（连环追问逼截图/定位/演示/估时）、AI 协作铁律（AI 会幻觉人负责验证 / 只让 AI 做自己会做的 / 理解需求与现状后再让 AI 开发）、方案要具体（我不要红色，AI推导不出你想要灰色）、证据标准；输出固定【老田会这样说】一段直给反馈；每天首次使用静默自更新，失败回退旧版；下载包 v1.11.0',
     '2026-09-01 lyzbcy-视频生成提示词润色 升级 v1.7.1：新增项目目录规范（一集一夹/分镜序号/doc合订剧本/角色配置+场景清单，不合规先询问再整理）、抽帧验证生图方案（codex CLI 额度 / 输出 prompt 自选软件）与 4×4 切分图、字字动画分镜导出工具 zizi_export.py（本机任务库→标准格式→集目录）；下载包已切 v1.10.0',
     '2026-08-27 lyzbcy-视频生成提示词润色 升级 v1.6.0：对标官方 Seedance 2.5 指南与 sd25-pe——新增素材指代规范/对白账本/声音符号系统/时间戳规范/模型速查，时长上限按模型区分（C2.0=15s/C2.5=30s），可选三段式管线（本skill→sd25-pe审校→本skill终检）；下载包已切 v1.9.0',
     '2026-08-26 lyzbcy-视频生成提示词润色 升级 v1.5.0：渐进式披露重构（规则分域按需加载）、新增单功能模式（只调站位/只统一音色/只删污染词等）、多文件静默更新；版本号以 skill 自身为准（release tag 另计），下载包已切 v1.8.0',
@@ -587,7 +630,8 @@ const RELEASES = {
   "video-prompt-polish": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.10.0/lyzbcy-video-prompt-polish.zip",
   "wechat-autopublish": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.4.0/lyzbcy-wechat-autopublish.zip",
   "glm53-zcode-eval": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.5.1/lyzbcy-glm53-zcode-eval.zip",
-  "xhs-comment-check": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.6.0/lyzbcy-xhs-comment-check.zip"
+  "xhs-comment-check": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.6.0/lyzbcy-xhs-comment-check.zip",
+  "laotian-cosleader": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.11.0/lyzbcy-laotian-cosleader.zip"
 };
 for (var rid in RELEASES) {
   var el = document.getElementById('dl-' + rid);
@@ -598,7 +642,7 @@ for (var rid in RELEASES) {
 function copyForAI(){
   const txt = `【捞鱼妙妙工具 · Agent Skills 收录站】
 
-这里收录捞鱼（lyzbcy）的个人 Agent Skills，每个 skill 独立打包，按需下载。共 6 个 skill：
+这里收录捞鱼（lyzbcy）的个人 Agent Skills，每个 skill 独立打包，按需下载。共 7 个 skill：
 
 1) lyzbcy-study-map（理解地图生成器）
    - 用途：把技术长文/访谈/论文/跨学科材料，生成有原文依据、能追问、能复述的交互式 HTML 理解地图；也适用于课程复习提纲、历年真题、计算题手把手演示。
@@ -645,6 +689,13 @@ function copyForAI(){
    - 用法示例："帮我部署小红书评论自动回复：扫码登录后先 dry-run 给我看回复计划，确认后再小批量真实发送 3 条。"
    - 安装：解压后放到 agent skills 目录 → pip3 install -r requirements.txt → cp persona.example.json persona.json 填人设 → xvfb-run -a python3 login_once.py 扫码登录。
    - 下载：${RELEASES['xhs-comment-check']}
+
+7) lyzbcy-laotian-cosleader（老田式验收 · v1.0.0）
+   - 用途：模拟一位结果导向的技术 leader「老田」，对文档、代码、方案、日报、汇报做直给式验收。18 条从真实工作反馈提炼的原则：先看结果不吃过程、结论必须有证据（官方链接/实测值）、追问式验收（用连环追问逼截图/定位/演示/估时）、AI 协作铁律（AI 会幻觉、人负责验证；只让 AI 做自己会做的；务必理解需求与现状后再让 AI 开发）、方案要具体（我不要红色，AI 推导不出你想要灰色）、反对 AI 味模板腔。输出固定为【老田会这样说】：{一段直给反馈}。
+   - 适合：提交/汇报前想先过一道严 leader 验收的工程师；想要直给批评不是客套话的人；重度用 AI 开发、想有人盯证据和顺序的人。不适合替代真实人类审批结论（纯风格模拟，不代表任何真实人物），也不提供情绪按摩。
+   - 用法示例："模拟老田验收一下我的周报：……（贴内容）"
+   - 安装：解压后把整个文件夹放到 agent skills 目录（含 SKILL.md）。每天首次使用静默自更新，失败回退旧版。
+   - 下载：${RELEASES['laotian-cosleader']}
 
 仓库：https://github.com/lyzbcy/laoyu-miaomiao-tools
 介绍页：https://lyzbcy.github.io/laoyu-miaomiao-tools/`;
