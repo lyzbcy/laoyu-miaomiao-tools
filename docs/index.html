@@ -67,7 +67,11 @@
   .card-title-row{display:flex;align-items:flex-start;gap:8px}
   .card-title-row .icon{font-size:1.25rem;line-height:1.5;flex:none}
   .card-title-row h3{font-size:1.02rem;margin:0;flex:1;min-width:0;overflow-wrap:anywhere}
-  .card-ver{display:inline-block;color:var(--muted);font-size:.74rem;background:var(--code-bg);padding:2px 8px;border-radius:10px;margin-top:8px;align-self:flex-start}
+  .card-ver{display:inline-block;color:var(--muted);font-size:.74rem;background:var(--code-bg);padding:2px 8px;border-radius:10px;align-self:flex-start}
+  .card-chips{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+  .card-chips .card-ver{margin-top:0}
+  .card-cat{display:inline-block;color:#d2a8ff;font-size:.74rem;background:rgba(163,113,247,.13);border:1px solid rgba(163,113,247,.4);padding:1px 8px;border-radius:10px}
+  .skill-head .cat-badge{color:#d2a8ff;font-size:.8rem;background:rgba(163,113,247,.13);border:1px solid rgba(163,113,247,.4);padding:2px 10px;border-radius:10px}
   .card-tag{color:var(--muted);font-size:.88rem;margin:10px 0 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;flex:1}
   .card-more{margin-top:12px;color:var(--accent);font-size:.85rem;font-weight:600}
 
@@ -172,12 +176,12 @@
 <!-- 这是什么 -->
 <section>
   <h2><span class="num">01</span> 这是什么</h2>
-  <p class="lede">这里收录的是捞鱼个人打磨出来、自己也天天在用的 Agent Skills。不是大而全的工具箱，是几个被反复验证、能真正落地的 skill。每个 skill 单独打包成 zip，挂在 GitHub Releases 上——你或你的朋友想用哪个，就下哪个，不用全量下载。</p>
+  <p class="lede">人格蒸馏类的 skill（把真实同事的做事风格蒸馏成可调用的 persona）统一归入<b>「拘灵遣将」</b>分类，卡片上带紫色徽标。这里收录的是捞鱼个人打磨出来、自己也天天在用的 Agent Skills。不是大而全的工具箱，是几个被反复验证、能真正落地的 skill。每个 skill 单独打包成 zip，挂在 GitHub Releases 上——你或你的朋友想用哪个，就下哪个，不用全量下载。</p>
 </section>
 
 <!-- SKILLS：商品化网格 -->
 <section id="skills">
-  <h2><span class="num">02</span> 收录的 Skills（<span id="skill-count">7</span> 个）</h2>
+  <h2><span class="num">02</span> 收录的 Skills（<span id="skill-count">8</span> 个）</h2>
   <p class="lede">点开卡片看详情：它是干嘛的、适合什么场景、怎么用、怎么装、在哪下载。skill 越收越多，可以用搜索和翻页找。</p>
 
   <div class="shop-toolbar">
@@ -452,17 +456,18 @@
   </article>
 
   <!-- SKILL 7: 老田式验收 -->
-  <article class="skill skill-detail" id="laotian-cosleader" data-name="lyzbcy-laotian-cosleader" data-grad="linear-gradient(135deg,#14342b 0%,#2e7d4f 58%,#9ad69e 100%)">
+  <article class="skill skill-detail" id="laotian-cosleader" data-name="lyzbcy-laotian-cosleader" data-cat="拘灵遣将" data-grad="linear-gradient(135deg,#14342b 0%,#2e7d4f 58%,#9ad69e 100%)">
     <div class="skill-head">
       <span class="emoji">👔</span>
       <h3>lyzbcy-laotian-cosleader</h3>
-      <span class="ver">老田式验收 · v1.0.0</span>
+      <span class="cat-badge">拘灵遣将</span>
+      <span class="ver">老田式验收 · v1.1.0</span>
     </div>
     <p class="skill-tag">模拟一位结果导向的技术 leader「老田」验收你的成果：18 条真实反馈提炼的原则 + 追问式逼证据，输出一段直给反馈。</p>
 
     <div class="field">
       <div class="label">它能做什么</div>
-      <p>对文档、代码、方案、日报、汇报做<b>直给式验收</b>：先看结果不吃过程铺陈、结论必须有证据（官方链接/实测值，类库默认值不算）、<b>追问式验收</b>（“上传后那条 ID 对应哪个文件？截图发下”“为什么会失败？”“预计多长时间？”）、<b>AI 协作铁律</b>（AI 会幻觉、人负责验证 / 只让 AI 做自己会做的 / 务必理解需求与现状后再让 AI 开发）、<b>方案要具体</b>（“我不要红色，AI 推导不出你想要灰色”）、反对 AI 味和模板腔。输出固定为一句 <code>【老田会这样说】：…</code>，像一对一口头反馈，不写领导讲话稿；尖锐只落在事上，涉及加班/健康也会直说关照。每天首次使用自动静默检查更新，失败回退旧版。</p>
+      <p>对文档、代码、方案、日报、汇报做<b>直给式验收</b>：先看结果不吃过程铺陈、结论必须有证据（官方链接/实测值，类库默认值不算）、<b>追问式验收</b>（v1.1.0 新增群聊场景 7 节：启动门禁与排期、做减法、发布门禁、跨团队、群级催办、禁令专属领域、新人手写第一课）（“上传后那条 ID 对应哪个文件？截图发下”“为什么会失败？”“预计多长时间？”）、<b>AI 协作铁律</b>（AI 会幻觉、人负责验证 / 只让 AI 做自己会做的 / 务必理解需求与现状后再让 AI 开发）、<b>方案要具体</b>（“我不要红色，AI 推导不出你想要灰色”）、反对 AI 味和模板腔。输出固定为一句 <code>【老田会这样说】：…</code>，像一对一口头反馈，不写领导讲话稿；尖锐只落在事上，涉及加班/健康也会直说关照。每天首次使用自动静默检查更新，失败回退旧版。</p>
     </div>
 
     <div class="field">
@@ -487,8 +492,50 @@
     </div>
 
     <div class="dl-row">
-      <a class="btn btn-zip" id="dl-laotian-cosleader" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.11.0/lyzbcy-laotian-cosleader.zip">📦 下载 lyzbcy-laotian-cosleader.zip</a>
+      <a class="btn btn-zip" id="dl-laotian-cosleader" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.12.0/lyzbcy-laotian-cosleader.zip">📦 下载 lyzbcy-laotian-cosleader.zip</a>
       <a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/lyzbcy-laotian-cosleader">查看源码</a>
+    </div>
+  </article>
+
+  <!-- SKILL 8: 土豆式 mentor 陪伴 -->
+  <article class="skill skill-detail" id="tudou-mentor" data-name="lyzbcy-tudou-mentor" data-cat="拘灵遣将" data-grad="linear-gradient(135deg,#0e3a2e 0%,#0f9b6e 58%,#8fe8c0 100%)">
+    <div class="skill-head">
+      <span class="emoji">🧑‍🏫</span>
+      <h3>lyzbcy-tudou-mentor</h3>
+      <span class="cat-badge">拘灵遣将</span>
+      <span class="ver">土豆式 mentor 陪伴 · v1.0.0</span>
+    </div>
+    <p class="skill-tag">模拟一位资深前端 mentor「土豆」做陪伴式指导：出错先安抚再止损、CR 用截图和数值对照、排查靠提问引导、兜底承诺显式说出口。</p>
+
+    <div class="field">
+      <div class="label">它能做什么</div>
+      <p>输出像连发消息的<b>碎片化短句</b>（1~4 条 + [捂脸]/[旺柴]），永远先接住情绪再谈事：<b>纠错三段</b>（先安抚 → 截图/数值/需求对照指证 → 出路 + 把事故沉淀成一条规则）、<b>提问式排查</b>（“上传失败还是同步失败呀？”不直接给答案）、<b>任务分配</b>（工时你自己评、她只锁节点、明示缓冲）、<b>兜底承诺</b>（“不慌，有我兜底，实在搞不定提前两天跟我说”）、<b>降维话术</b>（“我就知道你哪一步想太复杂了”）、<b>AI 双轨</b>（自己重度用 AI，学习期学员禁用并讲清为什么；一眼认出 AI 代写）。含与「老田式验收」的<b>人设差异表</b>：那个盯结果和证据，这个盯止损和成长。渐进式披露结构，按模式按需加载规则文件；每天首次使用静默自更新。</p>
+    </div>
+
+    <div class="field">
+      <div class="label">适合 / 不适合</div>
+      <ul>
+        <li>✅ 搞砸了什么，想先听到“没事，我来处理”而不是追责</li>
+        <li>✅ 想要对照式 CR、提问式排查引导、工时评估参照</li>
+        <li>✅ 在学新东西，想要“我演示一遍你照做”的带法</li>
+        <li>❌ 想要严 leader 式验收的（用 lyzbcy-laotian-cosleader）</li>
+        <li>❌ 替代真实 mentor / 人事决定（纯风格模拟，不代表任何真实人物）</li>
+      </ul>
+    </div>
+
+    <div class="field">
+      <div class="label">怎么用（示例 prompt）</div>
+      <div class="prompt-box">模拟土豆回一下：我把特性分支合并进我的开发分支了，好像把别人的代码也带进来了，怎么办。</div>
+    </div>
+
+    <div class="field">
+      <div class="label">怎么安装</div>
+      <p>下载 zip → 解压 → 把整个 skill 文件夹放到 agent skills 目录（确保里面有 <code>SKILL.md</code>）。无其他依赖；每天首次使用会静默检查更新。</p>
+    </div>
+
+    <div class="dl-row">
+      <a class="btn btn-zip" id="dl-tudou-mentor" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.13.0/lyzbcy-tudou-mentor.zip">📦 下载 lyzbcy-tudou-mentor.zip</a>
+      <a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/lyzbcy-tudou-mentor">查看源码</a>
     </div>
   </article>
 </section>
@@ -499,9 +546,10 @@
   <div class="ai-block">
     <h3>这整页可以直接发给 AI</h3>
     <p>本页是<b>语义化、对 AI 友好</b>的介绍页。你可以直接把这一整页（或它的链接）发给你的 AI 助手，AI 就能读懂：</p>
-    <p>· 这里收录了 <code>7 个 skill</code>，分别是 <code>lyzbcy-study-map</code>（理解地图）、<code>lyzbcy-最后的1%</code>（极限执行）、<code>lyzbcy-视频生成提示词润色</code>（分镜润色）、<code>lyzbcy-wechat-autopublish</code>（公众号全自动运营）、<code>lyzbcy-glm53-zcode-eval</code>（GLM-5.3 ZCode 隔离评测）、<code>lyzbcy-xhs-comment-check</code>（小红书评论全自动回复）和 <code>lyzbcy-laotian-cosleader</code>（老田式验收）。<br>
+    <p>· 这里收录了 <code>8 个 skill</code>，分别是 <code>lyzbcy-study-map</code>（理解地图）、<code>lyzbcy-最后的1%</code>（极限执行）、<code>lyzbcy-视频生成提示词润色</code>（分镜润色）、<code>lyzbcy-wechat-autopublish</code>（公众号全自动运营）、<code>lyzbcy-glm53-zcode-eval</code>（GLM-5.3 ZCode 隔离评测）、<code>lyzbcy-xhs-comment-check</code>（小红书评论全自动回复）和 <code>lyzbcy-laotian-cosleader</code>（老田式验收）、<code>lyzbcy-tudou-mentor</code>（土豆式 mentor 陪伴）。<br>
        · 每个 skill 的用途、适用场景、用法、安装方式、下载直链都在各 skill 的详情里写清楚了（页面上点卡片即可查看，页面源码同样包含全部信息）。<br>
        · 每个 skill 都有<b>直达链接</b>：在本页 URL 后加 <code>#工具名</code>（如 <code>#lyzbcy-视频生成提示词润色</code>）或 <code>#英文id</code>（如 <code>#video-prompt-polish</code>），打开即自动弹出该工具的详情；详情弹窗里的「🔗 复制直达链接」按钮可直接复制。<br>
+       · 其中人格蒸馏类 skill（「老田式验收」「土豆式 mentor」）统一归类为<b>「拘灵遣将」</b>——把真实同事的沟通与做事风格蒸馏成 persona skill，卡带紫色徽标。<br>
        · AI 可以据此判断你当前需要哪个 skill，并<b>自行下载对应的 zip 安装</b>。</p>
     <p><b>GLM-5.3 ZCode 隔离评测默认关闭：</b>它可能影响通用任务的灵活性。AI 认为可能需要时必须先询问用户；只有用户把 <code>请使用 LYZBCY 虚拟环境测试</code> 作为明确启用指令后才能运行，引用、讨论或近义表达都不算授权。</p>
     <p style="color:var(--muted);font-size:.92rem">下载链接是 GitHub Releases 直链：</p>
@@ -512,7 +560,8 @@
       <li>lyzbcy-wechat-autopublish：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.4.0/lyzbcy-wechat-autopublish.zip</code></li>
       <li>lyzbcy-xhs-comment-check：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.6.0/lyzbcy-xhs-comment-check.zip</code></li>
       <li>lyzbcy-glm53-zcode-eval：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.5.1/lyzbcy-glm53-zcode-eval.zip</code></li>
-      <li>lyzbcy-laotian-cosleader：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.11.0/lyzbcy-laotian-cosleader.zip</code></li>
+      <li>lyzbcy-laotian-cosleader：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.12.0/lyzbcy-laotian-cosleader.zip</code></li>
+      <li>lyzbcy-tudou-mentor：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.13.0/lyzbcy-tudou-mentor.zip</code></li>
     </ul>
     <button class="copybtn" onclick="copyForAI()">📋 复制给 AI 的纯文本摘要</button>
   </div>
@@ -556,9 +605,10 @@
 // —— 强制刷新组件配置（发布时与 docs/version.json 同步修改）——
 window.__FR__ = {
   id: 'laoyu-miaomiao-tools',
-  version: '2026.09.03-1',
+  version: '2026.09.03-2',
   registry: 'version.json',
   changelog: [
+    '2026-09-03 「拘灵遣将」分类上线：人格蒸馏类 skill 统一归类（卡片紫色徽标）；新收录 lyzbcy-tudou-mentor v1.0.0（土豆式 mentor 陪伴：碎片化短消息、纠错三段、对照式 CR、连环提问排查、兜底承诺显式化、AI 双轨；渐进式披露结构）；lyzbcy-laotian-cosleader 升级 v1.1.0：原则库 18→25 条（新增群聊场景：启动门禁、做减法与收敛、发布门禁、跨团队界面、群级催办仪式、禁令专属领域、新人手写第一课）；下载包分别切换 v1.13.0 / v1.12.0',
     '2026-09-03 新收录 lyzbcy-laotian-cosleader v1.0.0（老田式验收 · 严师 leader 模拟）：18 条真实反馈提炼的验收原则——先看结果不吃过程、追问式验收（连环追问逼截图/定位/演示/估时）、AI 协作铁律（AI 会幻觉人负责验证 / 只让 AI 做自己会做的 / 理解需求与现状后再让 AI 开发）、方案要具体（我不要红色，AI推导不出你想要灰色）、证据标准；输出固定【老田会这样说】一段直给反馈；每天首次使用静默自更新，失败回退旧版；下载包 v1.11.0',
     '2026-09-01 lyzbcy-视频生成提示词润色 升级 v1.7.1：新增项目目录规范（一集一夹/分镜序号/doc合订剧本/角色配置+场景清单，不合规先询问再整理）、抽帧验证生图方案（codex CLI 额度 / 输出 prompt 自选软件）与 4×4 切分图、字字动画分镜导出工具 zizi_export.py（本机任务库→标准格式→集目录）；下载包已切 v1.10.0',
     '2026-08-27 lyzbcy-视频生成提示词润色 升级 v1.6.0：对标官方 Seedance 2.5 指南与 sd25-pe——新增素材指代规范/对白账本/声音符号系统/时间戳规范/模型速查，时长上限按模型区分（C2.0=15s/C2.5=30s），可选三段式管线（本skill→sd25-pe审校→本skill终检）；下载包已切 v1.9.0',
@@ -631,7 +681,8 @@ const RELEASES = {
   "wechat-autopublish": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.4.0/lyzbcy-wechat-autopublish.zip",
   "glm53-zcode-eval": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.5.1/lyzbcy-glm53-zcode-eval.zip",
   "xhs-comment-check": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.6.0/lyzbcy-xhs-comment-check.zip",
-  "laotian-cosleader": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.11.0/lyzbcy-laotian-cosleader.zip"
+  "laotian-cosleader": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.12.0/lyzbcy-laotian-cosleader.zip",
+  "tudou-mentor": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.13.0/lyzbcy-tudou-mentor.zip"
 };
 for (var rid in RELEASES) {
   var el = document.getElementById('dl-' + rid);
@@ -642,7 +693,7 @@ for (var rid in RELEASES) {
 function copyForAI(){
   const txt = `【捞鱼妙妙工具 · Agent Skills 收录站】
 
-这里收录捞鱼（lyzbcy）的个人 Agent Skills，每个 skill 独立打包，按需下载。共 7 个 skill：
+这里收录捞鱼（lyzbcy）的个人 Agent Skills，每个 skill 独立打包，按需下载。共 8 个 skill：
 
 1) lyzbcy-study-map（理解地图生成器）
    - 用途：把技术长文/访谈/论文/跨学科材料，生成有原文依据、能追问、能复述的交互式 HTML 理解地图；也适用于课程复习提纲、历年真题、计算题手把手演示。
@@ -697,6 +748,13 @@ function copyForAI(){
    - 安装：解压后把整个文件夹放到 agent skills 目录（含 SKILL.md）。每天首次使用静默自更新，失败回退旧版。
    - 下载：${RELEASES['laotian-cosleader']}
 
+8) lyzbcy-tudou-mentor（土豆式 mentor 陪伴 · v1.0.0）
+   - 用途：模拟资深前端 mentor「土豆」做陪伴式指导。碎片化短句连发 + [捂脸]/[旺柴]；纠错三段（先安抚→对照指证→出路+沉淀规则）；提问式排查不给答案；工时自评+锁节点+明示缓冲；兜底承诺显式化（"搞不定提前两天跟我说"）；AI 双轨（自己重度用、学习期禁用并讲原因、能认出 AI 代写）。输出固定为【土豆会这样说】：+1~4 条短句。
+   - 适合：搞砸了想先听"没事，我来处理"的人；想要对照式 CR / 排查引导 / 工时参照的人；在学新东西想被"我演示一遍你照做"带的人。不适合要严 leader 式验收的（用 laotian-cosleader）、要替代真实 mentor 的。
+   - 用法示例："模拟土豆回一下：我把特性分支合并进我的开发分支了，怎么办。"
+   - 安装：解压后把整个文件夹放到 agent skills 目录（含 SKILL.md）。渐进式披露，按模式按需读规则文件；每天首次使用静默自更新。
+   - 下载：${RELEASES['tudou-mentor']}
+
 仓库：https://github.com/lyzbcy/laoyu-miaomiao-tools
 介绍页：https://lyzbcy.github.io/laoyu-miaomiao-tools/`;
   navigator.clipboard.writeText(txt).then(()=>{alert('已复制！直接粘贴给你的 AI 助手即可。')});
@@ -730,6 +788,7 @@ function copyForAI(){
       icon: a.getAttribute('data-icon') || '',       // 预留：以后填小图 URL
       emoji: (a.querySelector('.skill-head .emoji') || {}).textContent || '🧩',
       ver: (a.querySelector('.skill-head .ver') || {}).textContent || '',
+      cat: a.getAttribute('data-cat') || '',
       tagline: (a.querySelector('.skill-tag') || {}).textContent || '',
       el: a
     };
@@ -774,7 +833,7 @@ function copyForAI(){
       var iconHtml = s.icon ? '<img class="icon" src="' + s.icon + '" alt="" width="22" height="22">' : '<span class="icon">' + s.emoji + '</span>';
       body.innerHTML =
         '<div class="card-title-row">' + iconHtml + '<h3>' + s.name + '</h3></div>' +
-        (s.ver ? '<span class="card-ver">' + s.ver + '</span>' : '') +
+        '<div class="card-chips">' + (s.ver ? '<span class="card-ver">' + s.ver + '</span>' : '') + (s.cat ? '<span class="card-cat">' + s.cat + '</span>' : '') + '</div>' +
         '<p class="card-tag">' + s.tagline + '</p>' +
         '<div class="card-more">查看详情 →</div>';
       card.appendChild(body);
