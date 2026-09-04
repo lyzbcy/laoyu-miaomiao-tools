@@ -426,6 +426,18 @@
     <div class="field">
       <div class="label">它能做什么</div>
       <p>在服务器上无人值守运行（cron 每天 2 次），自动消化你小红书笔记下的新评论：<b>消息通知页采集</b>（小红书后台没有"未回复"筛选，这是验证可行的路线）、<b>md5 稳定去重</b>（绝不重复回复）、<b>LLM 人设化回复</b>（多条评论一次打包调用，输入 token 省 ~68%）、<b>发送后核验</b>、提示注入防护、垃圾评论过滤、审计日志、登录失效自动报告。</p>
+  <!-- SKILL 6: 恋爱档案与相处之道 -->
+  <article class="skill" id="love-archive">
+    <div class="skill-head">
+      <span class="emoji">💖</span>
+      <h3>lyzbcy-love-archive</h3>
+      <span class="ver">星星布丁和捞鱼 · 脱敏开源</span>
+    </div>
+    <p class="skill-tag">从一对真实情侣几百天相处中蒸馏出的恋爱方法论：关系档案、吵架与哄人、送礼、异地恋沟通、情书表达。</p>
+
+    <div class="field">
+      <div class="label">它能做什么</div>
+      <p>帮你建立自己的<strong>恋爱关系档案</strong>（伴侣偏好、共同经历、矛盾复盘，分类存档、AI 可检索），并在关键时刻给出有真实复盘支撑的建议：吵架了怎么哄（四步模板 + 无效清单）、送什么礼物（"浪费"理论 + 预算分配）、异地恋怎么沟通（负面信息加注释、先给 AI 再给 TA）、纪念日怎么过。</p>
     </div>
 
     <div class="field">
@@ -436,12 +448,18 @@
         <li>✅ 想接自己的 LLM（任意 OpenAI 兼容接口）</li>
         <li>❌ 不接受任何自动回复行为的账号（平台风控自负）</li>
         <li>❌ 想要私信自动回复（不做）</li>
+        <li>✅ 想系统记录恋爱点滴、让 AI 记住伴侣偏好和相处经验的人</li>
+        <li>✅ 吵架后想复盘、想学会"哄"的具体打法的人</li>
+        <li>✅ 异地恋、送礼选择困难、纪念日规划</li>
+        <li>⚠️ 档案内容默认私密，AI 不会未经同意外传</li>
+        <li>❌ 不是恋爱保熟机器——方法论服务于你们俩，对方不喜欢的形式就该废除</li>
       </ul>
     </div>
 
     <div class="field">
       <div class="label">怎么用（示例 prompt）</div>
       <div class="prompt-box">帮我部署小红书评论自动回复：扫码登录后先 dry-run 给我看回复计划，确认后再小批量真实发送 3 条。</div>
+      <div class="prompt-box">帮我建一个恋爱档案，把我说到的这些偏好和事情分类记下来。/ 我们又吵架了，帮我复盘一下，这次她说要哄她，到底怎么哄？</div>
     </div>
 
     <div class="field">
@@ -536,6 +554,12 @@
     <div class="dl-row">
       <a class="btn btn-zip" id="dl-tudou-mentor" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.15.0/lyzbcy-tudou-mentor.zip">📦 下载 lyzbcy-tudou-mentor.zip</a>
       <a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/lyzbcy-tudou-mentor">查看源码</a>
+      <p>下载 zip → 解压 → 把整个 <code>lyzbcy-love-archive/</code> 文件夹放到你的 agent skills 目录（确保里面有 <code>SKILL.md</code>）。之后聊到恋爱相关话题会自动触发。</p>
+    </div>
+
+    <div class="dl-row">
+      <a class="btn btn-zip" id="dl-love-archive" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.16.0/lyzbcy-love-archive.zip">📦 下载 lyzbcy-love-archive.zip</a>
+      <a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/lyzbcy-love-archive">查看源码</a>
     </div>
   </article>
 </section>
@@ -546,11 +570,10 @@
   <div class="ai-block">
     <h3>这整页可以直接发给 AI</h3>
     <p>本页是<b>语义化、对 AI 友好</b>的介绍页。你可以直接把这一整页（或它的链接）发给你的 AI 助手，AI 就能读懂：</p>
-    <p>· 这里收录了 <code>8 个 skill</code>，分别是 <code>lyzbcy-study-map</code>（理解地图）、<code>lyzbcy-最后的1%</code>（极限执行）、<code>lyzbcy-视频生成提示词润色</code>（分镜润色）、<code>lyzbcy-wechat-autopublish</code>（公众号全自动运营）、<code>lyzbcy-glm53-zcode-eval</code>（GLM-5.3 ZCode 隔离评测）、<code>lyzbcy-xhs-comment-check</code>（小红书评论全自动回复）和 <code>lyzbcy-laotian-cosleader</code>（老田式验收）、<code>lyzbcy-tudou-mentor</code>（土豆式 mentor 陪伴）。<br>
+    <p>· 这里收录了 <code>9 个 skill</code>，分别是 <code>lyzbcy-study-map</code>（理解地图）、<code>lyzbcy-最后的1%</code>（极限执行）、<code>lyzbcy-视频生成提示词润色</code>（分镜润色）、<code>lyzbcy-wechat-autopublish</code>（公众号全自动运营）、<code>lyzbcy-glm53-zcode-eval</code>（GLM-5.3 ZCode 隔离评测）、<code>lyzbcy-xhs-comment-check</code>（小红书评论全自动回复）和 <code>lyzbcy-laotian-cosleader</code>（老田式验收）、<code>lyzbcy-tudou-mentor</code>（土豆式 mentor 陪伴）和 <code>lyzbcy-love-archive</code>（恋爱档案与相处之道）。<br>
        · 每个 skill 的用途、适用场景、用法、安装方式、下载直链都在各 skill 的详情里写清楚了（页面上点卡片即可查看，页面源码同样包含全部信息）。<br>
        · 每个 skill 都有<b>直达链接</b>：在本页 URL 后加 <code>#工具名</code>（如 <code>#lyzbcy-视频生成提示词润色</code>）或 <code>#英文id</code>（如 <code>#video-prompt-polish</code>），打开即自动弹出该工具的详情；详情弹窗里的「🔗 复制直达链接」按钮可直接复制。<br>
        · 其中人格蒸馏类 skill（「老田式验收」「土豆式 mentor」）统一归类为<b>「拘灵遣将」</b>——把真实同事的沟通与做事风格蒸馏成 persona skill，卡带紫色徽标。<br>
-       · AI 可以据此判断你当前需要哪个 skill，并<b>自行下载对应的 zip 安装</b>。</p>
     <p><b>GLM-5.3 ZCode 隔离评测默认关闭：</b>它可能影响通用任务的灵活性。AI 认为可能需要时必须先询问用户；只有用户把 <code>请使用 LYZBCY 虚拟环境测试</code> 作为明确启用指令后才能运行，引用、讨论或近义表达都不算授权。</p>
     <p style="color:var(--muted);font-size:.92rem">下载链接是 GitHub Releases 直链：</p>
     <ul style="color:var(--muted);font-size:.9rem;margin:6px 0 0">
@@ -562,6 +585,7 @@
       <li>lyzbcy-glm53-zcode-eval：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.5.1/lyzbcy-glm53-zcode-eval.zip</code></li>
       <li>lyzbcy-laotian-cosleader：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.14.0/lyzbcy-laotian-cosleader.zip</code></li>
       <li>lyzbcy-tudou-mentor：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.15.0/lyzbcy-tudou-mentor.zip</code></li>
+      <li>lyzbcy-love-archive：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.16.0/lyzbcy-love-archive.zip</code></li>
     </ul>
     <button class="copybtn" onclick="copyForAI()">📋 复制给 AI 的纯文本摘要</button>
   </div>
@@ -683,18 +707,26 @@ const RELEASES = {
   "glm53-zcode-eval": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.5.1/lyzbcy-glm53-zcode-eval.zip",
   "xhs-comment-check": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.6.0/lyzbcy-xhs-comment-check.zip",
   "laotian-cosleader": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.14.0/lyzbcy-laotian-cosleader.zip",
-  "tudou-mentor": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.15.0/lyzbcy-tudou-mentor.zip"
+  "tudou-mentor": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.15.0/lyzbcy-tudou-mentor.zip",
+  "love-archive": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.16.0/lyzbcy-love-archive.zip"
 };
 for (var rid in RELEASES) {
   var el = document.getElementById('dl-' + rid);
   if (el) el.href = RELEASES[rid];
 }
+document.getElementById('dl-study-map').href = RELEASES['study-map'];
+document.getElementById('dl-last-1-percent').href = RELEASES['last-1-percent'];
+document.getElementById('dl-video-prompt-polish').href = RELEASES['video-prompt-polish'];
+document.getElementById('dl-wechat-autopublish').href = RELEASES['wechat-autopublish'];
+document.getElementById('dl-glm53-zcode-eval').href = RELEASES['glm53-zcode-eval'];
+document.getElementById('dl-love-archive').href = RELEASES['love-archive'];
 
 // 复制给 AI 的纯文本摘要
 function copyForAI(){
   const txt = `【捞鱼妙妙工具 · Agent Skills 收录站】
 
 这里收录捞鱼（lyzbcy）的个人 Agent Skills，每个 skill 独立打包，按需下载。共 8 个 skill：
+这里收录捞鱼（lyzbcy）的个人 Agent Skills，每个 skill 独立打包，按需下载。共 6 个 skill：
 
 1) lyzbcy-study-map（理解地图生成器）
    - 用途：把技术长文/访谈/论文/跨学科材料，生成有原文依据、能追问、能复述的交互式 HTML 理解地图；也适用于课程复习提纲、历年真题、计算题手把手演示。
@@ -755,6 +787,12 @@ function copyForAI(){
    - 用法示例："模拟土豆回一下：我把特性分支合并进我的开发分支了，怎么办。"
    - 安装：解压后把整个文件夹放到 agent skills 目录（含 SKILL.md）。渐进式披露，按模式按需读规则文件；每天首次使用静默自更新。
    - 下载：${RELEASES['tudou-mentor']}
+9) lyzbcy-love-archive（恋爱档案与相处之道 · 星星布丁和捞鱼脱敏开源版）
+   - 用途：帮你建立自己的恋爱关系档案（伴侣偏好、共同经历、矛盾复盘，分类存档、AI 可检索），并在关键时刻给出有真实复盘支撑的建议：吵架了怎么哄（四步模板+无效清单）、送什么礼物（"浪费"理论+预算分配）、异地恋怎么沟通（负面信息加注释、先给AI再给TA）、纪念日怎么过。
+   - 适合：想系统记录恋爱点滴、吵架后想复盘、异地恋、送礼困难的人。档案默认私密不外传。
+   - 用法示例："帮我建一个恋爱档案"或"我们又吵架了，她说要哄她，到底怎么哄"。
+   - 安装：解压后把整个文件夹放到 agent skills 目录（含 SKILL.md）。
+   - 下载：${RELEASES['love-archive']}
 
 仓库：https://github.com/lyzbcy/laoyu-miaomiao-tools
 介绍页：https://lyzbcy.github.io/laoyu-miaomiao-tools/`;
