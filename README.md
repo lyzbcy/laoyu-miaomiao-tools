@@ -21,6 +21,8 @@
 
 人格蒸馏类 skill（把真实同事的做事风格蒸馏成 persona）统一归入「拘灵遣将」分类，站点卡片带紫色徽标。
 | 💖 `lyzbcy-love-archive` | 星星布丁和捞鱼的恋爱方法论：关系档案、吵架哄人、送礼、异地恋、表达（脱敏开源） | [Releases](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases) |
+| 🐟 `lyzbcy-laoyu-soul` | 捞鱼灵魂拷贝：加载后 AI 拥有捞鱼的人格（思维/口癖/行为模式/对话锚） | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.17.0/lyzbcy-laoyu-soul.zip) |
+| 🍮 `lyzbcy-xingxingbuding-soul` | 星星布丁灵魂拷贝：加载后 AI 拥有星星布丁的人格（性格五面/招牌句式/哄人模板） | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.18.0/lyzbcy-xingxingbuding-soul.zip) |
 
 详细介绍、用法、适用场景见介绍页或各 skill 目录下的 `SKILL.md`。
 
