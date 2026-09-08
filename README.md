@@ -25,6 +25,8 @@
 
 详细介绍、用法、适用场景见介绍页或各 skill 目录下的 `SKILL.md`。
 
+另有桌面软件 **[捞鱼同步小助手](https://github.com/lyzbcy/laoyu-sync)** 🐟：给 Syncthing 的中文友好套壳，两台电脑像网盘一样互传（项目制共享 / 待接收一键接收 / 桌面小蓝鱼状态宠物），介绍见介绍页的「收录的软件」分区。
+
 ## 安装
 
 下载对应 zip → 解压 → 把整个 skill 文件夹放到你的 agent skills 目录（确保里面有 `SKILL.md`）。
