@@ -36,6 +36,7 @@ ASSET_NAMES = {
     "lyzbcy-xhs-comment-check": "lyzbcy-xhs-comment-check.zip",
     "lyzbcy-laotian-cosleader": "lyzbcy-laotian-cosleader.zip",
     "lyzbcy-tudou-mentor": "lyzbcy-tudou-mentor.zip",
+    "lyzbcy-qinchuan-scriptwriter": "lyzbcy-qinchuan-scriptwriter.zip",
 }
 
 # 打包时排除的运行时产物 / 系统杂项
