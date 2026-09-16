@@ -3,7 +3,7 @@ name: lyzbcy-qinchuan-scriptwriter
 description: |
   公司编剧勤川的剧本写作能力蒸馏（灵魂提取法，保留原文与风格）。覆盖：AI漫剧剧本硬格式（场标/人物行/△动作行/台词行四件套）、策划案九字段模板、单集节拍公式（冷进-抑扬-硬钩）、集尾钩子八型、爽点模式库（男频/女频/道德绑架反杀/IP改编四线）、60集长篇续航法（换地图/单元清单/牌局管理）、阅文IP改编法（前置/分账/OS三用/槽位化）、出海双语版转换。写短剧剧本、漫剧剧本、竖屏爽剧、改编网文IP、写剧本策划案、写集尾钩子、仿勤川风格时使用。规则与示例全部来自 26 部原作剧本逐字摘录。
 metadata:
-  version: "1.1.0"
+  version: "1.1.1"
   updated: "2026-09-16"
   source: https://raw.githubusercontent.com/lyzbcy/laoyu-miaomiao-tools/main/skills/lyzbcy-qinchuan-scriptwriter/SKILL.md
   files:

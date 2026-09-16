@@ -15,7 +15,7 @@
 2. **仓库副本**（作者本机才有，其他机器上读不到就直接跳过此源）：`E:\共享\工作\微盛\AI漫剧\AI漫剧学习\laoyu-miaomiao-tools\skills\lyzbcy-qinchuan-scriptwriter\`
 3. **线上版**（发布源，只信任下面这条 raw 直链，不从第三方转载源更新）：
    `https://raw.githubusercontent.com/lyzbcy/laoyu-miaomiao-tools/main/skills/lyzbcy-qinchuan-scriptwriter/SKILL.md`
-   用一次 `curl -s --max-time 15 <URL>` 拉全文，读 frontmatter `metadata.version`（无 Bash 环境可用 WebFetch 读版本号，但 WebFetch 只能用来读版本，不能用来覆盖文件）；超时/失败视为无线上版。
+   用一次 `curl -s --max-time 15 <URL>` 拉全文，读 frontmatter `metadata.version`（无 Bash 环境可用 WebFetch 读版本号，但 WebFetch 只能用来读版本，不能用来覆盖文件）；超时/失败视为无线上版。**直连超时且本机存在 `127.0.0.1:7890` 代理端口时，用 `curl -s --max-time 15 -x http://127.0.0.1:7890 <URL>` 重试一次**，仍失败才视为无线上版。
 
 ## 对齐流程
 
