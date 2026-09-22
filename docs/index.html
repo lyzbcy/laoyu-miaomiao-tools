@@ -181,7 +181,7 @@
 
 <!-- SKILLS：商品化网格 -->
 <section id="skills">
-  <h2><span class="num">02</span> 收录的 Skills（<span id="skill-count">9</span> 个）</h2>
+  <h2><span class="num">02</span> 收录的 Skills（<span id="skill-count">10</span> 个）</h2>
   <p class="lede">点开卡片看详情：它是干嘛的、适合什么场景、怎么用、怎么装、在哪下载。skill 越收越多，可以用搜索和翻页找。</p>
 
   <div class="shop-toolbar">
@@ -563,6 +563,47 @@
       <a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/lyzbcy-qinchuan-scriptwriter">查看源码</a>
     </div>
   </article>
+
+  <!-- SKILL 10: qq-napcat-messenger -->
+  <article class="skill skill-detail" id="qq-napcat-messenger" data-name="lyzbcy-qq-napcat-messenger" data-grad="linear-gradient(135deg,#1b2a4a 0%,#2f4f8f 58%,#5b8def 100%)">
+    <div class="skill-head">
+      <span class="emoji">💬</span>
+      <h3>lyzbcy-qq-napcat-messenger</h3>
+      <span class="ver">QQ 自动收发 · v1.0.0</span>
+    </div>
+    <p class="skill-tag">借号（grab）→ 收发 → 还号（restore）：让 agent 用你的桌面 QQ 通过 NapCat 自动私聊/群发/发文件、扫新消息、拉聊天记录、下载消息附件。</p>
+
+    <div class="field">
+      <div class="label">它能做什么</div>
+      <p>本机桌面 QQ 与 <b>NapCat</b>（OneBot HTTP）共用一个账号，skill 把"切换→收发→换回来"固化成一条命令：私聊/群发文本、发文件、<b>poll 扫最近消息</b>（可过滤指定群、QQ 号映射成备注名）、拉好友聊天记录、下载消息里的图片和文件。<b>所有坑已填</b>：健康检查 stub 假成功（登录只认 data.user_id、发送只认 message_id）、路径风格 API、非好友记录不可见、file_id 截断 404、还号后登录页留给人工（自动化点击必失败）。9 个子命令全部实测。token 从 NapCat 本地配置自动发现，仓库零硬编码凭证。</p>
+    </div>
+
+    <div class="field">
+      <div class="label">适合 / 不适合</div>
+      <ul>
+        <li>✅ Windows + QQNT + NapCat 已部署（默认识别续火花目录结构，可环境变量覆盖）</li>
+        <li>✅ 班长/群主类角色：群发通知、收材料、逐人催办、汇总聊天记录</li>
+        <li>✅ 想让 agent 替你跑"看下有没有新消息→挑重要的→起草回复"这类循环</li>
+        <li>❌ 没装 NapCat 或用的不是 QQNT 架构</li>
+        <li>❌ 无人值守 7×24 挂机收发（本 skill 是任务式借还号，不是常驻机器人）</li>
+      </ul>
+    </div>
+
+    <div class="field">
+      <div class="label">怎么用（示例 prompt）</div>
+      <div class="prompt-box">用我的 QQ 看一下班里最近两小时有没有新消息，有的话把需要我回的挑出来，回复稿先给我过目再发。</div>
+    </div>
+
+    <div class="field">
+      <div class="label">怎么安装</div>
+      <p>下载 zip → 解压 → 把整个 <code>lyzbcy-qq-napcat-messenger/</code> 文件夹放到 agent skills 目录（确保里面有 <code>SKILL.md</code>）。零依赖（纯 stdlib）。前提：本机已部署 NapCat 并配好 OneBot HTTP 服务；配置目录不在默认位置时用 <code>NAPCAT_CFG_DIR</code> 指过去。用完自动还号，桌面 QQ 重新登录可能需要短信验证码。</p>
+    </div>
+
+    <div class="dl-row">
+      <a class="btn btn-zip" id="dl-qq-napcat-messenger" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.24.0/lyzbcy-qq-napcat-messenger.zip">📦 下载 lyzbcy-qq-napcat-messenger.zip</a>
+      <a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/lyzbcy-qq-napcat-messenger">查看源码</a>
+    </div>
+  </article>
 </section>
 
 <!-- AI 友好 -->
@@ -571,7 +612,7 @@
   <div class="ai-block">
     <h3>这整页可以直接发给 AI</h3>
     <p>本页是<b>语义化、对 AI 友好</b>的介绍页。你可以直接把这一整页（或它的链接）发给你的 AI 助手，AI 就能读懂：</p>
-    <p>· 这里收录了 <code>9 个 skill</code>，分别是 <code>lyzbcy-study-map</code>（理解地图）、<code>lyzbcy-最后的1%</code>（极限执行）、<code>lyzbcy-视频生成提示词润色</code>（分镜润色）、<code>lyzbcy-wechat-autopublish</code>（公众号全自动运营）、<code>lyzbcy-glm53-zcode-eval</code>（GLM-5.3 ZCode 隔离评测）、<code>lyzbcy-xhs-comment-check</code>（小红书评论全自动回复）和 <code>lyzbcy-laotian-cosleader</code>（老田式验收）、<code>lyzbcy-tudou-mentor</code>（土豆式 mentor 陪伴）、<code>lyzbcy-qinchuan-scriptwriter</code>（勤川剧本法编剧）。<br>
+    <p>· 这里收录了 <code>10 个 skill</code>，分别是 <code>lyzbcy-study-map</code>（理解地图）、<code>lyzbcy-最后的1%</code>（极限执行）、<code>lyzbcy-视频生成提示词润色</code>（分镜润色）、<code>lyzbcy-wechat-autopublish</code>（公众号全自动运营）、<code>lyzbcy-glm53-zcode-eval</code>（GLM-5.3 ZCode 隔离评测）、<code>lyzbcy-xhs-comment-check</code>（小红书评论全自动回复）和 <code>lyzbcy-laotian-cosleader</code>（老田式验收）、<code>lyzbcy-tudou-mentor</code>（土豆式 mentor 陪伴）、<code>lyzbcy-qinchuan-scriptwriter</code>（勤川剧本法编剧）和 <code>lyzbcy-qq-napcat-messenger</code>（本机 QQ 自动收发）。<br>
        · 每个 skill 的用途、适用场景、用法、安装方式、下载直链都在各 skill 的详情里写清楚了（页面上点卡片即可查看，页面源码同样包含全部信息）。<br>
        · 每个 skill 都有<b>直达链接</b>：在本页 URL 后加 <code>#工具名</code>（如 <code>#lyzbcy-视频生成提示词润色</code>）或 <code>#英文id</code>（如 <code>#video-prompt-polish</code>），打开即自动弹出该工具的详情；详情弹窗里的「🔗 复制直达链接」按钮可直接复制。<br>
        · 其中人格蒸馏类 skill（「老田式验收」「土豆式 mentor」）统一归类为<b>「拘灵遣将」</b>——把真实同事的沟通与做事风格蒸馏成 persona skill，卡带紫色徽标。<br>
@@ -631,9 +672,10 @@
 // —— 强制刷新组件配置（发布时与 docs/version.json 同步修改）——
 window.__FR__ = {
   id: 'laoyu-miaomiao-tools',
-  version: '2026.09.20-1',
+  version: '2026.09.22-1',
   registry: 'version.json',
   changelog: [
+    '2026-09-22 新收录 lyzbcy-qq-napcat-messenger v1.0.0：本机 QQ（NapCat）自动收发——借号/收发/还号三段式，9 子命令全实测，私聊群发发文件、扫新消息、拉聊天记录、下载附件；stub 假成功等坑已内置防御；下载包 v1.24.0',
     '2026-09-20 拘灵遣将双 skill 按新积累素材升级：lyzbcy-laotian-cosleader v1.3.0——原则库 25→30 条（周报50字门/需求方自助化交接/AI产能进排期/工具模型专注纪律/培养目标可验收化）+7 处校准+对话锚 18→22 组+craft 新增自助化交接 SOP 与工具纪律；lyzbcy-tudou-mentor v1.2.0——规律 15→23 条（mentor→owner 角色扩展：理解门禁/进度owner化/对外对线/AI三轨/预演制/设计稿判定）+人设校准（对人不催、对事设节拍、催办下放）+对话锚 16→22 组+craft 新增小队owner手册/对线8步/理解门禁；下载包分别切换 v1.22.0 / v1.23.0',
     '2026-09-16 新收录 lyzbcy-qinchuan-scriptwriter v1.1.1（勤川剧本法编剧 · 26 部剧本灵魂蒸馏）：策划案九字段/正文格式四件套/单集节拍/钩子八型/爽点模式库四线/长篇续航/IP改编五步/出海双语，范例库 15 片段原文+验真脚本；下载包 v1.21.0',
     '2026-09-16 站点收敛：应作者要求移除「捞鱼同步小助手」收录（含整个「收录的软件」分区）；lyzbcy-laoyu-soul 与 lyzbcy-xingxingbuding-soul 不再展示（Releases 下载包保留，作者自取），站点定位收敛为只收录多机日常使用的 skill',
@@ -715,7 +757,8 @@ const RELEASES = {
   "xhs-comment-check": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.6.0/lyzbcy-xhs-comment-check.zip",
   "laotian-cosleader": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.22.0/lyzbcy-laotian-cosleader.zip",
   "tudou-mentor": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.23.0/lyzbcy-tudou-mentor.zip",
-  "qinchuan-scriptwriter": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.21.0/lyzbcy-qinchuan-scriptwriter.zip"
+  "qinchuan-scriptwriter": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.21.0/lyzbcy-qinchuan-scriptwriter.zip",
+  "qq-napcat-messenger": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.24.0/lyzbcy-qq-napcat-messenger.zip"
 };
 for (var rid in RELEASES) {
   var el = document.getElementById('dl-' + rid);
@@ -731,7 +774,7 @@ document.getElementById('dl-glm53-zcode-eval').href = RELEASES['glm53-zcode-eval
 function copyForAI(){
   const txt = `【捞鱼妙妙工具 · Agent Skills 收录站】
 
-这里收录捞鱼（lyzbcy）的个人 Agent Skills，每个 skill 独立打包，按需下载。共 9 个 skill：
+这里收录捞鱼（lyzbcy）的个人 Agent Skills，每个 skill 独立打包，按需下载。共 10 个 skill：
 
 1) lyzbcy-study-map（理解地图生成器）
    - 用途：把技术长文/访谈/论文/跨学科材料，生成有原文依据、能追问、能复述的交互式 HTML 理解地图；也适用于课程复习提纲、历年真题、计算题手把手演示。
@@ -799,6 +842,13 @@ function copyForAI(){
    - 用法示例："用勤川剧本法写《XX》第一集剧本，先出策划案节选"或"按勤川的方法把这个网文大纲改编成 40 集策划案"。
    - 安装：解压后把整个文件夹放到 agent skills 目录（含 SKILL.md）。每天首次使用静默自更新，失败回退旧版。
    - 下载：${RELEASES['qinchuan-scriptwriter']}
+
+10) lyzbcy-qq-napcat-messenger（QQ 自动收发 · v1.0.0）
+   - 用途：让 agent 用你的本机 QQ（NapCat OneBot HTTP）自动收发：私聊/群发文本、发文件、扫最近消息（poll，可过滤指定群、QQ 号映射备注名）、拉好友聊天记录、下载消息里的图片和文件。三段式"借号 grab → 收发 → 还号 restore"，9 个子命令全部实测；token 从 NapCat 本地配置自动发现，零硬编码凭证。
+   - 适合：Windows + QQNT + NapCat 已部署；班长/群主群发通知、收材料、逐人催办、汇总聊天记录。不适合没装 NapCat 的机器、无人值守常驻挂机。
+   - 用法示例："用我的 QQ 看下班里最近两小时有没有新消息，要回的挑出来，回复稿先给我过目再发。"
+   - 安装：解压后把整个文件夹放到 agent skills 目录（含 SKILL.md）。零依赖。用完自动还号，桌面 QQ 重新登录可能要短信验证码。
+   - 下载：${RELEASES['qq-napcat-messenger']}
 
 仓库：https://github.com/lyzbcy/laoyu-miaomiao-tools
 介绍页：https://lyzbcy.github.io/laoyu-miaomiao-tools/`;

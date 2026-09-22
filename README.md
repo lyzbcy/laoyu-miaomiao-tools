@@ -18,6 +18,7 @@
 | 📕 `lyzbcy-xhs-comment-check` | 小红书评论全自动检查+回复：通知页采集/LLM打包生成/发送核验/防注入/审计报告 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.6.0/lyzbcy-xhs-comment-check.zip) |
 | 👔 `lyzbcy-laotian-cosleader` | 模拟结果导向 leader「老田」做直给式验收：30 条原则 + 22 组逐字对话锚 + 工程角色书 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.22.0/lyzbcy-laotian-cosleader.zip) |
 | 🧑‍🏫 `lyzbcy-tudou-mentor` | 模拟资深前端 mentor「土豆」做陪伴式指导：纠错三段 + 对照式 CR + 前端铁律角色书 + 22 组逐字对话锚 + owner 手册 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.23.0/lyzbcy-tudou-mentor.zip) |
+| 💬 `lyzbcy-qq-napcat-messenger` | 本机 QQ（NapCat）自动收发：借号→收发→还号三段式，私聊/群发/发文件/扫新消息/拉记录/下载附件，9 子命令全实测 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.24.0/lyzbcy-qq-napcat-messenger.zip) |
 
 人格蒸馏类 skill（把真实同事的做事风格蒸馏成 persona）统一归入「拘灵遣将」分类，站点卡片带紫色徽标。
 | 🐟 `lyzbcy-laoyu-soul` | 捞鱼灵魂拷贝：加载后 AI 拥有捞鱼的人格（思维/口癖/行为模式/对话锚） | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.19.0/lyzbcy-laoyu-soul.zip) |
