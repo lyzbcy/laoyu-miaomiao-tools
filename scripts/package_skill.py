@@ -33,7 +33,7 @@ ASSET_NAMES = {
     "lyzbcy-视频生成提示词润色": "lyzbcy-video-prompt-polish.zip",
     "lyzbcy-wechat-autopublish": "lyzbcy-wechat-autopublish.zip",
     "lyzbcy-glm53-zcode-eval": "lyzbcy-glm53-zcode-eval.zip",
-    "lyzbcy-xhs-comment-check": "lyzbcy-xhs-comment-check.zip",
+    "lyzbcy-xhs-agent": "lyzbcy-xhs-agent.zip",
     "lyzbcy-laotian-cosleader": "lyzbcy-laotian-cosleader.zip",
     "lyzbcy-tudou-mentor": "lyzbcy-tudou-mentor.zip",
     "lyzbcy-qinchuan-scriptwriter": "lyzbcy-qinchuan-scriptwriter.zip",

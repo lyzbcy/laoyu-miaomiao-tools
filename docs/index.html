@@ -414,44 +414,43 @@
     </div>
   </article>
 
-  <!-- SKILL 6: 小红书评论自动回复 -->
-  <article class="skill skill-detail" id="xhs-comment-check" data-name="lyzbcy-xhs-comment-check" data-grad="linear-gradient(135deg,#6e1226 0%,#d13438 58%,#ff7b72 100%)">
+  <!-- SKILL 6: 小红书 Agent 浏览器操作 -->
+  <article class="skill skill-detail" id="xhs-agent" data-name="lyzbcy-xhs-agent" data-grad="linear-gradient(135deg,#6e1226 0%,#d13438 58%,#ff7b72 100%)">
     <div class="skill-head">
       <span class="emoji">📕</span>
-      <h3>lyzbcy-xhs-comment-check</h3>
-      <span class="ver">小红书评论全自动回复</span>
+      <h3>lyzbcy-xhs-agent</h3>
+      <span class="ver">小红书 Agent 操作 · v2.0.0</span>
     </div>
-    <p class="skill-tag">定时抓通知页新评论 → LLM 按人设生成回复（一次打包调用省 token）→ 自动发送并核验 → 中文报告。</p>
+    <p class="skill-tag">用已登录的浏览器，协助 Agent 发布笔记、管理小工具、查看评论并逐条核验结果。</p>
 
     <div class="field">
       <div class="label">它能做什么</div>
-      <p>在服务器上无人值守运行（cron 每天 2 次），自动消化你小红书笔记下的新评论：<b>消息通知页采集</b>（小红书后台没有"未回复"筛选，这是验证可行的路线）、<b>md5 稳定去重</b>（绝不重复回复）、<b>LLM 人设化回复</b>（多条评论一次打包调用，输入 token 省 ~68%）、<b>发送后核验</b>、提示注入防护、垃圾评论过滤、审计日志、登录失效自动报告。</p>
+      <p>Agent 读取小红书网页当前状态，再逐步操作：<b>图文发布</b>时检查封面、正文和组件；<b>小工具重传</b>时核对 ZIP、图标、版本、标签与权限，区分代码部署和内容审核；<b>评论处理</b>时看清所属笔记与上下文，拟稿后按用户授权逐条发送并核验。收录了 Kimi WebBridge 实操经验，包括扩展缺少文件访问权限时让用户接手上传、再从页面现场继续。</p>
     </div>
 
     <div class="field">
       <div class="label">适合 / 不适合</div>
       <ul>
-        <li>✅ 有小红书账号、想让评论区保持活跃的博主</li>
-        <li>✅ 有一台能跑 Playwright 的服务器（Linux + xvfb）</li>
-        <li>✅ 想接自己的 LLM（任意 OpenAI 兼容接口）</li>
-        <li>❌ 不接受任何自动回复行为的账号（平台风控自负）</li>
-        <li>❌ 想要私信自动回复（不做）</li>
+        <li>✅ 已登录小红书、希望 Agent 协助处理具体笔记、小工具或评论</li>
+        <li>✅ 愿意在登录、实名认证、验证码或浏览器权限步骤亲自接手</li>
+        <li>❌ 想让服务器无人值守批量抓评论、自动发送回复</li>
+        <li>❌ 想规避平台检测、风控或安全验证</li>
       </ul>
     </div>
 
     <div class="field">
       <div class="label">怎么用（示例 prompt）</div>
-      <div class="prompt-box">帮我部署小红书评论自动回复：扫码登录后先 dry-run 给我看回复计划，确认后再小批量真实发送 3 条。</div>
+      <div class="prompt-box">帮我把这个 ZIP 作为小红书小工具新版本重传，核对表单和部署结果，再提交审核；如果浏览器权限挡住上传，把这一步交给我，之后接着做。</div>
     </div>
 
     <div class="field">
       <div class="label">怎么安装</div>
-      <p>下载 zip → 解压 → 放到 agent skills 目录 → <code>pip3 install -r requirements.txt</code> → <code>cp persona.example.json persona.json</code> 填你的人设 → <code>xvfb-run -a python3 login_once.py</code> 扫码登录。登录失效时会报告提醒，用 noVNC 人工扫码即可（多道风控关卡都能人工过）。</p>
+      <p>下载 zip → 解压 → 把整个 <code>lyzbcy-xhs-agent/</code> 放到 Agent 的 skills 目录。无需安装旧版的 Playwright、cron 或人设配置；浏览器连接工具由运行环境提供，本机有 Kimi WebBridge 时可按 skill 中的流程使用。</p>
     </div>
 
     <div class="dl-row">
-      <a class="btn btn-zip" id="dl-xhs-comment-check" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.6.0/lyzbcy-xhs-comment-check.zip">📦 下载 lyzbcy-xhs-comment-check.zip</a>
-      <a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/lyzbcy-xhs-comment-check">查看源码</a>
+      <a class="btn btn-zip" id="dl-xhs-agent" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.25.0/lyzbcy-xhs-agent.zip">📦 下载 lyzbcy-xhs-agent.zip</a>
+      <a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/lyzbcy-xhs-agent">查看源码</a>
     </div>
   </article>
 
@@ -612,7 +611,7 @@
   <div class="ai-block">
     <h3>这整页可以直接发给 AI</h3>
     <p>本页是<b>语义化、对 AI 友好</b>的介绍页。你可以直接把这一整页（或它的链接）发给你的 AI 助手，AI 就能读懂：</p>
-    <p>· 这里收录了 <code>10 个 skill</code>，分别是 <code>lyzbcy-study-map</code>（理解地图）、<code>lyzbcy-最后的1%</code>（极限执行）、<code>lyzbcy-视频生成提示词润色</code>（分镜润色）、<code>lyzbcy-wechat-autopublish</code>（公众号全自动运营）、<code>lyzbcy-glm53-zcode-eval</code>（GLM-5.3 ZCode 隔离评测）、<code>lyzbcy-xhs-comment-check</code>（小红书评论全自动回复）和 <code>lyzbcy-laotian-cosleader</code>（老田式验收）、<code>lyzbcy-tudou-mentor</code>（土豆式 mentor 陪伴）、<code>lyzbcy-qinchuan-scriptwriter</code>（勤川剧本法编剧）和 <code>lyzbcy-qq-napcat-messenger</code>（本机 QQ 自动收发）。<br>
+    <p>· 这里收录了 <code>10 个 skill</code>，分别是 <code>lyzbcy-study-map</code>（理解地图）、<code>lyzbcy-最后的1%</code>（极限执行）、<code>lyzbcy-视频生成提示词润色</code>（分镜润色）、<code>lyzbcy-wechat-autopublish</code>（公众号全自动运营）、<code>lyzbcy-glm53-zcode-eval</code>（GLM-5.3 ZCode 隔离评测）、<code>lyzbcy-xhs-agent</code>（小红书 Agent 浏览器操作）和 <code>lyzbcy-laotian-cosleader</code>（老田式验收）、<code>lyzbcy-tudou-mentor</code>（土豆式 mentor 陪伴）、<code>lyzbcy-qinchuan-scriptwriter</code>（勤川剧本法编剧）和 <code>lyzbcy-qq-napcat-messenger</code>（本机 QQ 自动收发）。<br>
        · 每个 skill 的用途、适用场景、用法、安装方式、下载直链都在各 skill 的详情里写清楚了（页面上点卡片即可查看，页面源码同样包含全部信息）。<br>
        · 每个 skill 都有<b>直达链接</b>：在本页 URL 后加 <code>#工具名</code>（如 <code>#lyzbcy-视频生成提示词润色</code>）或 <code>#英文id</code>（如 <code>#video-prompt-polish</code>），打开即自动弹出该工具的详情；详情弹窗里的「🔗 复制直达链接」按钮可直接复制。<br>
        · 其中人格蒸馏类 skill（「老田式验收」「土豆式 mentor」）统一归类为<b>「拘灵遣将」</b>——把真实同事的沟通与做事风格蒸馏成 persona skill，卡带紫色徽标。<br>
@@ -624,7 +623,7 @@
       <li>lyzbcy-最后的1%：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.1.0/lyzbcy-last-1-percent.zip</code></li>
       <li>lyzbcy-视频生成提示词润色：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.10.0/lyzbcy-video-prompt-polish.zip</code></li>
       <li>lyzbcy-wechat-autopublish：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.4.0/lyzbcy-wechat-autopublish.zip</code></li>
-      <li>lyzbcy-xhs-comment-check：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.6.0/lyzbcy-xhs-comment-check.zip</code></li>
+      <li>lyzbcy-xhs-agent：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.25.0/lyzbcy-xhs-agent.zip</code></li>
       <li>lyzbcy-glm53-zcode-eval：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.5.1/lyzbcy-glm53-zcode-eval.zip</code></li>
       <li>lyzbcy-laotian-cosleader：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.22.0/lyzbcy-laotian-cosleader.zip</code></li>
       <li>lyzbcy-tudou-mentor：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.23.0/lyzbcy-tudou-mentor.zip</code></li>
@@ -672,9 +671,10 @@
 // —— 强制刷新组件配置（发布时与 docs/version.json 同步修改）——
 window.__FR__ = {
   id: 'laoyu-miaomiao-tools',
-  version: '2026.09.22-1',
+  version: '2026.09.28-1',
   registry: 'version.json',
   changelog: [
+    '2026-09-28 lyzbcy-xhs-comment-check 更名并升级为 lyzbcy-xhs-agent v2.0.0：改为用户登录态浏览器中的 Agent 协助操作，覆盖笔记、小工具和评论；移除旧版 Playwright/cron 自动回复脚本，记录 Kimi WebBridge 上传权限的实测边界；下载包 v1.25.0，旧深链继续指向新版卡片',
     '2026-09-22 新收录 lyzbcy-qq-napcat-messenger v1.0.0：本机 QQ（NapCat）自动收发——借号/收发/还号三段式，9 子命令全实测，私聊群发发文件、扫新消息、拉聊天记录、下载附件；stub 假成功等坑已内置防御；下载包 v1.24.0',
     '2026-09-20 拘灵遣将双 skill 按新积累素材升级：lyzbcy-laotian-cosleader v1.3.0——原则库 25→30 条（周报50字门/需求方自助化交接/AI产能进排期/工具模型专注纪律/培养目标可验收化）+7 处校准+对话锚 18→22 组+craft 新增自助化交接 SOP 与工具纪律；lyzbcy-tudou-mentor v1.2.0——规律 15→23 条（mentor→owner 角色扩展：理解门禁/进度owner化/对外对线/AI三轨/预演制/设计稿判定）+人设校准（对人不催、对事设节拍、催办下放）+对话锚 16→22 组+craft 新增小队owner手册/对线8步/理解门禁；下载包分别切换 v1.22.0 / v1.23.0',
     '2026-09-16 新收录 lyzbcy-qinchuan-scriptwriter v1.1.1（勤川剧本法编剧 · 26 部剧本灵魂蒸馏）：策划案九字段/正文格式四件套/单集节拍/钩子八型/爽点模式库四线/长篇续航/IP改编五步/出海双语，范例库 15 片段原文+验真脚本；下载包 v1.21.0',
@@ -754,7 +754,7 @@ const RELEASES = {
   "video-prompt-polish": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.10.0/lyzbcy-video-prompt-polish.zip",
   "wechat-autopublish": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.4.0/lyzbcy-wechat-autopublish.zip",
   "glm53-zcode-eval": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.5.1/lyzbcy-glm53-zcode-eval.zip",
-  "xhs-comment-check": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.6.0/lyzbcy-xhs-comment-check.zip",
+  "xhs-agent": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.25.0/lyzbcy-xhs-agent.zip",
   "laotian-cosleader": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.22.0/lyzbcy-laotian-cosleader.zip",
   "tudou-mentor": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.23.0/lyzbcy-tudou-mentor.zip",
   "qinchuan-scriptwriter": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.21.0/lyzbcy-qinchuan-scriptwriter.zip",
@@ -815,12 +815,12 @@ function copyForAI(){
    - 安装：解压后把整个文件夹放到 agent skills 目录（含 SKILL.md）。安装、下载和读取都不等于授权启用。
    - 下载：${RELEASES['glm53-zcode-eval']}
 
-6) lyzbcy-xhs-comment-check（小红书评论全自动回复）
-   - 用途：服务器无人值守运行（cron 每天 2 次），自动回复小红书笔记下的新评论：消息通知页采集 → md5 稳定去重（绝不重复回复）→ LLM 按人设生成回复（多条一次打包调用，输入 token 省 ~68%）→ 发送后核验，带提示注入防护、垃圾评论过滤、审计日志、登录失效自动报告，产出中文报告。
-   - 适合：有小红书账号、想让评论区保持活跃的博主；有一台能跑 Playwright 的服务器（Linux + xvfb）；想接自己的 LLM（任意 OpenAI 兼容接口）。不适合不接受任何自动回复行为的账号、想自动回复私信的人。
-   - 用法示例："帮我部署小红书评论自动回复：扫码登录后先 dry-run 给我看回复计划，确认后再小批量真实发送 3 条。"
-   - 安装：解压后放到 agent skills 目录 → pip3 install -r requirements.txt → cp persona.example.json persona.json 填人设 → xvfb-run -a python3 login_once.py 扫码登录。
-   - 下载：${RELEASES['xhs-comment-check']}
+6) lyzbcy-xhs-agent（小红书 Agent 浏览器操作 · v2.0.0）
+   - 用途：在用户已登录的小红书网页中协助 Agent 发布图文、管理小工具、查看评论与逐条回复；核对上传、部署、审核、发布和回复的真实状态。记录 Kimi WebBridge 文件访问权限的实测边界。
+   - 适合：希望 Agent 辅助操作具体笔记、小工具或评论的创作者；用户可在登录、实名认证、验证码和浏览器权限步骤接手。不适合无人值守批量自动回复或规避平台检测。
+   - 用法示例："帮我把这个 ZIP 作为小红书小工具新版本重传，核对表单和部署结果，再提交审核；上传若需我接手就告诉我。"
+   - 安装：解压后把整个 lyzbcy-xhs-agent 文件夹放到 agent skills 目录；无需旧版 Playwright/cron 依赖。
+   - 下载：${RELEASES['xhs-agent']}
 
 7) lyzbcy-laotian-cosleader（老田式验收 · v1.3.0）
    - 用途：模拟一位结果导向的技术 leader「老田」，对文档、代码、方案、日报、汇报做直给式验收。18 条从真实工作反馈提炼的原则：先看结果不吃过程、结论必须有证据（官方链接/实测值）、追问式验收（用连环追问逼截图/定位/演示/估时）、AI 协作铁律（AI 会幻觉、人负责验证；只让 AI 做自己会做的；务必理解需求与现状后再让 AI 开发）、方案要具体（我不要红色，AI 推导不出你想要灰色）、反对 AI 味模板腔。输出固定为【老田会这样说】：{一段直给反馈}。
@@ -1070,6 +1070,7 @@ function copyForAI(){
   function resolveSkill(hash){
     var q = norm((hash || '').replace(/^#/, ''));
     if (!q || q === 'skills') return null;
+    if (q === 'lyzbcy-xhs-comment-check' || q === 'xhs-comment-check') q = 'lyzbcy-xhs-agent';
     var i, id, name;
     for (i = 0; i < SKILLS.length; i++) {
       id = norm(SKILLS[i].id); name = norm(SKILLS[i].name);
