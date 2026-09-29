@@ -2,9 +2,10 @@
   "$comment": "页面版本注册表（强制刷新组件的远端版本源）。发布流程：改完页面后，① 把页面内嵌的 PAGE_VERSION（window.__FR__.version）改成新值并补充页面内 changelog；② 把本文件对应页面的 version 改成同一个值、changes 加一条（新在前）；③ push。访客打开页面时组件会拿本文件对版，不一致自动强刷一次。version 只要和之前不同就会触发刷新，推荐 日期-序号 递增（如 2026.08.26-2）。注意：只有 GitHub Pages 上的这份是权威源，别只改页面不改这里，否则访客不会自动刷新。",
   "pages": {
     "laoyu-miaomiao-tools": {
-      "version": "2026.09.28-1",
-      "updated": "2026-09-28",
+      "version": "2026.09.29-1",
+      "updated": "2026-09-29",
       "changes": [
+        "2026-09-29 lyzbcy-xhs-agent 升级 v2.1.0：加入实测可用的一次性本地附件桥，扩展无文件 URL 权限时仍可上传已授权 ZIP；固化前台标签、File + DataTransfer 写入、部署成功与最终版本卡片双重验收；下载包 v1.26.0",
         "2026-09-28 lyzbcy-xhs-comment-check 更名并升级为 lyzbcy-xhs-agent v2.0.0：改为用户登录态浏览器中的 Agent 协助操作，覆盖笔记、小工具和评论；移除旧版 Playwright/cron 自动回复脚本，记录 Kimi WebBridge 上传权限的实测边界；下载包 v1.25.0，旧深链继续指向新版卡片",
         "2026-09-22 新收录 lyzbcy-qq-napcat-messenger v1.0.0：本机 QQ（NapCat）自动收发——借号/收发/还号三段式，9 子命令全实测，私聊群发发文件、扫新消息、拉聊天记录、下载附件；stub 假成功等坑已内置防御；下载包 v1.24.0",
         "2026-09-20 拘灵遣将双 skill 按新积累素材升级：lyzbcy-laotian-cosleader v1.3.0——原则库 25→30 条（周报50字门/需求方自助化交接/AI产能进排期/工具模型专注纪律/培养目标可验收化）+7 处校准+对话锚 18→22 组+craft 新增自助化交接 SOP 与工具纪律；lyzbcy-tudou-mentor v1.2.0——规律 15→23 条（mentor→owner 角色扩展：理解门禁/进度owner化/对外对线/AI三轨/预演制/设计稿判定）+人设校准（对人不催、对事设节拍、催办下放）+对话锚 16→22 组+craft 新增小队owner手册/对线8步/理解门禁；下载包分别切换 v1.22.0 / v1.23.0",

@@ -2,7 +2,7 @@
 
 小红书 Agent 浏览器操作 skill：在用户已登录的页面上协助发布笔记、上传小工具、查看评论和逐条回复，并核对结果。
 
-把整个文件夹放入 Agent 的 skills 目录，确保其中有 `SKILL.md`。不需要安装 Playwright、服务器定时任务或额外的 Python 依赖；浏览器连接工具由运行环境提供。本机若安装 Kimi WebBridge，可按 `SKILL.md` 和 `references/browser-workflows.md` 使用。
+把整个文件夹放入 Agent 的 skills 目录，确保其中有 `SKILL.md`。不需要安装 Playwright、服务器定时任务或第三方 Python 依赖；浏览器连接工具由运行环境提供。本机若安装 Kimi WebBridge，可按 `SKILL.md` 和 `references/browser-workflows.md` 使用。扩展不能直接读取本地附件时，可用自带的 `scripts/local_file_bridge.py` 将已授权文件一次性交给小红书页面。
 
 示例：
 
