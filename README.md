@@ -10,6 +10,7 @@
 
 | Skill | 一句话 | 下载 |
 |-------|--------|------|
+| 🎬 `lyzbcy-video-publish-assistant` | 抖音/B站/小红书视频上传、三比例封面与文案，保存草稿交用户确认发布 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.27.0/lyzbcy-video-publish-assistant.zip) |
 | 🗺️ `lyzbcy-study-map` | 把难啃的干货拆成有原文依据、能追问、能复述的交互式理解地图 | [Releases](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases) |
 | 🎯 `lyzbcy-最后的1%` | 极限执行元 skill，把任务做到真正完美才停手 | [Releases](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases) |
 | 🎬 `lyzbcy-视频生成提示词润色` | AI 视频分镜提示词做减法，只留镜头语言 | [Releases](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases) |
