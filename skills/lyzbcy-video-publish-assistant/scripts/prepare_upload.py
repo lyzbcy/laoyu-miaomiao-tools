@@ -3,7 +3,7 @@
 from pathlib import Path
 import argparse, hashlib, json, shutil, struct, subprocess, sys
 
-LIMITS = {"douyin": 30, "bilibili": 80, "xiaohongshu": 20}
+LIMITS = {"douyin": 30, "bilibili": 80, "xiaohongshu": 20, "youtube": 100}
 RATIOS = {"4:3": (4, 3), "3:4": (3, 4), "16:9": (16, 9)}
 
 def dimensions(path):
@@ -94,9 +94,17 @@ def check(manifest_path):
             raise ValueError(f"{name} title must contain 1..{LIMITS[name]} characters (verify current page limits)")
         if not isinstance(item.get("description", ""), str):
             raise ValueError(name + " description must be text")
+        if name == 'youtube' and len(item.get('description','')) > 5000:
+            raise ValueError('youtube description exceeds 5000 characters')
+        if name == 'youtube' and ('<' in title or '>' in title):
+            raise ValueError('youtube title cannot contain angle brackets')
         topics = item.get("topics", [])
         if not isinstance(topics, list) or any(not isinstance(x, str) or not x.strip() for x in topics):
             raise ValueError(name + " topics must be a list of nonempty strings")
+    if data.get('mode','prepare') != 'prepare':
+        raise ValueError('This skill scripts drafts only; mode must be prepare')
+    if data.get('video_sha256') and data['video_sha256'] != video['sha256']:
+        raise ValueError('Video differs from the locked SHA256')
     media = {"status": "not_checked", "reason": "ffprobe unavailable"}
     ffprobe = shutil.which("ffprobe")
     if ffprobe:
