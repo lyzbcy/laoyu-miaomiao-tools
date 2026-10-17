@@ -1,0 +1,38 @@
+{
+  "douyin": {
+    "url": "https://creator.douyin.com/creator-micro/content/upload",
+    "editor": "div[contenteditable=true]",
+    "title": "input[placeholder='填写作品标题，为作品获得更多流量']",
+    "video_input": "input[type=file][accept*='video/']",
+    "topic_candidates": "[class*='tag-hash-view-name-']",
+    "cover_entries": ".cover-Jg3T4p",
+    "declaration": "内容由AI生成"
+  },
+  "bilibili": {
+    "url": "https://member.bilibili.com/platform/upload/video/frame",
+    "editor": ".ql-editor[contenteditable=true]",
+    "title": "input[placeholder='请输入稿件标题']",
+    "video_input": ".bcc-upload-wrapper input[type=file][accept*='.mp4']",
+    "cover_input": ".bcc-upload-wrapper input[accept='image/png, image/jpeg']",
+    "tag_input": "input[placeholder='按回车键Enter创建标签']",
+    "declaration_input": "input[placeholder='请选择符合您视频内容的创作声明']",
+    "declaration": "含AI生成内容"
+  },
+  "xiaohongshu": {
+    "url": "https://creator.xiaohongshu.com/publish/publish",
+    "editor": ".tiptap.ProseMirror",
+    "title": "input[placeholder='填写标题会有更多赞哦']",
+    "video_input": "input.upload-input:not([accept^='image'])",
+    "cover_input": "input[aria-label='上传封面图片']",
+    "cover_entry": ".cover-edit-entry",
+    "topic_candidates": ".item .name",
+    "declaration": "笔记含AI合成内容"
+  },
+  "youtube": {
+    "url": "https://studio.youtube.com",
+    "editor": "[contenteditable=true][aria-required=false]",
+    "title": "[contenteditable=true][aria-required=true]",
+    "video_input": "input[name=Filedata]",
+    "cover_input": "input#file-loader[type=file]"
+  }
+}
