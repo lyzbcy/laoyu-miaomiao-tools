@@ -1,13 +1,19 @@
 #!/usr/bin/env python3
 """Prepare browser video drafts, with resumable checkpoints; never publish."""
 from pathlib import Path
-import argparse,datetime,json,re,sys,time
+import argparse,datetime,json,re,shutil,sys,time
 from browser import Browser,UIError,digest
 from prepare_upload import check
+from youtube import YouTubeDraft
 
 HERE=Path(__file__).resolve().parent
 PROFILES=json.loads((HERE/'profiles.json').read_text(encoding='utf-8'))
 STEPS=['upload','text','declaration','topics','settings','covers','save','reopen','verify']
+
+def steps_for(platform):
+    result=list(STEPS)
+    if platform=='youtube':result.insert(result.index('save'),'checks')
+    return result
 
 def normal(s):return ' '.join((s or '').replace('\u200b','').split())
 def write(path,value):
@@ -52,8 +58,12 @@ class Publisher:
             current=self.b.state()
             if step!='inspect' and ('published=true' in current['url'] or any(x in current['text'] for x in ['投稿成功','稿件投递成功','发布成功'])):
                 raise UIError('Possible manual publication detected. Inspect matching title/duration; do not create another draft')
+            if self.p=='youtube' and step in ['text','declaration','topics','settings','covers','save','checks']:
+                if not YouTubeDraft(self).context().get('draft_dialog'):
+                    raise UIError('YouTube is not showing an upload draft; inspect whether the user already submitted it')
             result=getattr(self,step)()
-            self.j['steps'][step]={'status':'done','at':datetime.datetime.now().isoformat(timespec='seconds'),'result':result}
+            status='pending' if isinstance(result,dict) and result.get('status')=='processing_pending' else 'done'
+            self.j['steps'][step]={'status':status,'at':datetime.datetime.now().isoformat(timespec='seconds'),'result':result}
             self.j['last_error']=None;self.persist();return result
         except Exception as e:
             self.j['last_error']={'step':step,'error':str(e),'at':datetime.datetime.now().isoformat(timespec='seconds')};self.persist()
@@ -63,6 +73,23 @@ class Publisher:
         finally:self.b.focus(False)
 
     def inspect(self):return self.evidence('inspect')
+
+    def context(self):
+        if self.p!='youtube':raise UIError('The context step is for YouTube Studio')
+        return YouTubeDraft(self).inspect()
+
+    def checks(self):
+        if self.p!='youtube':raise UIError('The checks step is for YouTube Studio')
+        return YouTubeDraft(self).checks()
+
+    def review_covers(self,path):
+        if not path or not path.is_file():raise UIError('Supply the actual preview screenshot after visually inspecting it')
+        fingerprint=digest(path)
+        evidence=self.root/(self.p+'-cover-review-'+fingerprint[:12]+path.suffix.lower())
+        if evidence.resolve()!=path.resolve():shutil.copyfile(path,evidence)
+        self.j['cover_visual_review']='passed'
+        self.j['cover_review_evidence']={'path':str(evidence.resolve()),'sha256':fingerprint}
+        self.persist();return self.j['cover_review_evidence']
 
     def upload(self):
         if self.shown(self.cfg['title']):
@@ -117,7 +144,9 @@ class Publisher:
     def covers(self):
         covers=self.m['covers']
         if self.p=='youtube':
-            self.b.upload(self.cfg['cover_input'],self.local(covers['16:9']))
+            result=YouTubeDraft(self).covers()
+            self.j['cover_visual_review']=result['visual_review']
+            return result
         elif self.p=='xiaohongshu':
             self.b.tap(selector=self.cfg['cover_entry']);self.b.wait(lambda:self.b.js("document.querySelector("+json.dumps(self.cfg['cover_input'])+")!==null"))
             self.b.upload(self.cfg['cover_input'],self.local(covers['3:4']))
@@ -156,44 +185,39 @@ class Publisher:
             if self.cfg['declaration'] not in self.body():self.tap('添加内容类型声明');self.tap(self.cfg['declaration'])
         else:
             if 'made_for_kids' not in self.item:raise UIError('Set youtube.made_for_kids based on actual intended audience')
+            YouTubeDraft(self).ensure_advanced()
             name='VIDEO_MADE_FOR_KIDS_'+('MFK' if self.item['made_for_kids'] else 'NOT_MFK')
             self.b.tap(selector='tp-yt-paper-radio-button[name="'+name+'"]')
-            if not self.b.js("document.querySelector('tp-yt-paper-radio-button[name=VIDEO_HAS_ALTERED_CONTENT_YES]')?.getClientRects().length>0"):
-                self.tap('展开')
             # Wording differs by Studio release. Read the displayed question first; manifest records chosen answer explicitly.
-            if 'ai_disclosure' not in self.item:raise UIError('Inspect current AI question and explicitly set youtube.ai_disclosure true/false; cartoon animation and realistic alterations are different questions')
+            if not isinstance(self.item.get('ai_disclosure'),bool):raise UIError('Inspect current AI question and explicitly set youtube.ai_disclosure true/false; cartoon animation and realistic alterations are different questions')
             self.b.tap(selector='tp-yt-paper-radio-button[name="VIDEO_HAS_ALTERED_CONTENT_'+('YES' if self.item['ai_disclosure'] else 'NO')+'"]')
             self.b.tap(selector='tp-yt-paper-radio-button[name=VIDEO_PAID_PRODUCT_PLACEMENT_NO]')
         return self.evidence('declaration')
 
     def settings(self):
         if self.p!='youtube':return {'status':'preserve_existing_settings','instruction':'Inspect category in final readback; select an appropriate leaf in the live UI if required'}
-        if not self.shown('input[aria-label="标签"]'):self.tap('展开')
+        YouTubeDraft(self).ensure_advanced()
         category=self.item.get('category')
-        # Identify the category select by its enclosing metadata section, rather than every generic "选择".
+        # Use the category field itself, independent of the account's default.
         if category:
-            mark=self.b.js("(()=>{const e=[...document.querySelectorAll('ytcp-text-dropdown-trigger')].find(e=>e.closest('ytcp-video-metadata-editor-advanced')&&e.innerText.trim()==='人物和博客');if(e){e.setAttribute('data-category-target','active');return true}return false})()")
-            if mark:self.b.tap(selector='[data-category-target=active]');self.b.wait(lambda:category in self.body());self.tap(category)
-            elif category not in self.body():raise UIError('Category control changed; inspect before altering it')
+            selector=self.cfg['category_input']
+            current=self.b.js("(()=>{const es=[...document.querySelectorAll("+json.dumps(selector)+")];if(es.length!==1)throw Error('Category select ambiguous');return es[0].innerText.trim()})()")
+            if current!=category:
+                self.b.tap(selector=selector);self.b.wait(lambda:category in self.body());self.tap(category)
+                self.b.wait(lambda:self.b.js('document.querySelector('+json.dumps(selector)+').innerText.trim()')==category)
         if self.item.get('language'):
             labels={'zh-Hans':'中文（简体）','zh-Hant':'中文（繁体）','en':'英语'}
             label=labels.get(self.item['language'],self.item['language'])
             current=self.b.js("(()=>{const es=[...document.querySelectorAll('ytcp-text-dropdown-trigger')].filter(e=>e.innerText.startsWith('视频语言'));if(es.length!==1)throw Error('Language select ambiguous');es[0].setAttribute('data-language-target','active');return es[0].innerText})()")
             if label not in current:
                 self.b.tap(selector='[data-language-target=active]');self.b.wait(lambda:label in self.body());self.tap(label)
+                self.b.wait(lambda:label in self.b.js("document.querySelector('[data-language-target=active]').innerText"))
         return self.evidence('settings')
 
     def save(self):
         if self.j.get('cover_visual_review')=='pending':raise UIError('Cover preview needs visual review; record it before saving')
         if self.p=='youtube':
-            self.b.wait(lambda:('已保存为私享视频' in self.body() or '已保存所有更改' in self.body()),timeout=25)
-            r=self.evidence('private-autosaved')
-            # Close the upload dialog only; never click final visibility/save/publish controls.
-            close='ytcp-icon-button[aria-label="保存并关闭"]'
-            if not self.shown(close):close=self.one_visible('[aria-label="关闭"]')
-            self.b.tap(selector=close)
-            self.b.wait(lambda:not self.shown(self.cfg['title']),timeout=10)
-            self.j['saved_edit_url']=self.item.get('edit_url');return {'status':'private_autosaved','closed':True}
+            return YouTubeDraft(self).save()
         if self.p=='xiaohongshu':
             # Closed custom element shadow: locate the real button through CDP's exposed DOM, no fixed screen coordinates.
             root=self.b.cdp('DOM.getDocument',depth=-1,pierce=True)
@@ -213,7 +237,8 @@ class Publisher:
 
     def reopen(self):
         if 'save' not in self.j['steps']:raise UIError('Save the draft before reopening it')
-        if self.p=='youtube' and self.shown(self.cfg['title']) and 'udvid=' in self.b.state()['url']:
+        if self.p=='youtube':
+            YouTubeDraft(self).reopen()
             return self.evidence('reopened')
         if self.p=='douyin':self.tap('继续编辑')
         elif self.p=='bilibili':self.tap(self.item['title'])
@@ -222,16 +247,6 @@ class Publisher:
                 self.b.tap(text=re.search(r'草稿箱\(\d+\)',self.body()).group())
             code="(()=>{const title="+json.dumps(self.item['title'])+";const es=[...document.querySelectorAll('.draft-actions')].filter(e=>e.parentElement.innerText.includes(title));if(es.length!==1)throw Error('Matching draft not unique');const e=[...es[0].querySelectorAll('.btn')].find(e=>e.innerText.trim()==='编辑');e.click();return true})()"
             self.b.js(code)
-        else:
-            # Reopen only an observed edit URL or the matching title in the channel content list.
-            url=self.j.get('saved_edit_url') or self.item.get('edit_url')
-            if url:self.b.send('navigate',{'url':url})
-            else:
-                if not self.shown('a#video-title'):self.tap('内容')
-                sel='a#video-title[aria-label='+json.dumps(self.item['title'])+']'
-                self.b.wait(lambda:self.shown(sel))
-                self.b.js("(()=>{const e=document.querySelector("+json.dumps(sel)+");const row=e.closest('ytcp-video-row');if(!row)throw Error('Draft row missing');row.setAttribute('data-publish-draft','active');return true})()")
-                self.b.send('click',{'selector':'ytcp-video-row[data-publish-draft=active] button[aria-label="编辑草稿"]'})
         try:self.b.wait(lambda:self.shown(self.cfg['title']),timeout=6)
         except UIError:
             exists=self.b.js('document.querySelector('+json.dumps(self.cfg['title'])+')!==null')
@@ -252,13 +267,14 @@ class Publisher:
                 else:ok='#'+tag+'[话题]#' in editor
                 if not ok:raise UIError('Missing linked topic '+tag)
         elif self.p in ['bilibili','youtube']:
-            if self.p=='youtube' and not self.shown('input[aria-label="标签"]'):self.tap('展开')
+            if self.p=='youtube':YouTubeDraft(self).ensure_advanced()
             sel=self.one_visible(self.cfg.get('tag_input','input[aria-label="标签"]'))
             chips=self.b.js('document.querySelector('+json.dumps(sel)+').parentElement.parentElement.innerText')
             for tag in self.item.get('topics',[]):
                 if tag not in [x.strip() for x in chips.splitlines()]:raise UIError('Missing saved tag '+tag)
         if self.p!='youtube' and self.cfg['declaration'] not in s['text'] and not any(x.get('value')==self.cfg['declaration'] for x in s['inputs']):raise UIError('AI declaration missing')
         if self.p=='youtube':
+            YouTubeDraft(self).verify_settings()
             radios=self.b.js("JSON.stringify([...document.querySelectorAll('tp-yt-paper-radio-button[aria-checked=true]')].map(e=>e.getAttribute('name')))")
             for name in ['VIDEO_MADE_FOR_KIDS_'+('MFK' if self.item['made_for_kids'] else 'NOT_MFK'),'VIDEO_HAS_ALTERED_CONTENT_'+('YES' if self.item['ai_disclosure'] else 'NO')]:
                 if name not in radios:raise UIError('Saved declaration missing '+name)
@@ -267,7 +283,7 @@ class Publisher:
         return {'status':'saved_reopened_verified','url':s['url'],'published':False,'review_required':True}
 
 def main():
-    ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('manifest',type=Path);ap.add_argument('--platform',choices=list(PROFILES),required=True);ap.add_argument('--run-dir',type=Path,required=True);ap.add_argument('--session',required=True);ap.add_argument('--endpoint',default='http://127.0.0.1:10086');ap.add_argument('--step',choices=STEPS+['inspect','open','prepare','status','review-covers'],default='inspect');ap.add_argument('--profiles',type=Path);ap.add_argument('--evidence',type=Path)
+    ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('manifest',type=Path);ap.add_argument('--platform',choices=list(PROFILES),required=True);ap.add_argument('--run-dir',type=Path,required=True);ap.add_argument('--session',required=True);ap.add_argument('--endpoint',default='http://127.0.0.1:10086');ap.add_argument('--step',choices=STEPS+['inspect','open','prepare','status','review-covers','context','checks'],default='inspect');ap.add_argument('--profiles',type=Path);ap.add_argument('--evidence',type=Path)
     a=ap.parse_args()
     try:
         check(a.manifest)
@@ -275,18 +291,18 @@ def main():
         if a.step=='open':
             try:r=p.b.select(p.cfg['url'])
             except UIError as e:
-                if 'no tab matching' not in str(e).lower():raise
+                if 'no tab matching' not in str(e).lower() and 'was closed' not in str(e).lower():raise
                 r=p.b.open(p.cfg['url'],'视频发布准备')
         elif a.step=='status':r=p.j
         elif a.step=='review-covers':
-            if not a.evidence or not a.evidence.is_file():raise UIError('Supply the actual preview screenshot path after visually inspecting it')
-            p.j['cover_visual_review']='passed';p.j['cover_review_evidence']={'path':str(a.evidence.resolve()),'sha256':digest(a.evidence)};p.persist();r=p.j['cover_review_evidence']
+            r=p.review_covers(a.evidence)
         elif a.step=='prepare':
             r={}
-            for step in STEPS:
+            for step in steps_for(p.p):
                 if p.j['steps'].get(step,{}).get('status')=='done':continue
                 r[step]=p.run(step)
-                print(json.dumps({'step':step,'status':'done'},ensure_ascii=False),flush=True)
+                print(json.dumps({'step':step,'status':p.j['steps'][step]['status']},ensure_ascii=False),flush=True)
+                if p.j['steps'][step]['status']=='pending':r['next']='YouTube is still processing. Continue other platforms and resume this same command later; do not re-upload.';break
                 if step=='covers':r['next']='Visually inspect cover previews, record review-covers, then resume prepare';break
         else:r=p.run(a.step)
         print(json.dumps(r,ensure_ascii=False,indent=2));return 0

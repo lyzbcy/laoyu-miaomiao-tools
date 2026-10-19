@@ -1,0 +1,25 @@
+{
+  "name": "software-video-production",
+  "version": "0.8.0",
+  "sha256": {
+    "CHANGELOG.md": "976e24173ebcf423f3f40e6ff94e56c7d9765c16af915c2f222319db2780c1d6",
+    "SKILL.md": "040ace48cb554956d611e9dd3f140d09b0e2e316149e69aa8fb6e568eaf1d431",
+    "agents/openai.yaml": "fb86e70a02376ffa682fe0802544b9a8e085e6b6d537761ea49d98b759c7ccf1",
+    "docs/agent.md": "89588d4f70b32bc3037079b7585ff0f157ad08f14c79ea8c33c5d47b1628cd23",
+    "docs/audio.md": "3be136e4c17f78b0830d7acb5add969cac12bf593309a493db8b3d1a451ff57f",
+    "docs/characters.md": "dc31ed43fd5a72a319cbb5a01b0124ba0b3b1c5a944c32bdfea63dddade1706c",
+    "docs/creative.md": "3ef32ec7e414688df10ec08315705736c8469207f11be4addd3b94fc7a32e3d2",
+    "docs/delivery.md": "f54a83e38ad706214e2c96ae4ed74a54041b780109674a861ceb6304382b8da9",
+    "docs/evolution.md": "381d55b630f4b0f5c95f28810216a48aed9c0054109a54600a2c53e59c8e5c0b",
+    "docs/exemplars.md": "7ed7d75786d99b6e0365d1385181c5aa98c1ea72a7bcb7a6bfa5b1987f6dafc1",
+    "docs/lessons.md": "04ffde2d261c60f291c1de350104b91d071093cc9ecfe8d91ac8144ffa8cb863",
+    "docs/music-generation.md": "40d652d7f48602b7afaa9baa4d9d5a16893b5894b487927a65a58dfdcecfbfd3",
+    "docs/privacy.md": "949f1bece6e800ab954fc6d15444ee0f9b01c2b8377aaa87d0bd4032a00f6db4",
+    "docs/remotion.md": "e2919878fed27b162a54ba76e733ca2255f34950b2596aa34518b567b2aa5e13",
+    "docs/tech.md": "c83d2f04aea7b885918a4feced04d021649fd93ff926b9ff74dbba375774223d",
+    "docs/workflow.md": "e4925a63c625cc971912438cc3ff357dda3d744bc167e97b365f5af80ef3bfa4",
+    "references/update.md": "fe1268ae60733e19efc100ca25dd2c010e87ab95e03215eea7c3a9ccf0ea2b11",
+    "scripts/media_check.py": "7d2e3168a70a034450ea195ec6944116f05ad5fa66e23cf7317662005a633907",
+    "scripts/update_skill.py": "fe180f0e56cbc3f007e6d1b8cd339ed61e7d05b00e245b1a0d50cc2a9bbb7325"
+  }
+}

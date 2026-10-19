@@ -18,6 +18,8 @@ package_skill.py — laoyu-miaomiao-tools 单 skill 打包发版工具
   站点卡片 / 纯文本摘要 / zip 内版本一律显示 skill 自身版本。
 """
 import re
+import json
+import hashlib
 import sys
 import subprocess
 from pathlib import Path
@@ -28,6 +30,7 @@ SKILLS_DIR = REPO_ROOT / "skills"
 
 # skill 目录名 → release asset 文件名（保持稳定，站点链接靠它）
 ASSET_NAMES = {
+    "software-video-production": "software-video-production.zip",
     "lyzbcy-video-publish-assistant": "lyzbcy-video-publish-assistant.zip",
     "lyzbcy-study-map": "lyzbcy-study-map.zip",
     "lyzbcy-最后的1%": "lyzbcy-last-1-percent.zip",
@@ -153,11 +156,28 @@ def main() -> None:
     disk_files = {
         str(p.relative_to(skill_dir)).replace("\\", "/")
         for p in skill_dir.rglob("*")
-        if p.is_file() and p.name not in EXCLUDES and ".update-tmp" not in p.parts
+        if p.is_file() and p.name not in EXCLUDES
+        and "__pycache__" not in p.parts
+        and not any(part.startswith('.update-') for part in p.relative_to(skill_dir).parts)
     }
     orphans = sorted(disk_files - set(files))
     if orphans:
         problems.append(f"磁盘上存在但 manifest 未收录（不会进 zip）: {', '.join(orphans)}")
+
+    update = skill_dir / 'update.json'
+    if update.exists():
+        registry = json.loads(update.read_text(encoding='utf-8'))
+        if registry.get('version') != version or registry.get('name') != skill_name:
+            problems.append('静默更新清单的名称或版本不一致')
+        hashes = registry.get('sha256', {})
+        if set(hashes) != set(files) - {'update.json'}:
+            problems.append('静默更新文件集与metadata.files不一致')
+        for rel, expected in hashes.items():
+            path = skill_dir / rel
+            if not path.resolve().is_relative_to(skill_dir.resolve()) or not path.is_file():
+                problems.append(f'更新路径无效: {rel}')
+            elif hashlib.sha256(path.read_bytes().replace(b'\r\n', b'\n')).hexdigest() != expected:
+                problems.append(f'更新哈希过时: {rel}')
 
     if problems:
         for p in problems:

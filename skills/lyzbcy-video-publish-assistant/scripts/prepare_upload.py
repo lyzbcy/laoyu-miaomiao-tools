@@ -4,7 +4,7 @@ from pathlib import Path
 import argparse, hashlib, json, shutil, struct, subprocess, sys
 
 LIMITS = {"douyin": 30, "bilibili": 80, "xiaohongshu": 20, "youtube": 100}
-RATIOS = {"4:3": (4, 3), "3:4": (3, 4), "16:9": (16, 9)}
+RATIOS = {"4:3": (4, 3), "3:4": (3, 4), "16:9": (16, 9), "9:16": (9, 16)}
 
 def dimensions(path):
     with path.open("rb") as f:

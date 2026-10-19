@@ -1,0 +1,17 @@
+{
+  "name": "lyzbcy-video-publish-assistant",
+  "version": "1.2.0",
+  "sha256": {
+    "CHANGELOG.md": "123fde8cecc4d81f5eaf378b2c8b6f9ee49aab0fe6b2abd34f11215b3a15dc11",
+    "SKILL.md": "5325c4b665d1407ff64ae1e84570dc306fec590286547996d34fd515f1e3312c",
+    "references/automation.md": "9ea3990fc81d179b3858568fce5176455d1de46de9de0745c91fefcddad75312",
+    "references/platforms.md": "a2b775b00bea92c5c41b6680c390d1cf3032307685fb9d6f1a0e4e50e98e7cf2",
+    "references/update.md": "fe1268ae60733e19efc100ca25dd2c010e87ab95e03215eea7c3a9ccf0ea2b11",
+    "scripts/browser.py": "8ab59037ee09874e263249b72fb5b516b27b0631687e710aad552fd34a099023",
+    "scripts/prepare_upload.py": "340c4ef986ff96975c7bec1a8bc1037eecdf3477a0b5cb20579a6bcda6b5e4e2",
+    "scripts/profiles.json": "8d9ad0e8d6f8d43412e4df8e2e1e40dc1714e765d994894ec220d149f4766f5d",
+    "scripts/publish.py": "bc94a702ab8527ffa5348e6b8ec79b924f029627148d32b77db923143903330c",
+    "scripts/update_skill.py": "fe180f0e56cbc3f007e6d1b8cd339ed61e7d05b00e245b1a0d50cc2a9bbb7325",
+    "scripts/youtube.py": "6c6a9c98fad08bebd72792bde0a9924fadb3074f97afd57507d162afb7d8c778"
+  }
+}
