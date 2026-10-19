@@ -33,6 +33,7 @@
     "editor": "[contenteditable=true][aria-required=false]",
     "title": "[contenteditable=true][aria-required=true]",
     "video_input": "input[name=Filedata]",
-    "cover_input": "input#file-loader[type=file]"
+    "cover_input": "input#file-loader[type=file]",
+    "category_input": "ytcp-form-select#category ytcp-text-dropdown-trigger"
   }
 }

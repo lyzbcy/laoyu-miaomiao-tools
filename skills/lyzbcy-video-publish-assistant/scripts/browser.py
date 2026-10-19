@@ -56,6 +56,27 @@ class Browser:
         if d['disabled']:raise UIError('UI target disabled')
         self.point(d['x'],d['y']);return d
 
+    def semantic(self,role,name):
+        """Use a current accessibility ref for ordinary tabs/buttons.
+
+        Studio renders nested buttons and scrolls metadata panels. A semantic
+        click avoids a measured coordinate landing on a nearby verification link.
+        """
+        if name.strip() in ['发布','立即投稿','提交审核','确认发布','Publish','Schedule','定时发布']:
+            raise UIError('Final publication is outside this draft-only script')
+        matches=[]
+        def walk(node):
+            if isinstance(node,list):return sum(walk(x) for x in node)
+            if not isinstance(node,dict) or node.get('hidden'):return 0
+            descendants=walk(node.get('children',[]))
+            own=node.get('role')==role and node.get('name','').strip()==name.strip() and node.get('ref')
+            if own and not descendants:matches.append(node['ref'])
+            return descendants or int(bool(own))
+        snapshot=self.send('snapshot');walk(snapshot.get('tree',[]))
+        matches=list(dict.fromkeys(matches))
+        if len(matches)!=1:raise UIError('Ambiguous/missing semantic target '+repr((role,name,len(matches))))
+        return self.send('click',{'selector':matches[0]})
+
     def key(self,key,modifiers=0):
         num={'Enter':13,'Escape':27,'Backspace':8,'a':65}[key]
         for t in ['keyDown','keyUp']:self.cdp('Input.dispatchKeyEvent',type=t,key=key,code='KeyA' if key=='a' else key,windowsVirtualKeyCode=num,modifiers=modifiers)

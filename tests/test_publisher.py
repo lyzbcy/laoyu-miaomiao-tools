@@ -47,7 +47,9 @@ class PublisherTests(unittest.TestCase):
     def test_manual_bili_submission_stops_any_new_upload(self):
         p=self.pub();p.b.state.return_value={'url':'https://member.bilibili.com/platform/upload/video/frame','text':'稿件投递成功','inputs':[]};p.evidence=Mock();self.assertRaisesRegex(UIError,'manual publication',p.run,'upload');p.b.upload.assert_not_called();p.b.focus.assert_any_call(False)
     def test_youtube_save_uses_only_close_not_publish(self):
-        p=self.pub();p.j['cover_visual_review']='passed';p.shown=Mock(side_effect=[False,False]);p.one_visible=Mock(return_value='[data-close=active]');p.evidence=Mock(return_value={});p.b.wait=Mock(return_value=True)
-        r=p.save();self.assertEqual(r['status'],'private_autosaved');p.b.tap.assert_called_once_with(selector='[data-close=active]')
+        p=self.pub();p.j['cover_visual_review']='passed';p.evidence=Mock(return_value={})
+        p.b.wait=Mock(side_effect=[{'saved_private':True,'saving':False,'title':self.data['platforms']['youtube']['title'],'url':'https://studio.youtube.com','text':''}, True])
+        r=p.save();self.assertEqual(r['status'],'private_autosaved')
+        p.b.semantic.assert_called_once_with('button','关闭');p.b.tap.assert_not_called()
 
 if __name__=='__main__':unittest.main()

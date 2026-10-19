@@ -10,7 +10,8 @@
 
 | Skill | 一句话 | 下载 |
 |-------|--------|------|
-| 🎬 `lyzbcy-video-publish-assistant` | 抖音/B站/小红书/YouTube投稿脚本，支持断点恢复、封面和文案，保存草稿交用户确认发布 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.28.0/lyzbcy-video-publish-assistant.zip) |
+| 🎞️ `software-video-production` | 软件宣传与生活情境视频制作，成片/封面分层验收、复盘压缩；每日静默更新 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.29.0/software-video-production.zip) |
+| 🎬 `lyzbcy-video-publish-assistant` | 抖音/B站/小红书/YouTube投稿脚本，支持断点恢复、封面和文案，保存草稿交用户确认发布 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.29.0/lyzbcy-video-publish-assistant.zip) |
 | 🗺️ `lyzbcy-study-map` | 把难啃的干货拆成有原文依据、能追问、能复述的交互式理解地图 | [Releases](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases) |
 | 🎯 `lyzbcy-最后的1%` | 极限执行元 skill，把任务做到真正完美才停手 | [Releases](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases) |
 | 🎬 `lyzbcy-视频生成提示词润色` | AI 视频分镜提示词做减法，只留镜头语言 | [Releases](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases) |
