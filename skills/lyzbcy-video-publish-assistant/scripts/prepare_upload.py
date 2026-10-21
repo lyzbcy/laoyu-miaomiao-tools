@@ -101,6 +101,11 @@ def check(manifest_path):
         topics = item.get("topics", [])
         if not isinstance(topics, list) or any(not isinstance(x, str) or not x.strip() for x in topics):
             raise ValueError(name + " topics must be a list of nonempty strings")
+        if name=='bilibili':
+            activities=item.get('activity_topics',[])
+            if isinstance(activities,str):activities=[activities]
+            if not isinstance(activities,list) or len(activities)>1 or any(not isinstance(x,str) or not x.strip() for x in activities):
+                raise ValueError('Bilibili allows at most one activity topic per video')
     if data.get('mode','prepare') != 'prepare':
         raise ValueError('This skill scripts drafts only; mode must be prepare')
     if data.get('video_sha256') and data['video_sha256'] != video['sha256']:

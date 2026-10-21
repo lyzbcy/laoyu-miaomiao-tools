@@ -15,7 +15,7 @@ class PublisherTests(unittest.TestCase):
     def save(self):self.manifest.write_text(json.dumps(self.data),encoding='utf-8')
     def pub(self):
         with patch('publish.Browser'):p=Publisher(self.manifest,'youtube',self.root/'run','test-task','http://localhost:10086')
-        p.b.state.return_value={'url':'https://studio.youtube.com','text':'','inputs':[]};return p
+        p.b.state.return_value={'url':'https://studio.youtube.com','text':'','inputs':[]};p.b.signals.return_value={'url':'https://studio.youtube.com','publication_hint':None};return p
 
     @patch('prepare_upload.shutil.which',return_value=None)
     def test_youtube_preflight_and_locked_hash(self,_):
@@ -29,7 +29,7 @@ class PublisherTests(unittest.TestCase):
     def test_copy_change_invalidates_verification(self):
         p=self.pub();p.j['steps']={'upload':{'status':'done'},'verify':{'status':'done'}};p.persist();self.data['platforms']['youtube']['title']='Revised title';self.save();q=self.pub();self.assertIn('upload',q.j['steps']);self.assertNotIn('verify',q.j['steps'])
     def test_uncertain_upload_is_not_repeated(self):
-        p=self.pub();p.shown=Mock(return_value=False);p.body=Mock(return_value='');p.b.js.return_value=True;p.b.wait.side_effect=UIError('timeout');p.evidence=Mock()
+        p=self.pub();p.shown=Mock(return_value=False);p.body=Mock(return_value='');p.b.js.return_value=True;p.b.wait.side_effect=[True,UIError('timeout')];p.evidence=Mock()
         self.assertRaisesRegex(UIError,'do not re-upload',p.run,'upload');self.assertTrue(json.loads(p.file.read_text())['upload_attempted'])
         self.assertRaisesRegex(UIError,'already attempted',p.run,'upload');self.assertEqual(p.b.upload.call_count,1)
     def test_an_unrelated_draft_is_not_overwritten(self):
@@ -45,7 +45,7 @@ class PublisherTests(unittest.TestCase):
     def test_changed_saved_title_cannot_pass(self):
         p=self.pub();p.j['steps']['reopen']={'status':'done'};p.evidence=Mock(return_value={'inputs':[{'value':'wrong title'}]});self.assertRaisesRegex(UIError,'title differs',p.verify)
     def test_manual_bili_submission_stops_any_new_upload(self):
-        p=self.pub();p.b.state.return_value={'url':'https://member.bilibili.com/platform/upload/video/frame','text':'稿件投递成功','inputs':[]};p.evidence=Mock();self.assertRaisesRegex(UIError,'manual publication',p.run,'upload');p.b.upload.assert_not_called();p.b.focus.assert_any_call(False)
+        p=self.pub();p.b.signals.return_value={'url':'https://member.bilibili.com/platform/upload/video/frame','publication_hint':'稿件投递成功'};p.evidence=Mock();self.assertRaisesRegex(UIError,'manual publication',p.run,'upload');p.b.upload.assert_not_called();p.b.focus.assert_any_call(False)
     def test_youtube_save_uses_only_close_not_publish(self):
         p=self.pub();p.j['cover_visual_review']='passed';p.evidence=Mock(return_value={})
         p.b.wait=Mock(side_effect=[{'saved_private':True,'saving':False,'title':self.data['platforms']['youtube']['title'],'url':'https://studio.youtube.com','text':''}, True])
