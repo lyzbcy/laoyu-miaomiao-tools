@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
-"""Prepare browser video drafts, with resumable checkpoints; never publish."""
+"""Prepare drafts; submit only with a separately bound user-authorization receipt."""
 from pathlib import Path
 import argparse,datetime,json,re,shutil,sys,time
 from browser import Browser,UIError,digest
 from prepare_upload import check
 from youtube import YouTubeDraft
+from gates import light,normalized,publication_signal,review_fingerprint,authorize,activity_plan
+from bilibili import BilibiliTopics
 
 HERE=Path(__file__).resolve().parent
 PROFILES=json.loads((HERE/'profiles.json').read_text(encoding='utf-8'))
@@ -39,8 +41,15 @@ class Publisher:
     def local(self,s):return (self.path.parent/s).resolve()
     def persist(self):write(self.file,self.j)
     def evidence(self,label):
-        v=self.b.state();write(self.root/(self.p+'-'+label+'.json'),v)
-        self.b.screenshot(self.root/(self.p+'-'+label+'.jpg'));return v
+        detailed=label in ['inspect','verified'] or label.startswith('error-')
+        v=self.b.state() if detailed else self.b.signals()
+        write(self.root/(self.p+'-'+label+'.json'),v)
+        # Green steps log proofs. Pixels are useful only for cover crops and
+        # exceptional UI; never screenshot every successful text/settings step.
+        if label=='inspect' or label.startswith(('error-','cover-')):
+            self.b.screenshot(self.root/(self.p+'-'+label+'.jpg'))
+            self.j['screenshots']=self.j.get('screenshots',0)+1
+        return v
     def select(self):self.b.select(self.cfg['url'])
     def shown(self,selector):return self.b.js("!![...document.querySelectorAll("+json.dumps(selector)+")].find(e=>e.getClientRects().length)")
     def body(self):return self.b.js('document.body.innerText')
@@ -52,25 +61,30 @@ class Publisher:
     def tap(self,text):return self.b.tap(text=text)
 
     def run(self,step):
-        self.select()
-        self.b.focus()
         try:
-            current=self.b.state()
-            if step!='inspect' and ('published=true' in current['url'] or any(x in current['text'] for x in ['投稿成功','稿件投递成功','发布成功'])):
+            self.select();self.b.focus()
+            if self.j.get('human_takeover') and step not in ['inspect','context','checks','confirm']:
+                raise UIError('User owns current edits; read only until explicitly released')
+            current=self.b.signals()
+            if step not in ['inspect','confirm','submit'] and ('published=true' in current['url'] or current.get('publication_hint')):
                 raise UIError('Possible manual publication detected. Inspect matching title/duration; do not create another draft')
             if self.p=='youtube' and step in ['text','declaration','topics','settings','covers','save','checks']:
                 if not YouTubeDraft(self).context().get('draft_dialog'):
                     raise UIError('YouTube is not showing an upload draft; inspect whether the user already submitted it')
             result=getattr(self,step)()
-            status='pending' if isinstance(result,dict) and result.get('status')=='processing_pending' else 'done'
+            status='pending' if isinstance(result,dict) and (result.get('status')=='processing_pending' or result.get('light')=='yellow') else 'failed' if isinstance(result,dict) and result.get('light')=='red' else 'done'
             self.j['steps'][step]={'status':status,'at':datetime.datetime.now().isoformat(timespec='seconds'),'result':result}
+            self.j['gate']=light(step,status=='done',status=='pending',reason=result.get('reason','await_processing') if status=='pending' else 'postcondition_passed' if status=='done' else 'platform_rejected')
             self.j['last_error']=None;self.persist();return result
         except Exception as e:
             self.j['last_error']={'step':step,'error':str(e),'at':datetime.datetime.now().isoformat(timespec='seconds')};self.persist()
+            self.j['gate']=light(step,reason=str(e));self.persist()
             try:self.evidence('error-'+step)
             except Exception:pass
             raise
-        finally:self.b.focus(False)
+        finally:
+            try:self.b.focus(False)
+            except UIError:pass # The user may have closed the task tab.
 
     def inspect(self):return self.evidence('inspect')
 
@@ -102,6 +116,7 @@ class Publisher:
         if self.p=='youtube' and not self.b.js("document.querySelector('input[name=Filedata]')!==null"):
             self.b.tap(selector='ytcp-icon-button[aria-label="上传视频"]')
             self.b.wait(lambda:self.b.js("document.querySelector('input[name=Filedata]')!==null"))
+        self.b.wait(lambda:self.b.js('document.querySelectorAll('+json.dumps(self.cfg['video_input'])+').length===1'),timeout=15)
         self.j['upload_attempted']=True;self.persist() # Before mutation: an uncertain response must not cause a duplicate.
         self.b.upload(self.cfg['video_input'],self.local(self.m['video']))
         try:self.b.wait(lambda:self.shown(self.cfg['title']),timeout=35)
@@ -117,12 +132,13 @@ class Publisher:
 
     def topics(self):
         tags=self.item.get('topics',[]);result=[]
+        if self.p=='bilibili':return BilibiliTopics(self).apply()
         if self.p in ['bilibili','youtube']:
             sel=self.one_visible(self.cfg.get('tag_input','input[aria-label="标签"]'))
             for tag in tags:
                 existing=self.b.js("document.querySelector("+json.dumps(sel)+").parentElement.parentElement.innerText")
                 if tag in existing.splitlines():result.append({'tag':tag,'existing':True});continue
-                self.b.tap(selector=sel);self.b.insert(tag);self.b.key('Enter')
+                self.b.edit(sel,tag);self.b.enter(sel)
                 self.b.wait(lambda:tag in [x.strip() for x in self.b.js("document.querySelector("+json.dumps(sel)+").parentElement.parentElement.innerText").splitlines()],timeout=8)
                 result.append({'tag':tag,'added':True})
             return result
@@ -148,15 +164,21 @@ class Publisher:
             self.j['cover_visual_review']=result['visual_review']
             return result
         elif self.p=='xiaohongshu':
-            self.b.tap(selector=self.cfg['cover_entry']);self.b.wait(lambda:self.b.js("document.querySelector("+json.dumps(self.cfg['cover_input'])+")!==null"))
-            self.b.upload(self.cfg['cover_input'],self.local(covers['3:4']))
+            if self.shown(self.cfg['cover_entry']):self.b.tap(selector=self.cfg['cover_entry'])
+            else:
+                self.b.tap(selector='.cover > .default')
+                self.b.wait(lambda:'编辑封面' in self.body(),timeout=6);self.tap('编辑封面')
+            self.b.wait(lambda:self.b.js("document.querySelector("+json.dumps(self.cfg['cover_input'])+")!==null"))
+            before=self.b.cover_state();self.b.fill_cover(self.cfg['cover_input'],self.local(covers['3:4']))
+            self.b.wait(lambda:self.b.cover_state()!=before,timeout=12)
             self.tap('裁剪');self.tap('3:4');self.evidence('cover-3x4');self.tap('完成')
         elif self.p=='bilibili':
             self.tap('添加封面');self.b.wait(lambda:self.b.js("document.querySelector("+json.dumps(self.cfg['cover_input'])+")!==null"))
             # Turn sync off only when its real checkbox is checked.
             self.b.js("(()=>{const e=[...document.querySelectorAll('label')].find(e=>e.innerText.includes('双比例同步改动'));const c=e?.querySelector('input[type=checkbox]');if(c?.checked)c.click();return c?.checked||false})()")
             for ratio,label in [('4:3','首页推荐封面（4:3）'),('16:9','个人空间封面（16:9）')]:
-                self.tap(label);self.b.upload(self.cfg['cover_input'],self.local(covers[ratio]));time.sleep(.7);self.evidence('cover-'+ratio.replace(':','x'))
+                self.tap(label);before=self.b.cover_state();self.b.fill_cover(self.cfg['cover_input'],self.local(covers[ratio]))
+                self.b.wait(lambda:self.b.cover_state()!=before,timeout=12);self.evidence('cover-'+ratio.replace(':','x'))
             self.tap('完成')
         else:
             es=self.b.js("JSON.stringify([...document.querySelectorAll("+json.dumps(self.cfg['cover_entries'])+")].map(e=>{const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2}}))")
@@ -164,15 +186,18 @@ class Publisher:
             self.b.point(es[0]['x'],es[0]['y']);self.b.wait(lambda:'设置横封面' in self.body())
             # The main cover editor's upload input is distinct from AI reference-image inputs.
             for ratio,label in [('4:3','设置横封面'),('3:4','设置竖封面')]:
-                self.tap(label)
+                # The vertical tab and footer can share text. Prefer the real button.
+                if ratio=='3:4':self.b.semantic('button',label)
+                else:self.tap(label)
                 # Both ratio editors may remain mounted. Match the upload area's visible parent,
                 # not its input visibility; inputs themselves are intentionally hidden.
                 if self.cfg.get('cover_input'):sel=self.cfg['cover_input']
                 else:
-                    self.b.js('''(()=>{document.querySelectorAll('[data-cover-upload]').forEach(e=>e.removeAttribute('data-cover-upload'));const matches=[...document.querySelectorAll('input[type=file][accept*=image]')].filter(e=>{for(let p=e.parentElement,i=0;p&&i<4;p=p.parentElement,i++){if(p.innerText.includes('生成参考图'))return false;if(p.innerText.includes('点击上传文件或拖拽文件到这里')){const r=p.getBoundingClientRect();return r.width>0&&r.height>0&&getComputedStyle(p).display!=='none'}}return false});if(matches.length!==1)throw Error('Cover upload target count '+matches.length);matches[0].setAttribute('data-cover-upload','active');return true})()''')
+                    self.b.js('''(()=>{document.querySelectorAll('[data-cover-upload]').forEach(e=>e.removeAttribute('data-cover-upload'));const matches=[...document.querySelectorAll('input[type=file][accept*=image]')].filter(e=>{if(e.classList.contains('semi-upload-hidden-input-replace'))return false;for(let p=e.parentElement,i=0;p&&i<4;p=p.parentElement,i++){if(p.innerText.includes('生成参考图'))return false;if(p.innerText.includes('点击上传文件或拖拽文件到这里')){const r=p.getBoundingClientRect();return r.width>0&&r.height>0&&getComputedStyle(p).display!=='none'}}return false});if(matches.length!==1)throw Error('Cover upload target count '+matches.length);matches[0].setAttribute('data-cover-upload','active');return true})()''')
                     sel='input[data-cover-upload=active]'
-                self.b.upload(sel,self.local(covers[ratio]));time.sleep(.7);self.evidence('cover-'+ratio.replace(':','x'))
-            self.tap('完成')
+                before=self.b.cover_state();self.b.fill_cover(sel,self.local(covers[ratio]))
+                self.b.wait(lambda:self.b.cover_state()!=before,timeout=12);self.evidence('cover-'+ratio.replace(':','x'))
+            self.b.semantic('button','完成')
         self.j['cover_visual_review']='pending';return {'status':'set','visual_review':'pending','instruction':'Inspect platform preview screenshots; record review with --step review-covers --evidence PATH'}
 
     def declaration(self):
@@ -180,7 +205,11 @@ class Publisher:
             if self.cfg['declaration'] not in self.body():self.tap('请选择自主声明');self.tap(self.cfg['declaration']);self.tap('确定')
         elif self.p=='bilibili':
             sel=self.cfg['declaration_input']
-            if self.b.js('document.querySelector('+json.dumps(sel)+').value')!=self.cfg['declaration']:self.b.tap(selector=sel);self.tap(self.cfg['declaration'])
+            if self.b.js('document.querySelector('+json.dumps(sel)+').value')!=self.cfg['declaration']:
+                self.b.tap(selector=sel)
+                self.b.wait(lambda:self.cfg['declaration'] in self.body(),timeout=8)
+                self.tap(self.cfg['declaration'])
+                self.b.wait(lambda:self.b.js('document.querySelector('+json.dumps(sel)+').value')==self.cfg['declaration'],timeout=8)
         elif self.p=='xiaohongshu':
             if self.cfg['declaration'] not in self.body():self.tap('添加内容类型声明');self.tap(self.cfg['declaration'])
         else:
@@ -243,6 +272,7 @@ class Publisher:
         if self.p=='douyin':self.tap('继续编辑')
         elif self.p=='bilibili':self.tap(self.item['title'])
         elif self.p=='xiaohongshu':
+            self.b.wait(lambda:bool(re.search(r'草稿箱\(\d+\)',self.body())) or self.b.js("document.querySelector('.draft-actions')!==null"),timeout=15)
             if not self.b.js("document.querySelector('.draft-actions')!==null"):
                 self.b.tap(text=re.search(r'草稿箱\(\d+\)',self.body()).group())
             code="(()=>{const title="+json.dumps(self.item['title'])+";const es=[...document.querySelectorAll('.draft-actions')].filter(e=>e.parentElement.innerText.includes(title));if(es.length!==1)throw Error('Matching draft not unique');const e=[...es[0].querySelectorAll('.btn')].find(e=>e.innerText.trim()==='编辑');e.click();return true})()"
@@ -260,40 +290,82 @@ class Publisher:
         s=self.evidence('verified');title_values=[x.get('value') or x.get('text') for x in s['inputs']]
         if self.item['title'] not in title_values:raise UIError('Saved title differs')
         editor=self.b.js('document.querySelector('+json.dumps(self.cfg['editor'])+').innerText')
-        if normal(self.item['description']) not in normal(editor):raise UIError('Saved description differs')
+        if normalized(self.item['description'],self.p) not in normalized(editor,self.p):raise UIError('Saved description differs')
         if self.p in ['douyin','xiaohongshu']:
             for tag in self.item.get('topics',[]):
                 if self.p=='douyin':ok=self.b.js("[...document.querySelectorAll('[data-mention]')].some(e=>e.innerText.trim()==="+json.dumps('#'+tag)+")")
                 else:ok='#'+tag+'[话题]#' in editor
                 if not ok:raise UIError('Missing linked topic '+tag)
         elif self.p in ['bilibili','youtube']:
+            topics=self.j.get('bilibili_actual_topics',self.item.get('topics',[])) if self.p=='bilibili' else self.item.get('topics',[])
             if self.p=='youtube':YouTubeDraft(self).ensure_advanced()
             sel=self.one_visible(self.cfg.get('tag_input','input[aria-label="标签"]'))
             chips=self.b.js('document.querySelector('+json.dumps(sel)+').parentElement.parentElement.innerText')
-            for tag in self.item.get('topics',[]):
+            for tag in topics:
                 if tag not in [x.strip() for x in chips.splitlines()]:raise UIError('Missing saved tag '+tag)
         if self.p!='youtube' and self.cfg['declaration'] not in s['text'] and not any(x.get('value')==self.cfg['declaration'] for x in s['inputs']):raise UIError('AI declaration missing')
+        if self.p=='bilibili':BilibiliTopics(self).verify_activity()
         if self.p=='youtube':
             YouTubeDraft(self).verify_settings()
             radios=self.b.js("JSON.stringify([...document.querySelectorAll('tp-yt-paper-radio-button[aria-checked=true]')].map(e=>e.getAttribute('name')))")
             for name in ['VIDEO_MADE_FOR_KIDS_'+('MFK' if self.item['made_for_kids'] else 'NOT_MFK'),'VIDEO_HAS_ALTERED_CONTENT_'+('YES' if self.item['ai_disclosure'] else 'NO')]:
                 if name not in radios:raise UIError('Saved declaration missing '+name)
         if self.j.get('cover_visual_review')!='passed':raise UIError('Cover visual review has not been recorded')
-        self.evidence('verified')
         return {'status':'saved_reopened_verified','url':s['url'],'published':False,'review_required':True}
 
+    def review_plan(self):
+        covers={k:digest(self.local(v)) for k,v in self.m['covers'].items()}
+        fingerprint=review_fingerprint(dict(self.m,video_sha256=self.hash),self.p,covers)
+        return {'platform':self.p,'title':self.item['title'],'review_fingerprint':fingerprint,
+                'authorization_required':True,'template':{'approved':False,'platforms':{self.p:{'review_fingerprint':fingerprint,'visibility':'public'}}}}
+
+    def confirm(self):
+        state=self.b.publication_state(self.item['title'])
+        result=publication_signal(self.p,state,self.item['title'],self.j.get('submission_attempted',False),self.j.get('youtube_video_id'))
+        write(self.root/(self.p+'-publication.json'),{'gate':result,'observation':state})
+        return result
+
+    def submit(self):
+        receipt=getattr(self,'authorization',None)
+        authorize(receipt,self.p,self.review_plan()['review_fingerprint'])
+        if self.j.get('steps',{}).get('verify',{}).get('status')!='done' or self.j.get('cover_visual_review')!='passed':
+            raise UIError('Draft fields and cover review must be green before submission')
+        # An uncertain previous click can only be read, never clicked again.
+        if self.j.get('submission_attempted'):return self.confirm()
+        actual=self.b.js('(()=>{const t=document.querySelector('+json.dumps(self.cfg['title'])+');const d=document.querySelector('+json.dumps(self.cfg['editor'])+');return JSON.stringify({title:t?.value||t?.innerText||null,description:d?.innerText||null})})()')
+        if normalized(actual.get('title'))!=normalized(self.item['title']) or normalized(self.item['description'],self.p) not in normalized(actual.get('description'),self.p):
+            raise UIError('Current draft content differs; no publication click')
+        if self.p=='youtube':
+            if self.j.get('youtube_checks',{}).get('status')!='checked':
+                return {'status':'processing_pending','light':'yellow','reason':'checks_not_green'}
+            self.b.semantic('tab','公开范围')
+            selector='tp-yt-paper-radio-button[name=PUBLIC]'
+            self.b.wait(lambda:self.shown(selector),timeout=12);self.b.tap(selector=selector)
+            self.b.wait(lambda:self.b.js('document.querySelector('+json.dumps(selector)+').getAttribute("aria-checked")')=='true',timeout=8)
+        self.j['submission_attempted']=True;self.persist()
+        final='立即投稿' if self.p=='bilibili' else '发布'
+        # Explicit final-click path, accessible only after the bound receipt.
+        self.b.semantic('button',final,allow_final=True)
+        def finished():
+            r=self.confirm();return r if r['light']!='yellow' else None
+        try:return self.b.wait(finished,timeout=25)
+        except UIError:
+            return {'status':'processing_pending','light':'yellow','reason':'click_recorded_wait_for_matching_success_do_not_retry'}
+
 def main():
-    ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('manifest',type=Path);ap.add_argument('--platform',choices=list(PROFILES),required=True);ap.add_argument('--run-dir',type=Path,required=True);ap.add_argument('--session',required=True);ap.add_argument('--endpoint',default='http://127.0.0.1:10086');ap.add_argument('--step',choices=STEPS+['inspect','open','prepare','status','review-covers','context','checks'],default='inspect');ap.add_argument('--profiles',type=Path);ap.add_argument('--evidence',type=Path)
+    ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('manifest',type=Path);ap.add_argument('--platform',choices=list(PROFILES),required=True);ap.add_argument('--run-dir',type=Path,required=True);ap.add_argument('--session',required=True);ap.add_argument('--endpoint',default='http://127.0.0.1:10086');ap.add_argument('--step',choices=STEPS+['inspect','open','prepare','status','review-covers','context','checks','review-plan','submit','confirm'],default='inspect');ap.add_argument('--profiles',type=Path);ap.add_argument('--evidence',type=Path);ap.add_argument('--authorization',type=Path)
     a=ap.parse_args()
     try:
         check(a.manifest)
         p=Publisher(a.manifest,a.platform,a.run_dir,a.session,a.endpoint,json.loads(a.profiles.read_text(encoding='utf-8')) if a.profiles else None)
+        if a.authorization:p.authorization=json.loads(a.authorization.read_text(encoding='utf-8'))
         if a.step=='open':
             try:r=p.b.select(p.cfg['url'])
             except UIError as e:
                 if 'no tab matching' not in str(e).lower() and 'was closed' not in str(e).lower():raise
                 r=p.b.open(p.cfg['url'],'视频发布准备')
         elif a.step=='status':r=p.j
+        elif a.step=='review-plan':r=p.review_plan()
         elif a.step=='review-covers':
             r=p.review_covers(a.evidence)
         elif a.step=='prepare':
@@ -301,12 +373,15 @@ def main():
             for step in steps_for(p.p):
                 if p.j['steps'].get(step,{}).get('status')=='done':continue
                 r[step]=p.run(step)
-                print(json.dumps({'step':step,'status':p.j['steps'][step]['status']},ensure_ascii=False),flush=True)
-                if p.j['steps'][step]['status']=='pending':r['next']='YouTube is still processing. Continue other platforms and resume this same command later; do not re-upload.';break
-                if step=='covers':r['next']='Visually inspect cover previews, record review-covers, then resume prepare';break
-        else:r=p.run(a.step)
+                print(json.dumps(p.j['gate'],ensure_ascii=False),flush=True)
+                if p.j['steps'][step]['status']=='pending':r={'next':'Processing; resume same run later, no retransmission','gate':p.j['gate']};break
+                if step=='covers':r={'next':'Review actual cover crop once per ratio, then review-covers','gate':light('cover-review',pending=True)};break
+            else:r={'status':'saved_reopened_verified','gate':p.j.get('gate')}
+        else:
+            r=p.run(a.step)
+            if a.step not in ['inspect','context','confirm','submit']:r={'step':a.step,'gate':p.j.get('gate')}
         print(json.dumps(r,ensure_ascii=False,indent=2));return 0
     except (UIError,ValueError,OSError,KeyError) as e:
-        print('Stopped: '+str(e),file=sys.stderr);return 2
+        print(json.dumps(light(a.step,reason=str(e)[:700]),ensure_ascii=False),file=sys.stderr);return 2
 
 if __name__=='__main__':sys.exit(main())

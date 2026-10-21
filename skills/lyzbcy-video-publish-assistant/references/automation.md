@@ -1,62 +1,57 @@
-# 脚本工作流
+# 执行与断点
 
-维护入口`publish.py`；`youtube.py`封装YouTube的Shorts/封面/检查/重开；`browser.py`封装唯一临时UTF-8请求体、语义引用、可信鼠标键盘、真实文件input和截图；`profiles.json`维护平台选择器。只操作网页，不使用私有投稿API。
-
-## 执行
-
-依赖Python3.10+、curl（Windows为curl.exe）、已连接的Kimi扩展与用户登录浏览器。不下载另一个浏览器或模型。下面路径替换为当前任务路径，命令从skill目录执行。
+脚本仅使用现有登录浏览器和真实页面控件，不用私有投稿API，不下载浏览器或模型。同一任务一个session，四平台串行；换视频换run-dir。CLI默认只准备，`mode: prepare`本身不授权公开。
 
 ```powershell
-python -X utf8 scripts/prepare_upload.py /project/upload-manifest.json --output /project/preflight.json
-python -X utf8 scripts/publish.py /project/upload-manifest.json --platform youtube --session video-project --run-dir /project/publish-run --step open
-python -X utf8 scripts/publish.py /project/upload-manifest.json --platform youtube --session video-project --run-dir /project/publish-run --step inspect
-python -X utf8 scripts/publish.py /project/upload-manifest.json --platform youtube --session video-project --run-dir /project/publish-run --step prepare
+python scripts/prepare_upload.py /project/upload-manifest.json --output /project/preflight.json
+python scripts/publish.py /project/upload-manifest.json --platform douyin --session video-task --run-dir /project/run --step open
+python scripts/publish.py /project/upload-manifest.json --platform douyin --session video-task --run-dir /project/run --step prepare
 ```
 
-平台键：`douyin`、`bilibili`、`xiaohongshu`、`youtube`。同任务所有平台复用session，浏览器操作串行；每次选回对应任务页，不借用无关标签。`open`只在本session没有该平台时开新页。
+顺序：upload → text → declaration → topics → settings → covers → save → reopen → verify。YouTube在保存前额外检查版权/转码。正常运行只输出绿灯摘要；黄灯保存pending断点并退避，红灯一份诊断后停止。恢复同一命令会跳过done步骤，不清空视频input测试上传。
 
-步骤：`upload → text → declaration → topics → settings → covers → save → reopen → verify`。可单步执行；`status`读断点。`prepare`遇到封面检查点或实际错误就停，已确认步骤不重做。检查封面截图后：
-
-YouTube在`covers`之后、`save`之前另执行`checks`。`context`会读取当前AI问句、视频ID、Shorts类型，不替Agent推断内容是否符合声明。`checks`读取真实版权结果；后台尚在检查/转码时返回`processing_pending`，该步骤保留pending状态，不重复上传。先完成其他平台，稍后续跑相同`prepare`。保存后自动重开实际编辑页，缺少已观察编辑URL时再按Shorts/视频分类找标题唯一的草稿。
+封面画布/缩略图变更已检测后，Agent按每种比例看一次实际预览，再执行：
 
 ```powershell
-python -X utf8 scripts/publish.py /project/upload-manifest.json --platform youtube --session video-project --run-dir /project/publish-run --step review-covers --evidence /project/publish-run/youtube-cover-preview.jpg
-python -X utf8 scripts/publish.py /project/upload-manifest.json --platform youtube --session video-project --run-dir /project/publish-run --step prepare
+python scripts/publish.py /project/upload-manifest.json --platform douyin --session video-task --run-dir /project/run --step review-covers --evidence /project/run/douyin-cover-3x4.jpg
 ```
 
-通过其他浏览器工具完成某步时，记录实际操作与截图，不虚构该步已经由脚本执行。旧快照不能作为当前页面证据。
-
-## Manifest
-
-兼容v1.0的`video`、`covers`、`platforms`与`mode: prepare`。相对路径相对manifest解析。可选`video_sha256`锁定成片。标题限长抖音30/B站80/小红书20/YouTube100，仍以现场为准。
+## manifest
 
 ```json
 {
-  "video":"final.mp4",
-  "covers":{"4:3":"cover43.jpg","3:4":"cover34.jpg","16:9":"cover169.jpg","9:16":"cover916.jpg"},
+  "video":"final.mp4", "video_sha256":"actual-sha256",
+  "covers":{"4:3":"cover43.jpg","3:4":"cover34.jpg","16:9":"cover169.jpg"},
   "mode":"prepare",
   "platforms":{
-    "youtube":{
-      "title":"作品标题","description":"说明与实际歌曲来源",
-      "topics":["作品主题","Animation"],
-      "made_for_kids":false,"ai_disclosure":true,
-      "category":"音乐","language":"zh-Hans","visibility":"private"
-    }
+    "bilibili":{"title":"标题","description":"简介","topics":["AI编程"],"activity_topics":["已选定的一个活动话题"]},
+    "youtube":{"title":"标题","description":"说明","topics":["Animation"],"made_for_kids":false,"ai_disclosure":false,"category":"科学和技术","language":"zh-Hans","visibility":"private"}
   }
 }
 ```
 
-`made_for_kids`按实际受众判断，不能仅因卡通角色就设儿童向。`ai_disclosure`须先读当前Studio问句；“AI使用情况”和“逼真内容修改”不可盲目同选。`edit_url`只记录页面已展示的对应稿件链接。
+`activity_topics`可省略，最多一个。遇活动专用错误时走活动选择并回读，不能把该词改成普通字符串后声称成功；第二个受限词明确记入omitted。活动选择DOM未出现或不唯一即红灯，不能猜候选。
 
-`9:16`是可选封面键。实际页面识别为Shorts时优先使用它；缺少时可用已有3:4海报经FFmpeg补边成9:16，既不裁图也不安装新依赖，生成文件留在run-dir。常规视频使用16:9封面。每次以平台实际预览为准；文件选入后等待缩略图变化才截图。
+YouTube `context`读取当前AI问句，内容判断先于 `declaration`；普通合成旁白或卡通不自动等同逼真误导修改。Shorts/普通视频以页面实际类型、视频ID及缩略图比例判断。
 
-## 恢复与维护
+## 用户授权的正式发布
 
-- `*-state.json`绑定视频哈希、文案哈希和session。换视频用新run-dir；改文案会清除旧填表结果。用户现场修改已确认保留时，manifest停止作为该稿件写入来源，记录人工接管字段，不重跑text/topics/prepare。文案哈希不是检测人类编辑的机制。
-- 文件写入前记录`upload_attempted`。出现不确定响应，先`inspect`检查进度、标题、时长、草稿，不自动清空或重传。确认从未选入文件后可留证修复状态。
-- `--profiles /project/selector-overrides.json`局部覆盖定位，选择器由当前DOM观察获得。默认profile不放账号、稿件ID、本次`@e`号、tabId或绝对路径。
-- 失败留存JSON和可用截图；截图超时可保存实时DOM字段结果，明确视觉证据缺口，不把回读当视觉检查。结束关闭焦点模拟，保持任务标签给用户审核，不关闭session。
-- `review-covers`会复制所见截图到带SHA256指纹的独立文件。之后反复`inspect`不会改掉该验收证据。
-- 富文本必须回读；话题必须选准确候选。B站正确视频input位于`.bcc-upload-wrapper`内，不能用另一个`buploader`。小红书草稿保存在当前浏览器本地。
-- `settings`不擅自替国内平台选择分区；最终检查后按当前内容选择实际分区。YouTube的类别/语言从manifest读取。
-- 新平台须增加profile、适配步骤和现场保存回读证据后才称“支持”。微信视频号、快手是后续建议；微博可补传播。横版MV可发YouTube常规视频，Shorts/TikTok/Reels需另做竖版排版。
+```powershell
+python scripts/publish.py /project/upload-manifest.json --platform youtube --session video-task --run-dir /project/run --step review-plan
+python scripts/publish.py /project/upload-manifest.json --platform youtube --session video-task --run-dir /project/run --step submit --authorization /project/authorization.json
+python scripts/publish.py /project/upload-manifest.json --platform youtube --session video-task --run-dir /project/run --step confirm
+```
+
+`review-plan`只生成未批准的模板。用户授权已在当前会话明确给出且具体成片/文案/封面已可审时，可记录该授权；否则给出实际预览后询问。不要把过往影片的同意迁移到新片。
+
+```json
+{"approved":true,"platforms":{"youtube":{"review_fingerprint":"review-plan返回值","visibility":"public"}}}
+```
+
+指纹覆盖当前视频哈希、该平台文案和全部封面哈希，改任一项即失效。草稿核验和封面验收未绿不提交；点击前记录submission_attempted。不明结果续查confirm；即使指令重试也不重复点击。`submitted`只证明受理，`published/public`需对应终态证据。
+
+## 改动与诊断
+
+确认用户在编辑后将state的`human_takeover`设true；禁止继续text/topics/prepare覆盖，读当前现场并保留其字段。换文案会使旧核验失效，不能拿旧manifest恢复现场。封面检查证据单独按指纹保存，普通inspect不覆盖它。
+
+定位变化只修当前适配/本地profiles后单步继续。页面被关闭或登录失效只报当前平台红灯，不新建相同投稿。转码黄灯不采屏、不重新上传；跨平台继续独立工作。

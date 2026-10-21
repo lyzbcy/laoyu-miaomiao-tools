@@ -58,7 +58,9 @@ class YouTubeDraft:
         return result
 
     def remember(self,context):
-        if context.get('title') and context['title'].strip()!=self.p.item['title'].strip():raise UIError('YouTube editor belongs to another title')
+        if context.get('title') and context['title'].strip()!=self.p.item['title'].strip():
+            owned_default=(self.p.j.get('upload_attempted') and not self.p.j['steps'].get('text') and context['title'].strip()==self.p.local(self.p.m['video']).stem)
+            if not owned_default:raise UIError('YouTube editor belongs to another title')
         old=self.p.j.get('youtube_video_id')
         if old and context.get('video_id') and old!=context['video_id']:raise UIError('YouTube draft ID differs; do not overwrite it')
         for source,dest in [('kind','youtube_kind'),('video_id','youtube_video_id'),('video_url','youtube_video_url'),('ai_question','youtube_ai_question')]:
@@ -150,11 +152,13 @@ class YouTubeDraft:
             route='/videos/short' if desired=='Shorts' else '/videos/upload'
             if route not in location:
                 if '/videos/' not in location:self.b.semantic('menuitem','内容')
-                self.b.wait(lambda:self.b.js("[...document.querySelectorAll('[role=tab]')].some(e=>e.innerText.trim()==="+json.dumps(desired)+")"),timeout=10)
+                self.b.wait(lambda:self.b.js("[...document.querySelectorAll('[role=tab]')].some(e=>e.innerText.trim()==="+json.dumps(desired)+")"),timeout=20)
                 self.b.semantic('tab',desired)
-            sel='a#video-title[aria-label='+json.dumps(self.p.item['title'])+']'
-            self.b.wait(lambda:self.p.shown(sel),timeout=15)
-            self.b.js("(()=>{const es=[...document.querySelectorAll("+json.dumps(sel)+")];if(es.length!==1)throw Error('Matching YouTube title not unique');const row=es[0].closest('ytcp-video-row');if(!row)throw Error('Draft row missing');row.setAttribute('data-publish-draft','active');return true})()")
+            # Titles can be text nodes with no aria-label/href. Match the row's
+            # rendered title and its actual Edit draft button, not an old anchor.
+            def row_ready():
+                return self.b.js(r'''(()=>{const title=TITLE;const rows=[...document.querySelectorAll('ytcp-video-row')].filter(e=>e.innerText.split('\n').some(t=>t.trim()===title)&&e.querySelector('button[aria-label="编辑草稿"]'));if(rows.length>1)throw Error('Matching YouTube draft not unique');if(!rows.length)return false;rows[0].setAttribute('data-publish-draft','active');return true})()'''.replace('TITLE',json.dumps(self.p.item['title'])))
+            self.b.wait(row_ready,timeout=25)
             button='ytcp-video-row[data-publish-draft=active] button[aria-label="编辑草稿"]'
             self.b.send('click',{'selector':button})
         def editor_ready():
