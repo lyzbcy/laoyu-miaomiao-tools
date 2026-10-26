@@ -1,0 +1,14 @@
+[
+  {
+    "id": "DEMO-001",
+    "title": "合成示例：表单取消恢复",
+    "url": "",
+    "prerequisite": "请先配置专用测试页面；本条仅为模板，不是真实业务成绩。",
+    "steps": "打开表单 → 修改草稿 → 取消 → 重新打开，核对是否恢复原值。",
+    "references": [],
+    "checkpoints": [
+      {"id": "cancel", "title": "取消后恢复原值", "mode": "human"},
+      {"id": "visual", "title": "布局与当前设计稿一致", "mode": "human"}
+    ]
+  }
+]
