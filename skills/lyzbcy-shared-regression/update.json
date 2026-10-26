@@ -1,13 +1,14 @@
 {
   "name": "lyzbcy-shared-regression",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "sha256": {
-    "SKILL.md": "b485080b94285d30d402961a75d1b258fc00cfb82ff39be73525d048ef15bd05",
-    "CHANGELOG.md": "1277e4ac4535703b6007474cbea8b986654f8debbd896f2d9c6f684142bf707c",
-    "references/workflow.md": "03634e4b8d80d07018c0f7cf1aff29c8a64e15ad3072a3340d6a78f853a98b55",
+    "SKILL.md": "7b7955b626ede5dd5129d0423394d745ccae5709e4311514772b091343da3a4f",
+    "CHANGELOG.md": "165bba7694849bf0be264687c20ac1dbc5401e3e3eb58c27656d78378e8d807d",
+    "references/workflow.md": "cdb0fdd23e438ef6c40119b3897da09574d3b8a1a12d587f53b84e4f9dc5a71b",
     "scripts/qa.py": "42d84f38158115a7d714845ce31910c90fe97523b4f43412fb9f87a8b7e100f8",
     "scripts/update_skill.py": "fe180f0e56cbc3f007e6d1b8cd339ed61e7d05b00e245b1a0d50cc2a9bbb7325",
     "assets/index.html": "dd09e9258b3a1a6a0995cb2c74ec8bd6f650f8d18f1244dced176cd9b85a3658",
-    "assets/cases.json": "dc61b7a6b588898a17037c28967975b80bd59c26ad2aa76a26a2650475ba4985"
+    "assets/cases.json": "dc61b7a6b588898a17037c28967975b80bd59c26ad2aa76a26a2650475ba4985",
+    "references/build.md": "219d6595c360bf86bf3279d6e7b5c01eb914ae175f9035da16dccbc311a18198"
   }
 }

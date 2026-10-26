@@ -92,8 +92,12 @@ class RegressionTests(unittest.TestCase):
         shutil.copytree(ROOT, installed)
         (installed/'local-project.json').write_text('private', encoding='utf-8')
         original = (installed/'SKILL.md').read_bytes()
-        new = original.replace(b'version: 0.1.0', b'version: 0.1.1')
-        manifest = {'name': installed.name, 'version': '0.1.1', 'sha256': {'SKILL.md': qa.hashlib.sha256(new).hexdigest()}}
+        current = '.'.join(map(str, updater.version(original.decode('utf-8'))))
+        parts = list(updater.version(original.decode('utf-8')))
+        parts[-1] += 1
+        incoming = '.'.join(map(str, parts))
+        new = original.replace(('version: '+current).encode(), ('version: '+incoming).encode())
+        manifest = {'name': installed.name, 'version': incoming, 'sha256': {'SKILL.md': qa.hashlib.sha256(new).hexdigest()}}
         files = {'update.json': json.dumps(manifest).encode(), 'SKILL.md': b'bad'}
         self.assertEqual(updater.check(installed, fetch=files.__getitem__, today='2099-01-01'), 'failed')
         self.assertEqual((installed/'SKILL.md').read_bytes(), original)

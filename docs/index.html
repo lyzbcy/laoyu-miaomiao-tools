@@ -202,13 +202,13 @@
   <!-- ====== 详情数据源（静态保留，页面源码对 AI / 爬虫始终完整可读；JS 读取它渲染上方网格） ====== -->
 
   <article class="skill skill-detail" id="shared-regression" data-name="lyzbcy-shared-regression" data-grad="linear-gradient(135deg,#142b43 0%,#1764bb 58%,#38a7ad 100%)">
-    <div class="skill-head"><span class="emoji">🧪</span><h3>lyzbcy-shared-regression</h3><span class="ver">PRD 对照与共享回归 · v0.1.0</span></div>
+    <div class="skill-head"><span class="emoji">🧪</span><h3>lyzbcy-shared-regression</h3><span class="ver">PRD 对照与共享回归 · v0.1.2</span></div>
     <p class="skill-tag">把用例、真实页面、PRD和设计放在一起，人工与AI分别执行，共用一份可追溯的结果。</p>
     <div class="field"><div class="label">它能做什么</div><p>在项目中初始化本机对照台，配置真实入口、PRD和设计引用；创建冻结用例定义的批次，按检查点追加人工、AI代理或自动结果。局部完成、分歧、阻塞和定义过期分别显示，旧记录保留。AI默认读摘要，按需展开单条历史；每天首次使用后台静默更新，校验失败继续旧版。</p></div>
-    <div class="field"><div class="label">适合 / 边界</div><p>适合项目内人工与AI共用回归标准、维护资料映射和接管未完成检查。首版自动化仅支持配置好的HTTP GET断言；浏览器操作、视觉验收、权限与真实保存仍需人工或项目适配器。不含公司资料、登录信息或业务专属脚本；本机服务不提供跨电脑托管。</p></div>
+    <div class="field"><div class="label">适合 / 边界</div><p>适合项目内人工与AI共用回归标准、维护资料映射和接管未完成检查。新增构建前必读的四项核心体验和已知问题清单：精准设计映射、PRD独立窗口/置顶/蓝选、辅助演示、本地服务就绪与预载。随包模板尚未完整实现这些适配器；自动化仅配置好的HTTP GET断言，浏览器操作、视觉验收、权限与真实保存仍需人工或项目适配器。不含公司资料、登录信息或业务专属脚本；本机服务不提供跨电脑托管。</p></div>
     <div class="field"><div class="label">怎么用</div><div class="prompt-box">用 lyzbcy-shared-regression 给这个项目搭一版PRD/设计稿对照台，先接几条用例，保留原回归记录，把自动检查和人工接管分别记清楚。</div></div>
     <div class="field"><div class="label">怎么安装</div><p>下载并解压整个 <code>lyzbcy-shared-regression/</code> 到Agent skills目录。需要Python 3.10+，基础版零额外依赖；运行init创建项目目录，配置自己的用例和资料后启动。项目数据放在skill目录外。</p></div>
-    <div class="dl-row"><a class="btn btn-zip" id="dl-shared-regression" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.31.0/lyzbcy-shared-regression.zip">📦 下载 lyzbcy-shared-regression.zip</a><a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/lyzbcy-shared-regression">查看源码</a></div>
+    <div class="dl-row"><a class="btn btn-zip" id="dl-shared-regression" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.32.0/lyzbcy-shared-regression.zip">📦 下载 lyzbcy-shared-regression.zip</a><a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/lyzbcy-shared-regression">查看源码</a></div>
   </article>
 
   <!-- SKILL 1: study-map -->
@@ -704,9 +704,10 @@
 // —— 强制刷新组件配置（发布时与 docs/version.json 同步修改）——
 window.__FR__ = {
   id: 'laoyu-miaomiao-tools',
-  version: '2026.10.26-1',
+  version: '2026.10.26-2',
   registry: 'version.json',
   changelog: [
+    "2026-10-26 共享回归skill v0.1.2：明确四项核心体验，增加构建前已知问题、规避措施与验收清单；本次更新指导，不冒充运行模板已补齐能力；下载包 v1.32.0",
     "2026-10-26 新收录 lyzbcy-shared-regression v0.1.0：PRD/设计对照、冻结批次、人工与AI分别留痕、HTTP GET检查；每日后台静默更新，失败保留旧版；下载包 v1.31.0",
     "2026-10-21 投稿助手升级 v1.3.1：红黄绿状态、上传与提交防重复、封面验收、草稿重开、B站标签分流和本次授权绑定；39项离线回归通过，新版四平台端到端流程与扩展适配边界明确标注；下载包 v1.30.0",
     "2026-10-19 新收录 software-video-production v0.8.0，并升级投稿助手 v1.2.0：制作与封面分层验收、经验压缩重写、四平台草稿恢复与人工修改保留；两包支持每日后台静默更新、完整校验与失败回滚；下载包 v1.29.0",
@@ -788,7 +789,7 @@ window.__FR__ = {
 <script>
 // release 直链填入（push 后由部署脚本/手动更新 tag）
 const RELEASES = {
-  "shared-regression": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.31.0/lyzbcy-shared-regression.zip",
+  "shared-regression": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.32.0/lyzbcy-shared-regression.zip",
   "software-video-production": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.29.0/software-video-production.zip",
   "video-publish-assistant": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.30.0/lyzbcy-video-publish-assistant.zip",
   "study-map": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.0.0/lyzbcy-study-map.zip",
@@ -907,7 +908,7 @@ function copyForAI(){
    - 安装：解压到Agent skills目录，媒体检查使用本机Python与FFmpeg；每日首次使用后台静默更新，失败继续旧版。
    - 下载：${RELEASES['software-video-production']}
 
-13) lyzbcy-shared-regression（PRD 对照与共享回归 · v0.1.0）
+13) lyzbcy-shared-regression（PRD 对照与共享回归 · v0.1.2）
    - 用途：本机对照台模板、冻结批次、人工/AI/自动结果留痕与接管。
    - 边界：自动化仅配置好的HTTP GET断言；浏览器与业务验收需适配。无公司资料或登录信息。
    - 安装：解压到skills目录，Python 3.10+，每日后台静默更新。
