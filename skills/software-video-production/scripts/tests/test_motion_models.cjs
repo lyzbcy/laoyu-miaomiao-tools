@@ -5,6 +5,9 @@ const path=require('node:path');
 const m=require('../../assets/remotion-software/motion-model.cjs');
 const fixtures=JSON.parse(fs.readFileSync(path.join(__dirname,'../fixtures/motion-shots.json'),'utf8'));
 const shot=(name)=>structuredClone(fixtures.shots.find(x=>x.recipe===name));
+test('colored label text follows light and dark fills instead of assuming a dark background',()=>{
+ assert.equal(m.fillInk('#005fb8'),'#ffffff');assert.equal(m.fillInk('#ffcc39'),'#000000');assert.equal(m.fillInk('#8764b8'),'#ffffff');assert.throws(()=>m.fillInk('blue'));
+});
 
 test('all nine fixture recipes are valid and have time to settle',()=>{
  assert.equal(new Set(fixtures.shots.map(x=>x.recipe)).size,9);

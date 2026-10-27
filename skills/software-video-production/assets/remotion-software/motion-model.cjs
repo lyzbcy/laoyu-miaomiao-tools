@@ -2,6 +2,12 @@
 const DATA_RECIPES=new Set(['metric_compare','trend_trace','target_gap']);
 const MOTION_RECIPES=new Set([...DATA_RECIPES,'evidence_focus','causal_flow','task_router','claim_reveal','spotlight_roi','match_transition']);
 const finite=(v)=>typeof v==='number'&&Number.isFinite(v);
+function fillInk(hex){
+ if(!/^#[a-f\d]{6}$/i.test(hex))throw Error('fill must be a six-digit hex color');
+ const rgb=hex.slice(1).match(/../g).map(v=>parseInt(v,16)/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4);
+ const luminance=rgb.reduce((sum,v,i)=>sum+v*[.2126,.7152,.0722][i],0);
+ return luminance>.179?'#000000':'#ffffff';
+}
 function progress(frame,start,end){
   if(!finite(frame)||!finite(start)||!finite(end)||end<=start)throw Error('motion range must have finite, increasing endpoints');
   const x=Math.max(0,Math.min(1,(frame-start)/(end-start)));
@@ -81,4 +87,4 @@ function validateMotionShot(shot,fps){
   }
   return true;
 }
-module.exports={DATA_RECIPES,MOTION_RECIPES,progress,schedule,opacityAt,chartScale,graphPoints,validateMotionShot};
+module.exports={DATA_RECIPES,MOTION_RECIPES,fillInk,progress,schedule,opacityAt,chartScale,graphPoints,validateMotionShot};

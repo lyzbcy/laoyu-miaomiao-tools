@@ -2,7 +2,7 @@
 import React from 'react';
 import {AbsoluteFill,useCurrentFrame,useVideoConfig,interpolate,spring} from 'remotion';
 import model from './motion-model.cjs';
-const {progress,schedule,opacityAt,chartScale,graphPoints}=model;
+const {progress,schedule,opacityAt,chartScale,graphPoints,fillInk}=model;
 const tones=['#ffcc39','#29e6db','#ff70c6','#ad9bff','#baff5a','#ff9559'];
 const palettes={dark:{bg:'#231142',panel:'#392053',ink:'#fff9f0',muted:'#d7cce7',line:'#7e5c97',shadow:'#11081f'},light:{bg:'#fff4d9',panel:'#fffef8',ink:'#2c1744',muted:'#655476',line:'#c2a8ce',shadow:'#2c1744'}};
 const designStyles={
@@ -107,7 +107,7 @@ export function CausalFlow({shot}){
  return <Shell shot={shot}>{({p,a,f,fps,tones,pop})=>{
   const {start,end}=schedule(shot,fps),count=shot.steps.length,h=Math.min(180,760/count),gap=(end-start)/count;
   return <div style={{position:'absolute',left:48,right:48,top:278}}>{shot.steps.map((step,i)=>{const b=pop(f,start+i*gap,fps,end),q=progress(f,start+i*gap,Math.min(end,start+(i+1)*gap));return <div key={i} style={{height:h,position:'relative',opacity:Math.min(1,b),transform:`translateY(${(1-b)*25}px)`}}>
-   <div style={{position:'absolute',left:0,top:18,width:52,height:52,borderRadius:16,background:tones[i%tones.length],color:'#231142',fontSize:28,fontWeight:900,textAlign:'center',lineHeight:'52px',transform:`rotate(${(1-b)*(p.tilt===0?0:-30)}deg)`}}>{i+1}</div>
+   <div style={{position:'absolute',left:0,top:18,width:52,height:52,borderRadius:16,background:tones[i%tones.length],color:fillInk(tones[i%tones.length]),fontSize:28,fontWeight:900,textAlign:'center',lineHeight:'52px',transform:`rotate(${(1-b)*(p.tilt===0?0:-30)}deg)`}}>{i+1}</div>
    <Card p={p} style={{marginLeft:75,padding:count===5?12:18,height:h-36}}><Ink style={{fontSize:count===5?25:30}}>{step.label}</Ink><div style={{fontSize:count===5?20:22,lineHeight:1.35,color:p.muted,marginTop:8}}>{step.detail}</div></Card>
    {i<count-1&&<div style={{position:'absolute',left:24,top:76,height:(h-62)*q,width:4,background:tones[i%tones.length]}}/>}
   </div>;})}</div>;
@@ -132,7 +132,7 @@ export function ClaimReveal({shot}){
   const {start,end}=schedule(shot,fps),b=pop(f,start,fps,end),q=progress(f,start,end);
   return <>
    <div style={{position:'absolute',left:48,right:48,top:360,transform:`rotate(${(1-b)*(p.tilt===0?0:-7)}deg) scale(${.92+.08*b})`,opacity:Math.min(1,b)}}>
-    <div style={{display:'inline-block',padding:'10px 18px',borderRadius:12,background:tones[2],fontSize:24,fontWeight:900,color:'#231142',transform:p.tilt===0?'none':'rotate(-4deg)'}}>{shot.kicker||'重点在这里'}</div>
+    <div style={{display:'inline-block',padding:'10px 18px',borderRadius:12,background:tones[2],fontSize:24,fontWeight:900,color:fillInk(tones[2]),transform:p.tilt===0?'none':'rotate(-4deg)'}}>{shot.kicker||'重点在这里'}</div>
     <Ink style={{fontSize:shot.claim.length>44?40:shot.claim.length>28?49:64,marginTop:35,lineHeight:1.3}}>{shot.claim}</Ink>
     <div style={{height:12,background:a,borderRadius:8,marginTop:26,width:`${q*100}%`}}/>
    </div>
@@ -146,7 +146,7 @@ export function SpotlightROI({shot}){
   const {start,end}=schedule(shot,fps),q=progress(f,start,end),r=shot.roi,W=624,H=665,X=r.x*W,Y=r.y*H,RW=r.w*W,RH=r.h*H;
   return <>
    <div style={{position:'absolute',left:48,top:300,width:W,height:H,overflow:'hidden',borderRadius:24,border:`2px solid ${p.line}`}}>
-    {shot.image?<img src={shot.image} style={{width:'100%',height:'100%',objectFit:'contain',background:p.panel}}/>:<div style={{background:p.panel,height:'100%',padding:28,boxSizing:'border-box'}}><div style={{fontSize:23,color:p.muted,marginBottom:35}}>原创合成界面</div>{['选择文件','执行操作','查看结果'].map((t,i)=><div key={t} style={{padding:28,marginBottom:22,border:`2px solid ${p.line}`,borderRadius:18,fontSize:30,background:i===1?'#7c54ae':p.bg}}>{t}</div>)}</div>}
+    {shot.image?<img src={shot.image} style={{width:'100%',height:'100%',objectFit:'contain',background:p.panel}}/>:<div style={{background:p.panel,height:'100%',padding:28,boxSizing:'border-box'}}><div style={{fontSize:23,color:p.muted,marginBottom:35}}>原创合成界面</div>{['选择文件','执行操作','查看结果'].map((t,i)=><div key={t} style={{padding:28,marginBottom:22,border:`2px solid ${p.line}`,borderRadius:18,fontSize:30,background:i===1?(p.isLight?'#e2edff':'#7c54ae'):p.bg}}>{t}</div>)}</div>}
     <svg style={{position:'absolute',inset:0}} width={W} height={H}><defs><mask id="focus-hole"><rect width={W} height={H} fill="white"/><rect x={X} y={Y} width={RW} height={RH} rx="18" fill="black"/></mask></defs><rect width={W} height={H} fill="#12051e" opacity={q*.8} mask="url(#focus-hole)"/><rect x={X} y={Y} width={RW} height={RH} rx="18" fill="none" stroke={a} strokeWidth="5" opacity={q}/></svg>
    </div>
    {shot.result&&<Ink style={{position:'absolute',top:1010,left:48,right:48,fontSize:35,color:textTone(p,a),opacity:q}}>{shot.result}</Ink>}
@@ -160,7 +160,7 @@ export function MatchTransition({shot}){
   return <>
    <Card p={p} style={{position:'absolute',left:48,right:48,top:330,minHeight:260,opacity:1-q,transform:`translateY(${-q*70}px)`}}><div style={{fontSize:23,color:p.muted}}>上一件事</div><Ink style={{fontSize:48,marginTop:28}}>{shot.from}</Ink></Card>
    <Card p={p} style={{position:'absolute',left:48,right:48,top:730,minHeight:260,opacity:q,transform:`translateY(${(1-q)*70}px)`}}><div style={{fontSize:23,color:p.muted}}>顺着它继续</div><Ink style={{fontSize:48,marginTop:28}}>{shot.to}</Ink></Card>
-   <div style={{position:'absolute',left:120+q*70,top:510+q*70,width:440-q*140,minHeight:120,borderRadius:24,padding:20,boxSizing:'border-box',background:a,color:'#231142',textAlign:'center',boxShadow:`8px 10px 0 ${p.shadow}`,transform:`rotate(${(1-q)*-6}deg) scale(${.94+.06*b})`,display:'flex',alignItems:'center',justifyContent:'center'}}><Ink style={{fontSize:36}}>{shot.bridge}</Ink></div>
+   <div style={{position:'absolute',left:120+q*70,top:510+q*70,width:440-q*140,minHeight:120,borderRadius:24,padding:20,boxSizing:'border-box',background:a,color:fillInk(a),textAlign:'center',boxShadow:`8px 10px 0 ${p.shadow}`,transform:`rotate(${(1-q)*-6}deg) scale(${.94+.06*b})`,display:'flex',alignItems:'center',justifyContent:'center'}}><Ink style={{fontSize:36}}>{shot.bridge}</Ink></div>
   </>;
  }}</Shell>;
 }
