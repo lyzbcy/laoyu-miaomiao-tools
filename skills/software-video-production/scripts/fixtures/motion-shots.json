@@ -1,0 +1,16 @@
+{
+  "fps": 30,
+  "width": 720,
+  "height": 1280,
+  "shots": [
+    {"id":"compare","recipe":"metric_compare","title":"差距，一眼就看见","frames":120,"synthetic":true,"unit":"测试点","items":[{"label":"方案一","value":35},{"label":"方案二","value":65},{"label":"方案三","value":52}],"result":"同一条件、同一尺度","note":"数值为原创合成测试数据，不是实际产品结果。"},
+    {"id":"trend","recipe":"trend_trace","title":"变化，要沿着顺序看","frames":120,"synthetic":true,"unit":"测试点","points":[{"label":"样本1","value":25,"x":0},{"label":"样本2","value":42,"x":1},{"label":"样本3","value":38,"x":2},{"label":"样本4","value":64,"x":4},{"label":"样本5","value":57,"x":5},{"label":"样本6","value":81,"x":7}],"highlightIndex":3,"result":"拐点突出，结果停稳","note":"样本横坐标按给定 x 值排列；连线不是新增采样。"},
+    {"id":"target","recipe":"target_gap","title":"达到目标，还差多少？","frames":120,"synthetic":true,"unit":"测试点","actual":68,"target":80,"maxValue":100,"note":"目标线固定，实际条形不弹过真实数值。"},
+    {"id":"evidence","recipe":"evidence_focus","title":"先看条件，再下判断","frames":180,"synthetic":true,"items":[{"label":"完成率","detail":"只比较相同条件下的任务"},{"label":"耗时","detail":"把实际等待也算进去"},{"label":"总成本","detail":"包括重试和人工处理"}],"focusIndex":2,"focusStartFrame":75,"claimStartFrame":95,"reduceDistractions":true,"prompt":"这些证据，怎样一起做决定？","result":"先看约束，再选方案","note":"减量时保留问题；没有强制空白或静音。"},
+    {"id":"flow","recipe":"causal_flow","title":"每一步，都有下一步","frames":120,"synthetic":true,"steps":[{"label":"识别输入","detail":"先确定对象与条件"},{"label":"执行处理","detail":"呈现真实触发和等待"},{"label":"检查结果","detail":"依据反馈决定后续"}],"note":"这是流程示意；不能冒充软件已经自动完成。"},
+    {"id":"router","recipe":"task_router","title":"任务不同，去向不同","frames":120,"synthetic":true,"origin":"任务入口","routes":[{"label":"常规任务","detail":"沿已验证路径处理"},{"label":"复杂任务","detail":"增加推理与复核"},{"label":"异常任务","detail":"保留现场再判断"}],"note":"路径图表达分工观点，不代表实测性能。"},
+    {"id":"claim","recipe":"claim_reveal","title":"重点，就讲这一句","frames":120,"synthetic":true,"claim":"动效帮助理解，停稳才能读懂。","support":"先有要说明的关系，再选择运动。不要为了丰富而让所有元素一直动。","note":"标题有弹性，观点与读字时间保持清楚。"},
+    {"id":"spotlight","recipe":"spotlight_roi","title":"看这里，关系更清楚","frames":120,"synthetic":true,"roi":{"x":0.03,"y":0.30,"w":0.94,"h":0.23},"result":"保留上下文，只减轻干扰","note":"ROI 按展示画布归一化；实际图片须先栅格脱敏。"},
+    {"id":"bridge","recipe":"match_transition","title":"带着同一问题，继续","frames":120,"synthetic":true,"from":"刚才看到了结果","bridge":"这个差距","to":"接下来解释原因","note":"共享对象连接前后，不额外塞一段装饰性转场。"}
+  ]
+}

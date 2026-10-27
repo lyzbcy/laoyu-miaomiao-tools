@@ -10,13 +10,14 @@
 | 字级删除、可回滚EDL、语义分镜、软件镜头与切点 | [editing](editing.md) |
 | 云转写输入测量、免费余额、缓存、重试与上传确认 | [cloud-transcription](cloud-transcription.md) |
 | 五技能能力重叠、官方接口与许可边界 | [工具工作流](../references/tool-workflow.md) |
-| 首帧首句、开头机制、兑现、文字与动作 | [creative](creative.md) |
+| 首帧首句、开头兑现、信息关系、动效与非机械节奏 | [creative](creative.md) |
 | 选参考、制作代表段落 | [exemplars](exemplars.md) |
 | 人物图层与动作素材 | [characters](characters.md) |
 | 隐私遮罩 | [privacy](privacy.md) |
 | 口播、拟声、连续音乐、歌词对齐 | [audio](audio.md) |
 | 歌曲生成与许可、下载身份 | [music-generation](music-generation.md) |
 | 封面、导出与证据分层 | [delivery](delivery.md) |
+| 数据、流程、观点、聚焦、转场的可运行动效 | [motion](motion.md) |
 | 程序化动画与依赖复用 | [remotion](remotion.md)、[tech](tech.md) |
 | 复盘重写、脚本行为验收、锁定与清理 | [evolution](evolution.md) |
 | 结论依据和适用范围 | [lessons](lessons.md) |

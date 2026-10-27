@@ -1,6 +1,7 @@
 // Self-authored software shot components. No shotcraft source or branded media copied.
 import React from 'react';
 import {AbsoluteFill, Composition, registerRoot, useCurrentFrame, useVideoConfig, interpolate, spring} from 'remotion';
+import {motionMapping} from './motion.jsx';
 
 const color = {bg:'#091321', panel:'#16253a', line:'#30435b', ink:'#f5f8fc', muted:'#9eafc4', mint:'#65edc2', amber:'#ffcc75'};
 const clamp = {extrapolateLeft:'clamp', extrapolateRight:'clamp'};
@@ -73,7 +74,7 @@ export function StepProgression({shot}) {
   </Frame>;
 }
 
-const mapping={before_after:BeforeAfter,detail_zoom:DetailZoom,step_progression:StepProgression};
+const mapping={before_after:BeforeAfter,detail_zoom:DetailZoom,step_progression:StepProgression,...motionMapping};
 function ShotRoot({shot}) { const Component=mapping[shot.recipe]; return <Component shot={shot}/>; }
 const defaultShot={recipe:'before_after',title:'先看前后，再讲原因',frames:120};
 function Root(){return <Composition id="SoftwareShot" component={ShotRoot} width={720} height={1280} fps={30} durationInFrames={120} defaultProps={{shot:defaultShot,width:720,height:1280,fps:30}} calculateMetadata={({props})=>({durationInFrames:props.shot.frames,width:props.width,height:props.height,fps:props.fps})}/>;}

@@ -32,9 +32,9 @@ python scripts/produce.py demo --runtime "<已安装的Remotion运行时目录>"
 node scripts/render_shots.cjs "<项目>/shots-config.json"
 ```
 
-配置可从demo实际生成的`shots-config.json`复制：顶层runtime/browserExecutable/output/width/height/fps和shots数组；每镜需id、recipe、title、frames。`recipe`支持`before_after`、`detail_zoom`、`step_progression`，实际组件在`assets/remotion-software/entry.jsx`。前后对照可传beforeImage/afterImage，其他镜头可传image；都须为预先栅格脱敏的本地PNG/JPEG data URI且privacyApproved=true。非合成素材需synthetic=false，脚本强制要求真实图片，不能以生成UI冒充产品。title/note/result/contentLabel按事实填写。
+配置可从demo实际生成的`shots-config.json`复制：顶层runtime/browserExecutable/output/width/height/fps和shots数组；每镜需id、recipe、title、frames。基础软件镜头`recipe`支持`before_after`、`detail_zoom`、`step_progression`；另有九类数据/流程/观点/聚焦/衔接组件，见[motion](motion.md)，共十二类。实际入口在`assets/remotion-software/entry.jsx`。前后对照可传beforeImage/afterImage，其他镜头可传image；都须为预先栅格脱敏的本地PNG/JPEG data URI且privacyApproved=true。非合成素材需synthetic=false，脚本强制要求真实图片，不能以生成UI冒充产品。title/note/result/contentLabel按事实填写。
 
-当前实现为固定9:16布局、可配置文案/时长/图片的基础软件镜头，局部放大位置需按实际图片再调整/审片；不是shotcraft全套调校卡库、2.5D PageCam、3D运镜或其图库效果已复现。缺少图片时生成的是明确标识的合成工作台，不可当真实产品功能证据。
+基础软件镜头与九类信息动效均使用9:16布局；新增组件按[motion](motion.md)配置数据、文案与时序，基础镜头可配置文案/时长/图片，局部放大位置需按实际图片再调整/审片；不是shotcraft全套调校卡库、2.5D PageCam、3D运镜或其图库效果已复现。缺少图片时生成的是明确标识的合成工作台，不可当真实产品功能证据。
 
 ## 本地转写到EDL
 

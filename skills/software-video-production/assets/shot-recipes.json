@@ -1,6 +1,6 @@
 {
-  "schema_version": 1,
-  "status": "three_self_authored_remotion_components_executable; not upstream shotcraft",
+  "schema_version": 2,
+  "status": "twelve_self_authored_remotion_components; not upstream shotcraft",
   "render_owner": "choose_existing_pipeline_or_remotion_or_hyperframes",
   "required_per_shot": [
     "id",
@@ -64,6 +64,127 @@
         "waiting_time_truthful",
         "one_focus_per_step"
       ]
+    },
+    {
+      "id": "metric_compare",
+      "purpose": "同条件、同尺度的非负量级比较",
+      "parameters": [
+        "items",
+        "unit",
+        "maxValue"
+      ],
+      "checks": [
+        "shared_zero_baseline",
+        "final_values_accurate",
+        "readable_hold"
+      ]
+    },
+    {
+      "id": "trend_trace",
+      "purpose": "沿样本顺序揭示变化",
+      "parameters": [
+        "points",
+        "unit",
+        "highlightIndex"
+      ],
+      "checks": [
+        "real_x_spacing_preserved",
+        "samples_not_invented",
+        "stable_endpoint"
+      ]
+    },
+    {
+      "id": "target_gap",
+      "purpose": "实际值与目标的差距",
+      "parameters": [
+        "actual",
+        "target",
+        "unit",
+        "maxValue"
+      ],
+      "checks": [
+        "fixed_target",
+        "no_numeric_overshoot",
+        "units_match"
+      ]
+    },
+    {
+      "id": "evidence_focus",
+      "purpose": "保留期待，按需要减少证据之间的竞争",
+      "parameters": [
+        "items",
+        "reduceDistractions",
+        "focusStartFrame",
+        "claimStartFrame",
+        "prompt"
+      ],
+      "checks": [
+        "reduction_optional",
+        "no_forced_blank",
+        "core_claim_readable"
+      ]
+    },
+    {
+      "id": "causal_flow",
+      "purpose": "顺着触发与反馈解释状态交接",
+      "parameters": [
+        "steps"
+      ],
+      "checks": [
+        "causal_order",
+        "diagram_not_real_execution"
+      ]
+    },
+    {
+      "id": "task_router",
+      "purpose": "一个输入与多个条件去向",
+      "parameters": [
+        "origin",
+        "routes"
+      ],
+      "checks": [
+        "conditions_clear",
+        "diagram_not_performance_evidence"
+      ]
+    },
+    {
+      "id": "claim_reveal",
+      "purpose": "观点进入后稳定阅读",
+      "parameters": [
+        "claim",
+        "support",
+        "kicker"
+      ],
+      "checks": [
+        "one_focus",
+        "settled_text"
+      ]
+    },
+    {
+      "id": "spotlight_roi",
+      "purpose": "保留上下文并突出展示区域",
+      "parameters": [
+        "roi",
+        "image"
+      ],
+      "checks": [
+        "raster_redaction_before_focus",
+        "roi_calibrated_on_display",
+        "aspect_preserved"
+      ]
+    },
+    {
+      "id": "match_transition",
+      "purpose": "共享语义对象连接前后",
+      "parameters": [
+        "from",
+        "to",
+        "bridge"
+      ],
+      "checks": [
+        "semantic_connection",
+        "no_decorative_delay"
+      ]
     }
   ],
   "invariants": [
@@ -76,5 +197,12 @@
   ],
   "render_entry": "scripts/render_shots.cjs",
   "implementation": "assets/remotion-software/entry.jsx",
-  "usage_and_limits": "docs/integration.md"
+  "usage_and_limits": "docs/integration.md",
+  "optional_decision_fields": [
+    "information_relation",
+    "settled_reading_state",
+    "reduction_reason",
+    "continuing_expectation"
+  ],
+  "motion_reference": "docs/motion.md"
 }

@@ -2,7 +2,7 @@
 name: software-video-production
 description: 制作和改版软件演示、生活情境宣传短视频，处理真实操作证据、隐私、视听表达、封面和交付复盘。不替代软件开发或漫剧制作。
 metadata:
-  version: 0.11.3
+  version: 0.12.0
   source: https://raw.githubusercontent.com/lyzbcy/laoyu-miaomiao-tools/main/skills/software-video-production/SKILL.md
   files:
     - CHANGELOG.md
@@ -50,6 +50,11 @@ metadata:
     - scripts/upstream_native.py
     - scripts/produce_upstream.py
     - scripts/tests/test_upstream_gate.py
+    - assets/remotion-software/motion-model.cjs
+    - assets/remotion-software/motion.jsx
+    - docs/motion.md
+    - scripts/fixtures/motion-shots.json
+    - scripts/tests/test_motion_models.cjs
     - update.json
 ---
 
@@ -62,9 +67,9 @@ metadata:
 ## 制作顺序
 
 1. **核实事件与源时间。** 看原素材的操作、声音与设备关系，登记源清单、哈希、时间边界与隐私；有语音且需按词剪辑或同步字幕时核对字级边界。创意情境与真机证据分别标明；需要删口头词/停顿或重组镜头时按[可回滚剪辑与语义分镜](docs/editing.md)保存候选理由、EDL和剪后字幕映射，不直接改原片。
-2. **先验观看理由与兑现。** 从素材中选一种能成立的[开头机制](docs/creative.md)，把首句与首帧一起检查：看哪里、预测什么、已得什么回报、接着等什么。用实际素材比较两个0—5秒开头，选对叙事再扩展；约3秒、5秒只作观察点。参考的画面事实、创作解释与留存指标按[范例方法](docs/exemplars.md)分开，不把标题或特效数量当留人依据。
+2. **先验观看理由与兑现。** 从素材中选一种能成立的[开头机制](docs/creative.md)，把首句与首帧一起检查：看哪里、预测什么、已得什么回报、接着等什么。开头机制未定时用实际素材比较短方案，选对叙事再扩展；已采用的开头可沿用。约3秒、5秒只作观察点。参考的画面事实、创作解释与留存指标按[范例方法](docs/exemplars.md)分开，不把标题或特效数量当留人依据。
 3. **决定信息由谁承载。** 能看懂的交给动作；情绪交给反应或短心声；确有解释缺口才加口播。音乐叙事片可用RPG打字和轻哔声，保持歌曲连续；讲解片按理解需要安排人声，不能用音乐填补信息缺口。见[创意](docs/creative.md)、[声音](docs/audio.md)。
-4. **安排视线和运动。** 真实操作留出看清的时间，按[镜头配方](docs/editing.md)选前后对比、局部放大或步骤递进，再选择单一主渲染/必要局部叠层。文字可读、动作有触发和落定；实心栅格隐私派生物先于动效，按[隐私](docs/privacy.md)复查放大、转场和每个切点。
+4. **安排视线和运动。** 真实操作留出看清的时间，按[镜头配方](docs/editing.md)选前后对比、局部放大或步骤递进，再选择单一主渲染/必要局部叠层。按比较、趋势、目标或因果关系选择动效，并留出读懂结果的稳定状态。重点前先减少视觉和信息竞争、保持观看理由；只有需要消化或等待时才留停顿，不设固定动静顺序或秒数。文字可读、动作有触发和落定；实心栅格隐私派生物先于动效，按[隐私](docs/privacy.md)复查放大、转场和每个切点。
 5. **分别验收成片和封面。** 技术、事实/隐私、实际视听范围、用户评价各自记录。封面负责让人想点开，另按手机缩略图与平台真实裁切验收；成片评分不能转算封面评分。见[交付](docs/delivery.md)。
 6. **锁定与收尾。** 用户采用后锁定成片；发布另按任务授权处理。按[复盘与压缩](docs/evolution.md)改写已有规则、归档项目证据；清理范围以用户要求为准。
 
