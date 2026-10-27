@@ -23,7 +23,7 @@
 | 🧑‍🏫 `lyzbcy-tudou-mentor` | 通用技术指导与验收规则；重构示例 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.23.0/lyzbcy-tudou-mentor.zip) |
 | 💬 `lyzbcy-qq-napcat-messenger` | 本机 QQ（NapCat）自动收发：借号→收发→还号三段式，私聊/群发/发文件/扫新消息/拉记录/下载附件，9 子命令全实测 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.24.0/lyzbcy-qq-napcat-messenger.zip) |
 
-人格蒸馏类 skill（以通用规则和重构示例提供角色指导）统一归入「拘灵遣将」分类，站点卡片带紫色徽标。
+角色指导类 skill（通用规则与重构示例）统一归入「拘灵遣将」分类，站点卡片带紫色徽标。
 | 🐟 `lyzbcy-laoyu-soul` | 捞鱼灵魂拷贝：加载后 AI 拥有捞鱼的人格（思维/口癖/行为模式/对话锚） | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.19.0/lyzbcy-laoyu-soul.zip) |
 | 🍮 `lyzbcy-xingxingbuding-soul` | 星星布丁灵魂拷贝：加载后 AI 拥有星星布丁的人格（性格五面/招牌句式/哄人模板） | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.20.0/lyzbcy-xingxingbuding-soul.zip) |
 

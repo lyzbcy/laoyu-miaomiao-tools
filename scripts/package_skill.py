@@ -184,6 +184,13 @@ def main() -> None:
         for p in problems:
             print(f"❌ {p}")
         die("校验未通过")
+    if skill_name in {"lyzbcy-tudou-mentor", "lyzbcy-laotian-cosleader"}:
+        from check_mentor_privacy import inspect
+        findings = inspect(skill_dir)
+        if findings:
+            for rel, line, label in findings:
+                print(f"❌ {rel}:{line}: {label}")
+            die("公开内容检查未通过；私密词表与历史仍需另行核查")
     print(f"✓ 校验通过：{skill_name} v{version}，manifest {len(files)} 个文件齐全")
 
     if check_only:
