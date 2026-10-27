@@ -5,6 +5,11 @@
 | 问题 | 文档 |
 | --- | --- |
 | 素材事实、目录和时间轴 | [workflow](workflow.md) |
+| 原版shotcraft/video-use实际调用、固定版本与合成验收 | [upstream](upstream.md) |
+| 自研镜头/EDL、按需本地转写与合成验收限制 | [integration](integration.md) |
+| 字级删除、可回滚EDL、语义分镜、软件镜头与切点 | [editing](editing.md) |
+| 云转写输入测量、免费余额、缓存、重试与上传确认 | [cloud-transcription](cloud-transcription.md) |
+| 五技能能力重叠、官方接口与许可边界 | [工具工作流](../references/tool-workflow.md) |
 | 首帧首句、开头机制、兑现、文字与动作 | [creative](creative.md) |
 | 选参考、制作代表段落 | [exemplars](exemplars.md) |
 | 人物图层与动作素材 | [characters](characters.md) |

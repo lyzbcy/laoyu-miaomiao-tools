@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "status": "three_self_authored_remotion_components_executable; not upstream shotcraft",
+  "render_owner": "choose_existing_pipeline_or_remotion_or_hyperframes",
+  "required_per_shot": [
+    "id",
+    "recipe",
+    "source_id",
+    "source_in",
+    "source_out",
+    "claim",
+    "evidence",
+    "trigger",
+    "visible_result",
+    "focus_region",
+    "privacy_derivative",
+    "caption_role",
+    "audio_events",
+    "human_review"
+  ],
+  "recipes": [
+    {
+      "id": "before_after",
+      "purpose": "同一任务和条件下的前态、触发与真实后态",
+      "parameters": [
+        "before_range",
+        "after_range",
+        "comparison_region",
+        "condition_differences"
+      ],
+      "checks": [
+        "same_scale_and_region",
+        "actual_result_visible",
+        "no_false_instant_completion"
+      ]
+    },
+    {
+      "id": "detail_zoom",
+      "purpose": "先定位完整界面，再读懂真实局部，再回到上下文",
+      "parameters": [
+        "context_range",
+        "roi_in_source_pixels",
+        "readable_hold",
+        "return_range"
+      ],
+      "checks": [
+        "raster_redaction_before_transform",
+        "native_pixel_limit",
+        "mobile_safe_area",
+        "readable_hold"
+      ]
+    },
+    {
+      "id": "step_progression",
+      "purpose": "目标、单步操作、可见反馈、下一步",
+      "parameters": [
+        "goal",
+        "step_ranges",
+        "state_dependencies",
+        "feedback_ranges"
+      ],
+      "checks": [
+        "causal_order",
+        "waiting_time_truthful",
+        "one_focus_per_step"
+      ]
+    }
+  ],
+  "invariants": [
+    "original_or_owned_source",
+    "source_hash_checked_before_render",
+    "solid_privacy_mask_before_motion",
+    "nonzero_required_audio_branches",
+    "semantic_review_pending_until_reviewed",
+    "no_platform_retention_claim_without_data"
+  ],
+  "render_entry": "scripts/render_shots.cjs",
+  "implementation": "assets/remotion-software/entry.jsx",
+  "usage_and_limits": "docs/integration.md"
+}

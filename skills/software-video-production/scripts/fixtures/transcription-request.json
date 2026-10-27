@@ -1,0 +1,15 @@
+{
+  "provider": "elevenlabs",
+  "channel": "api",
+  "model": "scribe_v1",
+  "options": {"diarize": true, "tag_audio_events": true, "timestamps_granularity": "word"},
+  "inputs": [{"path": "voice.wav", "sha256": "0000000000000000000000000000000000000000000000000000000000000000", "audio_track": 0, "duration_seconds": 120}],
+  "attempts": 1,
+  "safety_fraction": 0.1,
+  "billing": {"rounding_seconds": 1, "minimum_seconds_per_file": 0},
+  "balance": null,
+  "price_reference": null,
+  "reservations": [],
+  "cache": [],
+  "approval": null
+}

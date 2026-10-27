@@ -1,0 +1,15 @@
+{
+  "revision": 1,
+  "parent_revision": null,
+  "sources": [{"id": "screen", "path": "own-screen.mp4", "duration_seconds": 6, "sha256": "0000000000000000000000000000000000000000000000000000000000000000"}],
+  "words": [
+    {"id": "w1", "source": "screen", "start": 0.2, "end": 0.6, "text": "先看"},
+    {"id": "w2", "source": "screen", "start": 1.1, "end": 1.5, "text": "嗯"},
+    {"id": "w3", "source": "screen", "start": 2.1, "end": 2.5, "text": "原来的结果"},
+    {"id": "w4", "source": "screen", "start": 3.1, "end": 3.5, "text": "再执行一次"},
+    {"id": "w5", "source": "screen", "start": 4.1, "end": 5.5, "text": "对照同一区域的变化"}
+  ],
+  "candidates": [
+    {"id": "d1", "source": "screen", "start": 1, "end": 2, "reason": "原创测试用停顿候选；真实素材需连听因果、呼吸与操作", "approved": true}
+  ]
+}
