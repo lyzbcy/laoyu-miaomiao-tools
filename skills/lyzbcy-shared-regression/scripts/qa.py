@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 import hashlib
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
+import mimetypes
 from pathlib import Path
 import shutil
 import sqlite3
@@ -66,8 +67,16 @@ class Store:
                 raise ValueError('检查点必须非空且 ID 唯一')
             if c.get('url'):
                 valid_url(c['url'])
+            entries = c.get('entries', [])
+            if len({e['id'] for e in entries}) != len(entries):
+                raise ValueError('入口 ID 必须唯一')
+            for entry in entries:
+                valid_url(entry['url'])
             for ref in c.get('references', []):
                 valid_url(ref['url'])
+            for step in c.get('demo', []):
+                if step.get('action') not in {'highlight', 'input', 'click'} or not step.get('selector'):
+                    raise ValueError('演示动作需要有效 action 和 selector')
             for p in points:
                 if p.get('mode') not in {'human', 'auto'} or not p.get('title'):
                     raise ValueError('检查点需要标题及 human/auto 模式')
@@ -188,11 +197,25 @@ def serve(store, port):
                 return self.reply({'error': '仅允许本机地址'}, 403)
             try:
                 u = urlparse(self.path)
-                if u.path == '/':
-                    raw = (store.root / 'index.html').read_bytes()
+                if u.path in {'/', '/comparison.js'}:
+                    raw = (store.root / ('index.html' if u.path == '/' else 'comparison.js')).read_bytes()
                     self.send_response(200)
-                    self.send_header('Content-Type', 'text/html; charset=utf-8')
+                    self.send_header('Content-Type', ('text/html' if u.path == '/' else 'text/javascript') + '; charset=utf-8')
+                    self.send_header('Cache-Control', 'no-store')
                     self.send_header('Content-Length', str(len(raw)))
+                    self.end_headers()
+                    return self.wfile.write(raw)
+                if u.path.startswith('/public/'):
+                    public = (store.root / 'public').resolve()
+                    path = (public / u.path.removeprefix('/public/')).resolve()
+                    if not path.is_relative_to(public) or path.suffix.lower() not in {'.html', '.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg'} or not path.is_file():
+                        return self.reply({'error': '资料不存在'}, 404)
+                    raw = path.read_bytes()
+                    self.send_response(200)
+                    mime = mimetypes.guess_type(path.name)[0] or 'application/octet-stream'
+                    self.send_header('Content-Type', mime + ('; charset=utf-8' if path.suffix.lower() == '.html' else ''))
+                    self.send_header('Content-Length', str(len(raw)))
+                    self.send_header('Cache-Control', 'no-store')
                     self.end_headers()
                     return self.wfile.write(raw)
                 if u.path == '/api/runs':
@@ -241,7 +264,7 @@ def main():
     if args.command == 'init':
         store.root.mkdir(parents=True, exist_ok=True)
         created = []
-        for name in ['index.html', 'cases.json']:
+        for name in ['index.html', 'cases.json', 'comparison.js']:
             target = store.root / name
             if not target.exists():
                 with target.open('xb') as dest:

@@ -2,7 +2,7 @@
 name: lyzbcy-shared-regression
 description: 为项目创建和维护 PRD/设计稿对照与人工AI共享回归台，关联用例、真实页面、资料和检查点，分别记录人工与自动结果。适用于搭建对照台、更新设计引用、解释测试步骤和回归接管。
 metadata:
-  version: 0.1.2
+  version: 0.1.3
   files:
     - SKILL.md
     - CHANGELOG.md
@@ -11,7 +11,9 @@ metadata:
     - scripts/qa.py
     - scripts/update_skill.py
     - assets/index.html
+    - assets/comparison.js
     - assets/cases.json
+    - tests/smoke.cjs
     - update.json
 ---
 
@@ -28,7 +30,7 @@ metadata:
 
 **构建或改版之前先读 [构建约束与已知问题](references/build.md)**，落实初始化、入口/资料映射、身份与版本恢复、PRD窗口、演示和预载生命周期，再补记录与自动化。已有平台优先复用，避免重新踩坑。
 
-能力缺失明确列待补，不用HTTP冒烟或结果表单代替。当前随包模板仅提供手动引用选择、链接打开、结果记录和HTTP检查；尚未通用化精准选图、独立PRD窗口置顶/正文蓝选、辅助演示和业务页预载适配器。0.1.1–0.1.2校正指导与构建验收，不宣称模板已实现这些能力。
+能力缺失明确列待补，不用HTTP冒烟或结果表单代替。0.1.3 模板支持配置用例入口、状态和引用匹配、独立 PRD 窗口及同源正文选区、同源页面逐步演示与设计图预载。跨域正文及页面动作、系统置顶、业务 iframe 预载和服务自动恢复仍需项目适配，不能宣称开箱即用。演示的 click 可能改变业务状态，必须由使用者配置并授权；停止只恢复模板修改的输入和高亮，不能撤销点击副作用。
 
 每天首次使用先执行 `python <skill目录>/scripts/update_skill.py --background`。后台按日检查远端版本，校验完整文件集后更新；失败保留旧版，不打断当前任务。项目数据留在 skill 目录外，不受更新影响。
 
@@ -42,7 +44,7 @@ python <skill目录>/scripts/qa.py --project <项目回归目录> list
 python <skill目录>/scripts/qa.py --project <项目回归目录> serve --port 5182
 ```
 
-`init` 创建合成示例用例和本地页面，不覆盖已有文件。浏览器打开命令显示的本机地址。把示例 `cases.json` 换成当前项目真实用例、真实页面入口、PRD和设计引用；先与用户确认本次范围，再创建批次。端口被占用时选择空闲端口，不替换现有服务。
+`init` 创建合成示例用例、本地页面和 comparison.js，不覆盖已有文件。升级旧项目须先对比并手动合并页面与脚本，保留项目改动。浏览器打开命令显示的本机地址。把示例 `cases.json` 换成当前项目真实用例、真实页面入口、PRD和设计引用；先与用户确认本次范围，再创建批次。端口被占用时选择空闲端口，不替换现有服务。
 
 ```text
 python <skill目录>/scripts/qa.py --project <项目回归目录> create --build 实际被测版本
