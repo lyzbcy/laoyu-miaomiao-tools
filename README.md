@@ -11,7 +11,7 @@
 | Skill | 一句话 | 下载 |
 |-------|--------|------|
 | 🧪 `lyzbcy-shared-regression` v0.1.2 | PRD/设计对照、人工与AI分开留痕；提供本机模板与HTTP检查，每日静默更新 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.32.0/lyzbcy-shared-regression.zip) |
-| 🎞️ `software-video-production` v0.11.2 | 软件宣传与生活情境视频制作，成片/封面分层验收、复盘压缩；每日静默更新 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.33.0/software-video-production.zip) |
+| 🎞️ `software-video-production` v0.11.3 | 软件宣传与生活情境视频制作，成片/封面分层验收、复盘压缩；每日静默更新 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.34.0/software-video-production.zip) |
 | 🎬 `lyzbcy-video-publish-assistant` v1.3.1 | 抖音/B站/小红书/YouTube投稿脚本，支持红黄绿恢复、封面与草稿验收、防重复提交；按本次授权保存草稿或发布 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.30.0/lyzbcy-video-publish-assistant.zip) |
 | 🗺️ `lyzbcy-study-map` | 把难啃的干货拆成有原文依据、能追问、能复述的交互式理解地图 | [Releases](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases) |
 | 🎯 `lyzbcy-最后的1%` | 极限执行元 skill，把任务做到真正完美才停手 | [Releases](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases) |

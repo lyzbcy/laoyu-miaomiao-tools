@@ -7,7 +7,7 @@
 | [video-shotcraft](https://github.com/Vincentwei1021/video-shotcraft) | `43bd349a136651865ecfa6ea1cf012f6e957d304` | PageCam、Caption、DigitRoll、BeforeAfterSliderScrub、BeatStepListThemeCycle及其本地fixture依赖 |
 | [video-use](https://github.com/browser-use/video-use) | `43cfc566833548093455c9d4a46bd69913b7e552` | helpers/render.py原生EDL切片、concat、字幕最后合成及loudnorm；helpers/timeline_view.py的切点画面/波形 |
 
-历史验收安装位置为`C:/Users/Administrator/.codex/skills/video-shotcraft`和同级`video-use`，是本机示例，不可假定其他设备存在；执行前检查实际路径及固定版本。仅选择取件：前者152个文本文件约1.02MiB，后者6文件约87KiB。没有取音频、原视频、Gallery大预览、模型、node_modules或安装器；不是全部工具/图库都可运行。调用所需源码保持原始字节，许可证MIT/Apache-2.0随安装保留；第三方音频许可不因代码许可而自动覆盖。
+执行前检查实际安装路径及固定版本，不假定其他设备已安装。仅选择取件：前者152个文本文件约1.02MiB，后者6文件约87KiB。没有取音频、原视频、Gallery大预览、模型、node_modules或安装器；不是全部工具/图库都可运行。调用所需源码保持原始字节，许可证MIT/Apache-2.0随安装保留；第三方音频许可不因代码许可而自动覆盖。
 
 上游原始入口留在各目录`UPSTREAM-SKILL.md`；实际`SKILL.md`只加本机范围说明，先读`LOCAL-SCOPE.md`。尤其video-use默认推荐云转写、聊天贴密钥、自动装依赖与额外代理，这些不覆盖用户约束：不索要聊天密钥、不写.env、Scribe仍按[额度/上传准入](cloud-transcription.md)，本次不上传/付费/新依赖/新代理。既有明确合成策略批准不重复索取。
 
@@ -16,7 +16,7 @@
 先用[integration](integration.md)的`produce.py demo`生成自己的合成fixture，或复用已生成且哈希相符的fixture。然后：
 
 ```powershell
-python scripts/produce_upstream.py --runtime "E:/共享/tools/视频制作/runtime/remotion" --browser "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe" --shotcraft "C:/Users/Administrator/.codex/skills/video-shotcraft" --video-use "C:/Users/Administrator/.codex/skills/video-use" --fixture-project "<生成素材目录>/project.json" --output "<项目>/upstream-acceptance-new"
+python scripts/produce_upstream.py --runtime "<已安装的Remotion运行时目录>" --browser "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe" --shotcraft "<已安装的video-shotcraft目录>" --video-use "<已安装的video-use目录>" --fixture-project "<生成素材目录>/project.json" --output "<项目>/upstream-acceptance-new"
 ```
 
 此验收入口拒绝非synthetic源标记，并校验fixture文件哈希。它生成自己的高分辨率界面，真实import安装目录里的原版TSX组件/demo，通过已有Remotion输出三段，再配本地生成口播，转换为video-use原生sources/ranges与type=word转写schema，执行原版main及两个切点的原版timeline_view。没有调用Scribe；word schema不代表转写服务被调用。

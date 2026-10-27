@@ -17,7 +17,7 @@ Remotion路径和浏览器路径必须明确存在；脚本不运行npm/npx、�
 在skill目录执行（输出必须是新目录）：
 
 ```powershell
-python scripts/produce.py demo --runtime "E:/共享/tools/视频制作/runtime/remotion" --browser "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe" --output "<项目>/synthetic-demo-v1"
+python scripts/produce.py demo --runtime "<已安装的Remotion运行时目录>" --browser "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe" --output "<项目>/synthetic-demo-v1"
 ```
 
 默认720×1280/30fps，也支持`--width 360`或1080。实际执行：9个本地TTS词文件→按音频实长生成词范围和三镜头时长→Remotion各渲染前后对照/局部放大/步骤递进→拼接并加入合成口播→登记源哈希与隐私→批准删除两段**生成的静音尾部**→实际EDL切片/拼接→BGM duck/mix→剪后字幕最后烧录→尺寸/帧率/音轨/解码与切点材料检查。
