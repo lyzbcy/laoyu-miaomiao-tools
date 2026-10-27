@@ -103,6 +103,15 @@ def render(project, project_dir, output, width=720, height=1280, fps=30):
     if output.exists():
         raise FileExistsError('use a new output revision')
     project_dir = Path(project_dir).resolve()
+    badge = None
+    if project.get('series_badge'):
+        spec = project['series_badge']
+        badge = (project_dir / spec['path']).resolve(strict=True)
+        if spec.get('approved') is not True or sha(badge) != spec.get('sha256'):
+            raise ValueError('series badge must be approved and hash-locked')
+        badge_stream = probe(badge)['streams'][0]
+        if badge_stream.get('codec_name') != 'png' or (badge_stream.get('width'), badge_stream.get('height')) != (width, height):
+            raise ValueError('series badge must be a full-canvas PNG matching output dimensions')
     sources = {}
     require_audio = project.get('require_audio', True)
     for source in project['sources']:
@@ -172,12 +181,23 @@ def render(project, project_dir, output, width=720, height=1280, fps=30):
             raise ValueError('ducked BGM branch is silent')
     final = output / 'final.mp4'
     command = ['ffmpeg', '-v', 'error', '-i', str(base)]
-    if duck_path:
+    if badge:
+        if duck_path:
+            command += ['-i', str(duck_path)]
+        badge_index = 2 if duck_path else 1
+        command += ['-i', str(badge)]
+        graph = f'[0:v][{badge_index}:v]overlay=0:0:format=auto,subtitles=filename=captions.ass[video]'
+        if duck_path:
+            graph += ';[0:a][1:a]amix=inputs=2:duration=first:normalize=0,alimiter=limit=0.95:level=false[mix]'
+        command += ['-filter_complex', graph, '-map', '[video]', '-map', '[mix]' if duck_path else '0:a:0']
+    elif duck_path:
         command += ['-i', str(duck_path), '-filter_complex',
                     '[0:a][1:a]amix=inputs=2:duration=first:normalize=0,alimiter=limit=0.95:level=false[mix]', '-map', '0:v:0', '-map', '[mix]']
     else:
         command += ['-map', '0:v:0', '-map', '0:a:0']
-    command += ['-vf', 'subtitles=filename=captions.ass', '-c:v', 'libx264', '-preset', 'fast', '-crf', '18',
+    if not badge:
+        command += ['-vf', 'subtitles=filename=captions.ass']
+    command += ['-c:v', 'libx264', '-preset', 'fast', '-crf', '18',
                 '-c:a', 'aac', '-b:a', '192k', '-ar', '48000', '-movflags', '+faststart', str(final)]
     run(command, cwd=output)
     actual = probe(final)
@@ -198,6 +218,7 @@ def render(project, project_dir, output, width=720, height=1280, fps=30):
               'cut_windows': cut_check['cut_count'], 'ear_listening': False,
               'human_semantic_review': 'pending', 'aesthetic_quality': 'not established',
               'source_hashes_verified': True, 'privacy_gate_passed': True}
+    report['series_badge'] = str(badge) if badge else None
     (output / 'render-report.json').write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding='utf-8')
     return report
 

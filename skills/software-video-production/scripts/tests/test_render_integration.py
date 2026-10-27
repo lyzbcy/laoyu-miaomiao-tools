@@ -95,6 +95,26 @@ class RenderIntegrationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'dimensions'):
             render_edl.render(self.project,self.root,self.out,161,284,30)
 
+    def test_persistent_badge_survives_cuts_and_both_audio_paths(self):
+        import struct,zlib
+        def chunk(kind,data):return struct.pack('>I',len(data))+kind+data+struct.pack('>I',zlib.crc32(kind+data)&0xffffffff)
+        rows=b''.join(b'\0'+b''.join(b'\x00\x40\xff\xff' if 10<=x<150 and 5<=y<25 else b'\0\0\0\0' for x in range(160)) for y in range(284))
+        badge=self.root/'badge.png';badge.write_bytes(b'\x89PNG\r\n\x1a\n'+chunk(b'IHDR',struct.pack('>IIBBBBB',160,284,8,6,0,0,0))+chunk(b'IDAT',zlib.compress(rows))+chunk(b'IEND',b''))
+        self.project['series_badge']={'path':badge.name,'sha256':render_edl.sha(badge),'approved':True}
+        for with_music in [False,True]:
+            with self.subTest(bgm=with_music):
+                if with_music:self.project['bgm']={'path':self.media.name,'gain':.1}
+                result=render_edl.render(self.project,self.root,self.out/str(with_music),160,284,30)
+                self.assertTrue(result['full_decode_pass']);self.assertTrue(result['audio_present']);self.assertAlmostEqual(result['duration_seconds'],1.5,delta=.05)
+                for t in [.1,1.4]:
+                    pixels=subprocess.check_output(['ffmpeg','-v','error','-ss',str(t),'-i',result['final'],'-frames:v','1','-f','rawvideo','-pix_fmt','rgb24','-'])
+                    r,g,b=pixels[(10*160+80)*3:(10*160+80)*3+3];self.assertLess(r,20);self.assertGreater(b,220)
+
+    def test_unapproved_badge_fails_before_output(self):
+        self.project['series_badge']={'path':self.media.name,'sha256':render_edl.sha(self.media),'approved':False}
+        with self.assertRaisesRegex(ValueError,'badge'):render_edl.render(self.project,self.root,self.out,160,284,30)
+        self.assertFalse(self.out.exists())
+
 
 if __name__=='__main__':
     unittest.main()

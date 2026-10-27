@@ -12,6 +12,7 @@
 | 五技能能力重叠、官方接口与许可边界 | [工具工作流](../references/tool-workflow.md) |
 | 首帧首句、开头兑现、信息关系、动效与非机械节奏 | [creative](creative.md) |
 | 选参考、制作代表段落 | [exemplars](exemplars.md) |
+| 系列天数、上一期封面和抖音作品数据 | [series](series.md) |
 | 人物图层与动作素材 | [characters](characters.md) |
 | 隐私遮罩 | [privacy](privacy.md) |
 | 口播、拟声、连续音乐、歌词对齐 | [audio](audio.md) |

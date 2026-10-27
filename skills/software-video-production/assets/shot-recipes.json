@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "status": "twelve_self_authored_remotion_components; not upstream shotcraft",
+  "status": "twelve_core_components_plus_optional_series_recap; not upstream shotcraft",
   "render_owner": "choose_existing_pipeline_or_remotion_or_hyperframes",
   "required_per_shot": [
     "id",
@@ -185,6 +185,22 @@
         "semantic_connection",
         "no_decorative_delay"
       ]
+    },
+    {
+      "id": "previous_episode",
+      "purpose": "同一已发布作品的封面与制作时累计数据回顾",
+      "parameters": [
+        "previous",
+        "image",
+        "series",
+        "visualStyle"
+      ],
+      "checks": [
+        "matched_work_id",
+        "snapshot_timestamp",
+        "missing_not_zero",
+        "private_assets_not_distributed"
+      ]
     }
   ],
   "invariants": [
@@ -204,5 +220,6 @@
     "reduction_reason",
     "continuing_expectation"
   ],
-  "motion_reference": "docs/motion.md"
+  "motion_reference": "docs/motion.md",
+  "series_reference": "docs/series.md"
 }

@@ -5,6 +5,8 @@ const path=require('node:path');
 const {createRequire}=require('node:module');
 const {MOTION_RECIPES,validateMotionShot}=require('../assets/remotion-software/motion-model.cjs');
 
+const {validateSeries,validateRecap}=require('../assets/remotion-software/series-model.cjs');
+
 async function main(){
   const configPath=path.resolve(process.argv[2]||'');
   const config=JSON.parse(fs.readFileSync(configPath,'utf8').replace(/^\uFEFF/,''));
@@ -12,18 +14,20 @@ async function main(){
   if(!fs.existsSync(browserExecutable)||!fs.existsSync(path.join(runtime,'node_modules/remotion/package.json')))throw Error('existing runtime and browser paths required; no download fallback');
   const requireRuntime=createRequire(path.join(runtime,'package.json'));
   const {bundle}=requireRuntime('@remotion/bundler');
-  const {selectComposition,renderMedia}=requireRuntime('@remotion/renderer');
+  const {selectComposition,renderMedia,renderStill}=requireRuntime('@remotion/renderer');
   const version=requireRuntime('remotion/package.json').version;
   if(!Number.isInteger(config.fps)||config.fps<12||config.fps>60)throw Error('fps must be 12..60');
   if(!Number.isInteger(config.width)||config.width%2||config.width<360||!Number.isInteger(config.height)||config.height%2||config.width/config.height!==9/16)throw Error('current shots require even 9:16 dimensions >=360px wide');
   if(!Array.isArray(config.shots)||!config.shots.length)throw Error('shots required');
-  const kinds=new Set(['before_after','detail_zoom','step_progression',...MOTION_RECIPES]);
+  const kinds=new Set(['before_after','detail_zoom','step_progression','previous_episode',...MOTION_RECIPES]);
   const ids=new Set();
   for(const shot of config.shots){
     if(!/^[a-zA-Z0-9_-]+$/.test(shot.id)||ids.has(shot.id)||!kinds.has(shot.recipe)||!Number.isInteger(shot.frames)||shot.frames<config.fps*2)throw Error('invalid shot id/recipe/duration');
     ids.add(shot.id);
+    validateSeries(shot);
+    if(shot.recipe==='previous_episode')validateRecap(shot);
     if(MOTION_RECIPES.has(shot.recipe))validateMotionShot(shot,config.fps);
-    if(!MOTION_RECIPES.has(shot.recipe)&&shot.synthetic===false && (shot.recipe==='before_after' ? !(shot.beforeImage&&shot.afterImage) : !shot.image))throw Error('non-synthetic shots require explicit redacted images; generated UI cannot masquerade as real product evidence');
+    if(!MOTION_RECIPES.has(shot.recipe)&&shot.recipe!=='previous_episode'&&shot.synthetic===false && (shot.recipe==='before_after' ? !(shot.beforeImage&&shot.afterImage) : !shot.image))throw Error('non-synthetic shots require explicit redacted images; generated UI cannot masquerade as real product evidence');
     for(const key of ['image','beforeImage','afterImage']){
       if(shot[key] && (!/^data:image\/(png|jpeg);base64,/.test(shot[key])||shot.privacyApproved!==true))throw Error('only explicitly approved, pre-raster-redacted local image data URIs accepted');
     }
@@ -36,6 +40,12 @@ async function main(){
   const serveUrl=await bundle({entryPoint:entry,rootDir:runtime,outDir:path.join(output,'bundle'),enableCaching:false,
     webpackOverride:(c)=>({...c,resolve:{...c.resolve,modules:[nodeModules,...(c.resolve?.modules||[])],alias:{...(c.resolve?.alias||{}),react:path.join(nodeModules,'react'),'react-dom':path.join(nodeModules,'react-dom'),remotion:path.join(nodeModules,'remotion')}}})});
   const reports=[];
+  if(config.exportSeriesBadge===true){
+    const shot=config.shots[0];if(!shot.series)throw Error('badge export needs first shot series settings');
+    const options={serveUrl,browserExecutable,chromeMode:'chrome-for-testing',chromiumOptions:{headless:true},inputProps:{shot,width:config.width,height:config.height,fps:config.fps},logLevel:'error'};
+    const composition=await selectComposition({...options,id:'SeriesBadge'});
+    await renderStill({...options,composition,imageFormat:'png',output:path.join(output,'series-badge.png'),frame:0});
+  }
   for(const shot of config.shots){
     const inputProps={shot,width:config.width,height:config.height,fps:config.fps};
     const options={serveUrl,browserExecutable,chromeMode:'chrome-for-testing',chromiumOptions:{headless:true},inputProps,logLevel:'error'};

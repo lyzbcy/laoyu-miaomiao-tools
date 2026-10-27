@@ -2,6 +2,7 @@
 import React from 'react';
 import {AbsoluteFill, Composition, registerRoot, useCurrentFrame, useVideoConfig, interpolate, spring} from 'remotion';
 import {motionMapping} from './motion.jsx';
+import {SeriesBadge,PreviousEpisode} from './series.jsx';
 
 const color = {bg:'#091321', panel:'#16253a', line:'#30435b', ink:'#f5f8fc', muted:'#9eafc4', mint:'#65edc2', amber:'#ffcc75'};
 const clamp = {extrapolateLeft:'clamp', extrapolateRight:'clamp'};
@@ -26,8 +27,8 @@ function Frame({shot,children,caption}) {
   const {width,height}=useVideoConfig(); const f=useCurrentFrame();
   return <AbsoluteFill style={{background:color.bg,color:color.ink,fontFamily:'Microsoft YaHei, sans-serif',overflow:'hidden'}}>
     <div style={{position:'absolute',width:720,height:1280,transform:`scale(${width/720})`,transformOrigin:'top left'}}>
-      <div style={{position:'absolute',left:54,top:62,right:54,display:'flex',justifyContent:'space-between'}}><Badge text={shot.synthetic===false?(shot.contentLabel||'已脱敏界面演示'):'合成测试 · 非产品实测'}/><span style={{fontSize:23,color:color.muted}}>SOFTWARE SHOTS</span></div>
-      <div style={{position:'absolute',top:135,left:54,right:54,fontSize:52,fontWeight:800,lineHeight:1.25}}>{shot.title}</div>
+      <div style={{position:'absolute',left:54,top:shot.series?115:62,right:54,display:'flex',justifyContent:'space-between'}}><Badge text={shot.synthetic===false?(shot.contentLabel||'已脱敏界面演示'):'合成测试 · 非产品实测'}/><span style={{fontSize:23,color:color.muted}}>SOFTWARE SHOTS</span></div>
+      <div style={{position:'absolute',top:shot.series?180:135,left:54,right:54,fontSize:52,fontWeight:800,lineHeight:1.25}}>{shot.title}</div>
       {children}
       <div style={{position:'absolute',left:54,right:54,bottom:106,fontSize:25,lineHeight:1.5,color:color.muted}}>{caption}</div>
       <div style={{position:'absolute',left:54,right:54,bottom:64,height:3,background:color.line}}><div style={{height:'100%',width:`${Math.min(100,f/(shot.frames-1)*100)}%`,background:color.mint}}/></div>
@@ -74,8 +75,8 @@ export function StepProgression({shot}) {
   </Frame>;
 }
 
-const mapping={before_after:BeforeAfter,detail_zoom:DetailZoom,step_progression:StepProgression,...motionMapping};
-function ShotRoot({shot}) { const Component=mapping[shot.recipe]; return <Component shot={shot}/>; }
+const mapping={before_after:BeforeAfter,detail_zoom:DetailZoom,step_progression:StepProgression,previous_episode:PreviousEpisode,...motionMapping};
+function ShotRoot({shot}) { const Component=mapping[shot.recipe]; return <><Component shot={shot}/><SeriesBadge shot={shot}/></>; }
 const defaultShot={recipe:'before_after',title:'先看前后，再讲原因',frames:120};
-function Root(){return <Composition id="SoftwareShot" component={ShotRoot} width={720} height={1280} fps={30} durationInFrames={120} defaultProps={{shot:defaultShot,width:720,height:1280,fps:30}} calculateMetadata={({props})=>({durationInFrames:props.shot.frames,width:props.width,height:props.height,fps:props.fps})}/>;}
+function Root(){return <><Composition id="SoftwareShot" component={ShotRoot} width={720} height={1280} fps={30} durationInFrames={120} defaultProps={{shot:defaultShot,width:720,height:1280,fps:30}} calculateMetadata={({props})=>({durationInFrames:props.shot.frames,width:props.width,height:props.height,fps:props.fps})}/><Composition id="SeriesBadge" component={SeriesBadge} width={720} height={1280} fps={30} durationInFrames={1} defaultProps={{shot:defaultShot,width:720,height:1280,fps:30}} calculateMetadata={({props})=>({width:props.width,height:props.height,fps:props.fps})}/></>;}
 registerRoot(Root);
