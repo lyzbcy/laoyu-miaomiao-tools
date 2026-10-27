@@ -1,7 +1,7 @@
 import React from 'react';
 import {AbsoluteFill,useCurrentFrame,useVideoConfig} from 'remotion';
 import model from './series-model.cjs';
-const {METRICS,seriesDay}=model;
+const {METRICS,seriesDay,effectiveStyle}=model;
 const looks={
  expressive:{bg:'#231142',ink:'#fff9f0',muted:'#d7cce7',accent:'#ffcc39',panel:'#392053',radius:22,border:'#775193',shadow:'7px 9px 0 #11081f'},
  fluent:{bg:'#edf3fa',ink:'#172333',muted:'#526479',accent:'#005fb8',panel:'#ffffffed',radius:12,border:'#d0dce8',shadow:'0 8px 24px #274c7015'},
@@ -9,7 +9,7 @@ const looks={
 };
 export function SeriesBadge({shot}){
  const {width}=useVideoConfig();if(!shot.series)return null;
- const p=looks[shot.visualStyle||'expressive'],day=seriesDay(shot.series.epochDate,shot.series.episodeDate);
+ const p=looks[effectiveStyle(shot)],day=seriesDay(shot.series.epochDate,shot.series.episodeDate);
  return <div style={{position:'absolute',top:0,left:0,width:720,height:1280,transform:`scale(${width/720})`,transformOrigin:'top left',pointerEvents:'none'}}>
   <div style={{position:'absolute',top:52,left:110,right:110,height:46,display:'flex',gap:9,justifyContent:'center',alignItems:'center',background:p.panel,border:`1px solid ${p.border}`,borderRadius:23,color:p.ink,fontFamily:'Microsoft YaHei,sans-serif',fontSize:23,fontWeight:650,boxShadow:p.shadow}}>
    <span style={{width:7,height:7,borderRadius:7,background:p.accent}}/><span>用AI剪视频的第 <strong style={{color:p.accent,fontSize:27}}>{day}</strong> 天</span>
@@ -17,7 +17,7 @@ export function SeriesBadge({shot}){
  </div>;
 }
 export function PreviousEpisode({shot}){
- const f=useCurrentFrame(),{fps,width}=useVideoConfig(),p=looks[shot.visualStyle||'expressive'];
+ const f=useCurrentFrame(),{fps,width}=useVideoConfig(),p=looks[effectiveStyle(shot)];
  const q=Math.min(1,Math.max(0,f/(fps*.6))),reveal=1-(1-q)**3,entries=Object.entries(shot.previous.metrics);
  const stamp=new Intl.DateTimeFormat('zh-CN',{timeZone:'Asia/Shanghai',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(shot.previous.snapshotAt));
  return <AbsoluteFill style={{background:p.bg,fontFamily:'Microsoft YaHei,sans-serif',overflow:'hidden'}}>

@@ -1,11 +1,12 @@
 const test=require('node:test'),assert=require('node:assert/strict');
-const {seriesDay,validateSeries,validateRecap}=require('../../assets/remotion-software/series-model.cjs');
+const {seriesDay,effectiveStyle,validateSeries,validateRecap}=require('../../assets/remotion-software/series-model.cjs');
 const shot=()=>({recipe:'previous_episode',synthetic:true,previous:{title:'合成上一期',snapshotAt:'2026-10-27T10:00:00Z',metrics:{views:{value:12000,display:'1.2万'}}}});
 test('calendar day is inclusive and does not restart on a version or skipped episode',()=>{
  assert.equal(seriesDay('2026-10-19','2026-10-19'),1);assert.equal(seriesDay('2026-10-19','2026-10-27'),9);assert.equal(seriesDay('2026-10-19','2027-01-01'),75);
 });
 test('invalid dates and a pre-epoch episode cannot produce a badge',()=>{for(const [a,b] of [['2026-02-30','2026-03-01'],['2026-10-19','2026-10-18'],['19/10/2026','2026-10-27']])assert.throws(()=>seriesDay(a,b));});
 test('series stays opt-in, position is explicit, unsupported legacy styles fail',()=>{
+ assert.equal(effectiveStyle({recipe:'claim_reveal'}),'cupertino');assert.equal(effectiveStyle({recipe:'previous_episode'}),'cupertino');assert.equal(effectiveStyle({recipe:'before_after'}),'expressive');assert.equal(effectiveStyle({visualStyle:'fluent'}),'fluent');assert.equal(effectiveStyle({visualStyle:'expressive'}),'expressive');
  assert.doesNotThrow(()=>validateSeries({}));assert.throws(()=>validateSeries({visualStyle:'unknown'}));assert.throws(()=>validateSeries({recipe:'before_after',visualStyle:'fluent'}));
  const s={series:{enabled:true,position:'upper-center',timezone:'Asia/Shanghai',epochDate:'2026-10-19',episodeDate:'2026-10-27'}};assert.doesNotThrow(()=>validateSeries(s));s.series.position='random';assert.throws(()=>validateSeries(s));
 });

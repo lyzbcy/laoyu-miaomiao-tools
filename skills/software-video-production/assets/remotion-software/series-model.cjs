@@ -1,5 +1,9 @@
 // Calendar days use explicit local dates, not render-machine time or episode count.
 const METRICS={views:'播放',likes:'点赞',favorites:'收藏',comments:'评论',followers:'新增关注'};
+function effectiveStyle(shot){
+ if(shot.visualStyle!==undefined)return shot.visualStyle;
+ return ['before_after','detail_zoom','step_progression'].includes(shot.recipe)?'expressive':'cupertino';
+}
 function calendarDate(s){
  if(typeof s!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(s))throw Error('explicit YYYY-MM-DD date required');
  const t=Date.parse(s+'T00:00:00Z');if(!Number.isFinite(t)||new Date(t).toISOString().slice(0,10)!==s)throw Error('invalid calendar date');return t;
@@ -29,4 +33,4 @@ function validateRecap(shot){
  }
  return true;
 }
-module.exports={METRICS,calendarDate,seriesDay,validateSeries,validateRecap};
+module.exports={METRICS,effectiveStyle,calendarDate,seriesDay,validateSeries,validateRecap};

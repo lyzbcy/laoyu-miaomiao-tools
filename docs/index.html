@@ -626,13 +626,13 @@
 
   <!-- SKILL 12: software-video-production -->
   <article class="skill skill-detail" id="software-video-production" data-name="software-video-production" data-grad="linear-gradient(135deg,#17294a 0%,#435ca2 55%,#e5b96f 100%)">
-    <div class="skill-head"><span class="emoji">🎞️</span><h3>software-video-production</h3><span class="ver">软件宣传视频制作 · v0.13.1</span></div>
+    <div class="skill-head"><span class="emoji">🎞️</span><h3>software-video-production</h3><span class="ver">软件宣传视频制作 · v0.13.2</span></div>
     <p class="skill-tag">从真实操作到生活情境短片：让画面、声音与文字共同讲清变化，再分别验收成片和封面。</p>
     <div class="field"><div class="label">它能做什么</div><p>组织素材事实、隐私遮罩、参考拆解、代表段落、RPG心声、连续配乐、文字与人物动作，检查手机阅读和封面裁切；附媒体探测、完整解码与响度检查脚本。复盘时合并改写旧规则，避免越用越臃肿。</p></div>
     <div class="field"><div class="label">适合 / 边界</div><p>适合软件演示和生活情境宣传视频的制作、改版与交付。不包含私人项目、人物原图、第三方参考视频、模型或渲染依赖；工具与素材按当前环境核实。技术检查不代替完整试听或用户评价，平台投稿由独立技能处理。</p></div>
     <div class="field"><div class="label">怎么用</div><div class="prompt-box">用这个skill把我的软件录屏做成一条生活情境宣传短片，先做代表段落。歌曲保持连续，解释尽量交给动作和短心声；成片与封面分别检查。</div></div>
     <div class="field"><div class="label">怎么安装</div><p>解压整个 <code>software-video-production/</code> 到Agent skills目录。媒体检查需要本机Python及FFmpeg/ffprobe；每天首次使用后台检查新版，失败沿用旧版，不打断制作。</p></div>
-    <div class="dl-row"><a class="btn btn-zip" id="dl-software-video-production" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.37.0/software-video-production.zip">📦 下载 software-video-production.zip</a><a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/software-video-production">查看源码</a></div>
+    <div class="dl-row"><a class="btn btn-zip" id="dl-software-video-production" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.38.0/software-video-production.zip">📦 下载 software-video-production.zip</a><a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/software-video-production">查看源码</a></div>
   </article>
 </section>
 
@@ -650,7 +650,7 @@
     <p><b>GLM-5.3 ZCode 隔离评测默认关闭：</b>它可能影响通用任务的灵活性。AI 认为可能需要时必须先询问用户；只有用户把 <code>请使用 LYZBCY 虚拟环境测试</code> 作为明确启用指令后才能运行，引用、讨论或近义表达都不算授权。</p>
     <p style="color:var(--muted);font-size:.92rem">下载链接是 GitHub Releases 直链：</p>
     <ul style="color:var(--muted);font-size:.9rem;margin:6px 0 0">
-      <li>software-video-production：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.37.0/software-video-production.zip</code></li>
+      <li>software-video-production：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.38.0/software-video-production.zip</code></li>
       <li>lyzbcy-video-publish-assistant：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.30.0/lyzbcy-video-publish-assistant.zip</code></li>
       <li>lyzbcy-study-map：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.0.0/lyzbcy-study-map.zip</code></li>
       <li>lyzbcy-最后的1%：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.1.0/lyzbcy-last-1-percent.zip</code></li>
@@ -704,9 +704,10 @@
 // —— 强制刷新组件配置（发布时与 docs/version.json 同步修改）——
 window.__FR__ = {
   id: 'laoyu-miaomiao-tools',
-  version: '2026.10.27-4',
+  version: '2026.10.27-5',
   registry: 'version.json',
   changelog: [
+    "2026-10-27 软件视频制作 skill v0.13.2：信息动效和系列回顾默认苹果风，保留成长天数、上期封面及作品数据；下载包 v1.38.0",
     "2026-10-27 软件视频制作 skill v0.13.1：补查双风格聚焦与转场，修正彩色标签的黑白文字选择，保留成长记录与数据口径；下载包 v1.37.0",
     "2026-10-27 软件视频制作 skill v0.13.0：新增微软风/苹果风变体、可选成长天数和上期回顾；作品数据与封面绑定，支持全片常驻层；下载包 v1.36.0",
     '2026-10-27 土豆与老田 skill v1.4.0：通用规则与重构示例，旧下载地址继续可用并提供脱敏包。',
@@ -796,7 +797,7 @@ window.__FR__ = {
 // release 直链填入（push 后由部署脚本/手动更新 tag）
 const RELEASES = {
   "shared-regression": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.32.0/lyzbcy-shared-regression.zip",
-  "software-video-production": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.37.0/software-video-production.zip",
+  "software-video-production": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.38.0/software-video-production.zip",
   "video-publish-assistant": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.30.0/lyzbcy-video-publish-assistant.zip",
   "study-map": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.0.0/lyzbcy-study-map.zip",
   "last-1-percent": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.1.0/lyzbcy-last-1-percent.zip",
@@ -907,7 +908,7 @@ function copyForAI(){
    - 安装：解压整个skill目录到Agent skills目录；浏览器工具由环境提供，本地预检用Python标准库。
    - 下载：${RELEASES['video-publish-assistant']}
 
-12) software-video-production（软件宣传视频制作 · v0.13.1）
+12) software-video-production（软件宣传视频制作 · v0.13.2）
    - 用途：真实软件操作与生活情境视频制作，包含声音、文字、人物动作、隐私、封面和分层验收。
    - 边界：不含私人素材、第三方视频、模型和渲染依赖；检查范围与用户评价分别记录。
    - 用法：用我的录屏先做代表段落，少解释，成片与封面分开验收。

@@ -1,9 +1,9 @@
 {
   "name": "software-video-production",
-  "version": "0.13.1",
+  "version": "0.13.2",
   "sha256": {
-    "CHANGELOG.md": "d1f09741b4523f3bf0e847e03eefbe91557b99a9425ac9fb45eabeb55744a806",
-    "SKILL.md": "e38b8dbbac6b77bee388fa62277ef69e9dc4cc681c619c8933e7a5aa598937ca",
+    "CHANGELOG.md": "89a1a20d91e3879beadb532e50d8f99a6230218a32274da42cdf8eae9a23166c",
+    "SKILL.md": "7783d2fb2b5a5fc61a81568bd6ca9d1788241bd1cbd0c5a615526e65af43240e",
     "agents/openai.yaml": "fb86e70a02376ffa682fe0802544b9a8e085e6b6d537761ea49d98b759c7ccf1",
     "docs/agent.md": "b3b5e5b4ce4562368de3f280d59d722bc824ea7ec539508e4a45be95f7de3342",
     "docs/audio.md": "03acf7efd4abdc22f40dfa2df94957754afed92335e1a08a1beb7524fd388688",
@@ -48,15 +48,15 @@
     "scripts/produce_upstream.py": "40616ee4efabb7d71f171fd39447eeedaa70d7c14776543c2f601352ea611de0",
     "scripts/tests/test_upstream_gate.py": "6b6ae0ee0fd2350b7d4665bdf082b4c9a18126f059584d4fd5400b915dae903b",
     "assets/remotion-software/motion-model.cjs": "05f4921636a4d6b68135ef60958b00d99667712fe8e62c1286330168ee87dbe4",
-    "assets/remotion-software/motion.jsx": "27ee8fa9aa3c769517fa7c6253d92e72cc37237de718d8f996009b2849c241d7",
-    "docs/motion.md": "fbae1d493b39d94cd5cbc76cd74c755d85e41abe62017cdad1bf006c8cdfe9cc",
+    "assets/remotion-software/motion.jsx": "2e19a50757c96e94416cfa586fbb1675753d9b2551738e17d263342e8c86fadb",
+    "docs/motion.md": "a3b0192fc196c5631a4465c1444c47cf192ae3c9008a54f42675fe2bb6b0ebf3",
     "scripts/fixtures/motion-shots.json": "f6bd60829984f7bca65a048d6c6c437a3287ec73ad66e30a9ff6ce77da0b1466",
     "scripts/tests/test_motion_models.cjs": "37f740ef334fe92da838efc0c825083d94496af80a572f0256f67de4f510d99c",
-    "assets/remotion-software/series-model.cjs": "120f226d1cc45d627e034247144c021acb43ba7244953f733a3062ef6e88bed2",
-    "assets/remotion-software/series.jsx": "66446b3fe72450fc44160b1ba738dd1ef9942ebc59bbabdb49aedc4419fd4141",
-    "scripts/series_state.py": "1c688c5b81b393d9c093088313586cefec7afe696929816bfb0e9d363833a87d",
-    "scripts/tests/test_series.cjs": "292974ca8fdb07d8f3f633e9b85d00012e2890ca20f6a3990a29ced8720fdccd",
-    "scripts/tests/test_series_state.py": "4ce460c9010ae8258f7bbb294126873e73a88367a2a45e7fd9ad1f8f97166d01",
+    "assets/remotion-software/series-model.cjs": "e7cf03735355f86a97def1847d1fd300abfd4fe41ce0cb47eb595e84bd8d3b0e",
+    "assets/remotion-software/series.jsx": "1e6df2cd55b811fe7bef99d9851bea4a8cef92e430c332c37997cbe11ad7920a",
+    "scripts/series_state.py": "7683353f6ce0b1069d058d7e316af6e48344076d1444b57a18a483cfe7c24114",
+    "scripts/tests/test_series.cjs": "e19163106986f187b6fbb98ff22bee2e29b94ff3c36c80b87bc65f58f24427c3",
+    "scripts/tests/test_series_state.py": "048d45351b7250cb8b26c2112bacb9370cab524f02fbc44e324e7d6edb23b9a7",
     "docs/series.md": "c7ad1d55ee1e4581994094be6e2c26983fbd9457c58af14f2b5c50fb5e26a76b"
   }
 }

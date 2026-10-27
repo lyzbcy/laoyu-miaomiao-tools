@@ -43,7 +43,7 @@ def prepare(profile,snapshot,episode_date,base):
         if key not in LABELS or entry.get('sourceLabel')!=LABELS[key]: raise ValueError('metric label mismatch: '+key)
         metrics[key]=metric_value(entry['raw'])
     if not metrics: raise ValueError('no per-work metrics')
-    return {'id':'previous_episode','recipe':'previous_episode','frames':180,'title':'上期数据','synthetic':False,'visualStyle':profile.get('visualStyle','expressive'),
+    return {'id':'previous_episode','recipe':'previous_episode','frames':180,'title':'上期数据','synthetic':False,'visualStyle':profile.get('visualStyle','cupertino'),
         'series':{'enabled':True,'epochDate':profile['epochDate'],'episodeDate':episode_date,'timezone':profile['timezone'],'position':'upper-center'},
         'previous':{'title':previous['title'],'itemId':previous['itemId'],'sourceUrl':snapshot['sourceUrl'],'snapshotAt':snapshot['snapshotAt'],'approved':True,'metrics':metrics},
         'image':'data:image/png;base64,'+base64.b64encode(data).decode(),'privacyApproved':True}

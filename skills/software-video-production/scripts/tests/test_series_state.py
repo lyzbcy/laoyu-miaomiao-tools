@@ -21,6 +21,8 @@ class SeriesTests(unittest.TestCase):
     def test_unrelated_latest_and_unpublished_are_excluded(self):
         self.profile['episodes'].append({'itemId':'300','workflow':'software-video-production','published':False})
         self.assertEqual(self.build()['previous']['itemId'],'100')
+        self.assertEqual(self.build()['visualStyle'],'cupertino')
+        self.profile['visualStyle']='fluent';self.assertEqual(self.build()['visualStyle'],'fluent')
     def test_mismatched_snapshot_fails(self):
         self.snapshot['itemId']='200'
         with self.assertRaisesRegex(ValueError,'latest'):self.build()

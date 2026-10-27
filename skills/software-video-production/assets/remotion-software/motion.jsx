@@ -2,6 +2,8 @@
 import React from 'react';
 import {AbsoluteFill,useCurrentFrame,useVideoConfig,interpolate,spring} from 'remotion';
 import model from './motion-model.cjs';
+import seriesModel from './series-model.cjs';
+const {effectiveStyle}=seriesModel;
 const {progress,schedule,opacityAt,chartScale,graphPoints,fillInk}=model;
 const tones=['#ffcc39','#29e6db','#ff70c6','#ad9bff','#baff5a','#ff9559'];
 const palettes={dark:{bg:'#231142',panel:'#392053',ink:'#fff9f0',muted:'#d7cce7',line:'#7e5c97',shadow:'#11081f'},light:{bg:'#fff4d9',panel:'#fffef8',ink:'#2c1744',muted:'#655476',line:'#c2a8ce',shadow:'#2c1744'}};
@@ -22,7 +24,7 @@ const label=(v)=>v.toLocaleString('en-US',{maximumFractionDigits:12});
 function pop(frame,start,fps,finish){const duration=Math.min(Math.ceil(fps*.6),finish===undefined?Infinity:Math.max(1,Math.floor(finish-start)));return frame<start?0:spring({frame:frame-start,fps,durationInFrames:duration,config:{damping:13,stiffness:185,mass:.65}});}
 function Ink({children,style={}}){return <div style={{fontWeight:900,lineHeight:1.16,overflowWrap:'anywhere',...style}}>{children}</div>;}
 function Shell({shot,children}){
- const f=useCurrentFrame(),{fps,width}=useVideoConfig(),p=designStyles[shot.visualStyle]||palettes[shot.theme||'dark'];
+ const f=useCurrentFrame(),{fps,width}=useVideoConfig(),p=designStyles[effectiveStyle(shot)]||palettes[shot.theme||'dark'];
  const styledPop=(frame,start,rate,finish)=>{if(!p.motion)return pop(frame,start,rate,finish);const duration=Math.min(Math.round(rate*(p.motion==='soft'?.65:.45)),finish===undefined?Infinity:Math.max(1,finish-start));if(p.motion==='ease'){const q=Math.min(1,Math.max(0,(frame-start)/duration));return 1-(1-q)**3;}return frame<start?0:spring({frame:frame-start,fps:rate,durationInFrames:duration,config:{damping:24,stiffness:150,mass:.8}});};
  const title=styledPop(f,0,fps),a=shot.accent||p.accent||tones[0];
  return <AbsoluteFill style={{background:p===designStyles.cupertino?'radial-gradient(ellipse at 80% 20%,#ffffff 0%,#f5f5f7 70%)':p===designStyles.fluent?'linear-gradient(145deg,#f4f8fd,#e5eef8)':p.bg,fontFamily:'Microsoft YaHei, sans-serif',overflow:'hidden'}}>
