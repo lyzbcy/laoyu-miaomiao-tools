@@ -2,7 +2,7 @@
 name: software-video-production
 description: 制作和改版软件演示、生活情境宣传短视频，处理真实操作证据、隐私、视听表达、封面和交付复盘。不替代软件开发或漫剧制作。
 metadata:
-  version: 0.14.0
+  version: 0.14.1
   source: https://raw.githubusercontent.com/lyzbcy/laoyu-miaomiao-tools/main/skills/software-video-production/SKILL.md
   files:
     - CHANGELOG.md
@@ -70,6 +70,8 @@ metadata:
     - scripts/fixtures/advanced-shots.json
     - scripts/tests/test_advanced.cjs
     - scripts/tests/test_select_motion.py
+    - docs/run-summary.md
+    - CONTRIBUTORS.md
 ---
 
 # 软件宣传视频制作
@@ -85,7 +87,7 @@ metadata:
 3. **决定信息由谁承载。** 能看懂的交给动作；情绪交给反应或短心声；确有解释缺口才加口播。音乐叙事片可用RPG打字和轻哔声，保持歌曲连续；讲解片按理解需要安排人声，不能用音乐填补信息缺口。见[创意](docs/creative.md)、[声音](docs/audio.md)。
 4. **安排视线和运动。** 制作或改版先读[高级案例与自动选型](docs/advanced-cases.md)，依据段落意图、可用截图和运动限制运行 `scripts/select_motion.py`，主动把适合的案例写入分镜 `motion_case` 并制作代表段；不等用户再次提醒使用高级效果。仅裁切、修字幕或换封面不强加动效。真实操作留出看清的时间，按[镜头配方](docs/editing.md)安排证据，再选择单一主渲染/必要局部叠层。按比较、趋势、目标或因果选择信息动效，空间镜头用于登场或全貌，甩镜用于有语义的交接；无匹配时直接切镜并记录原因。保持观看理由，留出稳定阅读，不设固定动静配额。实心栅格隐私派生物先于动效，按[隐私](docs/privacy.md)复查放大、转场和切点。
 5. **分别验收成片和封面。** 技术、事实/隐私、实际视听范围、用户评价各自记录。封面负责让人想点开，另按手机缩略图与平台真实裁切验收；成片评分不能转算封面评分。见[交付](docs/delivery.md)。
-6. **锁定与收尾。** 用户采用后锁定成片；发布另按任务授权处理。按[复盘与压缩](docs/evolution.md)改写已有规则、归档项目证据；清理范围以用户要求为准。
+6. **锁定与收尾。** 用户采用后锁定成片；发布另按任务授权处理。每次完整制作/改版交付结束，按[运行小结与经验贡献](docs/run-summary.md)在项目保存并向用户输出本次小结：用户指出的问题、实际改了多少版、最终如何实现、检查结果与未知。评估经验的可迁移价值；有价值时先准备脱敏贡献草案，再询问用户是否愿意提交PR并按意愿署名，不自动上传。未完成不冒充交付结束。按[复盘与压缩](docs/evolution.md)维护候选规则，清理范围以用户要求为准。已合入贡献登记于[贡献者名单](CONTRIBUTORS.md)。
 
 ## 可运行入口
 

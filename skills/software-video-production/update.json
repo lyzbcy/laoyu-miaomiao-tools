@@ -1,16 +1,16 @@
 {
   "name": "software-video-production",
-  "version": "0.14.0",
+  "version": "0.14.1",
   "sha256": {
-    "CHANGELOG.md": "6d6df432b07efc9c7f58521212e5523fd907dc91015f88164533c6a70bb5ec60",
-    "SKILL.md": "b67fc74f5f830c8f90eb8e2730738e85559649489b002e85f9449731a716c0ac",
+    "CHANGELOG.md": "1df371a82735fc09842bd48d211392712239cefe3282badd9fa74f265beb6325",
+    "SKILL.md": "2d2847b067ed11ee86bf2b319b892b8987819c083716a716c67a1aaed197383f",
     "agents/openai.yaml": "fb86e70a02376ffa682fe0802544b9a8e085e6b6d537761ea49d98b759c7ccf1",
-    "docs/agent.md": "710380405b0904a76db0396714083293be934164bd764c01574aac76b8825629",
+    "docs/agent.md": "b5361a6f000310dad817170f4b46aa0a00f2449571d1db907424f1f5fe153088",
     "docs/audio.md": "03acf7efd4abdc22f40dfa2df94957754afed92335e1a08a1beb7524fd388688",
     "docs/characters.md": "29beb2d91bfe25ff0243e5dd77d8a510efafe2409bf3524ca66fab946b4a55c1",
     "docs/creative.md": "8bb3ba89af78dc24d53170b9f81f9663996993230fd3e2d20bf768b6e059d31d",
-    "docs/delivery.md": "d39327d07851a2bffe3eaa039e6287022cf807b69770f7793fa65c38408b0da9",
-    "docs/evolution.md": "961bd454bf602bdf825ec23fe71f2ae78076febe1cf41b7776138749279f6ae2",
+    "docs/delivery.md": "298cda0447b70f607ae3b044e851c166f158d938b035f09d798165914bba6c2b",
+    "docs/evolution.md": "aa96b7c48227b6180605b7ff5b30923081777bc1fee230ba36a5055f29ff3ba8",
     "docs/exemplars.md": "c0665a8a48e479039190ea596d4c2f869b029f6be19f31993255ab4486b8d390",
     "docs/lessons.md": "cd1217c92946a713645485364dfa266f9b5b39bf2a577d96bb139170009e58dd",
     "docs/music-generation.md": "9be1714de2cd0ef765cd5bfd1b2aca3ee9adbececf98aa3d5d50189280489e5f",
@@ -65,6 +65,8 @@
     "scripts/select_motion.py": "ea232ca3b51c633d6846d872ab1b547aef33a03390321b5b9b439c36fd159a46",
     "scripts/fixtures/advanced-shots.json": "54c6a1de8fff451206a5ccd9468a528dbfd8726f56ec46f9e0b08af730d86caa",
     "scripts/tests/test_advanced.cjs": "d41e1d849390e98a7ad1382820dfb511b69f14a2b4a971b843123e37aad41c3b",
-    "scripts/tests/test_select_motion.py": "b4c6a16f1880ddd55fe0a91092b581d0a26b68f7d0284c1082815106a40fba57"
+    "scripts/tests/test_select_motion.py": "b4c6a16f1880ddd55fe0a91092b581d0a26b68f7d0284c1082815106a40fba57",
+    "docs/run-summary.md": "bbb97d61c016653676cd75bd83809580e3c6e534e791d63287c27a8d86df020d",
+    "CONTRIBUTORS.md": "0dcd9970bd4017d32dd25d8e32f9c80c6f9520a550a8d8e6e146148be43cb5d3"
   }
 }

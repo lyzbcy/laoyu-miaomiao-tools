@@ -22,6 +22,7 @@
 | 数据、流程、观点、聚焦、转场的可运行动效 | [motion](motion.md) |
 | 程序化动画与依赖复用 | [remotion](remotion.md)、[tech](tech.md) |
 | 复盘重写、脚本行为验收、锁定与清理 | [evolution](evolution.md) |
+| 完整交付后的运行小结、版本计数、经验评估、PR邀约与署名 | [run-summary](run-summary.md)，每次完整制作/改版收尾必读；正式署名见[贡献者](../CONTRIBUTORS.md) |
 | 结论依据和适用范围 | [lessons](lessons.md) |
 
 本包提供方法和媒体检查脚本，不包含作者的私人项目、人物原图、第三方视频、模型权重或现成渲染工程。素材与运行数据留在使用者项目。
