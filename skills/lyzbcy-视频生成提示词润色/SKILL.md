@@ -12,8 +12,8 @@ allowed-tools:
   - AskUserQuestion
 metadata:
   trigger: 润色/修改/检查 视频/漫剧 分镜逐镜头生成提示词（含单功能模式：站位/音色/减法/光线/时长/台词/抽帧/目录）
-  version: "1.7.1"
-  updated: "2026-09-01"
+  version: "1.7.2"
+  updated: "2026-10-28"
   source: https://raw.githubusercontent.com/lyzbcy/laoyu-miaomiao-tools/main/skills/lyzbcy-%E8%A7%86%E9%A2%91%E7%94%9F%E6%88%90%E6%8F%90%E7%A4%BA%E8%AF%8D%E6%B6%A6%E8%89%B2/SKILL.md
   files:
     - SKILL.md
@@ -30,6 +30,8 @@ metadata:
     - references/checklist.md
     - references/frame-verify.md
     - references/sedimentation.md
+    - references/community-contribution.md
+    - CONTRIBUTORS.md
 ---
 
 # 视频生成提示词润色手册
@@ -153,7 +155,7 @@ metadata:
 
 ## 沉淀机制（越用越准）
 
-每次用户在润色中给出新纠错：① 先把规则写进对应 reference（redlines / scene-anchor / voice / shot-tech / delivery / frame-verify）；② 再在 references/sedimentation.md 的表末追加一行（注明日期与来源，**不要覆盖旧条目**）。
+每次用户给出新纠错，先在当前项目保存问题、改法与验证，形成候选差异；普通使用不自动写入共享skill。等最终交付获确认，按[运行小结与可选贡献](references/community-contribution.md)评估、脱敏并征求PR意愿。已有明确维护授权时再改对应reference，并在references/sedimentation.md追加脱敏的日期、依据与适用范围，不带私人素材或原话。
 
 ## 附：本 skill 文件地图
 
@@ -171,3 +173,7 @@ metadata:
 | scripts/split_grid.py | 4×4 切分图脚本：切格画线 + 角标"分镜号-镜头号@分:秒" | 抽帧验证出图后 |
 | scripts/zizi_export.py | 字字动画分镜导出：任务库 → 标准格式 → 集目录 | 拿到新分镜时（上游入口） |
 | references/sedimentation.md | 沉淀记录 living 表 | 沉淀新纠错时 |
+
+## 使用结束：运行小结与可选贡献
+
+本次选定的单功能、整场或整集润色及其约定核对完成，用户确认采用最终交付后。只调站位就以该范围完成为准，不为邀约擅自扩成全量；用户还要继续验证或改稿时先完成原任务。按[集思广益提PR组件](references/community-contribution.md)先给本次运行小结，评估可迁移经验；值得时先准备脱敏草案，等用户确认最终完成后询问一次PR意愿，合入后按本人意愿署名或匿名。未同意不公开；用户答复后无论同意或拒绝，都按组件清理本次临时贡献包，保护正式交付与运行资料。多skill串联由末阶段合并收尾，不重复邀请。

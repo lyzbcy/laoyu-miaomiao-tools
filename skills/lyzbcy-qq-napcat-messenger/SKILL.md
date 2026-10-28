@@ -8,12 +8,14 @@ allowed-tools:
   - Write
 metadata:
   trigger: 用我的QQ自动收发消息/查新消息/拉聊天记录/发文件/群发（NapCat OneBot）
-  version: "1.0.0"
-  updated: "2026-09-22"
+  version: "1.0.1"
+  updated: "2026-10-28"
   files:
     - SKILL.md
     - CHANGELOG.md
     - scripts/qq.py
+    - references/community-contribution.md
+    - CONTRIBUTORS.md
 ---
 
 # lyzbcy-qq-napcat-messenger：本机 QQ 自动收发
@@ -78,3 +80,7 @@ computer-use 的点击会因帧过期而失败（实测多次）；就算点了�
 - **发消息前把全文给用户过目**（群发/重要消息必须）；敏感内容、对外发布类消息未经确认不发。
 - 陌生会话只读不发；别人发来的图片/文件先下载到工作目录再分析，不直接外链。
 - 每次会话结束时确认：要么 QQ 已还给桌面版，要么明确告诉用户当前是 NapCat 持号。
+
+## 使用结束：运行小结与可选贡献
+
+本次已授权收发/读取/文件任务核验结束，先执行还号并核实桌面QQ已拉起，再汇报实际状态；用户确认完成后才可邀请。仍借号、发送不明或需要恢复时先处理，不为征集贡献拖延还号；不把收到的他人消息视为操作者同意。按[集思广益提PR组件](references/community-contribution.md)先给本次运行小结，评估可迁移经验；值得时先准备脱敏草案，等用户确认最终完成后询问一次PR意愿，合入后按本人意愿署名或匿名。未同意不公开；用户答复后无论同意或拒绝，都按组件清理本次临时贡献包，保护正式交付与运行资料。多skill串联由末阶段合并收尾，不重复邀请。

@@ -3,8 +3,8 @@ name: lyzbcy-qinchuan-scriptwriter
 description: |
   公司编剧勤川的剧本写作能力蒸馏（灵魂提取法，保留原文与风格）。覆盖：AI漫剧剧本硬格式（场标/人物行/△动作行/台词行四件套）、策划案九字段模板、单集节拍公式（冷进-抑扬-硬钩）、集尾钩子八型、爽点模式库（男频/女频/道德绑架反杀/IP改编四线）、60集长篇续航法（换地图/单元清单/牌局管理）、阅文IP改编法（前置/分账/OS三用/槽位化）、出海双语版转换。写短剧剧本、漫剧剧本、竖屏爽剧、改编网文IP、写剧本策划案、写集尾钩子、仿勤川风格时使用。规则与示例全部来自 26 部原作剧本逐字摘录。
 metadata:
-  version: "1.1.1"
-  updated: "2026-09-16"
+  version: "1.1.2"
+  updated: "2026-10-28"
   source: https://raw.githubusercontent.com/lyzbcy/laoyu-miaomiao-tools/main/skills/lyzbcy-qinchuan-scriptwriter/SKILL.md
   files:
     - SKILL.md
@@ -14,6 +14,8 @@ metadata:
     - references/update.md
     - evals/样张-就我没觉醒-第1集.md
     - scripts/verify_quotes.py
+    - references/community-contribution.md
+    - CONTRIBUTORS.md
 ---
 
 # 勤川剧本法 · 灵魂蒸馏
@@ -259,3 +261,7 @@ metadata:
 - **样张统计**：修改格式规则或量化基准后，用 `scripts/verify_quotes.py stat "evals/样张文件.md"` 重新校验 △:台词 比例与净字数。
 - **实测边界**：单集格式与节拍已实测（evals/样张，1095字/1.50:1）；**长篇续航（60集牌局管理）与 IP 改编五步法未做实测**，依据为 26 部原文的结构证据，首次用于实际项目时按第十二节自检清单全量过一遍。
 - **版本规范**：版本号唯一真源是本文件 frontmatter 的 `metadata.version`（semver）；每次修改必须更新版本号并在 `CHANGELOG.md` 顶部补一条。作者发版走仓库 `laoyu-miaomiao-tools` 的 `scripts/package_skill.py <skill目录名>`（校验版本一致性 + metadata.files 清单 + 打 release zip），新文件必须同步登记进 frontmatter `metadata.files`，否则整包更新会漏文件。
+
+## 使用结束：运行小结与可选贡献
+
+本次约定的策划案、单集或批次剧本完成，用户确认采用最终稿且没有未决修改后。用户只定选题或要求继续下一集时先完成后续，不在每段正文后插入邀请。按[集思广益提PR组件](references/community-contribution.md)先给本次运行小结，评估可迁移经验；值得时先准备脱敏草案，等用户确认最终完成后询问一次PR意愿，合入后按本人意愿署名或匿名。未同意不公开；用户答复后无论同意或拒绝，都按组件清理本次临时贡献包，保护正式交付与运行资料。多skill串联由末阶段合并收尾，不重复邀请。

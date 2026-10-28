@@ -15,13 +15,14 @@
 | 🎬 `lyzbcy-video-publish-assistant` v1.3.4 | 抖音/B站/小红书/YouTube投稿脚本，支持红黄绿恢复、封面与草稿验收、防重复提交；按本次授权保存草稿或发布 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.42.0/lyzbcy-video-publish-assistant.zip) |
 | 🗺️ `lyzbcy-study-map` | 把难啃的干货拆成有原文依据、能追问、能复述的交互式理解地图 | [Releases](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases) |
 | 🎯 `lyzbcy-最后的1%` | 极限执行元 skill，把任务做到真正完美才停手 | [Releases](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases) |
-| 🎬 `lyzbcy-视频生成提示词润色` | AI 视频分镜提示词做减法，只留镜头语言 | [Releases](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases) |
+| 🎬 `lyzbcy-视频生成提示词润色` v1.7.2 | AI 视频分镜提示词做减法，只留镜头语言 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.43.0/lyzbcy-video-prompt-polish.zip) |
 | 📣 `lyzbcy-wechat-autopublish` | 微信公众号全自动运营：发布环节零人工，三层降级 + cron + 发布前确认 | [Releases](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases) |
 | 🧪 `lyzbcy-glm53-zcode-eval` | 默认关闭；可能让通用任务表现更保守或不灵活，只有用户明确说“请使用 LYZBCY 虚拟环境测试”才能启用 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.5.1/lyzbcy-glm53-zcode-eval.zip) |
 | 📕 `lyzbcy-xhs-agent` | 小红书 Agent 浏览器操作：笔记发布/小工具管理/评论逐条处理与结果核验，支持一次性本地附件桥 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.26.0/lyzbcy-xhs-agent.zip) |
 | 👔 `lyzbcy-laotian-cosleader` | 结果导向验收 v1.4.0：通用规则、证据核对与重构示例 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.22.0/lyzbcy-laotian-cosleader.zip) |
 | 🧑‍🏫 `lyzbcy-tudou-mentor` | 前端技术指导 v1.4.0：开发前预防、对照式 CR 与重构示例 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.23.0/lyzbcy-tudou-mentor.zip) |
-| 💬 `lyzbcy-qq-napcat-messenger` | 本机 QQ（NapCat）自动收发：借号→收发→还号三段式，私聊/群发/发文件/扫新消息/拉记录/下载附件，9 子命令全实测 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.24.0/lyzbcy-qq-napcat-messenger.zip) |
+| ✍️ `lyzbcy-qinchuan-scriptwriter` v1.1.2 | 勤川剧本法，最终确认后复盘与脱敏贡献邀约 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.43.0/lyzbcy-qinchuan-scriptwriter.zip) |
+| 💬 `lyzbcy-qq-napcat-messenger` v1.0.1 | 本机 QQ（NapCat）自动收发：借号→收发→还号三段式，私聊/群发/发文件/扫新消息/拉记录/下载附件，9 子命令全实测 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.43.0/lyzbcy-qq-napcat-messenger.zip) |
 
 角色指导类 skill（通用规则与重构示例）统一归入「拘灵遣将」分类，站点卡片带紫色徽标。
 | 🐟 `lyzbcy-laoyu-soul` | 捞鱼灵魂拷贝：加载后 AI 拥有捞鱼的人格（思维/口癖/行为模式/对话锚） | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.19.0/lyzbcy-laoyu-soul.zip) |
