@@ -2,7 +2,7 @@
 name: lyzbcy-video-publish-assistant
 description: 在已登录浏览器中准备抖音、B站、小红书和YouTube投稿，以红黄绿门禁恢复上传、核对封面和文案，按本次授权保存草稿或正式发布。
 metadata:
-  version: 1.3.3
+  version: 1.3.4
   source: https://raw.githubusercontent.com/lyzbcy/laoyu-miaomiao-tools/main/skills/lyzbcy-video-publish-assistant/SKILL.md
   files:
     - CHANGELOG.md
@@ -24,11 +24,13 @@ metadata:
     - tests/test_regression.py
     - references/regression.md
     - update.json
+    - references/closeout.md
+    - CONTRIBUTORS.md
 ---
 
 # 多平台投稿
 
-正式版 1.3.3（2026-10-28）；源码、下载包与在线 update.json 使用同一版本及文件清单。
+正式版 1.3.4（2026-10-28）；版本以frontmatter为准，源码、安装与发行版本按当前交付记录分别核对。
 
 每天首次使用后台运行 `python scripts/update_skill.py --background`；失败沿用当前版，不中断任务。
 
@@ -61,6 +63,12 @@ metadata:
 视频号每条成片必须单独确认；泛化批量授权不算同意。公众号、知乎、掘金共用一份文章正文，仅适配排版与视频嵌入；公众号群发需另有明确授权。账号、截图、私有稿件链接仅留项目。
 
 结束给出逐平台账号、最终状态、实际链接与待办。普通步骤不留下整屏照片；异常截图不代表审美通过。维护时重写现有规则并同步源码、安装副本、版本和分发包，远端发版按任务授权处理。
+
+## 运行小结与合并收尾
+
+每次完整投稿任务结束读[统一收尾与经验贡献](references/closeout.md)，输出用户指出的问题、实际修正/重试次数、最终脚本或操作方案、逐平台结果与验收边界。由制作skill接续“可以了，去全平台发布吧”时沿用同项目 `run-summary.md`，发布阶段负责把制作与发布汇总成一条消息，只发一次清理提醒与贡献邀约；平台范围和既有授权门禁照常核对，不因“全平台”自动扩张。
+
+新平台接入、AI碰壁原因和经验证更稳定的脚本值得沉淀时，先整理脱敏候选差异，再询问是否愿意贡献PR。本人确认署名或匿名，审核合入后登记[贡献者](CONTRIBUTORS.md)；不自动上传账号/稿件/素材，不自动修改共享skill。占用较大时实测候选旧文件，给保留项、路径与预计释放空间再询问清理；投稿/审核恢复所需文件及防重断点保留。已有答复不重复询问，清理与PR分别授权。
 
 ## 维护与回归
 
