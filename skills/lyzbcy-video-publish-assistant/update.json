@@ -1,20 +1,24 @@
 {
   "name": "lyzbcy-video-publish-assistant",
-  "version": "1.3.1",
+  "version": "1.3.3",
   "sha256": {
-    "CHANGELOG.md": "f3c4da076d31e14fdc0ddc4930fa5f4d72c65d71ff31b7e3055434abe008f897",
-    "SKILL.md": "cb6fa48f9351659891dad8c1f2a35fc21aaa793715f3d2b50bf128fe8a441b8f",
-    "references/automation.md": "1fa1161980dd443d562edc85c4497fba264020590a80ce58425262218207a686",
-    "references/platforms.md": "906cf0cb275b672cbcf19384b7a22e13db2cf5b8c78d370ba154f4ed5598088e",
+    "CHANGELOG.md": "a44863796d95451da87ba508e2b0c45145639e44fe689e8fdb82ee8b511e7f87",
+    "references/automation.md": "33b753ac3ebd3a3a19882057a312b73df3be757a9f8ca8188db6fe2890212355",
+    "references/expansion.md": "7322cc8d6ebb9286a86ec3c440b0052f558cdf165f1a6b42711d8048cf8993c1",
+    "references/platforms.md": "638f7e80a85dbb3b3c6dedd5f6da6b5658d8d6375a39828914b7d8b5cd3d4bdb",
+    "references/regression.md": "8d72aff2915dc9d56f7477092995d61f19d7e2cfac0b65b347084e604b3d5fad",
     "references/update.md": "fe1268ae60733e19efc100ca25dd2c010e87ab95e03215eea7c3a9ccf0ea2b11",
-    "references/expansion.md": "b60fd3905ca38d8bce23e47ec0eff0c8692251ed8af30791ac5965c33e36cf6d",
-    "scripts/browser.py": "0e757dd71962ab32a34126cbd40cebb3c54b5dc9d61fcbd9b735d4623e57fae0",
     "scripts/bilibili.py": "bf53ddc433586c048d92c31b370e2c06dd028446da34d336c3e70b22ca22f34d",
-    "scripts/gates.py": "8ad3db9d179a11fe03901801c9a1728ef5fdcbad42578a795cad2ea7b568f672",
-    "scripts/prepare_upload.py": "546a573d4260f3c26708032f99b6d5f4ea3b10e9c86e64ff8ddd5e579d0b4cb6",
-    "scripts/profiles.json": "8d9ad0e8d6f8d43412e4df8e2e1e40dc1714e765d994894ec220d149f4766f5d",
-    "scripts/publish.py": "ccd33053035a0ecef8406b2837200e1af86704fe494983691367d8fe5522fb5d",
+    "scripts/bridge_check.py": "5a52c90a0c3177e7dae4e83993ad235a6405563643a04643137642d75181e92d",
+    "scripts/browser.py": "37d29e7c923e19422eef6ea98b6c5652cdbe69add33c30cf2284ba77289a5f11",
+    "scripts/gates.py": "80257cd431c8a9e676258cb0a73520ea712c63e0a339afc5882aff46483aa42e",
+    "scripts/prepare_upload.py": "c2933a3b305a91e851e378e00f390ab3ce2271cc6234fa1b6079576dde6bcb6c",
+    "scripts/profiles.json": "541177902ea08278f84f36730db9b2afb340c3850ed6c064aae87c2f2905bddd",
+    "scripts/publish.py": "598ca24dfde80d054031cafc55bad09ba10500ef6316d4934b26a83e4854332c",
     "scripts/update_skill.py": "fe180f0e56cbc3f007e6d1b8cd339ed61e7d05b00e245b1a0d50cc2a9bbb7325",
-    "scripts/youtube.py": "de266d7b4bde69dd4ef7744bce448decc29aadf901cca540f837429d5c286253"
+    "scripts/xiaohongshu.py": "a1c958fca43057972ad0c16d45b679f1f29ab1de1aedded15efa20a56b2fe169",
+    "scripts/youtube.py": "3405a3cf2dc11425c8d1922e6732b3d51b747345a35119035e71aea5bf0fdf66",
+    "SKILL.md": "85931ee8aae88451676c7be773d9ace665504845f7c13a8978de8c012dea134a",
+    "tests/test_regression.py": "d426d27bdec62866e75e4ff21ce4debcfc2376aad8c7c7e87a2a55e1d2bc2743"
   }
 }

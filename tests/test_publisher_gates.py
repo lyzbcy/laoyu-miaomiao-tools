@@ -96,11 +96,12 @@ class ExecutionTests(unittest.TestCase):
         p=self.pub();p.p='bilibili';plan=p.review_plan=Mock(return_value={'review_fingerprint':'bound'})
         p.authorization={'approved':True,'platforms':{'bilibili':{'review_fingerprint':'bound','visibility':'public'}}}
         p.j['steps']['verify']={'status':'done'};p.j['cover_visual_review']='passed';p.b.js.return_value={'title':p.item['title'],'description':p.item['description']}
-        p.b.semantic.side_effect=UIError('connection lost after click')
+        p.b.target.return_value={'text':'立即投稿','disabled':False,'x':1,'y':1}
+        p.b.send.side_effect=UIError('connection lost after click')
         with self.assertRaises(UIError):p.submit()
         self.assertTrue(json.loads(p.file.read_text('utf-8'))['submission_attempted'])
         p.confirm=Mock(return_value=light('submit',pending=True));self.assertEqual(p.submit()['light'],'yellow')
-        self.assertEqual(p.b.semantic.call_count,1)
+        self.assertEqual(p.b.send.call_count,1)
     def test_only_one_blocked_tag_is_routed_to_activity(self):
         p=self.pub();p.item.update(topics=['registered-a','registered-b','ordinary'])
         topic=BilibiliTopics(p);topic.chips=Mock(return_value=[]);topic.ordinary=Mock(side_effect=['activity_only','activity_only','added']);topic.activity=Mock()

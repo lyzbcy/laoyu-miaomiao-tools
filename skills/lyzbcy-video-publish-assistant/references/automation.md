@@ -55,3 +55,42 @@ python scripts/publish.py /project/upload-manifest.json --platform youtube --ses
 确认用户在编辑后将state的`human_takeover`设true；禁止继续text/topics/prepare覆盖，读当前现场并保留其字段。换文案会使旧核验失效，不能拿旧manifest恢复现场。封面检查证据单独按指纹保存，普通inspect不覆盖它。
 
 定位变化只修当前适配/本地profiles后单步继续。页面被关闭或登录失效只报当前平台红灯，不新建相同投稿。转码黄灯不采屏、不重新上传；跨平台继续独立工作。
+
+
+## 1.3.2：只读预演与账号/可见性证据
+
+`--step dry-run` 只做本地文件/指纹检查，不选择浏览器tab、不上传、不改稿、不提交；有submission_attempted时返回confirm_only。dry-run通过不代表登录、封面裁切或真实发布通过。
+
+manifest可设置 `required_description_prefix`（本次用户要求的精确开头）及平台项 `expected_account_markers`（从用户选定账号得到的公开昵称/ID标记）、`visibility`。不要把某一期署名、品牌、数字或账号写成全局默认。B站至少有一项实际普通标签或活动标签；无关推荐标签不能代替稿件定位。
+
+配置账号标记后，先回读当前已登录账号、公开范围和实际正文，形成项目私有JSON：`platform`、`account_text`、`visibility`、`description`。这些值须来自刚读取的UI，不从cookies或历史账号推断。执行 `--step check-context --evidence 项目/context.json` 记账；这不是提交授权。记录绑定稿件tab、视频和文案，1小时后、证据变化或身份/公开范围变化需重读。该门禁与dry-run已离线回归；本期不为测试门禁另发帖子。旧manifest仍兼容，未配置标记时Agent也必须执行skill规定的账号回读。
+
+初次open遇已知账号主页可导航到profiles中的上传入口；已上传、已固定tab或用户关闭稿件时不另建稿。跨平台查看管理页不能抢走同域草稿：后续写操作只attach已保存tabId，并核对域名。非预期域名或关闭页为红灯。
+
+抖音新稿保存会去掉段落换行；旧稿可能保留换行及段首星号。仅兼容这两种已观察到的序列化，不吞掉其他字符或内联空格，也不跳过规定首句核验。B站最终提交是已观察到的唯一span控件；所有普通tap仍禁止最终发布。
+
+提交前写入attempted。不明结果先按精确标题、时长、时间/作品ID查管理页；查重0且同草稿仍在、确认未接受后才依据新证据单步恢复，历史不删除。成功后只confirm，不用prepare重传。结果记录须区分submitted、审核中、已发布和外部可访问；小红书管理页出现但外部300031时只报告已观察到的差异，不猜原因或重发。
+
+
+## v1.3.3 入口与恢复补充
+
+先执行（`SESSION`在本次任务保持不变）：
+
+```powershell
+python scripts/bridge_check.py --session SESSION
+```
+
+只检查既有 daemon/extension，并列出现有标签；不会 attach、focus、navigate 或启动/升级。`open`命令也执行这个预检，`dry-run`仍不连桥接。Edge登录态通过Kimi Browser Extension复用，账号仍须从本次平台页面核验。
+
+小红书重名话题在平台项增加 `"topic_ids":{"电脑技巧":"OBSERVED_TOPIC_ID"}`。ID必须来自本次候选行的公开DOM `data-impression.tagTarget.value.tagId`，不存在或重复时报错并列候选；不要默认选热度最高或第一行。修正文案manifest后按同一run-dir续跑。
+
+小红书正式提交后：
+
+```powershell
+python scripts/publish.py MANIFEST --platform xiaohongshu --run-dir RUN_DIR --session SESSION --step confirm
+python scripts/publish.py MANIFEST --platform xiaohongshu --run-dir RUN_DIR --session SESSION --step confirm_published
+```
+
+第一条区分提交回执（submitted）；第二条只改变管理页筛选，检查已发布tab、唯一标题、与锁定视频时长误差≤1秒、本次尝试时间至当前时间、24位noteId和published通道。时间字段来自提交前落盘的带时区 `submission_started_at`；时长来自锁定本地视频的ffprobe结果。缺失/歧义维持黄灯，不反向触发submit。
+
+平台时间仅精确到分钟；同一分钟的列表记录必须额外匹配本次成功回执公开链接绑定的noteId，否则脚本保持黄灯（minute_precision_requires_bound_note_id），不把同标题同时长旧稿判为成功。confirm从当前成功页唯一可见公开链接提取ID，不猜测或从列表反向绑定。此项不声称外部公开页可访问。只有后续查询，禁止为了验证再次投稿。

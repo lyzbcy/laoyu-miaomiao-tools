@@ -1,6 +1,7 @@
 """Browser UI primitives. Python stdlib + installed curl; no browser/model download."""
 from pathlib import Path
-import base64,hashlib,json,os,subprocess,tempfile,time
+import base64,hashlib,json,os,subprocess,tempfile,time,ipaddress
+from urllib.parse import urlparse
 
 class UIError(RuntimeError): pass
 
@@ -8,21 +9,38 @@ class Browser:
     def __init__(self, session, endpoint='http://127.0.0.1:10086', timeout=45):
         self.session,self.endpoint,self.timeout=session,endpoint.rstrip('/'),timeout
 
+    def curl(self,*args):
+        # Per-request bypass only: never alter the process or remote-host proxy.
+        host=urlparse(self.endpoint).hostname
+        try:loopback=ipaddress.ip_address(host).is_loopback
+        except ValueError:loopback=host=='localhost'
+        cmd=['curl.exe' if os.name=='nt' else 'curl','-sS','--max-time',str(self.timeout)]
+        if loopback:cmd+=['--noproxy','*']
+        r=subprocess.run(cmd+list(args),capture_output=True,timeout=self.timeout+3)
+        if r.returncode:raise UIError(r.stderr.decode('utf-8',errors='replace')[:400])
+        return json.loads(r.stdout.decode('utf-8'))
+
+    def preflight(self):
+        status=self.curl(self.endpoint+'/status')
+        if status.get('running') is not True or status.get('extension_connected') is not True:
+            raise UIError('WebBridge extension not connected; open the logged-in Edge extension and check its connection address')
+        tabs=self.send('list_browser_tabs') # Read only; never attach, focus or navigate.
+        if isinstance(tabs,dict) and tabs.get('success') is False:raise UIError('WebBridge tab inventory failed')
+        return {'bridge':'ready','extension_connected':True,'tabs':tabs,'account_verified':False}
+
     def send(self,action,args=None):
         fd,path=tempfile.mkstemp(prefix='video-publish-',suffix='.json')
         try:
             with os.fdopen(fd,'w',encoding='utf-8') as f:
                 json.dump({'session':self.session,'action':action,'args':args or {}},f,ensure_ascii=False)
-            r=subprocess.run(['curl.exe' if os.name=='nt' else 'curl','-sS','--max-time',str(self.timeout),'-X','POST',self.endpoint+'/command','-H','Content-Type: application/json','--data-binary','@'+path],capture_output=True,timeout=self.timeout+3)
-            if r.returncode: raise UIError(r.stderr.decode('utf-8',errors='replace')[:400])
-            v=json.loads(r.stdout.decode('utf-8'))
+            v=self.curl('-X','POST',self.endpoint+'/command','-H','Content-Type: application/json','--data-binary','@'+path)
             if not v.get('ok'):raise UIError(str(v.get('error',v)))
             return v.get('data')
         finally:Path(path).unlink(missing_ok=True)
 
     def js(self,code):
         r=self.send('evaluate',{'code':code});v=r.get('value')
-        if r.get('type')=='string':
+        if r.get('type')=='string' and isinstance(v,str) and v.lstrip().startswith(('{','[')):
             try:return json.loads(v)
             except (ValueError,TypeError):pass
         return v
@@ -47,7 +65,7 @@ class Browser:
 
     def target(self,selector=None,text=None,scope='body'):
         # Exact matching excludes editor content and preview copies. Prefer buttons/labels.
-        code='''(()=>{const cfg=CFG;const root=document.querySelector(cfg.scope);if(!root)throw Error('Scope missing');let es=cfg.selector?[...root.querySelectorAll(cfg.selector)]:[...root.querySelectorAll('button,[role=button],[role=option],label,a,span,div,ytcp-button,tp-yt-paper-radio-button,yt-formatted-string')].filter(e=>e.innerText?.trim()===cfg.text&&!e.closest('[contenteditable=true]'));es=es.filter(e=>{const r=e.getBoundingClientRect();return r.width>0&&r.height>0&&getComputedStyle(e).visibility!=='hidden'});if(!cfg.selector){es=es.filter(e=>!es.some(other=>other!==e&&e.contains(other)));}if(es.length!==1)throw Error('Ambiguous/missing UI target '+JSON.stringify({cfg,count:es.length}));const e=es[0];e.scrollIntoView({block:'center'});const r=e.getBoundingClientRect();return JSON.stringify({x:r.x+r.width/2,y:r.y+r.height/2,tag:e.tagName,text:(e.innerText||e.getAttribute('aria-label')||'').trim(),disabled:e.disabled||e.getAttribute('aria-disabled')==='true'})})()'''.replace('CFG',json.dumps(dict(selector=selector,text=text,scope=scope),ensure_ascii=False))
+        code='''(()=>{const cfg=CFG;const root=document.querySelector(cfg.scope);if(!root)throw Error('Scope missing');let es=cfg.selector?[...root.querySelectorAll(cfg.selector)]:[...root.querySelectorAll('button,[role=button],[role=option],label,a,span,div,ytcp-button,tp-yt-paper-radio-button,yt-formatted-string')].filter(e=>e.innerText?.trim()===cfg.text&&!e.closest('[contenteditable=true]'));es=es.filter(e=>{const r=e.getBoundingClientRect();return r.width>0&&r.height>0&&getComputedStyle(e).visibility!=='hidden'});if(!cfg.selector){es=es.filter(e=>!es.some(other=>other!==e&&e.contains(other)));}if(es.length!==1)throw Error('Ambiguous/missing UI target '+JSON.stringify({cfg,count:es.length}));const e=es[0];e.scrollIntoView({block:'center',behavior:'instant'});const r=e.getBoundingClientRect();return JSON.stringify({x:r.x+r.width/2,y:r.y+r.height/2,tag:e.tagName,text:(e.innerText||e.getAttribute('aria-label')||'').trim(),disabled:e.disabled||e.getAttribute('aria-disabled')==='true'})})()'''.replace('CFG',json.dumps(dict(selector=selector,text=text,scope=scope),ensure_ascii=False))
         result=self.js(code)
         # A scroll can settle asynchronously. Re-measure at click time.
         return result
@@ -59,7 +77,7 @@ class Browser:
         if d['disabled']:raise UIError('UI target disabled')
         self.point(d['x'],d['y']);return d
 
-    def semantic(self,role,name,allow_final=False):
+    def semantic(self,role,name,allow_final=False,scope=None,video_id=None):
         """Use a current accessibility ref for ordinary tabs/buttons.
 
         Studio renders nested buttons and scrolls metadata panels. A semantic
@@ -67,6 +85,11 @@ class Browser:
         """
         if not allow_final and name.strip() in ['发布','立即投稿','提交审核','确认发布','Publish','Schedule','定时发布']:
             raise UIError('Final publication is outside this draft-only script')
+        if scope:
+            cfg=json.dumps(dict(scope=scope,role=role,name=name,video_id=video_id))
+            target=self.js(SCOPED_TARGET.replace('CFG',cfg))
+            if target['disabled']:raise UIError('Scoped target disabled')
+            return self.point(target['x'],target['y'])
         matches=[]
         def walk(node):
             if isinstance(node,list):return sum(walk(x) for x in node)
@@ -96,7 +119,9 @@ class Browser:
         return actual
 
     def enter(self,selector):
-        return self.js('''(()=>{const es=[...document.querySelectorAll(SEL)].filter(e=>e.getClientRects().length);if(es.length!==1)throw Error('Enter target ambiguous');const e=es[0];e.focus();e.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',code:'Enter',keyCode:13,which:13,bubbles:true}));return true})()'''.replace('SEL',json.dumps(selector)))
+        self.focus()
+        self.js("(()=>{const es=[...document.querySelectorAll("+json.dumps(selector)+")].filter(e=>e.getClientRects().length);if(es.length!==1)throw Error('Enter target ambiguous');es[0].focus();return true})()")
+        return self.key('Enter')
 
     def signals(self):
         """One compact guard read; do not return a whole dashboard to the model."""
@@ -140,3 +165,5 @@ def digest(file):
     with Path(file).open('rb') as f:
         for chunk in iter(lambda:f.read(1024*1024),b''):h.update(chunk)
     return h.hexdigest()
+
+SCOPED_TARGET=r"""(()=>{const q=CFG;const visible=e=>e.getClientRects().length&&getComputedStyle(e).visibility!=='hidden';const roots=[...document.querySelectorAll(q.scope)].filter(visible);if(roots.length!==1)throw Error('Dialog scope missing or ambiguous');const root=roots[0];if(q.video_id&&!([...root.querySelectorAll('a[href]')].some(e=>{try{const u=new URL(e.href);return ['youtube.com','www.youtube.com','youtu.be'].includes(u.hostname)&&(u.searchParams.get('v')===q.video_id||u.pathname==='/'+q.video_id||u.pathname==='/shorts/'+q.video_id)}catch{return false}})))throw Error('Dialog video ID differs');let es=[...root.querySelectorAll('[role],button')].filter(e=>visible(e)&&(e.getAttribute('role')||(e.tagName==='BUTTON'?'button':''))===q.role&&(e.getAttribute('aria-label')||e.innerText||'').trim()===q.name.trim());es=es.filter(e=>!es.some(x=>x!==e&&e.contains(x)));if(es.length!==1)throw Error('Scoped semantic target missing or ambiguous');const e=es[0];e.scrollIntoView({block:'center'});const r=e.getBoundingClientRect();return JSON.stringify({x:r.x+r.width/2,y:r.y+r.height/2,disabled:!!e.disabled||e.getAttribute('aria-disabled')==='true'})})()"""

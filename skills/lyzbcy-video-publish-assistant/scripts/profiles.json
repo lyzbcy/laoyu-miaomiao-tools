@@ -6,7 +6,8 @@
     "video_input": "input[type=file][accept*='video/']",
     "topic_candidates": "[class*='tag-hash-view-name-']",
     "cover_entries": ".cover-Jg3T4p",
-    "declaration": "内容由AI生成"
+    "declaration": "内容由AI生成",
+    "home_url": "https://creator.douyin.com/creator-micro/home"
   },
   "bilibili": {
     "url": "https://member.bilibili.com/platform/upload/video/frame",
@@ -16,7 +17,8 @@
     "cover_input": ".bcc-upload-wrapper input[accept='image/png, image/jpeg']",
     "tag_input": "input[placeholder='按回车键Enter创建标签']",
     "declaration_input": "input[placeholder='请选择符合您视频内容的创作声明']",
-    "declaration": "含AI生成内容"
+    "declaration": "含AI生成内容",
+    "home_url": "https://member.bilibili.com/platform/home"
   },
   "xiaohongshu": {
     "url": "https://creator.xiaohongshu.com/publish/publish",
@@ -26,7 +28,8 @@
     "cover_input": "input[aria-label='上传封面图片']",
     "cover_entry": ".cover-edit-entry",
     "topic_candidates": ".item .name",
-    "declaration": "笔记含AI合成内容"
+    "declaration": "笔记含AI合成内容",
+    "home_url": "https://creator.xiaohongshu.com/creator/home"
   },
   "youtube": {
     "url": "https://studio.youtube.com",

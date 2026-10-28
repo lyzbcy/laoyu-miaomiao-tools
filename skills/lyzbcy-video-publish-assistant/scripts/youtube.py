@@ -127,7 +127,7 @@ class YouTubeDraft:
             return c if c.get('saved_private') and not c.get('saving') else None
         context=self.b.wait(ready,timeout=25)
         self.remember(context);self.p.evidence('private-autosaved')
-        self.b.semantic('button','关闭')
+        self.b.semantic('button','关闭',scope='ytcp-uploads-dialog',video_id=self.p.j.get('youtube_video_id'))
         self.b.wait(lambda:not self.p.shown(self.p.cfg['title']),timeout=10)
         current=self.b.state()
         self.p.j['youtube_content_url']=current['url'];self.p.persist()
@@ -152,12 +152,20 @@ class YouTubeDraft:
             route='/videos/short' if desired=='Shorts' else '/videos/upload'
             if route not in location:
                 if '/videos/' not in location:self.b.semantic('menuitem','内容')
-                self.b.wait(lambda:self.b.js("[...document.querySelectorAll('[role=tab]')].some(e=>e.innerText.trim()==="+json.dumps(desired)+")"),timeout=20)
-                self.b.semantic('tab',desired)
+                def select_tab():
+                    # During a SPA transition an old DOM tab may precede its AX ref.
+                    if route in self.b.state()['url']:return True
+                    try:self.b.semantic('tab',desired)
+                    except UIError as e:
+                        if 'Ambiguous/missing semantic target' in str(e):return False
+                        raise
+                    return True
+                self.b.wait(select_tab,timeout=20)
+            self.b.wait(lambda:route in self.b.state()['url'],timeout=20)
             # Titles can be text nodes with no aria-label/href. Match the row's
             # rendered title and its actual Edit draft button, not an old anchor.
             def row_ready():
-                return self.b.js(r'''(()=>{const title=TITLE;const rows=[...document.querySelectorAll('ytcp-video-row')].filter(e=>e.innerText.split('\n').some(t=>t.trim()===title)&&e.querySelector('button[aria-label="编辑草稿"]'));if(rows.length>1)throw Error('Matching YouTube draft not unique');if(!rows.length)return false;rows[0].setAttribute('data-publish-draft','active');return true})()'''.replace('TITLE',json.dumps(self.p.item['title'])))
+                return self.b.js(r'''(()=>{const title=TITLE;const expected=EXPECTED;for(const e of document.querySelectorAll('[data-publish-draft]'))e.removeAttribute('data-publish-draft');const rows=[...document.querySelectorAll('ytcp-video-row')].filter(e=>e.innerText.split('\n').some(t=>t.trim()===title)&&e.querySelector('button[aria-label="编辑草稿"]')&&(!expected||[...e.querySelectorAll('a[href]')].some(a=>a.href.match(/\/video\/([A-Za-z0-9_-]{11})(?:\/|$)/)?.[1]===expected)));if(rows.length>1)throw Error('Matching YouTube draft not unique');if(!rows.length)return false;rows[0].setAttribute('data-publish-draft','active');return true})()'''.replace('TITLE',json.dumps(self.p.item['title'])).replace('EXPECTED',json.dumps(expected)))
             self.b.wait(row_ready,timeout=25)
             button='ytcp-video-row[data-publish-draft=active] button[aria-label="编辑草稿"]'
             self.b.send('click',{'selector':button})

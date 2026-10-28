@@ -98,11 +98,23 @@ def check(manifest_path):
             raise ValueError('youtube description exceeds 5000 characters')
         if name == 'youtube' and ('<' in title or '>' in title):
             raise ValueError('youtube title cannot contain angle brackets')
+        prefix=data.get('required_description_prefix','')
+        if prefix and (not isinstance(prefix,str) or not item.get('description','').startswith(prefix)):
+            raise ValueError(name + ' required description prefix differs')
+        markers=item.get('expected_account_markers',[])
+        if not isinstance(markers,list) or any(not isinstance(x,str) or not x.strip() for x in markers):
+            raise ValueError(name + ' expected_account_markers must be nonempty strings')
+        if item.get('visibility') not in (None,'public','private','unlisted'):
+            raise ValueError(name + ' invalid visibility')
         topics = item.get("topics", [])
         if not isinstance(topics, list) or any(not isinstance(x, str) or not x.strip() for x in topics):
             raise ValueError(name + " topics must be a list of nonempty strings")
+        topic_ids=item.get('topic_ids',{})
+        if not isinstance(topic_ids,dict) or any(k not in topics or not isinstance(v,str) or not v.strip() for k,v in topic_ids.items()):
+            raise ValueError(name+' topic_ids must map configured topics to nonempty observed IDs')
         if name=='bilibili':
             activities=item.get('activity_topics',[])
+            if not topics and not activities:raise ValueError('Bilibili requires at least one actual tag or activity topic')
             if isinstance(activities,str):activities=[activities]
             if not isinstance(activities,list) or len(activities)>1 or any(not isinstance(x,str) or not x.strip() for x in activities):
                 raise ValueError('Bilibili allows at most one activity topic per video')

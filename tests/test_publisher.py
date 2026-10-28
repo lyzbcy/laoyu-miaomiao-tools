@@ -15,7 +15,7 @@ class PublisherTests(unittest.TestCase):
     def save(self):self.manifest.write_text(json.dumps(self.data),encoding='utf-8')
     def pub(self):
         with patch('publish.Browser'):p=Publisher(self.manifest,'youtube',self.root/'run','test-task','http://localhost:10086')
-        p.b.state.return_value={'url':'https://studio.youtube.com','text':'','inputs':[]};p.b.signals.return_value={'url':'https://studio.youtube.com','publication_hint':None};return p
+        p.b.select.return_value={'url':'https://studio.youtube.com','tabId':101};p.b.send.return_value={'url':'https://studio.youtube.com','tabId':101};p.b.state.return_value={'url':'https://studio.youtube.com','text':'','inputs':[]};p.b.signals.return_value={'url':'https://studio.youtube.com','publication_hint':None};return p
 
     @patch('prepare_upload.shutil.which',return_value=None)
     def test_youtube_preflight_and_locked_hash(self,_):
@@ -50,6 +50,6 @@ class PublisherTests(unittest.TestCase):
         p=self.pub();p.j['cover_visual_review']='passed';p.evidence=Mock(return_value={})
         p.b.wait=Mock(side_effect=[{'saved_private':True,'saving':False,'title':self.data['platforms']['youtube']['title'],'url':'https://studio.youtube.com','text':''}, True])
         r=p.save();self.assertEqual(r['status'],'private_autosaved')
-        p.b.semantic.assert_called_once_with('button','关闭');p.b.tap.assert_not_called()
+        p.b.semantic.assert_called_once_with('button','关闭',scope='ytcp-uploads-dialog',video_id=p.j.get('youtube_video_id'));p.b.tap.assert_not_called()
 
 if __name__=='__main__':unittest.main()

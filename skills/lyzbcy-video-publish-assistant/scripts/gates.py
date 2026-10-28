@@ -1,5 +1,6 @@
 """Small, pure gates shared by browser execution and offline evidence replay."""
 import hashlib,json,re
+from urllib.parse import urlparse,parse_qs
 
 def normalized(value,platform=None):
     value=(value or '').replace('\u200b','')
@@ -25,7 +26,7 @@ def publication_signal(platform,state,expected_title,owned_attempt=False,video_i
         return light('submit',True,status='submitted')
     elif platform=='bilibili' and owned_attempt and '稿件投递成功' in text:
         return light('submit',True,status='submitted')
-    elif platform=='xiaohongshu' and owned_attempt and '/publish/success' in url and '发布成功' in text:
+    elif platform=='xiaohongshu' and owned_attempt and urlparse(url).hostname=='creator.xiaohongshu.com' and (('/publish/success' in urlparse(url).path and '发布成功' in text) or (urlparse(url).path=='/publish/publish' and parse_qs(urlparse(url).query).get('published')==['true'])):
         return light('submit',True,status='submitted')
     if state.get('error') or any(t in text for t in ['发布失败','投稿失败','未通过验证']):
         return light('submit',reason='platform_rejected',message=state.get('error'))
@@ -56,3 +57,27 @@ def activity_plan(topics,activity_topics=None,blocked=()):
     selected=candidates[0] if candidates else None
     return {'ordinary':[t for t in topics if t not in blocked and t!=selected],
             'activity':selected,'omitted':[t for t in topics if t in blocked and t!=selected]}
+
+
+def validate_context(platform, item, observation, required_prefix=''):
+    """Pure gate: caller supplies an actual UI read, never infer identity from cookies."""
+    if required_prefix and not (observation.get('description') or '').replace('\u200b','').startswith(required_prefix):
+        raise ValueError('Required description prefix differs')
+    markers=item.get('expected_account_markers',[])
+    if markers:
+        identity=observation.get('account_text','')
+        if not all(marker in identity for marker in markers):raise ValueError('Account identity does not match expected markers')
+    if item.get('visibility')=='public' and observation.get('visibility')!='public':
+        raise ValueError('Public visibility has not been verified')
+    if observation.get('platform') not in (None,platform):raise ValueError('Observation belongs to another platform')
+    return light('context',True,platform=platform)
+
+
+def description_matches(expected, actual, platform=None):
+    if normalized(expected,platform) in normalized(actual,platform):return True
+    # New Douyin saves remove paragraph breaks; older drafts retain newline+asterisk.
+    # Accept only that observed serialization, keeping every other character and inline space.
+    if platform=='douyin':
+        flattened=re.sub(r'\s*\n+\s*','',expected)
+        return normalized(flattened,platform) in normalized(actual,platform)
+    return False
