@@ -1,0 +1,262 @@
+{
+  "version": "0.14.0",
+  "researched_on": "2026-10-28",
+  "intents": [
+    "product_reveal",
+    "feature_overview",
+    "hook_statement",
+    "scene_bridge",
+    "brand_payoff"
+  ],
+  "sources": [
+    {
+      "id": "remotion-templates",
+      "repository": "reactvideoeditor/remotion-templates",
+      "commit": "6209b724798e48ff395f8df1a6fa2d26082372b5",
+      "review": "source_read; no full-speed audiovisual review",
+      "files": [
+        {
+          "path": "README.md",
+          "sha256": "af37143400f61a71c232581320dcdf6137d2415350a78f70aaf4dfc5bfedd294",
+          "url": "https://github.com/reactvideoeditor/remotion-templates/blob/6209b724798e48ff395f8df1a6fa2d26082372b5/README.md"
+        },
+        {
+          "path": "templates/card-flip.tsx",
+          "sha256": "e8711455ac4bf7e28879c22dd6724e4d16d09ebe7e6c9ebd39bd3ee37eba25d7",
+          "url": "https://github.com/reactvideoeditor/remotion-templates/blob/6209b724798e48ff395f8df1a6fa2d26082372b5/templates/card-flip.tsx"
+        },
+        {
+          "path": "templates/logo-blur-reveal.tsx",
+          "sha256": "5a5d399703556593abd2789f4ac96c6bcfc37ebcd5939c493fe7dc2ac3888084",
+          "url": "https://github.com/reactvideoeditor/remotion-templates/blob/6209b724798e48ff395f8df1a6fa2d26082372b5/templates/logo-blur-reveal.tsx"
+        },
+        {
+          "path": "templates/parallax-pan.tsx",
+          "sha256": "37297957eb101280a87ea2131cbc6cd6f0a945bd678d6bdc2b196c4138b9f112",
+          "url": "https://github.com/reactvideoeditor/remotion-templates/blob/6209b724798e48ff395f8df1a6fa2d26082372b5/templates/parallax-pan.tsx"
+        },
+        {
+          "path": "templates/whip-pan.tsx",
+          "sha256": "4e494ecac390f0496cefa46d11fbd0c04626c6a8e64f963125db68ba79d5d30b",
+          "url": "https://github.com/reactvideoeditor/remotion-templates/blob/6209b724798e48ff395f8df1a6fa2d26082372b5/templates/whip-pan.tsx"
+        }
+      ]
+    },
+    {
+      "id": "remotion-scenes",
+      "repository": "lifeprompt-team/remotion-scenes",
+      "commit": "02c7a84241da7010b5f59c420b0110aafd1d6f0d",
+      "review": "source_read; no full-speed audiovisual review",
+      "files": [
+        {
+          "path": "LICENSE",
+          "sha256": "93a22c496702fa837deedfa7357907f41e022d2b926d4568012b691e4de57855",
+          "url": "https://github.com/lifeprompt-team/remotion-scenes/blob/02c7a84241da7010b5f59c420b0110aafd1d6f0d/LICENSE"
+        },
+        {
+          "path": "src/scenes/LiquidAnimations/LiquidInkSplash.tsx",
+          "sha256": "cfebda42d5847cc378ffc5a555900254887a254926910259eb9cd8e78f5d0f33",
+          "url": "https://github.com/lifeprompt-team/remotion-scenes/blob/02c7a84241da7010b5f59c420b0110aafd1d6f0d/src/scenes/LiquidAnimations/LiquidInkSplash.tsx"
+        },
+        {
+          "path": "src/scenes/TextAnimations/TextKinetic.tsx",
+          "sha256": "78e5e0a9da9fe2378e72d66591756b4265e0d834674661d79e3217e35ce59989",
+          "url": "https://github.com/lifeprompt-team/remotion-scenes/blob/02c7a84241da7010b5f59c420b0110aafd1d6f0d/src/scenes/TextAnimations/TextKinetic.tsx"
+        },
+        {
+          "path": "src/scenes/TransitionAnimations/TransitionZoomBlur.tsx",
+          "sha256": "3586a02b565cfc9f32a0f84d6e2852fb327ab4bb2428f72dd164449354b775a9",
+          "url": "https://github.com/lifeprompt-team/remotion-scenes/blob/02c7a84241da7010b5f59c420b0110aafd1d6f0d/src/scenes/TransitionAnimations/TransitionZoomBlur.tsx"
+        }
+      ]
+    },
+    {
+      "id": "remotion-cinematic-skill",
+      "repository": "Vibha-Ramprakash/remotion-cinematic-skill",
+      "commit": "b164ebc8d90dc9002abefe75a08f90b84fdf4c06",
+      "review": "source_read; no full-speed audiovisual review",
+      "files": [
+        {
+          "path": "LICENSE",
+          "sha256": "361ff91ac672744664a5d2678c67382b2b261bd8a06e4256738ed58524a7f9c0",
+          "url": "https://github.com/Vibha-Ramprakash/remotion-cinematic-skill/blob/b164ebc8d90dc9002abefe75a08f90b84fdf4c06/LICENSE"
+        },
+        {
+          "path": "references/motion-language.md",
+          "sha256": "3ef1c2c13db69ec8e9b227c09463ecbdb7c8b61707d7f5cc159500e93ee3830e",
+          "url": "https://github.com/Vibha-Ramprakash/remotion-cinematic-skill/blob/b164ebc8d90dc9002abefe75a08f90b84fdf4c06/references/motion-language.md"
+        },
+        {
+          "path": "references/music-sync.md",
+          "sha256": "7de1606da9231cb97a86290816cdd592f0c34143025a598532bcbd30f95654ab",
+          "url": "https://github.com/Vibha-Ramprakash/remotion-cinematic-skill/blob/b164ebc8d90dc9002abefe75a08f90b84fdf4c06/references/music-sync.md"
+        },
+        {
+          "path": "scene-templates/HookScene.tsx",
+          "sha256": "0b4d859d48225c3e673574424ab7f29a2001557ed923a74f562fdb8e44d922b6",
+          "url": "https://github.com/Vibha-Ramprakash/remotion-cinematic-skill/blob/b164ebc8d90dc9002abefe75a08f90b84fdf4c06/scene-templates/HookScene.tsx"
+        },
+        {
+          "path": "scene-templates/ProductDashboardScene.tsx",
+          "sha256": "4f1551723e6149e0f7c3e9d44b09f866f94819296f0fbfc4fa5bdd560ad2323d",
+          "url": "https://github.com/Vibha-Ramprakash/remotion-cinematic-skill/blob/b164ebc8d90dc9002abefe75a08f90b84fdf4c06/scene-templates/ProductDashboardScene.tsx"
+        },
+        {
+          "path": "starter/src/primitives/index.tsx",
+          "sha256": "e24a125c0616ce859a4846e30e112bbe2fe3f4496c8077b2f6bd4f4d2e1ab5ec",
+          "url": "https://github.com/Vibha-Ramprakash/remotion-cinematic-skill/blob/b164ebc8d90dc9002abefe75a08f90b84fdf4c06/starter/src/primitives/index.tsx"
+        }
+      ]
+    },
+    {
+      "id": "lexington",
+      "url": "https://lexingtonthemes.com/remotion/3d-templates",
+      "review": "public page and documentation; paid source not accessed",
+      "license": "proprietary; reference only; no template code bundled"
+    }
+  ],
+  "cases": [
+    {
+      "id": "A01",
+      "recipe": "hero_dolly",
+      "name": "空间推进",
+      "intents": [
+        "product_reveal"
+      ],
+      "min_images": 1,
+      "needs_copy": false,
+      "reduced_motion": false,
+      "priority": {
+        "product_reveal": 100
+      },
+      "decision": "界面登场先给深度，再回正让人看清主功能",
+      "anchor": "a01-空间推进--hero_dolly",
+      "sources": [
+        "lexington"
+      ],
+      "implementation": "original; integrated render_shots.cjs",
+      "validation": "synthetic_720x1280_30fps_rendered; sampled_frames_reviewed; real_footage_and_audio_not_validated"
+    },
+    {
+      "id": "A02",
+      "recipe": "depth_stack",
+      "name": "功能层叠收拢",
+      "intents": [
+        "feature_overview",
+        "product_reveal"
+      ],
+      "min_images": 2,
+      "needs_copy": false,
+      "reduced_motion": false,
+      "priority": {
+        "feature_overview": 100,
+        "product_reveal": 90
+      },
+      "decision": "多界面交代规模，最后只保留一个主界面",
+      "anchor": "a02-功能层叠收拢--depth_stack",
+      "sources": [
+        "remotion-cinematic-skill",
+        "lexington"
+      ],
+      "implementation": "original; integrated render_shots.cjs",
+      "validation": "synthetic_720x1280_30fps_rendered; sampled_frames_reviewed; real_footage_and_audio_not_validated"
+    },
+    {
+      "id": "A03",
+      "recipe": "kinetic_mask",
+      "name": "蒙版关键词递进",
+      "intents": [
+        "hook_statement",
+        "brand_payoff"
+      ],
+      "min_images": 0,
+      "needs_copy": true,
+      "reduced_motion": false,
+      "priority": {
+        "hook_statement": 100,
+        "brand_payoff": 80
+      },
+      "decision": "短语义组依次显形，落定后完整读懂",
+      "anchor": "a03-蒙版关键词递进--kinetic_mask",
+      "sources": [
+        "remotion-scenes",
+        "remotion-cinematic-skill"
+      ],
+      "implementation": "original; integrated render_shots.cjs",
+      "validation": "synthetic_720x1280_30fps_rendered; sampled_frames_reviewed; real_footage_and_audio_not_validated"
+    },
+    {
+      "id": "A04",
+      "recipe": "whip_bridge",
+      "name": "同向甩镜衔接",
+      "intents": [
+        "scene_bridge"
+      ],
+      "min_images": 2,
+      "needs_copy": false,
+      "reduced_motion": false,
+      "priority": {
+        "scene_bridge": 100
+      },
+      "decision": "同一任务的两视图以同向运动连接",
+      "anchor": "a04-同向甩镜衔接--whip_bridge",
+      "sources": [
+        "remotion-templates"
+      ],
+      "implementation": "original; integrated render_shots.cjs",
+      "validation": "synthetic_720x1280_30fps_rendered; sampled_frames_reviewed; real_footage_and_audio_not_validated"
+    },
+    {
+      "id": "A05",
+      "recipe": "focus_pull",
+      "name": "焦点显形",
+      "intents": [
+        "brand_payoff",
+        "product_reveal",
+        "hook_statement",
+        "feature_overview",
+        "scene_bridge"
+      ],
+      "min_images": 0,
+      "needs_copy": true,
+      "reduced_motion": true,
+      "priority": {
+        "brand_payoff": 100,
+        "product_reveal": 30,
+        "hook_statement": 30,
+        "feature_overview": 30,
+        "scene_bridge": 30
+      },
+      "decision": "焦点由轻微模糊进入清晰终态，适合品牌落点及低运动",
+      "anchor": "a05-焦点显形--focus_pull",
+      "sources": [
+        "remotion-templates"
+      ],
+      "implementation": "original; integrated render_shots.cjs",
+      "validation": "synthetic_720x1280_30fps_rendered; sampled_frames_reviewed; real_footage_and_audio_not_validated"
+    },
+    {
+      "id": "A06",
+      "recipe": "orbit_gallery",
+      "name": "环绕画廊归位",
+      "intents": [
+        "feature_overview",
+        "product_reveal"
+      ],
+      "min_images": 3,
+      "needs_copy": false,
+      "reduced_motion": false,
+      "priority": {
+        "feature_overview": 110,
+        "product_reveal": 95
+      },
+      "decision": "三张相关界面沿圆弧环绕，主卡回正并进入稳定阅读",
+      "anchor": "a06-环绕画廊归位--orbit_gallery",
+      "sources": [
+        "lexington"
+      ],
+      "implementation": "original; integrated render_shots.cjs",
+      "validation": "synthetic_720x1280_30fps_rendered; sampled_frames_reviewed; real_footage_and_audio_not_validated"
+    }
+  ]
+}

@@ -59,3 +59,9 @@ python scripts/render_edl.py "<项目>/rollback-project.json" --output "<项目>
 实际隐私安全、语义、读字、口型、混音和审美必须按[交付](delivery.md)检查；自动门禁和切点截图不能替代这些判断。合成测试通过后，正式成片仍应使用当前任务允许的素材检验代表片段；同素材A/B按当前目标与资源选择，未实际比较不宣称收益。
 
 启用系列时可导出透明标记PNG，并将其哈希锁定到EDL的`series_badge`，全片叠加后最后烧字幕；不要只在Remotion片段出现。输入与边界见[series](series.md)。
+
+## 高级案例接入
+
+六种高级镜头与上述入口共用配置；先按[案例库](advanced-cases.md)运行选型器，再复制 `scripts/fixtures/advanced-shots.json` 中匹配的镜头，填项目runtime、browserExecutable、全新output和真实脱敏素材。`hero_dolly`/`focus_pull`用image，`depth_stack`用2–3张images，`orbit_gallery`用恰好3张images，`whip_bridge`用beforeImage/afterImage及bridge，`kinetic_mask`用1–3组words。全部是原创实现，支持9:16。默认苹果风浅底，可显式选择fluent或expressive；实际图片内容不随风格改写。
+
+`startFrame`和`settleFrame`必须留至少0.5秒稳定状态；这是技术下限，真实内容仍需按读懂时间加长。真实素材设synthetic:false；数组图片和单图均须PNG/JPEG data URI及privacyApproved:true。focus_pull无图片时以contentLabel:"文字信息卡"明确性质，不能冒充实拍。声音事件留在节目EDL中，渲染器不会自动生成或混音。

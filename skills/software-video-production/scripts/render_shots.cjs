@@ -4,6 +4,7 @@ const fs=require('node:fs');
 const path=require('node:path');
 const {createRequire}=require('node:module');
 const {MOTION_RECIPES,validateMotionShot}=require('../assets/remotion-software/motion-model.cjs');
+const {ADVANCED_RECIPES,validateAdvancedShot}=require('../assets/remotion-software/advanced-model.cjs');
 
 const {validateSeries,validateRecap}=require('../assets/remotion-software/series-model.cjs');
 
@@ -19,7 +20,7 @@ async function main(){
   if(!Number.isInteger(config.fps)||config.fps<12||config.fps>60)throw Error('fps must be 12..60');
   if(!Number.isInteger(config.width)||config.width%2||config.width<360||!Number.isInteger(config.height)||config.height%2||config.width/config.height!==9/16)throw Error('current shots require even 9:16 dimensions >=360px wide');
   if(!Array.isArray(config.shots)||!config.shots.length)throw Error('shots required');
-  const kinds=new Set(['before_after','detail_zoom','step_progression','previous_episode',...MOTION_RECIPES]);
+  const kinds=new Set(['before_after','detail_zoom','step_progression','previous_episode',...MOTION_RECIPES,...ADVANCED_RECIPES]);
   const ids=new Set();
   for(const shot of config.shots){
     if(!/^[a-zA-Z0-9_-]+$/.test(shot.id)||ids.has(shot.id)||!kinds.has(shot.recipe)||!Number.isInteger(shot.frames)||shot.frames<config.fps*2)throw Error('invalid shot id/recipe/duration');
@@ -27,7 +28,8 @@ async function main(){
     validateSeries(shot);
     if(shot.recipe==='previous_episode')validateRecap(shot);
     if(MOTION_RECIPES.has(shot.recipe))validateMotionShot(shot,config.fps);
-    if(!MOTION_RECIPES.has(shot.recipe)&&shot.recipe!=='previous_episode'&&shot.synthetic===false && (shot.recipe==='before_after' ? !(shot.beforeImage&&shot.afterImage) : !shot.image))throw Error('non-synthetic shots require explicit redacted images; generated UI cannot masquerade as real product evidence');
+    if(ADVANCED_RECIPES.has(shot.recipe))validateAdvancedShot(shot,config.fps);
+    if(!MOTION_RECIPES.has(shot.recipe)&&!ADVANCED_RECIPES.has(shot.recipe)&&shot.recipe!=='previous_episode'&&shot.synthetic===false && (shot.recipe==='before_after' ? !(shot.beforeImage&&shot.afterImage) : !shot.image))throw Error('non-synthetic shots require explicit redacted images; generated UI cannot masquerade as real product evidence');
     for(const key of ['image','beforeImage','afterImage']){
       if(shot[key] && (!/^data:image\/(png|jpeg);base64,/.test(shot[key])||shot.privacyApproved!==true))throw Error('only explicitly approved, pre-raster-redacted local image data URIs accepted');
     }

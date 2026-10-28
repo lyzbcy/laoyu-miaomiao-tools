@@ -218,8 +218,14 @@
     "information_relation",
     "settled_reading_state",
     "reduction_reason",
-    "continuing_expectation"
+    "continuing_expectation",
+    "motion_case",
+    "selection_reason",
+    "motion_case_validation"
   ],
   "motion_reference": "docs/motion.md",
-  "series_reference": "docs/series.md"
+  "series_reference": "docs/series.md",
+  "advanced_case_catalog": "assets/advanced-cases.json",
+  "advanced_case_reference": "docs/advanced-cases.md",
+  "automatic_selection_entry": "scripts/select_motion.py"
 }
