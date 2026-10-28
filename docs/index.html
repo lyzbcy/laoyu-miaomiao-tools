@@ -632,7 +632,7 @@
     <div class="field"><div class="label">适合 / 边界</div><p>适合软件演示和生活情境宣传视频的制作、改版与交付。不包含私人项目、人物原图、第三方参考视频、模型或渲染依赖；工具与素材按当前环境核实。技术检查不代替完整试听或用户评价，平台投稿由独立技能处理。</p></div>
     <div class="field"><div class="label">怎么用</div><div class="prompt-box">用这个skill把我的软件录屏做成一条生活情境宣传短片，先做代表段落。歌曲保持连续，解释尽量交给动作和短心声；成片与封面分别检查。</div></div>
     <div class="field"><div class="label">怎么安装</div><p>解压整个 <code>software-video-production/</code> 到Agent skills目录。媒体检查需要本机Python及FFmpeg/ffprobe；每天首次使用后台检查新版，失败沿用旧版，不打断制作。</p></div>
-    <div class="field"><div class="label">高级镜头案例库</div><p><a href="software-video-cases.html">浏览六种原创实渲染预览与适用条件 ↗</a>。案例已接入 skill 自动选型；无需每次提醒使用高级效果。预览为无声合成技术示例，真实成片另行验收。</p></div>
+    <div class="field"><div class="label">内置高级镜头案例</div><p>案例蒸馏、适用条件、选型规则和实现均包含在 skill 下载包中。下次制作时按内容与素材主动选用，不需要另开案例网站。</p></div>
     <div class="dl-row"><a class="btn btn-zip" id="dl-software-video-production" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.40.0/software-video-production.zip">📦 下载 software-video-production.zip</a><a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/software-video-production">查看源码</a></div>
   </article>
 </section>
@@ -705,10 +705,11 @@
 // —— 强制刷新组件配置（发布时与 docs/version.json 同步修改）——
 window.__FR__ = {
   id: 'laoyu-miaomiao-tools',
-  version: '2026.10.28-2',
+  version: '2026.10.28-3',
   registry: 'version.json',
   changelog: [
-    "2026-10-28 软件视频制作 skill v0.14.0：六种高级镜头案例、按内容自动选型与原链渲染；附原创合成预览，下载包 v1.40.0",
+    "2026-10-28 更正软件视频制作入口：移除独立案例网页及展示媒体，案例蒸馏与自动选型保留在skill内部；版本仍为v0.14.0",
+    "2026-10-28 软件视频制作 skill v0.14.0：六种高级镜头案例、按内容自动选型与原链渲染；案例与实现内置skill，下载包 v1.40.0",
     "2026-10-28 投稿助手正式版 v1.3.3：修复本地代理、同名话题消歧、YouTube重开竞态、小红书终态核验、对话框作用域及Edge/Kimi入口预检；113项源码回归和45项随包回归通过，不重复真实投稿；下载包 v1.39.0",
     "2026-10-27 软件视频制作 skill v0.13.2：信息动效和系列回顾默认苹果风，保留成长天数、上期封面及作品数据；下载包 v1.38.0",
     "2026-10-27 软件视频制作 skill v0.13.1：补查双风格聚焦与转场，修正彩色标签的黑白文字选择，保留成长记录与数据口径；下载包 v1.37.0",
