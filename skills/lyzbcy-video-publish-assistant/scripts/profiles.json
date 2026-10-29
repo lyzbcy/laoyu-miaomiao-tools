@@ -25,7 +25,7 @@
     "editor": ".tiptap.ProseMirror",
     "title": "input[placeholder='填写标题会有更多赞哦']",
     "video_input": "input.upload-input:not([accept^='image'])",
-    "cover_input": "input[aria-label='上传封面图片']",
+    "cover_input": "input.upload-input[accept^='image']",
     "cover_entry": ".cover-edit-entry",
     "topic_candidates": ".item .name",
     "declaration": "笔记含AI合成内容",

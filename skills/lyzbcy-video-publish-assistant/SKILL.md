@@ -24,6 +24,7 @@ metadata:
     - tests/test_regression.py
     - references/regression.md
     - tests/test_youtube_recovery.py
+    - scripts/run_status.py
     - update.json
     - references/closeout.md
     - CONTRIBUTORS.md
@@ -51,7 +52,7 @@ metadata:
 
 ## 一条执行链
 
-1. 先读取 kimi-webbridge skill，用 `python scripts/bridge_check.py --session <本任务session>` 检查现有 Edge/Kimi 连接；只列标签，不接管、不重启daemon，不转桌面自动化。桥接就绪不代表账号已核验。本地manifest预检 → `open` → 当前账号/公开范围回读（配置标记时 `check-context`）→ `prepare`。脚本检查当前DOM是否就绪，不默认先 `inspect`；同任务复用session/run-dir和已固定的tabId，浏览器操作串行。
+1. 恢复已有任务先运行 `python scripts/run_status.py MANIFEST --run-dir RUN_DIR`，只读本地账本返回下一步；done项不再打开页面，已尝试提交仅查询，红灯先读已存局部错误。新任务或确需UI时再读取 kimi-webbridge skill，用 `python scripts/bridge_check.py --session <本任务session>` 检查现有 Edge/Kimi 连接；只列标签，不接管、不重启daemon，不转桌面自动化。桥接就绪不代表账号已核验。本地manifest预检 → `open` → 当前账号/公开范围回读（配置标记时 `check-context`）→ `prepare`。脚本检查当前DOM是否就绪，不默认先 `inspect`；同任务复用session/run-dir和已固定的tabId，浏览器操作串行。
 2. `prepare`按步骤回读关键字段，成功只输出门禁结果。封面选入后等真实画布变化，按每种比例看一次平台裁切；`review-covers`记账后继续。不要把文件选入或平台低质检测当裁切验收。
 3. 保存并重开，核对标题、正文、关联标签、声明和处理状态。B站活动标签与普通标签分开：每视频最多一个活动标签；普通标签报活动专用时转活动搜索，精确匹配后确认选中；第二个活动词记录略过，不冒充已打上。
 4. 小红书同名话题按已观察的 `topic_ids` 精确选择，不按热度/顺序猜；半成品话题续跑不追加重复后缀。YouTube重开等待实际列表路由和可操作语义标签，已在目标页不再点标签；保存只关闭绑定视频的上传对话框。

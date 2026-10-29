@@ -195,12 +195,12 @@ class Publisher:
             self.tap('完成')
         else:
             es=self.b.js("JSON.stringify([...document.querySelectorAll("+json.dumps(self.cfg['cover_entries'])+")].map(e=>{const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2}}))")
-            if len(es)!=2:raise UIError('Expected horizontal and portrait cover entries; inspect changed UI')
-            self.b.point(es[0]['x'],es[0]['y']);self.b.wait(lambda:'设置横封面' in self.body())
+            if len(es) not in (1,2):raise UIError('Cover entry missing or ambiguous; inspect changed UI')
+            self.b.point(es[0]['x'],es[0]['y']);self.b.wait(lambda:self.b.js("!!document.querySelector('[role=dialog] canvas')"))
             # The main cover editor's upload input is distinct from AI reference-image inputs.
             for ratio,label in [('4:3','设置横封面'),('3:4','设置竖封面')]:
                 # The vertical tab and footer can share text. Prefer the real button.
-                self.b.semantic('button',label) # Both ratio switch actions are actual buttons.
+                if ratio=='3:4':self.b.semantic('button',label) # Initial horizontal canvas is already active.
                 # Both ratio editors may remain mounted. Match the upload area's visible parent,
                 # not its input visibility; inputs themselves are intentionally hidden.
                 if self.cfg.get('cover_input'):sel=self.cfg['cover_input']

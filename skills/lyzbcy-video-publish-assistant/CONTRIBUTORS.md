@@ -8,4 +8,4 @@
 
 ## 本次经验贡献
 
-- [lyzbcy](https://github.com/lyzbcy)：合集独立状态核验、YouTube隐藏编辑器及无链接草稿恢复。[PR #1](https://github.com/lyzbcy/laoyu-miaomiao-tools/pull/1)，本条随该PR合入后生效。
+- [lyzbcy](https://github.com/lyzbcy)：合集独立状态核验、YouTube隐藏编辑器及无链接草稿恢复、固定控件与紧凑状态计划。[PR #1](https://github.com/lyzbcy/laoyu-miaomiao-tools/pull/1)，本条随该PR合入后生效。

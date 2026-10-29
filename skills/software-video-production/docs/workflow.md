@@ -45,3 +45,22 @@
 ## 修订纪律
 
 新反馈补充当前任务，不丢掉先前约束。每版写清变化与来源。删除片头可精确裁切，不必重做整条；检查首帧、首句、字幕、事件音效与节拍是否仍同步。
+
+## 步骤账本与恢复
+
+完整新片先初始化项目账本，不依赖长对话记忆：
+
+```powershell
+python scripts/workflow_audit.py init WORKFLOW.json --series --image-cover
+python scripts/workflow_audit.py record WORKFLOW.json --step hook --evidence HOOK_REVIEW.md
+python scripts/workflow_audit.py record WORKFLOW.json --step audio --blocked "等待指定音源"
+python scripts/workflow_audit.py audit WORKFLOW.json
+```
+
+两个flag仅在本次启用系列、明确要求生图封面时加入。固定阶段覆盖需求、开头、分镜、动效选型、代表动效、音频、封面、技术验收、交接或收尾；条件阶段额外检查上期依据与生图产物。record保存真实证据文件及SHA256，不支持无证据勾done；audit在未完成、受阻、证据缺失/变化时返回非零退出码。证据内容与实际验收范围仍由Agent核对，任意文件存在不代表内容正确。交接发布时带同一账本，待办不伪装为已通过。
+
+封面先写清采用生成插画、真实截图还是代码排版的理由。用户要求生图时实际调用可用生图工具并记录提示词、参考图角色和输出；不能把代码海报或视频抽帧称为生图。未要求时按内容选合适方式，已有合格封面不重复生成。封面生图不意味着视频也要接图生视频；两者分别决策。个人项目偏好留在项目约定，不升格为所有用户默认。
+
+账本不是自动执行器。开工把本次适用步骤列出；已有证据先核对并复用；交付前audit，缺证据则补做或如实报告待办。不要为了变绿补写虚构验收。
+
+宣传封面是静态图，能直接用生图成品；视频讲解关键帧仍须证明当前渲染管线能还原，不能把二者的限制混用。

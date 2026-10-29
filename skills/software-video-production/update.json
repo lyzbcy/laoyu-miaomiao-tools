@@ -2,8 +2,8 @@
   "name": "software-video-production",
   "version": "0.14.5",
   "sha256": {
-    "CHANGELOG.md": "96232fc78149d2755a4cb8a3cd3eed021c16dfc6c82c8a51b6c3588c902f0238",
-    "SKILL.md": "83a6792ada2da56633db59ef14581dc2603450230a770c0b85205068b5a9f774",
+    "CHANGELOG.md": "a22c3781afca55488eb22e5c141604036802344e24dfcb633b0449388c03a0cf",
+    "SKILL.md": "f8b3192e9abcbeee58af559f33bbf887a012810f3e4f45f5f81a0b167dd9ab7a",
     "agents/openai.yaml": "fb86e70a02376ffa682fe0802544b9a8e085e6b6d537761ea49d98b759c7ccf1",
     "docs/agent.md": "b5361a6f000310dad817170f4b46aa0a00f2449571d1db907424f1f5fe153088",
     "docs/audio.md": "03acf7efd4abdc22f40dfa2df94957754afed92335e1a08a1beb7524fd388688",
@@ -17,7 +17,7 @@
     "docs/privacy.md": "c202b4b549d4012180df00c353373651f4efd8ebc11be5327d64f6a4278fe6ee",
     "docs/remotion.md": "1320071d5169728d23a94d726fb37db64835e402a43ba105f43adcafd3c82a8e",
     "docs/tech.md": "90a962bdab4076633eae45c380efc4d760daedeb0f043c331c3b390b73a74c87",
-    "docs/workflow.md": "cfeafaae0168bd3d007cfb7c0f2b2ff562381e9f16f20315eaf6cbcbf0397fc4",
+    "docs/workflow.md": "ddde9fa64d281978f6e7b4ad1bc531b3b2281ec88add90ee91a2a4914b627f39",
     "references/update.md": "fe1268ae60733e19efc100ca25dd2c010e87ab95e03215eea7c3a9ccf0ea2b11",
     "scripts/media_check.py": "7d2e3168a70a034450ea195ec6944116f05ad5fa66e23cf7317662005a633907",
     "scripts/update_skill.py": "fe180f0e56cbc3f007e6d1b8cd339ed61e7d05b00e245b1a0d50cc2a9bbb7325",
@@ -59,6 +59,7 @@
     "scripts/tests/test_series_state.py": "048d45351b7250cb8b26c2112bacb9370cab524f02fbc44e324e7d6edb23b9a7",
     "docs/series.md": "c7ad1d55ee1e4581994094be6e2c26983fbd9457c58af14f2b5c50fb5e26a76b",
     "docs/cases/algorithm-explainer.md": "e40a92c90eae507beda1868ecfff44a60c9273f33e2ed4234b1bf37e87f9e6e4",
+    "scripts/workflow_audit.py": "828cac81d4b1b9ff267521a23aee3dc33b1b2e3b07977dc2b60a1448ffe9e1ac",
     "docs/advanced-cases.md": "5e6d5dea72295723086ea95e525998851e4924fbbd7f82ae5a27b20625538f67",
     "assets/advanced-cases.json": "dcea350cb18338a2b4e8b237eca7ff662f72a27978e42bbb2ef336b8a9eb3665",
     "assets/remotion-software/advanced-model.cjs": "4842a9af6f5ca91a262c1796090fae1797fb3c5e3ce4b5b937a0327c3ac0c86f",
@@ -68,6 +69,6 @@
     "scripts/tests/test_advanced.cjs": "d41e1d849390e98a7ad1382820dfb511b69f14a2b4a971b843123e37aad41c3b",
     "scripts/tests/test_select_motion.py": "b4c6a16f1880ddd55fe0a91092b581d0a26b68f7d0284c1082815106a40fba57",
     "docs/run-summary.md": "cd100d0955cb2c2a695553c9b290c4801beebeacbcff01e6da616588c57bb95f",
-    "CONTRIBUTORS.md": "d4c09bbd56850cd2cdd06cdc43158c07fbc6fee444b2461062df570f813cf911"
+    "CONTRIBUTORS.md": "8b6b111f9dfb57af6bd3d2dfed4e57661f9d89ab5b9cbcc82f706e85cd17004e"
   }
 }
