@@ -33,8 +33,8 @@
   },
   "youtube": {
     "url": "https://studio.youtube.com",
-    "editor": "[contenteditable=true][aria-required=false]",
-    "title": "[contenteditable=true][aria-required=true]",
+    "editor": "ytcp-uploads-dialog [contenteditable=true][aria-label=\"向观看者介绍你的视频（输入 @ 可提及频道）\"]",
+    "title": "ytcp-uploads-dialog [contenteditable=true][aria-label=\"添加一个可描述你视频的标题（输入 @ 可提及某个频道）\"]",
     "video_input": "input[name=Filedata]",
     "cover_input": "input#file-loader[type=file]",
     "category_input": "ytcp-form-select#category ytcp-text-dropdown-trigger"

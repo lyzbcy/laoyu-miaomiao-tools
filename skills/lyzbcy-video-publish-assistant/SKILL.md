@@ -2,7 +2,7 @@
 name: lyzbcy-video-publish-assistant
 description: 在已登录浏览器中准备抖音、B站、小红书和YouTube投稿，以红黄绿门禁恢复上传、核对封面和文案，按本次授权保存草稿或正式发布。
 metadata:
-  version: 1.3.5
+  version: 1.3.6
   source: https://raw.githubusercontent.com/lyzbcy/laoyu-miaomiao-tools/main/skills/lyzbcy-video-publish-assistant/SKILL.md
   files:
     - CHANGELOG.md
@@ -23,6 +23,7 @@ metadata:
     - scripts/bridge_check.py
     - tests/test_regression.py
     - references/regression.md
+    - tests/test_youtube_recovery.py
     - update.json
     - references/closeout.md
     - CONTRIBUTORS.md
@@ -30,7 +31,7 @@ metadata:
 
 # 多平台投稿
 
-正式版 1.3.5（2026-10-28）；版本以frontmatter为准，源码、安装与发行版本按当前交付记录分别核对。
+开发版 1.3.6（2026-10-29，待合入，未正式发行）；版本以frontmatter为准，源码、安装与发行版本按当前交付记录分别核对。
 
 每天首次使用后台运行 `python scripts/update_skill.py --background`；失败沿用当前版，不中断任务。
 

@@ -48,11 +48,20 @@ def check_result(text):
     return {'status':'processing_pending' if pending or not complete else 'checked','copyright_text':fragment[-3000:],'publicly_published':False}
 
 
+# Read only visible UI containers. Playlist creation can leave hidden editors
+# mounted before the video fields, with the same aria-required attributes.
+DRAFT_FIELDS = r'''(()=>{const cfg=CFG;const visible=e=>e.getClientRects().length&&getComputedStyle(e).visibility!=='hidden';const roots=[...document.querySelectorAll('ytcp-uploads-dialog')].filter(visible);if(roots.length!==1)throw Error('Visible YouTube upload dialog count '+roots.length);const read=selector=>{const fields=[...roots[0].querySelectorAll(selector)].filter(visible);if(fields.length!==1)throw Error('Visible YouTube video field count '+fields.length);return fields[0].innerText};return JSON.stringify({title:read(cfg.title),description:read(cfg.editor)})})()'''
+
+DRAFT_ROW = r'''(()=>{const title=TITLE;const expected=EXPECTED;const visible=e=>e.getClientRects().length&&getComputedStyle(e).visibility!=='hidden';for(const e of document.querySelectorAll('[data-publish-draft]'))e.removeAttribute('data-publish-draft');const rows=[...document.querySelectorAll('ytcp-video-row')].filter(e=>{if(!visible(e)||!e.innerText.split('\n').some(t=>t.trim()===title))return false;const buttons=[...e.querySelectorAll('button[aria-label="编辑草稿"]')].filter(visible);if(buttons.length!==1)return false;const ids=[...e.querySelectorAll('a[href]')].map(a=>{const u=new URL(a.href);return u.hostname==='studio.youtube.com'?u.pathname.match(/^\/video\/([A-Za-z0-9_-]{11})(?:\/|$)/)?.[1]:null}).filter(Boolean);return !expected||!ids.length||ids.every(id=>id===expected)});if(rows.length>1)throw Error('Matching YouTube draft not unique');if(!rows.length)return false;rows[0].setAttribute('data-publish-draft','active');return true})()'''
+
 class YouTubeDraft:
     def __init__(self,publisher):self.p=publisher;self.b=publisher.b
 
+    def read_fields(self):
+        return self.b.js(DRAFT_FIELDS.replace('CFG',json.dumps({k:self.p.cfg[k] for k in ('title','editor')})))
+
     def context(self):
-        result=self.b.js(r'''(()=>{const root=document.querySelector('ytcp-uploads-dialog');const area=root||document;const text=area.innerText||'';const links=[...area.querySelectorAll('a[href]')].map(e=>e.href);const videoUrl=links.find(x=>/^https:\/\/(?:www\.)?youtube.com\/(?:shorts\/|watch\?)/.test(x)||/^https:\/\/youtu.be\//.test(x))||null;const thumb=area.querySelector('ytcp-thumbnail-uploader');const title=area.querySelector('[contenteditable=true][aria-required=true]')?.innerText;const start=text.indexOf('AI 使用情况');const end=start>=0?text.indexOf('联合创作',start):-1;return JSON.stringify({url:location.href,draft_dialog:!!root,title,video_url:videoUrl,kind:videoUrl?.includes('/shorts/')||thumb?.hasAttribute('vertical')?'shorts':videoUrl?'video':null,saved_private:text.includes('已保存为私享视频'),saving:text.includes('正在保存'),ai_question:start>=0?text.slice(start,end>start?end:start+1200):null,text})})()''')
+        result=self.b.js(r'''(()=>{const roots=[...document.querySelectorAll('ytcp-uploads-dialog')].filter(e=>e.getClientRects().length&&getComputedStyle(e).visibility!=='hidden');if(roots.length>1)throw Error('Visible YouTube upload dialog not unique');const root=roots[0];const area=root||document;const text=area.innerText||'';const links=[...area.querySelectorAll('a[href]')].map(e=>e.href);const videoUrl=links.find(x=>/^https:\/\/(?:www\.)?youtube.com\/(?:shorts\/|watch\?)/.test(x)||/^https:\/\/youtu.be\//.test(x))||null;const thumb=area.querySelector('ytcp-thumbnail-uploader');const title=area.querySelector('[contenteditable=true][aria-label="添加一个可描述你视频的标题（输入 @ 可提及某个频道）"]')?.innerText;const start=text.indexOf('AI 使用情况');const end=start>=0?text.indexOf('联合创作',start):-1;return JSON.stringify({url:location.href,draft_dialog:!!root,title,video_url:videoUrl,kind:videoUrl?.includes('/shorts/')||thumb?.hasAttribute('vertical')?'shorts':videoUrl?'video':null,saved_private:text.includes('已保存为私享视频'),saving:text.includes('正在保存'),ai_question:start>=0?text.slice(start,end>start?end:start+1200):null,text})})()''')
         actual=video_identity(result.get('video_url')) or video_identity(result.get('url'))
         if actual:result['video_id']=actual
         return result
@@ -62,7 +71,7 @@ class YouTubeDraft:
             owned_default=(self.p.j.get('upload_attempted') and not self.p.j['steps'].get('text') and context['title'].strip()==self.p.local(self.p.m['video']).stem)
             if not owned_default:raise UIError('YouTube editor belongs to another title')
         old=self.p.j.get('youtube_video_id')
-        if old and context.get('video_id') and old!=context['video_id']:raise UIError('YouTube draft ID differs; do not overwrite it')
+        if old and context.get('video_id')!=old:raise UIError('YouTube draft ID differs or is missing; do not overwrite it')
         for source,dest in [('kind','youtube_kind'),('video_id','youtube_video_id'),('video_url','youtube_video_url'),('ai_question','youtube_ai_question')]:
             if context.get(source):self.p.j[dest]=context[source]
         if video_identity(context.get('url')) and 'udvid=' in context['url']:
@@ -165,10 +174,10 @@ class YouTubeDraft:
             # Titles can be text nodes with no aria-label/href. Match the row's
             # rendered title and its actual Edit draft button, not an old anchor.
             def row_ready():
-                return self.b.js(r'''(()=>{const title=TITLE;const expected=EXPECTED;for(const e of document.querySelectorAll('[data-publish-draft]'))e.removeAttribute('data-publish-draft');const rows=[...document.querySelectorAll('ytcp-video-row')].filter(e=>e.innerText.split('\n').some(t=>t.trim()===title)&&e.querySelector('button[aria-label="编辑草稿"]')&&(!expected||[...e.querySelectorAll('a[href]')].some(a=>a.href.match(/\/video\/([A-Za-z0-9_-]{11})(?:\/|$)/)?.[1]===expected)));if(rows.length>1)throw Error('Matching YouTube draft not unique');if(!rows.length)return false;rows[0].setAttribute('data-publish-draft','active');return true})()'''.replace('TITLE',json.dumps(self.p.item['title'])).replace('EXPECTED',json.dumps(expected)))
+                return self.b.js(DRAFT_ROW.replace('TITLE',json.dumps(self.p.item['title'])).replace('EXPECTED',json.dumps(expected)))
             self.b.wait(row_ready,timeout=25)
             button='ytcp-video-row[data-publish-draft=active] button[aria-label="编辑草稿"]'
-            self.b.send('click',{'selector':button})
+            self.b.tap(selector=button)
         def editor_ready():
             context=self.context()
             if re.search(r'/video/[A-Za-z0-9_-]{11}/edit',context.get('url','')) and not context.get('draft_dialog'):

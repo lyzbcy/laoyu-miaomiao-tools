@@ -127,7 +127,7 @@ class Reopen(unittest.TestCase):
         return p,d
     def test_already_target_route_no_tab_click(self):
         p,d=self.make();p.b.state.return_value={'url':'https://studio.youtube.com/channel/x/videos/upload'}
-        d.reopen();p.b.semantic.assert_not_called();p.b.send.assert_called_once_with('click',{'selector':'ytcp-video-row[data-publish-draft=active] button[aria-label="编辑草稿"]'})
+        d.reopen();p.b.semantic.assert_not_called();p.b.tap.assert_called_once_with(selector='ytcp-video-row[data-publish-draft=active] button[aria-label="编辑草稿"]')
     def test_route_settles_before_ax_no_click(self):
         p,d=self.make();p.b.state.side_effect=[{'url':'https://studio.youtube.com/channel/x/videos/short'},{'url':'https://studio.youtube.com/channel/x/videos/upload'},{'url':'https://studio.youtube.com/channel/x/videos/upload'}]
         d.reopen();p.b.semantic.assert_not_called()

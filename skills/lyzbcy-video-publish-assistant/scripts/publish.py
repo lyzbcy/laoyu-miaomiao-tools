@@ -291,7 +291,7 @@ class Publisher:
         if 'reopen' not in self.j['steps']:raise UIError('Reopen the saved draft before marking verified')
         s=self.evidence('verified');title_values=[x.get('value') or x.get('text') for x in s['inputs']]
         if self.item['title'] not in title_values:raise UIError('Saved title differs')
-        editor=self.b.js('document.querySelector('+json.dumps(self.cfg['editor'])+').innerText')
+        editor=YouTubeDraft(self).read_fields()['description'] if self.p=='youtube' else self.b.js('document.querySelector('+json.dumps(self.cfg['editor'])+').innerText')
         if not description_matches(self.item['description'],editor,self.p):raise UIError('Saved description differs')
         if self.p in ['douyin','xiaohongshu']:
             for tag in self.item.get('topics',[]):
@@ -377,7 +377,11 @@ class Publisher:
             raise UIError('Draft fields and cover review must be green before submission')
         # An uncertain previous click can only be read, never clicked again.
         if self.j.get('submission_attempted'):return self.confirm()
-        actual=self.b.js('(()=>{const t=document.querySelector('+json.dumps(self.cfg['title'])+');const d=document.querySelector('+json.dumps(self.cfg['editor'])+');return JSON.stringify({title:t?.value||t?.innerText||null,description:d?.innerText||null})})()')
+        if self.p=='youtube':
+            draft=YouTubeDraft(self);draft.remember(draft.context())
+            actual=draft.read_fields()
+        else:
+            actual=self.b.js('(()=>{const t=document.querySelector('+json.dumps(self.cfg['title'])+');const d=document.querySelector('+json.dumps(self.cfg['editor'])+');return JSON.stringify({title:t?.value||t?.innerText||null,description:d?.innerText||null})})()')
         if normalized(actual.get('title'))!=normalized(self.item['title']) or not description_matches(self.item['description'],actual.get('description'),self.p):
             raise UIError('Current draft content differs; no publication click')
         prefix=self.m.get('required_description_prefix','')
