@@ -16,6 +16,14 @@ class BilibiliTopics:
         if not selected:raise UIError('Saved activity topic missing; do not publish')
         return True
 
+    def edit_ordinary(self,selector,tag):
+        # The ordinary tag control can ignore a synthetic input event. Use the
+        # observed input with trusted typing, then verify before pressing Enter.
+        self.b.focus()
+        self.b.js('document.querySelector('+json.dumps(selector)+').focus()')
+        self.b.key('a',modifiers=2);self.b.insert(tag)
+        self.b.wait(lambda:self.b.js('document.querySelector('+json.dumps(selector)+').value')==tag,timeout=5)
+
     def ordinary(self,tag):
         if tag in self.chips():return 'added'
         errors=['当前tag为话题专用','不允许自定义添加','标签已被注册为活动标签']
@@ -23,7 +31,7 @@ class BilibiliTopics:
         if any(t in self.p.body() for t in errors):
             self.b.wait(lambda:not any(t in self.p.body() for t in errors),timeout=8)
         selector=self.p.one_visible(self.p.cfg['tag_input'])
-        self.b.edit(selector,tag);self.b.enter(selector)
+        self.edit_ordinary(selector,tag);self.b.enter(selector)
         def outcome():
             if tag in self.chips():return 'added'
             # Read only the visible error/toast; never infer an activity from a

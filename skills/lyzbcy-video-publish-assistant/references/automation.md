@@ -94,3 +94,25 @@ python scripts/publish.py MANIFEST --platform xiaohongshu --run-dir RUN_DIR --se
 第一条区分提交回执（submitted）；第二条只改变管理页筛选，检查已发布tab、唯一标题、与锁定视频时长误差≤1秒、本次尝试时间至当前时间、24位noteId和published通道。时间字段来自提交前落盘的带时区 `submission_started_at`；时长来自锁定本地视频的ffprobe结果。缺失/歧义维持黄灯，不反向触发submit。
 
 平台时间仅精确到分钟；同一分钟的列表记录必须额外匹配本次成功回执公开链接绑定的noteId，否则脚本保持黄灯（minute_precision_requires_bound_note_id），不把同标题同时长旧稿判为成功。confirm从当前成功页唯一可见公开链接提取ID，不猜测或从列表反向绑定。此项不声称外部公开页可访问。只有后续查询，禁止为了验证再次投稿。
+
+## 合集附加记录（人工UI路径）
+
+合集创建与关联尚无CLI入口。用户要求时按[平台合集路径](platforms.md#合集播放列表独立于作品发布)执行，将目标名称、本次创建尝试、实际观察ID、关联作品、保存重开、合集公开/审核状态留在同一run-dir；同名歧义先核验，不自动重复创建。
+
+视频提交后查询即可，不为验证合集重复submit。合集审核中仍报告视频实际终态，合集作为独立待办。一次公开投稿不能证明所有访客可播放，也不能证明合集审核已通过。
+
+## 低开销恢复入口
+
+```powershell
+python scripts/run_status.py MANIFEST --run-dir RUN_DIR
+```
+
+纯本地、紧凑JSON，只返回各平台下一步，不连接浏览器、不输出完整页面或整个state。校验实际视频哈希与平台文案指纹；发生变化时先处理差异，不能复用旧核验。与当前ID绑定的public/published回执直接done；提交尝试后只建议confirm，上传结果不明不建议重传；封面裁切仍保留人工验收。它给建议，不代替正式submit授权门禁，也不自动扩大平台适配范围。
+
+人工核验的终态可在state保存 `terminal_review`：status、实际作品id、video_sha256、copy_sha256、证据文件绝对路径evidence及evidence_sha256。只有指纹和证据文件均匹配才复用；这表示Agent已读UI的核验，不冒充脚本自动识别。证据变化即重新查询。
+
+固定已验证控件、标签输入、裁切切换等走适配器；成功只保存最小回读与门禁，绿色不重试，处理等待只读局部状态。失败保留一次局部诊断，在同一稿件单步修复；页面语义变化可需要Agent介入，不能承诺任意平台零探索或固定token成本。统计时分开页面字符、调用数、实际token与端到端成本，没有实测不报节省比例。
+
+done仅表示本次固定稿件的最近一次核验，不是实时或永久公开保证。用户要求复查、平台权限变化或改稿时仍须查询；新一次发布任务使用独立run-dir，不能把别次运行的缓存当本次完成。
+
+恢复时可同时输出收尾未决项：`python scripts/run_status.py MANIFEST --run-dir RUN_DIR --closeout-ledger LEDGER`。四平台done不会掩盖归档或清理仍待处理；status是本地检查，不会重复打开网站。

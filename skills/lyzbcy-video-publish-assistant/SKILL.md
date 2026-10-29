@@ -2,7 +2,7 @@
 name: lyzbcy-video-publish-assistant
 description: 在已登录浏览器中准备抖音、B站、小红书和YouTube投稿，以红黄绿门禁恢复上传、核对封面和文案，按本次授权保存草稿或正式发布。
 metadata:
-  version: 1.3.5
+  version: 1.3.6
   source: https://raw.githubusercontent.com/lyzbcy/laoyu-miaomiao-tools/main/skills/lyzbcy-video-publish-assistant/SKILL.md
   files:
     - CHANGELOG.md
@@ -23,6 +23,9 @@ metadata:
     - scripts/bridge_check.py
     - tests/test_regression.py
     - references/regression.md
+    - tests/test_youtube_recovery.py
+    - scripts/run_status.py
+    - scripts/closeout.py
     - update.json
     - references/closeout.md
     - CONTRIBUTORS.md
@@ -30,11 +33,13 @@ metadata:
 
 # 多平台投稿
 
-正式版 1.3.5（2026-10-28）；版本以frontmatter为准，源码、安装与发行版本按当前交付记录分别核对。
+开发版 1.3.6（2026-10-29，待合入，未正式发行）；版本以frontmatter为准，源码、安装与发行版本按当前交付记录分别核对。
 
 每天首次使用后台运行 `python scripts/update_skill.py --background`；失败沿用当前版，不中断任务。
 
 锁定采用的成片、账号、封面和文案。用户要准备稿件时保存草稿；明确授权发布时，在稿件核验后走独立提交入口。不把一次“多平台发布”扩展到未选择的平台。用户接管的稿件保持只读，保留现场修改。
+
+恢复已有项目先读取同一 `closeout.json`（`python scripts/closeout.py status LEDGER`）；收尾检查贡献、归档和清理，不依赖对话摘要。未决事项维持partial，见[统一收尾](references/closeout.md)。
 
 ## 红黄绿门禁
 
@@ -50,7 +55,7 @@ metadata:
 
 ## 一条执行链
 
-1. 先读取 kimi-webbridge skill，用 `python scripts/bridge_check.py --session <本任务session>` 检查现有 Edge/Kimi 连接；只列标签，不接管、不重启daemon，不转桌面自动化。桥接就绪不代表账号已核验。本地manifest预检 → `open` → 当前账号/公开范围回读（配置标记时 `check-context`）→ `prepare`。脚本检查当前DOM是否就绪，不默认先 `inspect`；同任务复用session/run-dir和已固定的tabId，浏览器操作串行。
+1. 恢复已有任务先运行 `python scripts/run_status.py MANIFEST --run-dir RUN_DIR`，只读本地账本返回下一步；done项不再打开页面，已尝试提交仅查询，红灯先读已存局部错误。新任务或确需UI时再读取 kimi-webbridge skill，用 `python scripts/bridge_check.py --session <本任务session>` 检查现有 Edge/Kimi 连接；只列标签，不接管、不重启daemon，不转桌面自动化。桥接就绪不代表账号已核验。本地manifest预检 → `open` → 当前账号/公开范围回读（配置标记时 `check-context`）→ `prepare`。脚本检查当前DOM是否就绪，不默认先 `inspect`；同任务复用session/run-dir和已固定的tabId，浏览器操作串行。
 2. `prepare`按步骤回读关键字段，成功只输出门禁结果。封面选入后等真实画布变化，按每种比例看一次平台裁切；`review-covers`记账后继续。不要把文件选入或平台低质检测当裁切验收。
 3. 保存并重开，核对标题、正文、关联标签、声明和处理状态。B站活动标签与普通标签分开：每视频最多一个活动标签；普通标签报活动专用时转活动搜索，精确匹配后确认选中；第二个活动词记录略过，不冒充已打上。
 4. 小红书同名话题按已观察的 `topic_ids` 精确选择，不按热度/顺序猜；半成品话题续跑不追加重复后缀。YouTube重开等待实际列表路由和可操作语义标签，已在目标页不再点标签；保存只关闭绑定视频的上传对话框。
