@@ -2,7 +2,7 @@
   "name": "software-video-production",
   "version": "0.14.5",
   "sha256": {
-    "CHANGELOG.md": "2a50aa3c4e3bc12d7b92e58be35acfbe8ad2728be2f1285614c2840361a47fbe",
+    "CHANGELOG.md": "d35253813bce67cfac7d4f5c7c98823d1739617e7217c2090d6f00382ca72f38",
     "SKILL.md": "35731accc02fea5608ec3a1d2edcab5584be014d9155566c006112ee07dcba2c",
     "agents/openai.yaml": "fb86e70a02376ffa682fe0802544b9a8e085e6b6d537761ea49d98b759c7ccf1",
     "docs/agent.md": "b5361a6f000310dad817170f4b46aa0a00f2449571d1db907424f1f5fe153088",

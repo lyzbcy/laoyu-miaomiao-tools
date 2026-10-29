@@ -2,8 +2,8 @@
   "name": "lyzbcy-video-publish-assistant",
   "version": "1.3.6",
   "sha256": {
-    "CHANGELOG.md": "a4db30872e243d0cbd878e31361d1d0f38a4c11d089204ce0dc24083b3646464",
-    "SKILL.md": "df87ddb3d88cd9aaecf4e3ef6b1e003d1a664b6afd42da807479278a8efa2530",
+    "CHANGELOG.md": "c34b6576967c836303578aaf9ba08d9f833d14eb23f7b081fcf7557b91518e65",
+    "SKILL.md": "f0304b7f541927e82b0099501bf97412038cd13c1e8e859689662dca5b0fec98",
     "references/automation.md": "f775b021a06a5288191f00375996dc754d4c8c8c1e38c2a95cb39b7d449b0114",
     "references/platforms.md": "06931a94b8b3435e97d8133d78be9dbb189aef4c6ef31f6d206ba8904f7c3f80",
     "references/update.md": "fe1268ae60733e19efc100ca25dd2c010e87ab95e03215eea7c3a9ccf0ea2b11",
