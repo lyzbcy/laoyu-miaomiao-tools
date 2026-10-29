@@ -580,19 +580,19 @@
     <div class="skill-head">
       <span class="emoji">💬</span>
       <h3>lyzbcy-qq-napcat-messenger</h3>
-      <span class="ver">QQ 自动收发 · v1.0.1</span>
+      <span class="ver">QQ 自动收发 · v1.1.0</span>
     </div>
-    <p class="skill-tag">借号（grab）→ 收发 → 还号（restore）：让 agent 用你的桌面 QQ 通过 NapCat 自动私聊/群发/发文件、扫新消息、拉聊天记录、下载消息附件。</p>
+    <p class="skill-tag">官方 Node 运行包优先：诊断→借号→账号核验→收发回读→还号，复用本机配置，启动失败不再反复盲等。</p>
 
     <div class="field">
       <div class="label">它能做什么</div>
-      <p>本机桌面 QQ 与 <b>NapCat</b>（OneBot HTTP）共用一个账号，skill 把"切换→收发→换回来"固化成一条命令：私聊/群发文本、发文件、<b>poll 扫最近消息</b>（可过滤指定群、QQ 号映射成备注名）、拉好友聊天记录、下载消息里的图片和文件。<b>所有坑已填</b>：健康检查 stub 假成功（登录只认 data.user_id、发送只认 message_id）、路径风格 API、非好友记录不可见、file_id 截断 404、还号后登录页留给人工（自动化点击必失败）。9 个子命令全部实测。token 从 NapCat 本地配置自动发现，仓库零硬编码凭证。</p>
+      <p>让 Agent 使用 NapCat OneBot HTTP 收发私聊、群聊与文件，读取聊天记录和附件。新增 <b>doctor 诊断、官方 Windows Node 运行包安装及 SHA256 校验</b>，优先复用目标账号连接；实际账号不符停止发送。本机 OneBot 绕过系统代理，启动提前退出立即报错，默认 45 秒截止，不再反复等满 180 秒。文件与正文发送后回读核验，用完停止专用 Node 进程树并恢复实际桌面 QQ，不影响其他 Node 服务。</p>
     </div>
 
     <div class="field">
       <div class="label">适合 / 不适合</div>
       <ul>
-        <li>✅ Windows + QQNT + NapCat 已部署（默认识别续火花目录结构，可环境变量覆盖）</li>
+        <li>✅ Windows，支持官方 Node 运行包；已有 QQNT + Shell/OneBot 配置仍可复用</li>
         <li>✅ 班长/群主类角色：群发通知、收材料、逐人催办、汇总聊天记录</li>
         <li>✅ 想让 agent 替你跑"看下有没有新消息→挑重要的→起草回复"这类循环</li>
         <li>❌ 没装 NapCat 或用的不是 QQNT 架构</li>
@@ -607,12 +607,12 @@
 
     <div class="field">
       <div class="label">怎么安装</div>
-      <p>下载 zip → 解压 → 把整个 <code>lyzbcy-qq-napcat-messenger/</code> 文件夹放到 agent skills 目录（确保里面有 <code>SKILL.md</code>）。零依赖（纯 stdlib）。前提：本机已部署 NapCat 并配好 OneBot HTTP 服务；配置目录不在默认位置时用 <code>NAPCAT_CFG_DIR</code> 指过去。用完自动还号，桌面 QQ 重新登录可能需要短信验证码。</p>
+      <p>解压到 Agent skills 目录，先运行 <code>python scripts/qq.py doctor</code>。首次缺少运行环境或旧注入链卡住，运行 <code>python scripts/qq.py setup-runtime --qq QQ号</code> 安装官方校验运行包；需要代理时显式传 <code>--proxy</code>。<code>runtime.local.json</code> 保存本机路径与账号，更新时保留，不随公开包分发。每日后台检查 skill 新版，失败沿用旧版；首次登录确认仍由本人完成。</p>
     </div>
 
     <div class="field"><div class="label">使用小结与经验贡献</div><p>最终任务完成并获用户确认后，总结问题、迭代与实现；有价值经验先脱敏，经同意提交PR，合入后可署名或匿名。用户答复后清理本次临时贡献包，保护正式交付和运行资料。</p></div>
     <div class="dl-row">
-      <a class="btn btn-zip" id="dl-qq-napcat-messenger" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.43.0/lyzbcy-qq-napcat-messenger.zip">📦 下载 lyzbcy-qq-napcat-messenger.zip</a>
+      <a class="btn btn-zip" id="dl-qq-napcat-messenger" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.47.0/lyzbcy-qq-napcat-messenger.zip">📦 下载 lyzbcy-qq-napcat-messenger.zip</a>
       <a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/lyzbcy-qq-napcat-messenger">查看源码</a>
     </div>
   </article>
@@ -710,9 +710,10 @@
 // —— 强制刷新组件配置（发布时与 docs/version.json 同步修改）——
 window.__FR__ = {
   id: 'laoyu-miaomiao-tools',
-  version: '2026.10.29-2',
+  version: '2026.10.29-3',
   registry: 'version.json',
   changelog: [
+    "2026-10-29 QQ收发skill v1.1.0：官方Node运行包、doctor诊断、账号匹配与本机配置保留、45秒启动截止、代理隔离和每日后台更新；下载包v1.47.0；投稿助手保持v1.3.6",
     "2026-10-29 制作skill v0.14.6：默认哈基米/曼波在线配音，跨电脑可用的标准库脚本与缓存核验，无需本地模型；发布skill保持v1.3.6，制作下载包v1.46.0",
     "2026-10-29 制作skill v0.14.5与发布skill v1.3.6：持久化制作与收尾账本、PR与清理证据门禁、紧凑投稿恢复、合集状态及教学聚焦关键帧；下载包v1.45.0",
     "2026-10-28 制作skill v0.14.4与发布skill v1.3.5按贡献组件复查：用户答复后清理临时贡献包，多skill只发一次最终收尾；下载包v1.44.0",
@@ -823,7 +824,7 @@ const RELEASES = {
   "laotian-cosleader": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.22.0/lyzbcy-laotian-cosleader.zip",
   "tudou-mentor": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.23.0/lyzbcy-tudou-mentor.zip",
   "qinchuan-scriptwriter": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.43.0/lyzbcy-qinchuan-scriptwriter.zip",
-  "qq-napcat-messenger": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.43.0/lyzbcy-qq-napcat-messenger.zip"
+  "qq-napcat-messenger": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.47.0/lyzbcy-qq-napcat-messenger.zip"
 };
 document.getElementById('skillCount').textContent = document.querySelectorAll('article.skill-detail').length + ' 个 skill';
 for (var rid in RELEASES) {
@@ -909,11 +910,12 @@ function copyForAI(){
    - 安装：解压后把整个文件夹放到 agent skills 目录（含 SKILL.md）。每天首次使用静默自更新，失败回退旧版。
    - 下载：${RELEASES['qinchuan-scriptwriter']}
 
-10) lyzbcy-qq-napcat-messenger（QQ 自动收发 · v1.0.1）
+10) lyzbcy-qq-napcat-messenger（QQ 自动收发 · v1.1.0）
    - 用途：让 agent 用你的本机 QQ（NapCat OneBot HTTP）自动收发：私聊/群发文本、发文件、扫最近消息（poll，可过滤指定群、QQ 号映射备注名）、拉好友聊天记录、下载消息里的图片和文件。三段式"借号 grab → 收发 → 还号 restore"，9 个子命令全部实测；token 从 NapCat 本地配置自动发现，零硬编码凭证。
    - 适合：Windows + QQNT + NapCat 已部署；班长/群主群发通知、收材料、逐人催办、汇总聊天记录。不适合没装 NapCat 的机器、无人值守常驻挂机。
    - 用法示例："用我的 QQ 看下班里最近两小时有没有新消息，要回的挑出来，回复稿先给我过目再发。"
    - 安装：解压后把整个文件夹放到 agent skills 目录（含 SKILL.md）。零依赖。用完自动还号，桌面 QQ 重新登录可能要短信验证码。
+   - v1.1.0：Node运行包、doctor、目标账号核验、45秒启动截止、本机配置保留与每日后台更新。
    - 下载：${RELEASES['qq-napcat-messenger']}
 
 11) lyzbcy-video-publish-assistant（多平台视频投稿 · v1.3.6）

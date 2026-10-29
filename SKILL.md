@@ -1,7 +1,7 @@
 # 项目开发入口
 
 ## 项目一句话
-捞鱼妙妙工具提供可分发的个人Agent技能；本次维护多平台视频发布skill。
+捞鱼妙妙工具提供可分发的个人Agent技能；各skill独立维护与发行。
 
 ## 技术栈
 Python标准库、Kimi WebBridge/Curl、Node合成DOM回放；各skill独立版本及SHA清单。
@@ -17,3 +17,7 @@ Python标准库、Kimi WebBridge/Curl、Node合成DOM回放；各skill独立版�
 
 ## 当前状态
 投稿助手正式版1.3.3（2026-10-28），下载发行标签v1.39.0；源码、安装副本及ZIP文件清单一致。官网版本2026.10.28-1；对应CHANGELOG和在线update.json同步。回归执行 `python -m unittest discover -s tests -v`，打包执行 `python scripts/package_skill.py lyzbcy-video-publish-assistant`。实桥检查只读，不重复真实投稿。
+
+## QQ skill 维护入口
+
+`skills/lyzbcy-qq-napcat-messenger/SKILL.md`和`references/runtime.md`说明Node/注入启动链、本机配置与还号。正式版1.1.0，发行包v1.47.0。回归：`python -m unittest discover -s tests -p test_qq_runtime.py -v`。真实收发已完成的消息只回读，不重复发；账号、token、runtime.local.json和启动日志不得进入Git/ZIP。

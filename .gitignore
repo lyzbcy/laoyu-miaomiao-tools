@@ -4,3 +4,8 @@ dist/
 # Python 运行缓存
 __pycache__/
 *.py[cod]
+
+# QQ skill machine settings and runtime diagnostics are never published.
+skills/lyzbcy-qq-napcat-messenger/runtime.local.json
+skills/lyzbcy-qq-napcat-messenger/.runtime.boot.log
+skills/lyzbcy-qq-napcat-messenger/.update-*

@@ -22,7 +22,7 @@
 | 👔 `lyzbcy-laotian-cosleader` | 结果导向验收 v1.4.0：通用规则、证据核对与重构示例 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.22.0/lyzbcy-laotian-cosleader.zip) |
 | 🧑‍🏫 `lyzbcy-tudou-mentor` | 前端技术指导 v1.4.0：开发前预防、对照式 CR 与重构示例 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.23.0/lyzbcy-tudou-mentor.zip) |
 | ✍️ `lyzbcy-qinchuan-scriptwriter` v1.1.2 | 勤川剧本法，最终确认后复盘与脱敏贡献邀约 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.43.0/lyzbcy-qinchuan-scriptwriter.zip) |
-| 💬 `lyzbcy-qq-napcat-messenger` v1.0.1 | 本机 QQ（NapCat）自动收发：借号→收发→还号三段式，私聊/群发/发文件/扫新消息/拉记录/下载附件，9 子命令全实测 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.43.0/lyzbcy-qq-napcat-messenger.zip) |
+| 💬 `lyzbcy-qq-napcat-messenger` v1.1.0 | 官方Node运行包、doctor诊断、目标账号核验、收发回读与还号；本机配置保留，每日后台更新 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.47.0/lyzbcy-qq-napcat-messenger.zip) |
 
 角色指导类 skill（通用规则与重构示例）统一归入「拘灵遣将」分类，站点卡片带紫色徽标。
 | 🐟 `lyzbcy-laoyu-soul` | 捞鱼灵魂拷贝：加载后 AI 拥有捞鱼的人格（思维/口癖/行为模式/对话锚） | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.19.0/lyzbcy-laoyu-soul.zip) |

@@ -1,0 +1,14 @@
+{
+  "name": "lyzbcy-qq-napcat-messenger",
+  "version": "1.1.0",
+  "sha256": {
+    "SKILL.md": "5afd09fd231de9f0dfb55e33d5fdabd05537ca7eda2c3f75968aba178ef7442d",
+    "CHANGELOG.md": "474acc1cc947105b4330df59f7616b1ac46f99b187841c4de6e6bfb908b67a35",
+    "CONTRIBUTORS.md": "e4923c14051a2234a141d527c3b93bd5d54238c5cb1df5325285a88451743ec1",
+    "scripts/qq.py": "0902aa64d0ca0622a611d0acfe2dcf69c32859981776433da7138479663cbfe0",
+    "scripts/runtime_setup.py": "ffaad6e38e2a9085bdc8afdb49a0cf98278034efa2650a1f27b5a6a27fa7bc9f",
+    "scripts/update_skill.py": "7676752a4c66fc4f8718ae3657fc6e1ebf56ba58a9e8cfb32d9f7da4a5680063",
+    "references/runtime.md": "0a57817a0dcfd13dd3cdf785ccf65f9205b4aea6c5a9877cf38ebba34396a3a5",
+    "references/community-contribution.md": "ba8ddfcd00cd0b3ec0ae4f2280e81a7f4aebbf33ffef5cab4793fe1119a8d1c7"
+  }
+}
