@@ -1,12 +1,12 @@
 {
   "name": "software-video-production",
-  "version": "0.14.5",
+  "version": "0.14.6",
   "sha256": {
-    "CHANGELOG.md": "d35253813bce67cfac7d4f5c7c98823d1739617e7217c2090d6f00382ca72f38",
-    "SKILL.md": "35731accc02fea5608ec3a1d2edcab5584be014d9155566c006112ee07dcba2c",
+    "CHANGELOG.md": "aa19baf17847423aac3492d9c020aa755b456c1b80032daef627d1b99870a044",
+    "SKILL.md": "43bdfc8e39ca3e34b0cb418b666676bde74a366fb425398d695d9e0f1c9959e8",
     "agents/openai.yaml": "fb86e70a02376ffa682fe0802544b9a8e085e6b6d537761ea49d98b759c7ccf1",
     "docs/agent.md": "b5361a6f000310dad817170f4b46aa0a00f2449571d1db907424f1f5fe153088",
-    "docs/audio.md": "03acf7efd4abdc22f40dfa2df94957754afed92335e1a08a1beb7524fd388688",
+    "docs/audio.md": "64beda8c76c18c59c79140a30d153ca0caa85bb8ce7b95b1d1066107fd27cccb",
     "docs/characters.md": "29beb2d91bfe25ff0243e5dd77d8a510efafe2409bf3524ca66fab946b4a55c1",
     "docs/creative.md": "a087cde444ac64e93773c8ebd0076134450d05465acaba621223a64208979a22",
     "docs/delivery.md": "4738dd9dfa394c0d406a3fa630b2cc207fb2896659517b7a7e072342cc7fabfe",
@@ -70,6 +70,7 @@
     "scripts/tests/test_advanced.cjs": "d41e1d849390e98a7ad1382820dfb511b69f14a2b4a971b843123e37aad41c3b",
     "scripts/tests/test_select_motion.py": "b4c6a16f1880ddd55fe0a91092b581d0a26b68f7d0284c1082815106a40fba57",
     "docs/run-summary.md": "876c59938ed7edbe7739a73ecac339741494553ee0f3840dc10f9c0c734d873b",
-    "CONTRIBUTORS.md": "8b6b111f9dfb57af6bd3d2dfed4e57661f9d89ab5b9cbcc82f706e85cd17004e"
+    "CONTRIBUTORS.md": "8b6b111f9dfb57af6bd3d2dfed4e57661f9d89ab5b9cbcc82f706e85cd17004e",
+    "scripts/narrate.py": "403e88f271c15ef767375754ca511952074d431960607ef14d78fd5e4f983b89"
   }
 }

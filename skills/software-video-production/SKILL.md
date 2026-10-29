@@ -2,7 +2,7 @@
 name: software-video-production
 description: 制作和改版软件演示、生活情境宣传短视频，处理真实操作证据、隐私、视听表达、封面和交付复盘。不替代软件开发或漫剧制作。
 metadata:
-  version: 0.14.5
+  version: 0.14.6
   source: https://raw.githubusercontent.com/lyzbcy/laoyu-miaomiao-tools/main/skills/software-video-production/SKILL.md
   files:
     - CHANGELOG.md
@@ -22,6 +22,7 @@ metadata:
     - docs/tech.md
     - docs/workflow.md
     - references/update.md
+    - scripts/narrate.py
     - scripts/media_check.py
     - scripts/update_skill.py
     - assets/shot-recipes.json
@@ -86,6 +87,8 @@ metadata:
 完整新片在项目内用 `scripts/workflow_audit.py init WORKFLOW.json` 建证据账本；启用系列加 `--series`，用户要求生图封面加 `--image-cover`。按[工作流证据](docs/workflow.md#步骤账本与恢复)记录实际产物，交付前audit；这不强加到换封面、修字幕等局部任务。账本只能检查遗漏和证据变化，不能替代执行、审美判断或完整听审。
 
 工作流同时建立同目录 `closeout.json`：记录经验评估、贡献授权/PR、归档和清理。恢复先status，交付前audit；制作接发布沿用同一份，不因压缩重置。详见[收尾证据](docs/run-summary.md#持久化收尾检查)。
+
+需要中文配音时默认用哈基米风格的曼波音色（Milora mbAIsc）：先复用文本、音色、语速一致的缓存，否则运行随包 `scripts/narrate.py` 在线合成，无需本地语音模型。用户指定音色时优先；服务不可用不静默换声。调用命令与边界见[声音](docs/audio.md#默认中文配音跨电脑)。此默认只选配音音色，不要求每条视频加旁白；歌曲复习仍按既定Suno流程。
 
 ## 制作顺序
 
