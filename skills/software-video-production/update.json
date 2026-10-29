@@ -68,6 +68,6 @@
     "scripts/tests/test_advanced.cjs": "d41e1d849390e98a7ad1382820dfb511b69f14a2b4a971b843123e37aad41c3b",
     "scripts/tests/test_select_motion.py": "b4c6a16f1880ddd55fe0a91092b581d0a26b68f7d0284c1082815106a40fba57",
     "docs/run-summary.md": "cd100d0955cb2c2a695553c9b290c4801beebeacbcff01e6da616588c57bb95f",
-    "CONTRIBUTORS.md": "0efff6bcc2639bdf38886db9df92d23cc1f65384e22ca5552f8357e8050ab145"
+    "CONTRIBUTORS.md": "d4c09bbd56850cd2cdd06cdc43158c07fbc6fee444b2461062df570f813cf911"
   }
 }
