@@ -63,6 +63,7 @@ metadata:
     - docs/series.md
     - docs/cases/algorithm-explainer.md
     - scripts/workflow_audit.py
+    - scripts/closeout.py
     - update.json
     - docs/advanced-cases.md
     - assets/advanced-cases.json
@@ -83,6 +84,8 @@ metadata:
 把真实功能拍成愿意看下去的变化。先读当前项目入口，确认采用版本、用户最新反馈和任务范围；按问题读[模块导航](docs/agent.md)，不加载全部案例。用户要求严格流程时，开工先回报实际读取的 SKILL.md 路径、版本与本次执行链；未读取就明确说明。分镜/剪辑、字幕音频、动效、时间线与渲染验收逐项登记实际产物和检查范围，不适用或受阻写具体原因。仅调用 Remotion、FFmpeg 或媒体检查不能证明执行了整套工作流。
 
 完整新片在项目内用 `scripts/workflow_audit.py init WORKFLOW.json` 建证据账本；启用系列加 `--series`，用户要求生图封面加 `--image-cover`。按[工作流证据](docs/workflow.md#步骤账本与恢复)记录实际产物，交付前audit；这不强加到换封面、修字幕等局部任务。账本只能检查遗漏和证据变化，不能替代执行、审美判断或完整听审。
+
+工作流同时建立同目录 `closeout.json`：记录经验评估、贡献授权/PR、归档和清理。恢复先status，交付前audit；制作接发布沿用同一份，不因压缩重置。详见[收尾证据](docs/run-summary.md#持久化收尾检查)。
 
 ## 制作顺序
 

@@ -114,3 +114,5 @@ python scripts/run_status.py MANIFEST --run-dir RUN_DIR
 固定已验证控件、标签输入、裁切切换等走适配器；成功只保存最小回读与门禁，绿色不重试，处理等待只读局部状态。失败保留一次局部诊断，在同一稿件单步修复；页面语义变化可需要Agent介入，不能承诺任意平台零探索或固定token成本。统计时分开页面字符、调用数、实际token与端到端成本，没有实测不报节省比例。
 
 done仅表示本次固定稿件的最近一次核验，不是实时或永久公开保证。用户要求复查、平台权限变化或改稿时仍须查询；新一次发布任务使用独立run-dir，不能把别次运行的缓存当本次完成。
+
+恢复时可同时输出收尾未决项：`python scripts/run_status.py MANIFEST --run-dir RUN_DIR --closeout-ledger LEDGER`。四平台done不会掩盖归档或清理仍待处理；status是本地检查，不会重复打开网站。

@@ -25,6 +25,7 @@ metadata:
     - references/regression.md
     - tests/test_youtube_recovery.py
     - scripts/run_status.py
+    - scripts/closeout.py
     - update.json
     - references/closeout.md
     - CONTRIBUTORS.md
@@ -37,6 +38,8 @@ metadata:
 每天首次使用后台运行 `python scripts/update_skill.py --background`；失败沿用当前版，不中断任务。
 
 锁定采用的成片、账号、封面和文案。用户要准备稿件时保存草稿；明确授权发布时，在稿件核验后走独立提交入口。不把一次“多平台发布”扩展到未选择的平台。用户接管的稿件保持只读，保留现场修改。
+
+恢复已有项目先读取同一 `closeout.json`（`python scripts/closeout.py status LEDGER`）；收尾检查贡献、归档和清理，不依赖对话摘要。未决事项维持partial，见[统一收尾](references/closeout.md)。
 
 ## 红黄绿门禁
 

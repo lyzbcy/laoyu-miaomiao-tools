@@ -70,6 +70,12 @@ def summarize(manifest, run_dir):
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('manifest',type=Path);parser.add_argument('--run-dir',type=Path,required=True)
+    parser.add_argument('--closeout-ledger',type=Path)
     args=parser.parse_args()
-    try:print(json.dumps(summarize(args.manifest,args.run_dir),ensure_ascii=False,separators=(',',':')))
+    try:
+        result=summarize(args.manifest,args.run_dir)
+        if args.closeout_ledger:
+            from closeout import audit
+            result['_closeout']=audit(args.closeout_ledger)
+        print(json.dumps(result,ensure_ascii=False,separators=(',',':')))
     except (ValueError,OSError,KeyError) as error:parser.exit(2,str(error)+'\n')

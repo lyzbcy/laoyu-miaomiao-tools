@@ -64,3 +64,5 @@ python scripts/workflow_audit.py audit WORKFLOW.json
 账本不是自动执行器。开工把本次适用步骤列出；已有证据先核对并复用；交付前audit，缺证据则补做或如实报告待办。不要为了变绿补写虚构验收。
 
 宣传封面是静态图，能直接用生图成品；视频讲解关键帧仍须证明当前渲染管线能还原，不能把二者的限制混用。
+
+workflow_audit的complete同时要求制作与closeout账本通过；production_complete只表示制作证据已覆盖，不能代替PR、归档和清理完成。旧账本没有closeout_ledger时会报告缺失，不自动补成绿灯。

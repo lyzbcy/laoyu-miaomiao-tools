@@ -1,6 +1,12 @@
 """Evidence-backed task list for a full production run; no media or network calls."""
 from pathlib import Path
-import argparse, hashlib, json
+import argparse, hashlib, json, importlib.util
+
+def lifecycle():
+    path=Path(__file__).with_name('closeout.py')
+    spec=importlib.util.spec_from_file_location('production_closeout',path)
+    module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module);return module
+
 
 BASE=['requirements','hook','storyboard','motion_selection','representative_motion','audio','cover_design','media_qa','handoff_or_closeout']
 
@@ -16,6 +22,10 @@ def plan(path,series=False,image_cover=False):
     if series:steps.insert(2,'series_context')
     if image_cover:steps.insert(steps.index('media_qa'),'cover_generation')
     data={'schema':1,'series':series,'image_cover':image_cover,'steps':{name:{'status':'pending'} for name in steps}}
+    ledger=path.parent/'closeout.json';helper=lifecycle()
+    if ledger.exists():helper.audit(ledger)
+    else:helper.plan(ledger)
+    data['closeout_ledger']=str(ledger.resolve())
     save(path,data);return data
 
 
@@ -44,7 +54,8 @@ def audit(path):
         evidence=Path(item.get('evidence',''))
         if not evidence.is_file():remaining[name]='evidence_missing'
         elif hashlib.sha256(evidence.read_bytes()).hexdigest()!=item.get('sha256'):remaining[name]='evidence_changed'
-    return {'complete':not remaining,'remaining':remaining}
+    closeout=lifecycle().audit(data['closeout_ledger']) if data.get('closeout_ledger') else {'complete':False,'remaining':{'ledger':'missing'}}
+    return {'complete':not remaining and closeout['complete'],'production_complete':not remaining,'remaining':remaining,'closeout':closeout}
 
 
 if __name__=='__main__':

@@ -32,7 +32,10 @@ class EvidenceWorkflow(unittest.TestCase):
     def test_file_proofs_complete_the_declared_steps(self):
         data=w.plan(self.path)
         for name in data['steps']:w.record(self.path,name,evidence=self.proof)
-        self.assertTrue(w.audit(self.path)['complete'])
+        result=w.audit(self.path)
+        self.assertTrue(result['production_complete'])
+        self.assertFalse(result['complete'])
+        self.assertIn('contribution',result['closeout']['remaining'])
 
     def test_changed_proof_invalidates_done_step(self):
         w.plan(self.path);w.record(self.path,'hook',evidence=self.proof)

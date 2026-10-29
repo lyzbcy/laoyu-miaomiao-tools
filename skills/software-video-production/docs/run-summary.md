@@ -102,3 +102,22 @@ PR邀请必须等用户确认最终交付/本轮任务结束，不能把文件�
 这类由本次贡献流程创建的临时文件，答复后清理属于组件收尾，不再要求第二次清理授权。执行前解析并核对绝对路径属于本次专属目录，按创建清单处理，不跟随链接或删除目录外内容；同步目录删除会传播。保留最终交付、源素材、既有仓库与依赖、账号凭据、运行小结、PR链接及必要提交结果。清理失败记failed与残留路径，不能声称已清理。记录完成后只简短回报“已提交/未提交，临时贡献包已清理”；没有创建包就写无需清理。
 
 **旧视频版本清理是另一件事**：仍按 `cleanup-plan.md` 的具体范围取得用户同意；同意贡献不授权删旧片，同意删旧片不授权提交PR。上面自动清理的范围仅限本次自建临时贡献文件。
+
+## 持久化收尾检查
+
+同一项目的制作和发布共用一份closeout.json。制作workflow初始化时即创建，发布接续只恢复，不重置。每次恢复先status，准备结束前audit：
+
+```powershell
+python scripts/closeout.py init LEDGER
+python scripts/closeout.py status LEDGER
+python scripts/closeout.py record LEDGER --task experience_review --status valuable --evidence ASSESSMENT.md
+python scripts/closeout.py record LEDGER --task contribution --status approved --evidence USER_CONSENT.json
+python scripts/closeout.py record LEDGER --task contribution --status submitted --evidence PR_RECEIPT.json --url https://github.com/OWNER/REPO/pull/NUMBER
+python scripts/closeout.py audit LEDGER
+```
+
+init只在新运行首次执行；已有账本再次init会拒绝，不覆盖决策。status返回紧凑未决项；audit有未决或证据变化时非零退出。任务包含交付确认、经验评估、贡献、归档、旧片清理和临时贡献包清理。经验无复用价值可明确not_valuable后not_needed；用户拒绝记declined；已有明确授权沿用，不重复邀约。投稿或合集审核待办与可执行收尾项分别记录，不能因一个partial吞掉其余收尾检查，也不为越过最终确认时机提前邀约。
+
+归档verified使用JSON索引的files数组，每项path和sha256须对应真实保留文件；就地索引、打包和物理迁移分别报告，不把索引称为已搬走工作区。清理cleaned的JSON回执含deleted路径数组，脚本核对这些路径确已不存在；awaiting_consent不能算已清理。retained只用于用户明确决定保留，不能把未回答改成保留授权。PR submitted必须保留单独的用户授权证据及实际PR链接。归档或清理的实质操作仍由当前授权范围决定，脚本不自动发PR、删文件、催用户或创建后台调度。
+
+新任务在项目入口记录固定恢复与收尾命令，使下一次从磁盘定位，而非仅依赖聊天摘要。账本不是后台自动执行器；若Agent不调用入口，仍可能漏，因此SKILL入口与交付步骤都显式路由到status/audit。贡献授权、PR提交、合入和正式发行仍分开，不能因门禁通过就宣称已合入。
