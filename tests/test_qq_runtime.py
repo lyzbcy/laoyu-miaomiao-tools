@@ -57,7 +57,7 @@ class RuntimeTests(unittest.TestCase):
         self.account('22222',host='::');self.q.configure();self.assertEqual(self.q.API,'http://[::1]:30001')
     def test_version_no_config(self):
         os.environ['NAPCAT_CFG_DIR']=str(self.root/'missing')
-        self.assertEqual(self.main('--version').strip(),'1.1.0')
+        self.assertEqual(self.main('--version').strip(),self.q.VERSION)
     def test_doctor_no_config_no_token(self):
         self.q.CFG_DIR=str(self.root/'missing')
         value=json.loads(self.main('doctor'))

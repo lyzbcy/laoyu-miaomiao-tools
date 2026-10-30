@@ -20,4 +20,4 @@ Python标准库、Kimi WebBridge/Curl、Node合成DOM回放；各skill独立版�
 
 ## QQ skill 维护入口
 
-`skills/lyzbcy-qq-napcat-messenger/SKILL.md`和`references/runtime.md`说明Node/注入启动链、本机配置与还号。正式版1.1.0，发行包v1.47.0。回归：`python -m unittest discover -s tests -p test_qq_runtime.py -v`。真实收发已完成的消息只回读，不重复发；账号、token、runtime.local.json和启动日志不得进入Git/ZIP。
+`skills/lyzbcy-qq-napcat-messenger/SKILL.md`和`references/runtime.md`说明Node/注入启动链、本机配置与还号。正式版1.1.1，发行包v1.48.0。回归：`python -m unittest discover -s tests -p test_qq_runtime.py -v`。真实收发已完成的消息只回读，不重复发；账号、token、runtime.local.json和启动日志不得进入Git/ZIP。

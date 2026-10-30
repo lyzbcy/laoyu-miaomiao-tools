@@ -28,7 +28,7 @@ import urllib.request
 import urllib.parse
 from pathlib import Path
 
-VERSION = "1.1.0"
+VERSION = "1.1.1"
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
