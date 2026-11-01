@@ -1,0 +1,8 @@
+{"ts":"2026-01-05T18:00:00+08:00","date":"2026-01-05","action":"session_start","session":"full_body","note":"虚构示例，不是真人训练历史"}
+{"ts":"2026-01-05T18:05:00+08:00","date":"2026-01-05","action":"set","exercise":"平板杠铃卧推","muscleGroup":"chest","session":"full_body","weight":30,"reps":10,"setNum":1}
+{"ts":"2026-01-05T18:10:00+08:00","date":"2026-01-05","action":"set","exercise":"平板杠铃卧推","muscleGroup":"chest","session":"full_body","weight":30,"reps":8,"setNum":2}
+{"ts":"2026-01-05T18:18:00+08:00","date":"2026-01-05","action":"set","exercise":"坐姿划船","muscleGroup":"mid_back","session":"full_body","weight":35,"reps":12,"setNum":1}
+{"ts":"2026-01-05T18:25:00+08:00","date":"2026-01-05","action":"set","exercise":"引体向上","muscleGroup":"lats","session":"full_body","weight":0,"reps":5.5,"setNum":1}
+{"ts":"2026-01-05T18:32:00+08:00","date":"2026-01-05","action":"set","exercise":"坐姿推肩","muscleGroup":"shoulders","session":"full_body","weight":12.5,"reps":10,"setNum":1}
+{"ts":"2026-01-05T18:40:00+08:00","date":"2026-01-05","action":"set","exercise":"深蹲","muscleGroup":"quads","session":"full_body","weight":40,"reps":8,"setNum":1}
+{"ts":"2026-01-05T18:50:00+08:00","date":"2026-01-05","action":"session_end","session":"full_body","note":"虚构完训示例"}

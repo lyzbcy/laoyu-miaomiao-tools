@@ -10,6 +10,7 @@
 
 | Skill | 一句话 | 下载 |
 |-------|--------|------|
+| 🏋️ `lyzbcy-fitness-tracker` v1.2.0 | 逐组记录，收工时生成完整分部位训练总结图；无需生图额度，博客可选、私有数据目录 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.49.0/lyzbcy-fitness-tracker.zip) |
 | 🧪 `lyzbcy-shared-regression` v0.1.2 | PRD/设计对照、人工与AI分开留痕；提供本机模板与HTTP检查，每日静默更新 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.32.0/lyzbcy-shared-regression.zip) |
 | 🎞️ `software-video-production` v0.14.6 | 软件视频制作，内置高级镜头选型、交付运行小结与可选经验PR；每日静默更新 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.46.0/software-video-production.zip) |
 | 🎬 `lyzbcy-video-publish-assistant` v1.3.6 | 抖音/B站/小红书/YouTube投稿脚本，支持红黄绿恢复、封面与草稿验收、防重复提交；按本次授权保存草稿或发布 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.45.0/lyzbcy-video-publish-assistant.zip) |

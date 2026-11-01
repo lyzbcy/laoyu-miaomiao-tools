@@ -1,0 +1,17 @@
+{
+  "brand": {
+    "title": "捞鱼的训练小报",
+    "watermark": "捞鱼",
+    "account": "捞鱼的博客",
+    "keyword": "健身"
+  },
+  "blog": {
+    "enabled": false,
+    "repo": "",
+    "remote": "origin",
+    "branch": "main",
+    "data_path": "fitness/fitness.json"
+  },
+  "personalRecords": {},
+  "comment": "首次init创建自己的副本；训练记录留在本地。博客发布默认关闭，自己配置仓库并明确启用后才会提交推送。"
+}

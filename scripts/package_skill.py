@@ -30,6 +30,7 @@ SKILLS_DIR = REPO_ROOT / "skills"
 
 # skill 目录名 → release asset 文件名（保持稳定，站点链接靠它）
 ASSET_NAMES = {
+    "lyzbcy-fitness-tracker": "lyzbcy-fitness-tracker.zip",
     "lyzbcy-shared-regression": "lyzbcy-shared-regression.zip",
     "software-video-production": "software-video-production.zip",
     "lyzbcy-video-publish-assistant": "lyzbcy-video-publish-assistant.zip",
@@ -47,6 +48,16 @@ ASSET_NAMES = {
 
 # 打包时排除的运行时产物 / 系统杂项
 EXCLUDES = {".update-check.json", ".DS_Store", "Thumbs.db"}
+
+
+def archive_bytes(rel: str, data: bytes) -> bytes:
+    """Normalize text only: binary PNG/font bytes must survive packaging unchanged."""
+    suffix = Path(rel).suffix.lower()
+    text_suffixes = {'.md', '.py', '.json', '.jsonl', '.sh', '.txt', '.js', '.cjs', '.mjs',
+                     '.html', '.css', '.yml', '.yaml', '.toml', '.svg'}
+    if suffix in text_suffixes or Path(rel).name in {'.gitignore', '.gitattributes', 'LICENSE', 'NOTICE'}:
+        return data.replace(b'\r\n', b'\n')
+    return data
 
 
 def die(msg: str) -> None:
@@ -177,7 +188,7 @@ def main() -> None:
             path = skill_dir / rel
             if not path.resolve().is_relative_to(skill_dir.resolve()) or not path.is_file():
                 problems.append(f'更新路径无效: {rel}')
-            elif hashlib.sha256(path.read_bytes().replace(b'\r\n', b'\n')).hexdigest() != expected:
+            elif hashlib.sha256(archive_bytes(rel, path.read_bytes())).hexdigest() != expected:
                 problems.append(f'更新哈希过时: {rel}')
 
     if problems:
@@ -203,7 +214,7 @@ def main() -> None:
     # （zip 安装与 skill 静默更新两种途径拿到的内容完全相同）
     with ZipFile(out, "w") as zf:
         for rel in files:
-            data = (skill_dir / rel).read_bytes().replace(b"\r\n", b"\n")
+            data = archive_bytes(rel, (skill_dir / rel).read_bytes())
             zf.writestr(f"{skill_name}/{rel}", data)
     print(f"✓ 已打包：{out}（zip 内版本 v{version}，LF 行尾）")
 

@@ -1,0 +1,15 @@
+{
+  "exercises": {
+    "push": [
+      {"name": "平板杠铃卧推", "alias": ["卧推"], "primary": "chest", "estimatedDurationSeconds": 45},
+      {"name": "坐姿推肩", "alias": ["推肩"], "primary": "shoulders", "estimatedDurationSeconds": 40}
+    ],
+    "pull": [
+      {"name": "坐姿划船", "alias": ["划船"], "primary": "mid_back", "estimatedDurationSeconds": 45},
+      {"name": "引体向上", "alias": ["引体"], "primary": "lats", "estimatedDurationSeconds": 40}
+    ],
+    "legs": [
+      {"name": "深蹲", "alias": [], "primary": "quads", "estimatedDurationSeconds": 50}
+    ]
+  }
+}

@@ -201,6 +201,16 @@
 
   <!-- ====== 详情数据源（静态保留，页面源码对 AI / 爬虫始终完整可读；JS 读取它渲染上方网格） ====== -->
 
+  <article class="skill skill-detail" id="fitness-tracker" data-name="lyzbcy-fitness-tracker" data-grad="linear-gradient(135deg,#1e776d 0%,#dc603d 100%)">
+    <div class="skill-head"><span class="emoji">🏋️</span><h3>lyzbcy-fitness-tracker</h3><span class="ver">健身记录与训练小报 · v1.2.0</span></div>
+    <p class="skill-tag">每组一句话记下来，练完自动做一张完整训练小报。普通文字模型也能生成，无需生图额度。</p>
+    <div class="field"><div class="label">能做什么</div><p>增量记录、训练时间与分类、今日/历史搬铁容量类比、按部位列出全部动作和训练组；高清精选重绘表情按语义选择，完整长图自动加高。</p></div>
+    <div class="field"><div class="label">怎么用</div><div class="prompt-box">用健身skill记下这组：坐姿划船35kg做了12个。练完收尾时，更新我已启用的博客，并把训练总结图发给我。</div></div>
+    <div class="field"><div class="label">首次配置</div><p>Python 3.10+，安装Pillow与时区依赖后init自己的私有数据目录。默认不发布博客；署名、水印、公众号可配置，不带维护者的训练账本或账号。</p></div>
+    <div class="field"><div class="label">示例与边界</div><p><a href="assets/fitness-demo.png" target="_blank" rel="noopener">查看虚构数据生成的示例长图</a>。代码MIT，字体及角色插图采用随包单独说明；博客成功推送不等于页面已部署。</p></div>
+    <div class="dl-row"><a class="btn btn-zip" id="dl-fitness-tracker" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.49.0/lyzbcy-fitness-tracker.zip">📦 下载 lyzbcy-fitness-tracker.zip</a><a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/lyzbcy-fitness-tracker">查看源码</a></div>
+  </article>
+
   <article class="skill skill-detail" id="shared-regression" data-name="lyzbcy-shared-regression" data-grad="linear-gradient(135deg,#142b43 0%,#1764bb 58%,#38a7ad 100%)">
     <div class="skill-head"><span class="emoji">🧪</span><h3>lyzbcy-shared-regression</h3><span class="ver">PRD 对照与共享回归 · v0.1.2</span></div>
     <p class="skill-tag">把用例、真实页面、PRD和设计放在一起，人工与AI分别执行，共用一份可追溯的结果。</p>
@@ -648,7 +658,7 @@
   <div class="ai-block">
     <h3>这整页可以直接发给 AI</h3>
     <p>本页是<b>语义化、对 AI 友好</b>的介绍页。你可以直接把这一整页（或它的链接）发给你的 AI 助手，AI 就能读懂：</p>
-    <p>· 这里收录了 <code id="skillCount">13 个 skill</code>，分别是 <code>lyzbcy-study-map</code>（理解地图）、<code>lyzbcy-最后的1%</code>（极限执行）、<code>lyzbcy-视频生成提示词润色</code>（分镜润色）、<code>lyzbcy-wechat-autopublish</code>（公众号全自动运营）、<code>lyzbcy-glm53-zcode-eval</code>（GLM-5.3 ZCode 隔离评测）、<code>lyzbcy-xhs-agent</code>（小红书 Agent 浏览器操作）和 <code>lyzbcy-laotian-cosleader</code>（老田式验收）、<code>lyzbcy-tudou-mentor</code>（土豆式 mentor 陪伴）、<code>lyzbcy-qinchuan-scriptwriter</code>（勤川剧本法编剧）和 <code>lyzbcy-qq-napcat-messenger</code>（本机 QQ 自动收发），以及 <code>lyzbcy-video-publish-assistant</code>（多平台视频投稿准备）与 <code>software-video-production</code>（软件宣传视频制作），以及 <code>lyzbcy-shared-regression</code>（PRD 对照与共享回归）。<br>
+    <p>· 这里收录了 <code id="skillCount">14 个 skill</code>，分别是 <code>lyzbcy-study-map</code>（理解地图）、<code>lyzbcy-最后的1%</code>（极限执行）、<code>lyzbcy-视频生成提示词润色</code>（分镜润色）、<code>lyzbcy-wechat-autopublish</code>（公众号全自动运营）、<code>lyzbcy-glm53-zcode-eval</code>（GLM-5.3 ZCode 隔离评测）、<code>lyzbcy-xhs-agent</code>（小红书 Agent 浏览器操作）和 <code>lyzbcy-laotian-cosleader</code>（老田式验收）、<code>lyzbcy-tudou-mentor</code>（土豆式 mentor 陪伴）、<code>lyzbcy-qinchuan-scriptwriter</code>（勤川剧本法编剧）和 <code>lyzbcy-qq-napcat-messenger</code>（本机 QQ 自动收发），以及 <code>lyzbcy-video-publish-assistant</code>（多平台视频投稿准备）与 <code>software-video-production</code>（软件宣传视频制作），以及 <code>lyzbcy-shared-regression</code>（PRD 对照与共享回归），以及 <code>lyzbcy-fitness-tracker</code>（健身记录与训练小报）。<br>
        · 每个 skill 的用途、适用场景、用法、安装方式、下载直链都在各 skill 的详情里写清楚了（页面上点卡片即可查看，页面源码同样包含全部信息）。<br>
        · 每个 skill 都有<b>直达链接</b>：在本页 URL 后加 <code>#工具名</code>（如 <code>#lyzbcy-视频生成提示词润色</code>）或 <code>#英文id</code>（如 <code>#video-prompt-polish</code>），打开即自动弹出该工具的详情；详情弹窗里的「🔗 复制直达链接」按钮可直接复制。<br>
        · 其中人格蒸馏类 skill（「老田式验收」「土豆式 mentor」）统一归类为<b>「拘灵遣将」</b>——用通用指导规则与重构示例提供角色风格，卡带紫色徽标。<br>
@@ -710,9 +720,10 @@
 // —— 强制刷新组件配置（发布时与 docs/version.json 同步修改）——
 window.__FR__ = {
   id: 'laoyu-miaomiao-tools',
-  version: '2026.10.30-1',
+  version: '2026.11.02-1',
   registry: 'version.json',
   changelog: [
+    "2026-11-02 新收录健身记录 skill v1.2.0：逐组记录、完训总结长图、高清重绘精选表情、按部位完整清单；无需生图能力，私有数据目录，博客可选；下载包v1.49.0",
     "2026-10-30 QQ收发skill v1.1.1：换行AI代发落款、模型身份分级兜底、未知不猜不阻塞、维护者直发流程；下载包v1.48.0；投稿助手保持v1.3.6",
       "2026-10-29 QQ收发skill v1.1.0：官方Node运行包、doctor诊断、账号匹配与本机配置保留、45秒启动截止、代理隔离和每日后台更新；下载包v1.47.0；投稿助手保持v1.3.6",
     "2026-10-29 制作skill v0.14.6：默认哈基米/曼波在线配音，跨电脑可用的标准库脚本与缓存核验，无需本地模型；发布skill保持v1.3.6，制作下载包v1.46.0",
@@ -813,6 +824,7 @@ window.__FR__ = {
 <script>
 // release 直链填入（push 后由部署脚本/手动更新 tag）
 const RELEASES = {
+  "fitness-tracker": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.49.0/lyzbcy-fitness-tracker.zip",
   "shared-regression": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.32.0/lyzbcy-shared-regression.zip",
   "software-video-production": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.46.0/software-video-production.zip",
   "video-publish-assistant": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.45.0/lyzbcy-video-publish-assistant.zip",
@@ -842,7 +854,7 @@ document.getElementById('dl-glm53-zcode-eval').href = RELEASES['glm53-zcode-eval
 function copyForAI(){
   const txt = `【捞鱼妙妙工具 · Agent Skills 收录站】
 
-这里收录捞鱼（lyzbcy）的个人 Agent Skills，每个 skill 独立打包，按需下载。共 10 个 skill：
+这里收录捞鱼（lyzbcy）的个人 Agent Skills，每个 skill 独立打包，按需下载。共 14 个 skill：
 
 1) lyzbcy-study-map（理解地图生成器）
    - 用途：把技术长文/访谈/论文/跨学科材料，生成有原文依据、能追问、能复述的交互式 HTML 理解地图；也适用于课程复习提纲、历年真题、计算题手把手演示。
@@ -938,6 +950,12 @@ function copyForAI(){
    - 边界：自动化仅配置好的HTTP GET断言；浏览器与业务验收需适配。无公司资料或登录信息。
    - 安装：解压到skills目录，Python 3.10+，每日后台静默更新。
    - 下载：${RELEASES['shared-regression']}
+
+14) lyzbcy-fitness-tracker（健身记录与训练小报 · v1.2.0）
+   - 用途：逐组记录，练完收尾生成完整分部位训练长图并发送当前对话；普通文字模型填模板，无需生图额度。
+   - 安装：下载解压到skills，Python 3.10+，安装Pillow依赖后init自己的私有数据目录。
+   - 边界：博客默认关闭，配置自己的Git仓库后才发布；源码/示例无私人训练账本。字体和插图见随包许可。
+   - 下载：${RELEASES['fitness-tracker']}
 
 仓库：https://github.com/lyzbcy/laoyu-miaomiao-tools
 介绍页：https://lyzbcy.github.io/laoyu-miaomiao-tools/`;

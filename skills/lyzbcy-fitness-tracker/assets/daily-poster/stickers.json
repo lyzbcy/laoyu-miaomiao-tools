@@ -1,0 +1,73 @@
+{
+  "remaster_workout_male": {
+    "file": "stickers/星星布丁精选10-重绘-09-锻炼身体.png",
+    "meaning": "锻炼身体：男生伸展热身，手臂举起；适合训练标题，不是约会。",
+    "contexts": [
+      "workout",
+      "achievement",
+      "encouragement"
+    ],
+    "remastered": true,
+    "priority": 100
+  },
+  "remaster_workout_female": {
+    "file": "stickers/星星布丁精选12-重绘-14-锻炼身体.png",
+    "meaning": "锻炼身体：红背心女生拿粉色哑铃，认真训练。",
+    "contexts": [
+      "workout",
+      "achievement",
+      "encouragement"
+    ],
+    "remastered": true,
+    "priority": 100
+  },
+  "remaster_cheer": {
+    "file": "stickers/星星布丁精选13-重绘-15-一起加油.png",
+    "meaning": "一起加油：运动装男生举拳鼓劲，适合训练鼓励和页尾。",
+    "contexts": [
+      "workout",
+      "encouragement",
+      "achievement"
+    ],
+    "remastered": true,
+    "priority": 100
+  },
+  "remaster_admire": {
+    "file": "stickers/星星布丁精选2-重绘-12-佩服.png",
+    "meaning": "佩服：女生双手点赞、星星眼，用来肯定训练量和坚持。",
+    "contexts": [
+      "achievement",
+      "accumulation",
+      "encouragement"
+    ],
+    "remastered": true,
+    "priority": 100
+  },
+  "remaster_meal": {
+    "file": "stickers/星星布丁精选9-重绘-06-吃饭.png",
+    "meaning": "吃饭：红背心女生端米饭，用于练后进食提醒，不暗示实际已吃。",
+    "contexts": [
+      "nutrition"
+    ],
+    "remastered": true,
+    "priority": 100
+  },
+  "remaster_rest": {
+    "file": "stickers/星星布丁精选表情-重绘-19-没力气.png",
+    "meaning": "没力气：趴在枕头上休息，用于练后恢复提醒，不推断用户力竭。",
+    "contexts": [
+      "recovery"
+    ],
+    "remastered": true,
+    "priority": 100
+  },
+  "remaster_surprised": {
+    "file": "stickers/星星布丁精选表情-重绘-20-惊了.png",
+    "meaning": "惊了：女生捂嘴惊讶，适合历史累计量的惊叹。",
+    "contexts": [
+      "accumulation"
+    ],
+    "remastered": true,
+    "priority": 100
+  }
+}

@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.venv/
+workspace/
+posters/
+records.jsonl
+config.json
+exercises.json
+publish-state.json
+*.audit.json
+!examples/demo-records.jsonl
+!examples/config.example.json
+!examples/exercises.example.json

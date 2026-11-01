@@ -1,0 +1,2 @@
+Pillow>=11.0,<13
+tzdata>=2025.1; sys_platform == "win32"
