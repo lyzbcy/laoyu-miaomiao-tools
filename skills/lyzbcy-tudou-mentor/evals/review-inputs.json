@@ -1,0 +1,110 @@
+{
+  "instructions": "仅向被评审模型提供当前skill、任务题面和代码，不提供独立预期文件。要求先识别相关知识再按需加载案例；评审真实缺陷，正常或证据不足时不硬挑错。普通开发/评审不切换角色口吻。",
+  "cases": [
+    {
+      "id": "R01",
+      "context": "请求层已统一展示网络错误。此方法返回 true 表示允许后续提交。",
+      "code": "async function confirm() { try { await request(); } catch (e) { toast(e.message); } return true; }"
+    },
+    {
+      "id": "R02",
+      "context": "统一层负责网络反馈，返回对象 ok 是项目确认的业务成功字段。",
+      "code": "async function confirm() { pending=true; try { return (await request()).ok === true; } catch { return false; } finally { pending=false; } }"
+    },
+    {
+      "id": "R03",
+      "context": "这是独立原生 HTML 诊断页，未接入业务组件库。",
+      "code": "<button type=\"button\" id=\"inspect\">检查</button>"
+    },
+    {
+      "id": "R04",
+      "context": "页面规定底部统一保存；未提供 children 字段表示保留既有子项。",
+      "code": "function confirmModal(value) { return api.save({ ...value, children: value.children || [] }).then(reloadPage); }"
+    },
+    {
+      "id": "R05",
+      "context": "统一保存；服务端约定省略 tasks 保留、[] 明确清空。草稿仍保留 labels 用于重开回显。",
+      "code": "function toDTO(draft) { const dto={ id:draft.id, tagIds:[...draft.tagIds] }; if(draft.tasksEdited) dto.tasks=draft.tasks.map(t=>({id:t.id,title:t.title})); return dto; }"
+    },
+    {
+      "id": "R06",
+      "context": "自定义范围为空时应该必填报错；标签表示动态规则，不是人员快照。",
+      "code": "if (!draft.tagIds.length) draft.scope=\"ALL\"; draft.userIds=tags.flatMap(t=>t.members);"
+    },
+    {
+      "id": "R07",
+      "context": "表单允许校验期间继续编辑；save 读取传入对象的当前内容。",
+      "code": "async function submit(){ if(await check(form.name)){ await checkOtherFields(); await save(form); } }"
+    },
+    {
+      "id": "R08",
+      "context": "产品允许保存点击时的快照，继续编辑属于下一次修改。checkName/checkOther均只读各自输入。",
+      "code": "async function submit(){ const payload=structuredClone(form); if(!await checkName(payload.name)) return; if(!await checkOther(payload)) return; await save(payload); }"
+    },
+    {
+      "id": "R09",
+      "context": "新请求会更新 latest，但多个请求共享同一个 loading。",
+      "code": "async function query(){ const own=++latest; loading=true; try{ const r=await load(); if(own===latest) rows=r; } finally { loading=false; } }"
+    },
+    {
+      "id": "R10",
+      "context": "响应 id 是超过安全整数范围的未加引号整型标识。",
+      "code": "const value=JSON.parse('{\"id\":9007199254740993}'); const id=String(value.id);"
+    },
+    {
+      "id": "R11",
+      "context": "接口约定 id 为字符串，price 为数值。",
+      "code": "const value=JSON.parse('{\"id\":\"9007199254740993\",\"price\":3.5}'); match(value.id);"
+    },
+    {
+      "id": "R12",
+      "context": "需要兼容个别接口的大整型标识，其他数值和字符串内容必须保持语义。",
+      "code": "const safe=raw.replace(/\\d+/g, token=>JSON.stringify(token)); return JSON.parse(safe);"
+    },
+    {
+      "id": "R13",
+      "context": "list 返回当前一页，不是完整数据集。total 是未筛选的服务端总数。",
+      "code": "const res=await list({pageIndex:3}); rows=res.records.filter(r=>r.active); total=res.total;"
+    },
+    {
+      "id": "R14",
+      "context": "list 支持后端状态筛选。契约确认 0 是有效 version。",
+      "code": "const res=await list({pageIndex:1,states:selectedStates}); rows=res.records; total=res.total; if(row.version == null) return; await update({id:row.id,version:row.version});"
+    },
+    {
+      "id": "R15",
+      "context": "allItems 是已确认完整且无需服务端权限裁剪的本地列表，先筛选再分页。",
+      "code": "const visible=allItems.filter(r=>r.active); const rows=visible.slice(offset,offset+limit); const total=visible.length;"
+    },
+    {
+      "id": "R16",
+      "context": "0/false 是有效关闭值，null/undefined 才表示缺失。",
+      "code": "const enabled=pageResult.enabled || sharedCache.enabled;"
+    },
+    {
+      "id": "R17",
+      "context": "本页回查优先，字段缺失时回退公共缓存；0/false 均为明确值。",
+      "code": "const enabled=pageResult.enabled ?? sharedCache.enabled;"
+    },
+    {
+      "id": "R18",
+      "context": "此字段空字符串也表示缺失，应回退默认值。",
+      "code": "const display=localValue ?? defaultValue;"
+    },
+    {
+      "id": "R19",
+      "context": "真实测量：cell content width=160，wrapper border width=184；设计要求内容在单元格内。",
+      "code": " .cell{width:160px}.picker{width:100%}.picker__wrapper{min-width:184px}"
+    },
+    {
+      "id": "R20",
+      "context": "实际测量各层右边界均未超出容器，长文本用省略号是已确认设计。",
+      "code": ".cell{width:160px}.picker{width:100%;min-width:0}.label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}"
+    },
+    {
+      "id": "R21",
+      "context": "下拉浮层允许越过表格边界，不是表格内输入区域。没有提供内部盒子的实际测量。",
+      "code": ".popup{position:fixed;width:280px}"
+    }
+  ]
+}

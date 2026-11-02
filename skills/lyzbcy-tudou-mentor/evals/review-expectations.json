@@ -1,0 +1,222 @@
+{
+  "instructions": "此文件仅给评测者使用。记录模型实际选择的案例、定位依据、修复及验证，不以关键词命中或复述答案代替正确性。未运行模型评审时不得报告通过率。",
+  "cases": [
+    {
+      "id": "R01",
+      "expected": "defect",
+      "required_reasoning": [
+        "重复反馈",
+        "失败后被当作成功",
+        "保留失败中断与状态恢复，核统一层契约"
+      ],
+      "relevant_case": "C01",
+      "grading": "必须依据代码/契约解释，说明最小修复或正常边界及验证方式；禁止仅复述原则，不推断真实环境通过。"
+    },
+    {
+      "id": "R02",
+      "expected": "no_defect_shown",
+      "required_reasoning": [
+        "此片段正确保留失败与loading恢复",
+        "不能只因存在catch就要求删除"
+      ],
+      "relevant_case": "C01",
+      "grading": "必须依据代码/契约解释，说明最小修复或正常边界及验证方式；禁止仅复述原则，不推断真实环境通过。"
+    },
+    {
+      "id": "R03",
+      "expected": "no_defect_shown",
+      "required_reasoning": [
+        "不把业务工程的封装组件规范推广到原生工具页",
+        "事件实现未给出，不编造缺陷"
+      ],
+      "relevant_case": "C01",
+      "grading": "必须依据代码/契约解释，说明最小修复或正常边界及验证方式；禁止仅复述原则，不推断真实环境通过。"
+    },
+    {
+      "id": "R04",
+      "expected": "defect",
+      "required_reasoning": [
+        "局部确认提前写后台/重拉覆盖未存草稿",
+        "缺失被误写为空",
+        "隔离草稿并按编辑意图序列化"
+      ],
+      "relevant_case": "C02",
+      "grading": "必须依据代码/契约解释，说明最小修复或正常边界及验证方式；禁止仅复述原则，不推断真实环境通过。"
+    },
+    {
+      "id": "R05",
+      "expected": "no_defect_shown",
+      "required_reasoning": [
+        "只在传输层选字段，不破坏原草稿名称",
+        "按编辑意图区分省略与清空"
+      ],
+      "relevant_case": "C02",
+      "grading": "必须依据代码/契约解释，说明最小修复或正常边界及验证方式；禁止仅复述原则，不推断真实环境通过。"
+    },
+    {
+      "id": "R06",
+      "expected": "defect",
+      "required_reasoning": [
+        "空范围被扩大",
+        "动态规则变静态成员",
+        "保留CUSTOM与标签标识，按契约校验"
+      ],
+      "relevant_case": "C02",
+      "grading": "必须依据代码/契约解释，说明最小修复或正常边界及验证方式；禁止仅复述原则，不推断真实环境通过。"
+    },
+    {
+      "id": "R07",
+      "expected": "defect",
+      "required_reasoning": [
+        "校验结果与最终载荷可能不同版本",
+        "校验完成后核版本/快照或使用完整一致的快照策略"
+      ],
+      "relevant_case": "C03",
+      "grading": "必须依据代码/契约解释，说明最小修复或正常边界及验证方式；禁止仅复述原则，不推断真实环境通过。"
+    },
+    {
+      "id": "R08",
+      "expected": "no_defect_shown",
+      "required_reasoning": [
+        "保存和校验同一快照，属于允许的实现",
+        "不能机械要求任意界面变化都中断"
+      ],
+      "relevant_case": "C03",
+      "grading": "必须依据代码/契约解释，说明最小修复或正常边界及验证方式；禁止仅复述原则，不推断真实环境通过。"
+    },
+    {
+      "id": "R09",
+      "expected": "defect",
+      "required_reasoning": [
+        "结果有代次保护但finally无保护",
+        "旧请求可能清掉新请求loading",
+        "并发及失效时的loading归属需要明确"
+      ],
+      "relevant_case": "C03",
+      "grading": "必须依据代码/契约解释，说明最小修复或正常边界及验证方式；禁止仅复述原则，不推断真实环境通过。"
+    },
+    {
+      "id": "R10",
+      "expected": "defect",
+      "required_reasoning": [
+        "精度在JSON.parse时丢失",
+        "转String无法恢复",
+        "原始文本阶段可靠解析或服务端字符串契约"
+      ],
+      "relevant_case": "C04",
+      "grading": "必须依据代码/契约解释，说明最小修复或正常边界及验证方式；禁止仅复述原则，不推断真实环境通过。"
+    },
+    {
+      "id": "R11",
+      "expected": "no_defect_shown",
+      "required_reasoning": [
+        "字符串标识保真",
+        "不要求把所有数值变成字符串"
+      ],
+      "relevant_case": "C04",
+      "grading": "必须依据代码/契约解释，说明最小修复或正常边界及验证方式；禁止仅复述原则，不推断真实环境通过。"
+    },
+    {
+      "id": "R12",
+      "expected": "defect",
+      "required_reasoning": [
+        "正则破坏字符串、小数等结构和语义",
+        "不能泛化为全局无损解析器"
+      ],
+      "relevant_case": "C04",
+      "grading": "必须依据代码/契约解释，说明最小修复或正常边界及验证方式；禁止仅复述原则，不推断真实环境通过。"
+    },
+    {
+      "id": "R13",
+      "expected": "defect",
+      "required_reasoning": [
+        "只过滤本页导致缺项及总数不匹配",
+        "由有完整数据的查询端筛选"
+      ],
+      "relevant_case": "C05",
+      "grading": "必须依据代码/契约解释，说明最小修复或正常边界及验证方式；禁止仅复述原则，不推断真实环境通过。"
+    },
+    {
+      "id": "R14",
+      "expected": "no_defect_shown",
+      "required_reasoning": [
+        "后端筛选与分页一致",
+        "零版本未被误判缺失",
+        "不能仅据version字段推断服务端并发保证"
+      ],
+      "relevant_case": "C05",
+      "grading": "必须依据代码/契约解释，说明最小修复或正常边界及验证方式；禁止仅复述原则，不推断真实环境通过。"
+    },
+    {
+      "id": "R15",
+      "expected": "no_defect_shown",
+      "required_reasoning": [
+        "完整数据集上客户端筛选分页是正常反例",
+        "不机械禁止filter"
+      ],
+      "relevant_case": "C05",
+      "grading": "必须依据代码/契约解释，说明最小修复或正常边界及验证方式；禁止仅复述原则，不推断真实环境通过。"
+    },
+    {
+      "id": "R16",
+      "expected": "defect",
+      "required_reasoning": [
+        "显式关闭被旧值覆盖",
+        "按缺省语义使用nullish回退，核来源权威性"
+      ],
+      "relevant_case": "C06",
+      "grading": "必须依据代码/契约解释，说明最小修复或正常边界及验证方式；禁止仅复述原则，不推断真实环境通过。"
+    },
+    {
+      "id": "R17",
+      "expected": "no_defect_shown",
+      "required_reasoning": [
+        "符合给定缺省契约",
+        "不额外新增逐页缓存或请求"
+      ],
+      "relevant_case": "C06",
+      "grading": "必须依据代码/契约解释，说明最小修复或正常边界及验证方式；禁止仅复述原则，不推断真实环境通过。"
+    },
+    {
+      "id": "R18",
+      "expected": "defect",
+      "required_reasoning": [
+        "?? 不处理空字符串",
+        "按本字段契约显式处理，不能把??当万能修复"
+      ],
+      "relevant_case": "C06",
+      "grading": "必须依据代码/契约解释，说明最小修复或正常边界及验证方式；禁止仅复述原则，不推断真实环境通过。"
+    },
+    {
+      "id": "R19",
+      "expected": "defect",
+      "required_reasoning": [
+        "内部最小宽度限制收缩",
+        "定位真实盒子并局部修复",
+        "不能仅修改外层width"
+      ],
+      "relevant_case": "C07",
+      "grading": "必须依据代码/契约解释，说明最小修复或正常边界及验证方式；禁止仅复述原则，不推断真实环境通过。"
+    },
+    {
+      "id": "R20",
+      "expected": "no_defect_shown",
+      "required_reasoning": [
+        "已有实际测量支持，不能只因overflow:hidden就判错",
+        "仍按操作可达性核设计而非强制全局改样式"
+      ],
+      "relevant_case": "C07",
+      "grading": "必须依据代码/契约解释，说明最小修复或正常边界及验证方式；禁止仅复述原则，不推断真实环境通过。"
+    },
+    {
+      "id": "R21",
+      "expected": "insufficient_evidence",
+      "required_reasoning": [
+        "设计允许浮层越界",
+        "先区分浮层与输入本体，不凭宽度大直接改全局min-width"
+      ],
+      "relevant_case": "C07",
+      "grading": "必须依据代码/契约解释，说明最小修复或正常边界及验证方式；禁止仅复述原则，不推断真实环境通过。"
+    }
+  ]
+}

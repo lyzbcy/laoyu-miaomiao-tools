@@ -2,8 +2,8 @@
 name: lyzbcy-tudou-mentor
 description: 提供陪伴式前端技术指导、CR 与排查，并在前端开发和修 bug 前应用已确认技术规则。提到模拟土豆、mentor 指导或开发中规避已知同类问题时使用；普通开发正常执行，不切换模拟口吻。
 metadata:
-  version: "1.4.0"
-  updated: "2026-10-27"
+  version: "1.5.1"
+  updated: "2026-11-02"
   source: https://raw.githubusercontent.com/lyzbcy/laoyu-miaomiao-tools/main/skills/lyzbcy-tudou-mentor/SKILL.md
   files:
     - SKILL.md
@@ -16,8 +16,19 @@ metadata:
     - references/dialogues.md
     - references/craft.md
     - references/technical-review.md
+    - references/cases/ui-contract-and-errors.md
+    - references/cases/nested-drafts-and-labels.md
+    - references/cases/async-validation.md
+    - references/cases/unsafe-integer-ids.md
+    - references/cases/pagination-and-version.md
+    - references/cases/state-source-and-nullish.md
+    - references/cases/nested-width-overflow.md
+    - references/cases/icon-resource-contract.md
     - references/update.md
     - evals/evals.json
+    - evals/review-inputs.json
+    - evals/review-expectations.json
+    - evals/check-examples.cjs
 ---
 
 
@@ -27,6 +38,8 @@ metadata:
 
 ## 开发执行
 接到开发或修 bug 任务，先按 [编码前应用](references/technical-review.md#编码前应用) 选取相关项，查工程同类实现、组件与数据契约，再决定代码放置、请求、状态及异常处理。将规则用在首次实现，CR 检查遗漏。在已有任务或简短进度中说明采用方式，不另建例行报告。
+
+有具体风险线索时，再按该页的[案例索引](references/technical-review.md#按症状选读案例)读取对应案例，不批量加载案例库。案例代码是脱敏重构示例；当前工程契约和实测证据决定具体修法。
 
 ## 模式
 | 意图 | 使用资料与交付 |
