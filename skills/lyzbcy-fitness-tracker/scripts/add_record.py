@@ -331,4 +331,11 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    finally:
+        try:
+            from update_skill import start_background
+            start_background()
+        except Exception:
+            pass

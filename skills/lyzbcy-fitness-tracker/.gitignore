@@ -8,6 +8,9 @@ config.json
 exercises.json
 publish-state.json
 *.audit.json
+.update-*
+.contribution-tmp/
+contribution-results.jsonl
 !examples/demo-records.jsonl
 !examples/config.example.json
 !examples/exercises.example.json

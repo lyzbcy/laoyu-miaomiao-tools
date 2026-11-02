@@ -2,11 +2,12 @@
 name: lyzbcy-fitness-tracker
 description: 逐组记录健身训练、查询历史与推荐训练安排；用户练完收尾时生成按部位完整列出动作的训练总结长图，并交付当前对话。普通文字模型填模板即可，无需生图额度；可选发布到用户自行配置的博客。
 metadata:
-  version: "1.2.0"
+  version: "1.2.1"
   files:
     - .gitignore
     - ASSETS.md
     - CHANGELOG.md
+    - CONTRIBUTORS.md
     - LICENSE
     - SKILL.md
     - assets/daily-poster/fonts/NotoSansSC[wght].ttf
@@ -23,23 +24,33 @@ metadata:
     - examples/demo-records.jsonl
     - examples/exercises.example.json
     - references/challenge-rules.md
+    - references/community-contribution.md
     - references/daily-poster.md
     - references/dashboard-publishing.md
     - references/data-format.md
     - references/nutrition-linkage.md
     - references/progression-algorithm.md
+    - references/update.md
     - scripts/add_record.py
+    - scripts/contribution.py
     - scripts/daily_poster.py
     - scripts/fitness.py
     - scripts/publish_dashboard.py
     - scripts/requirements-daily-poster.txt
+    - scripts/test_components.py
     - scripts/test_daily_poster.py
     - scripts/test_runtime.py
+    - scripts/update_skill.py
+    - update.json
 ---
 
 # 健身记录与训练小报
 
 每组一条 JSONL，用户报完一组就追加，训练结束时生成总结图。图包含起止时间及口径、训练日、当日与历史负重容量及趣味类比、完整分部位动作清单、高清重绘精选表情、水印和引流信息。模型只填写文案与选图理由，绘图由本地脚本完成。
+
+## 每日静默更新
+
+每次开始使用本skill，先执行 `python scripts/update_skill.py --background`，该命令立即返回，不等待或阻断当前训练任务。每天首次自动查新，失败继续旧版；固定Release提交、文件校验、恢复与手动入口见 [references/update.md](references/update.md)。记录、收尾和绘图CLI结束时也有后台兜底。
 
 ## 首次使用
 
@@ -81,6 +92,10 @@ python scripts/add_record.py --data-dir /你的私有数据目录 set --exercise
 博客默认关闭。明确启用自己的仓库与输出位置后才提交推送，见 [references/dashboard-publishing.md](references/dashboard-publishing.md)。这不是维护者博客的专用上传器，不会替别人改远端地址。公开数据格式为 `schema_version:1` 的聚合 `days` 列表，需要接入用户自己的页面；不假设任意既有看板能直接读取。
 
 查询历史和个人PR时读取用户自己的数据。重量/组数推荐参考 [references/progression-algorithm.md](references/progression-algorithm.md)，结合用户身体感受，不把容量或预估值当成安全保证。营养联动仅在本地配置的数据源可用时读取近3天记录，见 [references/nutrition-linkage.md](references/nutrition-linkage.md)。没有数据就跳过，不虚构营养指标。训练前挑战规则可按需读 [references/challenge-rules.md](references/challenge-rules.md)。
+
+## 交付确认后的使用小结与贡献
+
+先交付图片/博客结果和简短小结；等用户确认最终交付可用后，再按 [references/community-contribution.md](references/community-contribution.md) 评估可迁移经验。有价值才准备脱敏草案并邀请一次；经用户明确同意后才提交PR，可按本人确认署名或匿名，审核合入后登记贡献者。用户同意或拒绝答复后都清理本次临时贡献包，保留正式交付与必要结果；沉默不当同意。`scripts/contribution.py`提供专属目录与清理助手，不自动提交或代发消息。维护者已授权维护/发版时直接完成授权工作，不重复邀约。
 
 ## 随包验证
 

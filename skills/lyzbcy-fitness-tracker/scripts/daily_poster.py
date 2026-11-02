@@ -20,7 +20,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageOps
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / 'assets' / 'daily-poster'
 TZ = ZoneInfo('Asia/Shanghai')
-VERSION = '1.2.0'
+VERSION = '1.2.1'
 W, H = 1440, 2160
 PAPER, INK, ORANGE, TEAL = '#faf3e6', '#272b28', '#df572e', '#207c70'
 CTA = '获取同款健身记录，可以关注我“捞鱼的博客”公众号，回复“健身”获取。'
@@ -601,4 +601,11 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    finally:
+        try:
+            from update_skill import start_background
+            start_background()
+        except Exception:
+            pass
