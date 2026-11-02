@@ -19,7 +19,7 @@ NAME = 'lyzbcy-fitness-tracker'
 REPOSITORY = 'lyzbcy/laoyu-miaomiao-tools'
 API = 'https://api.github.com/repos/'+REPOSITORY+'/releases/tags/'
 RAW = 'https://raw.githubusercontent.com/'+REPOSITORY+'/'
-PRIVATE = {'records.jsonl','config.json','exercises.json','publish-state.json','runtime.local.json'}
+PRIVATE = {'records.jsonl','config.json','exercises.json','publish-state.json','runtime.local.json','LOCAL.md'}
 TEXT = {'.md','.py','.json','.jsonl','.txt','.sh','.html','.css','.js','.yml','.yaml'}
 
 

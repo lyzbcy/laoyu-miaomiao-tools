@@ -14,3 +14,6 @@ contribution-results.jsonl
 !examples/demo-records.jsonl
 !examples/config.example.json
 !examples/exercises.example.json
+
+runtime.local.json
+LOCAL.md

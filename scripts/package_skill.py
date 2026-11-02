@@ -182,6 +182,12 @@ def main() -> None:
         if registry.get('version') != version or registry.get('name') != skill_name:
             problems.append('静默更新清单的名称或版本不一致')
         hashes = registry.get('sha256', {})
+        if skill_name == 'lyzbcy-fitness-tracker':
+            private_names = {'runtime.local.json', 'LOCAL.md', 'config.json', 'records.jsonl',
+                             'exercises.json', 'publish-state.json', 'contribution-results.jsonl'}
+            for rel in files:
+                if Path(rel).name in private_names or any(p in {'workspace', 'posters', '.contribution-tmp'} for p in Path(rel).parts):
+                    problems.append(f'健身公开包不能包含本地环境或用户数据: {rel}')
         if set(hashes) != set(files) - {'update.json'}:
             problems.append('静默更新文件集与metadata.files不一致')
         for rel, expected in hashes.items():

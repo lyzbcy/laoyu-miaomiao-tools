@@ -20,7 +20,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageOps
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / 'assets' / 'daily-poster'
 TZ = ZoneInfo('Asia/Shanghai')
-VERSION = '1.2.1'
+VERSION = '1.3.0'
 W, H = 1440, 2160
 PAPER, INK, ORANGE, TEAL = '#faf3e6', '#272b28', '#df572e', '#207c70'
 CTA = '获取同款健身记录，可以关注我“捞鱼的博客”公众号，回复“健身”获取。'
@@ -569,7 +569,8 @@ def main():
     args = p.parse_args()
     try:
         if args.cmd == 'prepare':
-            config = json.loads(Path(args.config).read_text(encoding='utf-8')) if args.config else {}
+            from runtime import config as local_config
+            config = local_config(Path(args.config).resolve().parent, config_path=args.config) if args.config else local_config(Path(args.records).resolve().parent)
             value = make_input(args.records, args.date, config.get('brand'))
             write_json(args.out, value)
             print(json.dumps({'input': args.out, 'facts': value['facts'], 'editable': 'copy only'}, ensure_ascii=False))
@@ -582,7 +583,8 @@ def main():
         elif args.cmd == 'auto':
             folder = Path(args.dir)
             inp, out = folder / f'{args.date}.json', folder / f'{args.date}.png'
-            config = json.loads(Path(args.config).read_text(encoding='utf-8')) if args.config else {}
+            from runtime import config as local_config
+            config = local_config(Path(args.config).resolve().parent, config_path=args.config) if args.config else local_config(Path(args.records).resolve().parent)
             value = make_input(args.records, args.date, config.get('brand'))
             if not value['facts']['complete']:
                 raise ValueError('尚无有效收工记录，自动完训图暂不生成；中途预览请用 prepare/render')

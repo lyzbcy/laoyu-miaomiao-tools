@@ -2,7 +2,7 @@
 
 默认 `blog.enabled=false`，此时不调用Git、不发送数据。图片生成与当前对话附件交付不要求启用博客。
 
-用户明确要求把训练聚合数据发布到自己的仓库时，在私有数据目录的config.json填写：
+用户明确要求把训练聚合数据发布到自己的仓库时，在私有数据目录的runtime.local.json（或config.json）填写：
 
 ```json
 {
@@ -25,3 +25,12 @@
 目标文件有未提交改动、仓库已有暂存内容、当前分支不符或本地历史领先/落后远端时拒绝发布，避免夹带其他工作。成功创建提交但push失败时，在私有 `publish-state.json` 留下本次提交指纹；仅当HEAD、repo、remote与branch仍一致时重推本次提交，不重复生成提交。仓库变化后停止，交由用户核对。
 
 `status=pushed`仅表示Git推送成功，页面部署仍为`unverified`；若需要确认上线，继续检查用户自己的部署系统。推送失败不影响训练记录与总结图片，模型仍要把图发给用户并报告真实状态。
+
+
+## 原完整看板兼容
+
+配置 `blog.schema="jekyll-v1"` 使用随公开包维护的dashboard_data.py，保留原看板的力量/有氧/心肺/肌群/趋势和PR数据结构；默认`days-v1`不变。`include_notes/include_preferences/include_nutrition`默认false，需要逐项确认后在本机启用；营养来源由本地nutrition_dir指定。generated_at取最近记录时间，重复收尾不因当前时间变化制造空提交。
+
+`python scripts/publish_dashboard.py --dry-run`检查实际环境、Git对齐和完整载荷，不写产物、不提交推送。`python scripts/fitness.py finish --date YYYY-MM-DD --no-publish`只生成已收工日期图片。原`bash scripts/update_dashboard.sh YYYY-MM-DD`入口保留为公共收尾命令的薄封装，不包含私有路径或独立聚合逻辑。
+
+详见[本地环境](local-environment.md)。

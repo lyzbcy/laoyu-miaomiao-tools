@@ -202,13 +202,13 @@
   <!-- ====== 详情数据源（静态保留，页面源码对 AI / 爬虫始终完整可读；JS 读取它渲染上方网格） ====== -->
 
   <article class="skill skill-detail" id="fitness-tracker" data-name="lyzbcy-fitness-tracker" data-grad="linear-gradient(135deg,#1e776d 0%,#dc603d 100%)">
-    <div class="skill-head"><span class="emoji">🏋️</span><h3>lyzbcy-fitness-tracker</h3><span class="ver">健身记录与训练小报 · v1.2.1</span></div>
+    <div class="skill-head"><span class="emoji">🏋️</span><h3>lyzbcy-fitness-tracker</h3><span class="ver">健身记录与训练小报 · v1.3.0</span></div>
     <p class="skill-tag">每组一句话记下来，练完自动做一张完整训练小报。普通文字模型也能生成，无需生图额度。</p>
     <div class="field"><div class="label">能做什么</div><p>增量记录、训练时间与分类、今日/历史搬铁容量类比、按部位列出全部动作和训练组；高清精选重绘表情按语义选择，完整长图自动加高。</p></div>
     <div class="field"><div class="label">怎么用</div><div class="prompt-box">用健身skill记下这组：坐姿划船35kg做了12个。练完收尾时，更新我已启用的博客，并把训练总结图发给我。</div></div>
     <div class="field"><div class="label">首次配置</div><p>Python 3.10+，安装Pillow与时区依赖后init自己的私有数据目录。默认不发布博客；署名、水印、公众号可配置，不带维护者的训练账本或账号。每天首次静默检查更新，失败沿用旧版；交付确认后按经验价值邀请脱敏PR贡献，可匿名并清理临时包。</p></div>
     <div class="field"><div class="label">示例与边界</div><p><a href="assets/fitness-demo.png" target="_blank" rel="noopener">查看虚构数据生成的示例长图</a>。代码MIT，字体及角色插图采用随包单独说明；博客成功推送不等于页面已部署。</p></div>
-    <div class="dl-row"><a class="btn btn-zip" id="dl-fitness-tracker" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.50.0/lyzbcy-fitness-tracker.zip">📦 下载 lyzbcy-fitness-tracker.zip</a><a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/lyzbcy-fitness-tracker">查看源码</a></div>
+    <div class="dl-row"><a class="btn btn-zip" id="dl-fitness-tracker" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.51.0/lyzbcy-fitness-tracker.zip">📦 下载 lyzbcy-fitness-tracker.zip</a><a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/lyzbcy-fitness-tracker">查看源码</a></div>
   </article>
 
   <article class="skill skill-detail" id="shared-regression" data-name="lyzbcy-shared-regression" data-grad="linear-gradient(135deg,#142b43 0%,#1764bb 58%,#38a7ad 100%)">
@@ -720,9 +720,10 @@
 // —— 强制刷新组件配置（发布时与 docs/version.json 同步修改）——
 window.__FR__ = {
   id: 'laoyu-miaomiao-tools',
-  version: '2026.11.02-2',
+  version: '2026.11.02-3',
   registry: 'version.json',
   changelog: [
+    "2026-11-02 健身skill v1.3.0：生产与公开版统一，私有环境增量配置、完整Jekyll看板兼容和迁移演练；下载包v1.51.0",
     "2026-11-02 健身记录skill v1.2.1：每日静默更新、固定发布目标与失败回滚；交付确认后脱敏PR邀约、匿名贡献和答复后临时包清理；下载包v1.50.0",
     "2026-11-02 新收录健身记录 skill v1.2.0：逐组记录、完训总结长图、高清重绘精选表情、按部位完整清单；无需生图能力，私有数据目录，博客可选；下载包v1.49.0",
     "2026-10-30 QQ收发skill v1.1.1：换行AI代发落款、模型身份分级兜底、未知不猜不阻塞、维护者直发流程；下载包v1.48.0；投稿助手保持v1.3.6",
@@ -825,7 +826,7 @@ window.__FR__ = {
 <script>
 // release 直链填入（push 后由部署脚本/手动更新 tag）
 const RELEASES = {
-  "fitness-tracker": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.50.0/lyzbcy-fitness-tracker.zip",
+  "fitness-tracker": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.51.0/lyzbcy-fitness-tracker.zip",
   "shared-regression": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.32.0/lyzbcy-shared-regression.zip",
   "software-video-production": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.46.0/software-video-production.zip",
   "video-publish-assistant": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.45.0/lyzbcy-video-publish-assistant.zip",
@@ -952,7 +953,7 @@ function copyForAI(){
    - 安装：解压到skills目录，Python 3.10+，每日后台静默更新。
    - 下载：${RELEASES['shared-regression']}
 
-14) lyzbcy-fitness-tracker（健身记录与训练小报 · v1.2.1）
+14) lyzbcy-fitness-tracker（健身记录与训练小报 · v1.3.0）
    - 用途：逐组记录，练完收尾生成完整分部位训练长图并发送当前对话；普通文字模型填模板，无需生图额度。
    - 安装：下载解压到skills，Python 3.10+，安装Pillow依赖后init自己的私有数据目录。
    - 边界：博客默认关闭，配置自己的Git仓库后才发布；源码/示例无私人训练账本。字体和插图见随包许可。

@@ -42,9 +42,13 @@ class UpdateTest(unittest.TestCase):
 
     def test_update_pins_files_and_keeps_private_data(self):
         (self.root/'config.json').write_text('private config')
+        (self.root/'runtime.local.json').write_text('private locator')
+        (self.root/'LOCAL.md').write_text('private guidance')
         self.assertEqual(self.check(),'updated')
         self.assertEqual(u.local_version(self.root),(1,2,1))
         self.assertEqual((self.root/'config.json').read_text(),'private config')
+        self.assertEqual((self.root/'runtime.local.json').read_text(),'private locator')
+        self.assertEqual((self.root/'LOCAL.md').read_text(),'private guidance')
         self.assertTrue(all(ref=='a'*40 for rel,ref in self.calls if rel!='update.json'))
         self.assertFalse((self.root/'.update-backup').exists())
 

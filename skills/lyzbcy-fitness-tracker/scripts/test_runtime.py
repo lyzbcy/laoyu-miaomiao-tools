@@ -150,6 +150,37 @@ class PublisherTest(unittest.TestCase):
             with self.assertRaises(ValueError):
                 publisher.output_path(self.repo, value)
 
+    def test_jekyll_dry_run_and_publish_use_overlay_without_mutating_originals(self):
+        source = (self.folder/'config.json').read_bytes()
+        records = (self.folder/'records.jsonl').read_bytes()
+        poster.write_json(self.folder/'runtime.local.json', {'blog': {'schema':'jekyll-v1', 'data_path':'_data/fitness.json'}})
+        head = self.run_git('rev-parse', 'HEAD')
+        result = publisher.publish(self.folder, dry_run=True)
+        self.assertEqual(result['status'], 'ready')
+        self.assertFalse((self.repo/'_data/fitness.json').exists())
+        self.assertEqual(head, self.run_git('rev-parse', 'HEAD'))
+        self.assertFalse((self.folder/'publish-state.json').exists())
+        self.assertEqual(publisher.publish(self.folder)['status'], 'pushed')
+        self.assertEqual(self.run_git('show', '--format=', '--name-only', 'HEAD'), '_data/fitness.json')
+        self.assertIn('cardio', json.loads((self.repo/'_data/fitness.json').read_text(encoding='utf-8')))
+        self.assertEqual(publisher.publish(self.folder)['status'], 'unchanged')
+        self.assertEqual((self.folder/'config.json').read_bytes(), source)
+        self.assertEqual((self.folder/'records.jsonl').read_bytes(), records)
+
+    def test_failed_push_dry_run_never_retries_mutation(self):
+        real = publisher.git
+        def fail(repo, *args, **kw):
+            if args[0] == 'push':
+                raise ValueError('offline')
+            return real(repo, *args, **kw)
+        with patch.object(publisher, 'git', side_effect=fail):
+            with self.assertRaises(ValueError):
+                publisher.publish(self.folder)
+        head = self.run_git('rev-parse', 'HEAD')
+        with patch.object(publisher, 'git', side_effect=fail):
+            self.assertEqual(publisher.publish(self.folder, dry_run=True)['status'], 'ready_to_retry')
+        self.assertEqual(head, self.run_git('rev-parse', 'HEAD'))
+
 
 if __name__ == '__main__':
     unittest.main()

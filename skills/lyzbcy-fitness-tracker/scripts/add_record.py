@@ -23,12 +23,13 @@ import json
 import os
 from pathlib import Path
 import math
+import runtime
 import sys
 from datetime import datetime, timezone, timedelta
 
 # ── 路径配置 ──────────────────────────────────────────
 # fitness 数据在此共享目录，不是 workspace 下的相对路径
-FITNESS_DIR = os.environ.get("FITNESS_HOME", str(Path.home()/".lyzbcy-fitness"))
+FITNESS_DIR = str(runtime.workspace())
 RECORDS_FILE = os.path.join(FITNESS_DIR, "records.jsonl")
 CONFIG_FILE = os.path.join(FITNESS_DIR, "config.json")
 EXERCISES_FILE = os.path.join(FITNESS_DIR, "exercises.json")
@@ -155,6 +156,7 @@ def add_set(args):
         'weight': args.weight,
         'reps': args.reps,
     }
+    record['endTime'] = record['ts']
     if args.rpe is not None:
         record['rpe'] = args.rpe
     if args.note:

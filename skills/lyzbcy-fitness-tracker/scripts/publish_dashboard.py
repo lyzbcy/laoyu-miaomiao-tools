@@ -7,14 +7,17 @@ import json
 from pathlib import Path, PurePosixPath
 import re
 import subprocess
+from contextvars import ContextVar
+import runtime
 
 import daily_poster as poster
 
 ROOT = Path(__file__).resolve().parents[1]
+GIT_OPTIONS = ContextVar('fitness_git_options', default=())
 
 
 def git(repo, *args, check=True):
-    r = subprocess.run(['git', '-C', str(repo), *args], capture_output=True, text=True, encoding='utf-8', timeout=90)
+    r = subprocess.run(['git', '-C', str(repo), *GIT_OPTIONS.get(), *args], capture_output=True, text=True, encoding='utf-8', timeout=90)
     if check and r.returncode:
         # Do not print raw git output: remote URLs may contain private credentials.
         raise ValueError('Git操作失败：'+args[0]+'；请在自己的仓库核对状态与认证，未修改全局配置或远端地址')
@@ -33,7 +36,14 @@ def output_path(repo, rel):
     return p
 
 
-def export_data(folder):
+def export_data(folder, config=None):
+    config = runtime.config(folder) if config is None else config
+    schema = config.get("blog", {}).get("schema", "days-v1")
+    if schema == "jekyll-v1":
+        from dashboard_data import export_jekyll
+        return export_jekyll(folder, config)
+    if schema != "days-v1":
+        raise ValueError("未知博客数据schema")
     rows, _ = poster.read_records(folder/'records.jsonl')
     today = datetime.now(poster.TZ).date().isoformat()
     dates = sorted({r.get('date') for r in rows if r.get('action') in ['set', 'cardio'] and r.get('date', '') <= today})
@@ -44,8 +54,18 @@ def export_data(folder):
     return {'schema_version': 1, 'days': days, 'volume_basis': '已记录重量×次数；自重/未知负重及未结构化更正不折算'}
 
 
-def publish(folder):
-    config = json.loads((folder/'config.json').read_text(encoding='utf-8'))
+def publish(folder, *, dry_run=False):
+    config = runtime.config(folder)
+    cfg = config.get('blog', {})
+    options = ('-c', 'url.ssh://git@github.com/.insteadOf=git@github.com:') if cfg.get('github_ssh') is True else ()
+    token = GIT_OPTIONS.set(options)
+    try:
+        return _publish(folder, config, dry_run=dry_run)
+    finally:
+        GIT_OPTIONS.reset(token)
+
+
+def _publish(folder, config, *, dry_run=False):
     cfg = config.get('blog', {})
     if cfg.get('enabled') is not True:
         return {'status': 'disabled'}
@@ -71,6 +91,8 @@ def publish(folder):
     if pending:
         if pending.get('identity') != identity or pending.get('commit') != head:
             raise ValueError('上次推送未完成且仓库状态已变化，请先人工核对；不盲目重推')
+        if dry_run:
+            return {'status': 'ready_to_retry', 'commit': head}
         git(repo, 'push', remote, 'HEAD:refs/heads/'+branch)
         poster.write_json(state_path, {'last_pushed': head})
         return {'status': 'pushed', 'commit': head, 'deployment': 'unverified', 'retry': True}
@@ -80,9 +102,12 @@ def publish(folder):
     # Do not overwrite user modifications in the configured generated file.
     if git(repo, 'status', '--porcelain', '--', rel):
         raise ValueError('博客目标文件已有本地改动，未覆盖')
-    payload = json.dumps(export_data(folder), ensure_ascii=False, indent=2)+'\n'
+    payload = json.dumps(export_data(folder, config), ensure_ascii=False, indent=2)+'\n'
     if data.is_file() and data.read_text(encoding='utf-8') == payload:
         return {'status': 'unchanged'}
+    if dry_run:
+        return {'status': 'ready', 'schema': cfg.get('schema', 'days-v1'), 'data_path': rel,
+                'payload_sha256': hashlib.sha256(payload.encode()).hexdigest(), 'bytes': len(payload.encode())}
     data.parent.mkdir(parents=True, exist_ok=True)
     poster.write_json(data, json.loads(payload))
     # Exact path and --only ensure unrelated content never enters this commit.
@@ -96,10 +121,11 @@ def publish(folder):
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--workspace', required=True)
+    p.add_argument('--workspace')
+    p.add_argument('--dry-run', action='store_true', help='只读检查实际仓库和生成数据，不写文件或提交推送')
     a = p.parse_args()
     try:
-        print(json.dumps(publish(Path(a.workspace).resolve()), ensure_ascii=False))
+        print(json.dumps(publish(runtime.workspace(a.workspace), dry_run=a.dry_run), ensure_ascii=False))
     except (ValueError, OSError, subprocess.SubprocessError) as e:
         p.exit(1, f'博客更新失败: {e}\n')
 
