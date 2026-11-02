@@ -54,3 +54,10 @@ node --test scripts/tests/test_motion_models.cjs
 参考了 RemotionLab 的[条形比较](https://remotionlab.com/showcase/dataviz-bar-chart)、[趋势描绘](https://remotionlab.com/showcase/dataviz-line-draw)、[实际与目标](https://remotionlab.com/showcase/dataviz-bullet)、[双侧比较](https://remotionlab.com/showcase/dataviz-comparison-split)等公开说明与代码结构，迁移顺序揭示、对应比较和稳定阅读机制。网页视频未完成原速视听，不声称复现其声画观感或验证其留存。
 
 数值校验只验证配置与几何；还需查看真实编码的入场、中间与落定帧，检查手机阅读、转场和真实图表含义。节奏有疑虑时，以相同事实对比直接推进和减轻干扰的代表段；不按“安静段齐全”打分。用例和私人制作反馈留项目，不装入公开包。
+
+
+## 连续讲解的运动交接
+
+相邻镜头先比较人物、板书的位置与尺度：主体延续同一位置时，保留稳定空间，用内容替换、局部高亮或短促显形承接语义；主体确实换站、推进或退远时，再安排有起止位置的空间运动。丰富感来自与解释相配的动作及信息变化。
+
+MV复习段可按本片采用的人物安排同节奏的身体摆动、脚步与表情，并让动作配合接上、舍弃、刷新纪录等知识事件。炫彩歌词以实心可辨的字形为基础，颜色、光泽和轻弹跳保持完整读词路径。角色数量与具体形象沿用本项目授权素材，不扩成其他项目的默认人物。

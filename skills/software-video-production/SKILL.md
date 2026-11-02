@@ -2,13 +2,14 @@
 name: software-video-production
 description: 制作和改版软件演示、生活情境宣传短视频，处理真实操作证据、隐私、视听表达、封面和交付复盘。不替代软件开发或漫剧制作。
 metadata:
-  version: 0.14.6
+  version: 0.14.12
   source: https://raw.githubusercontent.com/lyzbcy/laoyu-miaomiao-tools/main/skills/software-video-production/SKILL.md
   files:
     - CHANGELOG.md
     - SKILL.md
     - agents/openai.yaml
     - docs/agent.md
+    - docs/document.md
     - docs/audio.md
     - docs/characters.md
     - docs/creative.md
@@ -23,6 +24,8 @@ metadata:
     - docs/workflow.md
     - references/update.md
     - scripts/narrate.py
+    - scripts/serve_preview.py
+    - scripts/tests/test_preview_ranges.py
     - scripts/media_check.py
     - scripts/update_skill.py
     - assets/shot-recipes.json
@@ -65,6 +68,7 @@ metadata:
     - docs/cases/algorithm-explainer.md
     - scripts/workflow_audit.py
     - scripts/closeout.py
+    - version.json
     - update.json
     - docs/advanced-cases.md
     - assets/advanced-cases.json
@@ -88,15 +92,17 @@ metadata:
 
 工作流同时建立同目录 `closeout.json`：记录经验评估、贡献授权/PR、归档和清理。恢复先status，交付前audit；制作接发布沿用同一份，不因压缩重置。详见[收尾证据](docs/run-summary.md#持久化收尾检查)。
 
-需要中文配音时默认用哈基米风格的曼波音色（Milora mbAIsc）：先复用文本、音色、语速一致的缓存，否则运行随包 `scripts/narrate.py` 在线合成，无需本地语音模型。用户指定音色时优先；服务不可用不静默换声。调用命令与边界见[声音](docs/audio.md#默认中文配音跨电脑)。此默认只选配音音色，不要求每条视频加旁白；歌曲复习仍按既定Suno流程。
+需要中文配音时可沿用哈基米风格的曼波音色偏好，用户当前选择优先；先复用文本、音色、语速与哈希匹配的获准缓存，新生成先核实服务可用性、音色和费用并做短样。`scripts/narrate.py` 是历史 Milora 适配，不代表该试用接口仍可用；下架或需付费即停止该路径，不自动购买、换声或部署本地模型。详见[声音](docs/audio.md#默认中文配音跨电脑)。此默认不要求每片加旁白，也不替代歌曲生成流程。
+
+完整制作沿[生产主线](docs/workflow.md)推进：观看理由→导演方案→有声代表段→全片生产→整体剪辑→交付反馈；按阶段产物与实际效果决定推进或回改。用[制作 document](docs/document.md)承载导演方案，模块按问题读取；局部改版只回到受影响阶段，沿用项目已有文档与账本。
 
 ## 制作顺序
 
 1. **核实事件与源时间。** 看原素材的操作、声音与设备关系，登记源清单、哈希、时间边界与隐私；有语音且需按词剪辑或同步字幕时核对字级边界。创意情境与真机证据分别标明；需要删口头词/停顿或重组镜头时按[可回滚剪辑与语义分镜](docs/editing.md)保存候选理由、EDL和剪后字幕映射，不直接改原片。
 2. **先验观看理由与兑现。** 从素材中选一种能成立的[开头机制](docs/creative.md)，把首句与首帧一起检查：看哪里、预测什么、已得什么回报、接着等什么。开头机制未定时用实际素材比较短方案，选对叙事再扩展；已采用的开头可沿用。约3秒、5秒只作观察点。参考的画面事实、创作解释与留存指标按[范例方法](docs/exemplars.md)分开，不把标题或特效数量当留人依据。
-3. **决定信息由谁承载。** 能看懂的交给动作；情绪交给反应或短心声；确有解释缺口才加口播。音乐叙事片可用RPG打字和轻哔声，保持歌曲连续；讲解片按理解需要安排人声，不能用音乐填补信息缺口。见[创意](docs/creative.md)、[声音](docs/audio.md)。
+3. **决定信息由谁承载。** 先检查原片录入的游戏声与音乐；需另配BGM时按[画面试听](docs/audio.md#选曲与画面试听)确认具体歌曲和混音后再铺全片。约定字幕语言、显示代称与样式；第一版完整成片就交齐约定字幕，强调花字不能替代口播字幕。 能看懂的交给动作；情绪交给反应或短心声；确有解释缺口才加口播。音乐叙事片可用RPG打字和轻哔声，保持歌曲连续；讲解片按理解需要安排人声，不能用音乐填补信息缺口。见[创意](docs/creative.md)、[声音](docs/audio.md)。
 4. **安排视线和运动。** 制作或改版先读[高级案例与自动选型](docs/advanced-cases.md)，依据段落意图、可用截图和运动限制运行 `scripts/select_motion.py`，主动把适合的案例写入分镜 `motion_case` 并制作代表段；不等用户再次提醒使用高级效果。仅裁切、修字幕或换封面不强加动效。真实操作留出看清的时间，按[镜头配方](docs/editing.md)安排证据，再选择单一主渲染/必要局部叠层。按比较、趋势、目标或因果选择信息动效，空间镜头用于登场或全貌，甩镜用于有语义的交接；无匹配时直接切镜并记录原因。保持观看理由，留出稳定阅读，不设固定动静配额。实心栅格隐私派生物先于动效，按[隐私](docs/privacy.md)复查放大、转场和切点。
-5. **分别验收成片和封面。** 技术、事实/隐私、实际视听范围、用户评价各自记录。封面负责让人想点开，另按手机缩略图与平台真实裁切验收；成片评分不能转算封面评分。见[交付](docs/delivery.md)。
+5. **分别验收成片和封面。** 先按[交付复核](docs/delivery.md#交片前的五项内容复核)核对上期回顾、互动请求、开头兑现、常驻BGM和事件音效是否兑现本次约定；不适用、未做与已完成分开记。技术、事实/隐私、实际视听范围、用户评价各自记录。封面负责让人想点开，另按手机缩略图与平台真实裁切验收；成片评分不能转算封面评分。见[交付](docs/delivery.md)。
 6. **锁定与收尾。** 用户采用后锁定成片。用户说“可以了，去全平台发布吧”等继续发布指令时，交接已采用成片、封面、文案和项目运行记录，调用可用的 `lyzbcy-video-publish-assistant` 继续；平台范围与授权按发布skill核对。此时先记制作小结，最终收尾交给发布阶段，合并成一条消息，不提前重复邀约或清理。仅制作交付则由本skill收尾。按[运行小结与经验贡献](docs/run-summary.md)汇总用户问题、实际改版数、最终实现、验收/逐平台结果与未知；盘点旧版本占用，负担大时给清单与保留项询问清理；经验有价值时准备脱敏草案再询问PR。旧版本清理和贡献提交分别授权；用户答复贡献邀请后，按创建清单清理本次自建临时贡献包，无需再次询问清理授权。已有授权不重复确认；已合入贡献见[贡献者名单](CONTRIBUTORS.md)。
 
 ## 可运行入口
@@ -109,7 +115,7 @@ metadata:
 
 ## 工具与边界
 
-复用已有Python、FFmpeg、音频与模型；丰富动效优先参考[Remotion](docs/remotion.md)，重建见[技术](docs/tech.md)。普通旁白默认Edge TTS及匹配缓存；模型识别、歌唱与TTS按真实能力命名。云转写先按[免费用量准入](docs/cloud-transcription.md)测输入时长、核实当前余额、显示消耗与剩余并取得这批上传的明确批准；余额未知/不足不自动付费，离线预检不执行上传。大型下载先说明用途和体量；模型缓存遵从当前用户的盘位与共享限制，并验证离线复用。
+复用已有Python、FFmpeg、音频与模型；丰富动效优先参考[Remotion](docs/remotion.md)，重建见[技术](docs/tech.md)。普通中文旁白默认曼波及匹配缓存，用户另选音色时优先；模型识别、歌唱与TTS按真实能力命名。云转写先按[免费用量准入](docs/cloud-transcription.md)测输入时长、核实当前余额、显示消耗与剩余并取得这批上传的明确批准；余额未知/不足不自动付费，离线预检不执行上传。大型下载先说明用途和体量；模型缓存遵从当前用户的盘位与共享限制，并验证离线复用。
 
 不因剪辑任务修改或发布软件、购买服务或发送消息。制作、保存草稿、提交审核、公开发布分别记录；用户确认与Agent独立核验分别标明。抽帧、ASR和响度不能冒充完整试听、用户审美认可或留存证据。
 

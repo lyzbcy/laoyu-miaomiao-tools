@@ -4,6 +4,7 @@
 
 | 问题 | 文档 |
 | --- | --- |
+| 制作 document、注意力安排、反馈决策和并行交接 | [document](document.md) |
 | 素材事实、目录和时间轴 | [workflow](workflow.md) |
 | 原版shotcraft/video-use实际调用、固定版本与合成验收 | [upstream](upstream.md) |
 | 自研镜头/EDL、按需本地转写与合成验收限制 | [integration](integration.md) |
@@ -16,7 +17,7 @@
 | 系列天数、上一期封面和抖音作品数据 | [series](series.md) |
 | 人物图层与动作素材 | [characters](characters.md) |
 | 隐私遮罩 | [privacy](privacy.md) |
-| 口播、拟声、连续音乐、歌词对齐 | [audio](audio.md) |
+| 原片声音检查、选曲/画面试听、配音服务、双语字幕与混音 | [audio](audio.md) |
 | 歌曲生成与许可、下载身份 | [music-generation](music-generation.md) |
 | 封面、导出与证据分层 | [delivery](delivery.md) |
 | 数据、流程、观点、聚焦、转场的可运行动效 | [motion](motion.md) |

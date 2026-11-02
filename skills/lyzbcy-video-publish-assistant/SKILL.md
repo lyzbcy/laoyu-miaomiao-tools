@@ -2,7 +2,7 @@
 name: lyzbcy-video-publish-assistant
 description: 在已登录浏览器中准备抖音、B站、小红书和YouTube投稿，以红黄绿门禁恢复上传、核对封面和文案，按本次授权保存草稿或正式发布。
 metadata:
-  version: 1.3.6
+  version: 1.3.8
   source: https://raw.githubusercontent.com/lyzbcy/laoyu-miaomiao-tools/main/skills/lyzbcy-video-publish-assistant/SKILL.md
   files:
     - CHANGELOG.md
@@ -21,6 +21,7 @@ metadata:
     - scripts/youtube.py
     - scripts/xiaohongshu.py
     - scripts/bridge_check.py
+    - tests/test_declaration_rules.py
     - tests/test_regression.py
     - references/regression.md
     - tests/test_youtube_recovery.py
@@ -33,7 +34,7 @@ metadata:
 
 # 多平台投稿
 
-正式版 1.3.6（2026-10-29）；版本以frontmatter为准，源码、安装与发行版本按当前交付记录分别核对。
+正式版 1.3.8（2026-11-02），GitHub 发行包 v1.53.0。源码、安装与发行版本分别核对。
 
 每天首次使用后台运行 `python scripts/update_skill.py --background`；失败沿用当前版，不中断任务。
 
@@ -56,8 +57,8 @@ metadata:
 ## 一条执行链
 
 1. 恢复已有任务先运行 `python scripts/run_status.py MANIFEST --run-dir RUN_DIR`，只读本地账本返回下一步；done项不再打开页面，已尝试提交仅查询，红灯先读已存局部错误。新任务或确需UI时再读取 kimi-webbridge skill，用 `python scripts/bridge_check.py --session <本任务session>` 检查现有 Edge/Kimi 连接；只列标签，不接管、不重启daemon，不转桌面自动化。桥接就绪不代表账号已核验。本地manifest预检 → `open` → 当前账号/公开范围回读（配置标记时 `check-context`）→ `prepare`。脚本检查当前DOM是否就绪，不默认先 `inspect`；同任务复用session/run-dir和已固定的tabId，浏览器操作串行。
-2. `prepare`按步骤回读关键字段，成功只输出门禁结果。封面选入后等真实画布变化，按每种比例看一次平台裁切；`review-covers`记账后继续。不要把文件选入或平台低质检测当裁切验收。
-3. 保存并重开，核对标题、正文、关联标签、声明和处理状态。B站活动标签与普通标签分开：每视频最多一个活动标签；普通标签报活动专用时转活动搜索，精确匹配后确认选中；第二个活动词记录略过，不冒充已打上。
+2. 上传前按[媒体验收交接](references/platforms.md#媒体验收交接与逐平台回执)核对采用版本、字幕、音源限制与生图封面；`prepare`按步骤回读关键字段，成功只输出门禁结果。封面选入后等真实画布变化，按每种比例看一次平台裁切；`review-covers`记账后继续。不要把文件选入或平台低质检测当裁切验收。
+3. 保存并重开，核对标题、正文、关联标签、声明、合集关联和处理状态。合集创建成功不等于本集已加入，封面生成不等于已应用到平台。B站活动标签与普通标签分开：每视频最多一个活动标签；普通标签报活动专用时转活动搜索，精确匹配后确认选中；第二个活动词记录略过，不冒充已打上。
 4. 小红书同名话题按已观察的 `topic_ids` 精确选择，不按热度/顺序猜；半成品话题续跑不追加重复后缀。YouTube重开等待实际列表路由和可操作语义标签，已在目标页不再点标签；保存只关闭绑定视频的上传对话框。
 5. 准备模式到核验为止。正式发布先 `review-plan`，把本次用户授权绑定视频/封面/文案指纹，再 `submit --authorization`；授权不是脚本自行推断。黄灯用 `confirm`继续查询，不重传或重发。小红书 `published=true` 只算 submitted；随后 `confirm_published` 进入笔记管理的已发布筛选，按当前标题、时长、发布时间和 DOM noteId 核验；未匹配维持黄灯。旧断点缺本次时间记录时保留原证据人工核对，不补造尝试。
 
@@ -80,3 +81,10 @@ metadata:
 变更后运行随包 `python -m unittest discover -s tests -p test_regression.py -v`；完整源码回归、合成DOM与只读实桥检查见[回归与本地同步](references/regression.md)。
 
 完整收尾与PR邀请须遵守用户最终确认时机；多skill共用收尾状态和临时贡献目录，partial回执不标记最终小结已发。答复后的清理及提交失败处理见上述收尾文档。
+
+## 原创声明、视频号复用与群发
+
+- 每个平台在提交前单独核验「声明原创/自制」：适用本人原创作品时必须开启，保存重开后回读状态，记录当前稿件 ID 和证据。原创声明不等于 AI 内容声明；两项分别核验，不用 AI 标签充当原创已开启。
+- 当前入口未提供原创控件时记录「当前入口未提供该控件」和所查页面，不虚构已开启；条件不满足或状态未生效时记待处理。已发表作品优先进入原稿修改并核验，不删除重发，不重复投稿。声明确认窗被关闭或页面退出时只记未确认，恢复同一稿件ID后补做保存重开，不把已点击开关当生效。
+- 同一集同时发视频号和公众号时，视频号先发表并取得唯一动态标识，再在公众号编辑器的「视频号」入口引用该条已发表动态，核对账号、标题、时长和预览可播放。不得另传一份公众号本地视频、用外链或 HTML 占位替代该动态；视频号未就绪则公众号等待。详见[扩展路由](references/expansion.md)。
+- 公众号群发默认关闭；仅当用户对本篇明确授权群发时开启，并绑定本篇正文、引用动态、封面指纹和账号。本次群发授权不扩展为今后所有文章的默认授权；较新的明确授权覆盖同一篇此前的「仅发布、不群发」。

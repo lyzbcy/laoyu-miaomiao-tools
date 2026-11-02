@@ -23,6 +23,14 @@ def prepare(profile,snapshot,episode_date,base):
     day_number(profile['epochDate'],episode_date)
     if profile.get('timezone')!='Asia/Shanghai': raise ValueError('explicit series timezone required')
     episodes=[x for x in profile['episodes'] if x.get('workflow')=='software-video-production' and x.get('published') is True]
+    series_id=profile.get('currentSeriesId')
+    if series_id:
+        episodes=[x for x in episodes if x.get('seriesId')==series_id]
+        current=profile.get('currentEpisodeNumber')
+        if current is not None:
+            if not isinstance(current,int) or isinstance(current,bool) or current<2: raise ValueError('current episode number must be an integer >= 2')
+            episodes=[x for x in episodes if x.get('episodeNumber')==current-1]
+        if not episodes: raise ValueError('no verified previous episode in current series; do not substitute another series')
     if not episodes: raise ValueError('no verified previous workflow episode')
     for ep in episodes:
         if datetime.fromisoformat(ep['publishedAt']).utcoffset() is None: raise ValueError('publication timestamp requires timezone')

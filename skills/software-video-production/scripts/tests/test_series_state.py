@@ -23,6 +23,19 @@ class SeriesTests(unittest.TestCase):
         self.assertEqual(self.build()['previous']['itemId'],'100')
         self.assertEqual(self.build()['visualStyle'],'cupertino')
         self.profile['visualStyle']='fluent';self.assertEqual(self.build()['visualStyle'],'fluent')
+    def test_previous_is_same_series_not_latest_other_topic(self):
+        self.profile.update(currentSeriesId='study',currentEpisodeNumber=2)
+        self.profile['episodes'][0].update(seriesId='study',episodeNumber=1)
+        self.profile['episodes'].append({'itemId':'300','title':'Newer unrelated promo','workflow':'software-video-production','published':True,'publishedAt':'2026-10-27T12:00:00+08:00','seriesId':'promo','episodeNumber':9})
+        self.assertEqual(self.build()['previous']['itemId'],'100')
+    def test_scoped_series_never_falls_back(self):
+        self.profile.update(currentSeriesId='study',currentEpisodeNumber=2)
+        with self.assertRaisesRegex(ValueError,'current series'):self.build()
+    def test_exact_previous_number_not_future_episode(self):
+        self.profile.update(currentSeriesId='study',currentEpisodeNumber=2)
+        self.profile['episodes'][0].update(seriesId='study',episodeNumber=1)
+        self.profile['episodes'].append({'itemId':'400','workflow':'software-video-production','published':True,'publishedAt':'2026-10-27T12:00:00+08:00','seriesId':'study','episodeNumber':3})
+        self.assertEqual(self.build()['previous']['itemId'],'100')
     def test_mismatched_snapshot_fails(self):
         self.snapshot['itemId']='200'
         with self.assertRaisesRegex(ValueError,'latest'):self.build()
