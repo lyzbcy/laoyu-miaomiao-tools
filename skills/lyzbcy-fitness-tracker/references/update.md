@@ -22,3 +22,5 @@ python scripts/update_skill.py --force --json
 
 
 生产服务器也安装同一公共包。`runtime.local.json`定位文件、外部数据目录的增量配置与LOCAL.md不受版本更新管理；不以修改公共源码的方式保存本机差异。
+
+原始文件域名连接失败时，1.3.1起回退GitHub官方Contents API读取相同提交的原始文件；不依赖第三方镜像。备用通道同样执行清单一致性与逐文件校验。

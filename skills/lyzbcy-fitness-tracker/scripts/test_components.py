@@ -70,6 +70,20 @@ class UpdateTest(unittest.TestCase):
         f,r=self.remote()
         self.assertEqual(u.check(self.root,fetch=f,release=r,today='2026-11-03'),'updated')
 
+    def test_unreachable_raw_falls_back_to_official_api_and_keeps_revision(self):
+        calls = []
+        def get(url, limit, **kwargs):
+            calls.append((url, kwargs))
+            if url.startswith(u.RAW):
+                raise TimeoutError('raw unavailable')
+            return b'file bytes'
+        remote = u.source_fetcher(get)
+        self.assertEqual(remote('update.json'), b'file bytes')
+        self.assertEqual(remote('scripts/runtime.py', 'a'*40), b'file bytes')
+        self.assertEqual(sum(url.startswith(u.RAW) for url, _ in calls), 1)
+        self.assertIn('ref='+'a'*40, calls[-1][0])
+        self.assertEqual(calls[-1][1]['accept'], 'application/vnd.github.raw+json')
+
     def test_corrupt_file_does_not_install_anything(self):
         f,r=self.remote()
         def corrupt(rel,ref):

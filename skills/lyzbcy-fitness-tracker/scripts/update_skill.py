@@ -19,8 +19,24 @@ NAME = 'lyzbcy-fitness-tracker'
 REPOSITORY = 'lyzbcy/laoyu-miaomiao-tools'
 API = 'https://api.github.com/repos/'+REPOSITORY+'/releases/tags/'
 RAW = 'https://raw.githubusercontent.com/'+REPOSITORY+'/'
+CONTENTS = 'https://api.github.com/repos/'+REPOSITORY+'/contents/skills/'+NAME+'/'
 PRIVATE = {'records.jsonl','config.json','exercises.json','publish-state.json','runtime.local.json','LOCAL.md'}
 TEXT = {'.md','.py','.json','.jsonl','.txt','.sh','.html','.css','.js','.yml','.yaml'}
+
+
+def source_fetcher(get):
+    """Use GitHub's own Contents API if its raw host is unreachable."""
+    use_api = False
+    def remote(rel, revision='main'):
+        nonlocal use_api
+        if not use_api:
+            try:
+                return get(RAW+revision+'/skills/'+NAME+'/'+quote(rel,safe='/'),24_000_000)
+            except (OSError, TimeoutError):
+                use_api = True
+        return get(CONTENTS+quote(rel,safe='/')+'?ref='+quote(revision,safe=''),
+                   24_000_000, accept='application/vnd.github.raw+json')
+    return remote
 
 
 def version(value):
@@ -147,17 +163,21 @@ def check(root, fetch=None, release=None, today=None, force=False):
             result = 'already_checked'
             return result
         deadline = time.monotonic()+180
-        def get(url, limit):
+        def get(url, limit, accept=None):
             if time.monotonic() >= deadline:
                 raise TimeoutError('deadline')
-            req = Request(url, headers={'User-Agent': NAME+'-updater/1','Cache-Control':'no-cache'})
+            headers = {'User-Agent': NAME+'-updater/1','Cache-Control':'no-cache'}
+            if accept:
+                headers['Accept'] = accept
+            req = Request(url, headers=headers)
             with urlopen(req, timeout=min(10, max(.1,deadline-time.monotonic()))) as response:
                 data = response.read(limit+1)
             if len(data)>limit:
                 raise ValueError('oversized response')
             return data
+        public_source = source_fetcher(get)
         def remote(rel, revision='main'):
-            return fetch(rel, revision) if fetch else get(RAW+revision+'/skills/'+NAME+'/'+quote(rel,safe='/'),24_000_000)
+            return fetch(rel, revision) if fetch else public_source(rel, revision)
         raw = remote('update.json')
         manifest = json.loads(raw)
         incoming = version(manifest['version'])
