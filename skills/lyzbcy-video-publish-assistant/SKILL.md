@@ -30,9 +30,12 @@ metadata:
     - update.json
     - references/closeout.md
     - CONTRIBUTORS.md
+    - references/game-release-log.md
 ---
 
 # 多平台投稿
+
+游戏集锦涉及指定合集、声明、活动或投稿时限时，读取[游戏发布与限时日志](references/game-release-log.md)，逐平台记录尝试和终态。
 
 正式版 1.3.8（2026-11-02），GitHub 发行包 v1.53.0。源码、安装与发行版本分别核对。
 

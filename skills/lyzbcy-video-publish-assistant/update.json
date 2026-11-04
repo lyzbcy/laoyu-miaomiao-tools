@@ -2,8 +2,8 @@
   "name": "lyzbcy-video-publish-assistant",
   "version": "1.3.8",
   "sha256": {
-    "CHANGELOG.md": "405074d6a7531c1841366d60e5b635a1094e51d9b52b0ba4f27bf90dd1c8ae5e",
-    "SKILL.md": "d16bf61d2b8cf4281fa0ab7fa983419845b61d3dc68c097c78d11274b96c0986",
+    "CHANGELOG.md": "7000f3252c76cc085ad17ce46607dc3857dd9b3015e35c2a5dacf22755b0accf",
+    "SKILL.md": "9a89459e4816fdbc021f16468bd9b9c276ef9b2b3f806ce3d9ac6b13a1abdb1f",
     "references/automation.md": "f775b021a06a5288191f00375996dc754d4c8c8c1e38c2a95cb39b7d449b0114",
     "references/platforms.md": "fd3367de3c2e08d5d93c9f57585f5923aad9042897bd392281ca621d77854158",
     "references/update.md": "fe1268ae60733e19efc100ca25dd2c010e87ab95e03215eea7c3a9ccf0ea2b11",
@@ -25,6 +25,7 @@
     "scripts/run_status.py": "1e98bec4c90cb2788654b0de4a0e7c780e9ba6e6c431af8a9b04a0e9868f9c52",
     "scripts/closeout.py": "4dd744a3348df1281560a47bbe5a5715b3d7b0150ccf17e272563a4200b94491",
     "references/closeout.md": "4134babdb29c048b9552d3e759779f3adf0556f2f35245e9410a76f5d2e5f9d5",
-    "CONTRIBUTORS.md": "06de7568fa8aa5263f3ea1c56d9ff133cdfbfe8c71274cf851228573df0b7630"
+    "CONTRIBUTORS.md": "06de7568fa8aa5263f3ea1c56d9ff133cdfbfe8c71274cf851228573df0b7630",
+    "references/game-release-log.md": "74a0837e8334d890b21f333b8359d249ca54db844de1e3284274591a4ca511c5"
   }
 }
