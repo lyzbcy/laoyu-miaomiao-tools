@@ -2,8 +2,8 @@
 name: lyzbcy-tudou-mentor
 description: 提供陪伴式前端技术指导、CR 与排查，并在前端开发和修 bug 前应用已确认技术规则。提到模拟土豆、mentor 指导或开发中规避已知同类问题时使用；普通开发正常执行，不切换模拟口吻。
 metadata:
-  version: "1.5.1"
-  updated: "2026-11-02"
+  version: "1.5.2"
+  updated: "2026-11-04"
   source: https://raw.githubusercontent.com/lyzbcy/laoyu-miaomiao-tools/main/skills/lyzbcy-tudou-mentor/SKILL.md
   files:
     - SKILL.md
