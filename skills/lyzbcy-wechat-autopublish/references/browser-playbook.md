@@ -1,111 +1,43 @@
-# 浏览器发布操作手册（方案 B：未认证账号 / API 无权限时的降级）
+# 浏览器操作与原稿恢复
 
-**前提**：内容已经用 `wechat_api.py publish --draft-only` 推进草稿箱（API 推草稿不需要认证，
-只有"发布"这一步才需要）。本手册解决"把草稿箱里的草稿点发表"。
+用于已登录公众平台的图文编辑、视频号引用和发表。复用当前连接工具与登录态，无需为富文本路线先配置官方API。
 
-> ⚠️ 如果你是从 `publish_method=auto` 的 **48001 自动降级**过来的：完整 publish 链路里
-> `draft/add` 已经成功，**草稿已在箱内，直接从下面第 2 步开始**（不要重复 --draft-only，
-> 会建出第二份草稿）。
+## 定位与编辑
 
-> ✅ **2026-08-14 真机实测通过**（macOS + Edge + kimi-webbridge）：登录态 cookie 存活时
-> 打开 mp.weixin.qq.com **直接进后台**（无需扫码）；草稿箱、发表按钮均可用下述选择器定位。
-> 以下「实测情报」小节的选择器/URL 均来自该次实测，DOM 改版时以语义步骤为准。
+先查现有标签和项目账本，核对账号、标题、草稿ID及attempt。失效tabId先列标签，必要时从可访问网页恢复连接，再开本任务页，不重启整个浏览器。点击可能打开会话列表之外的新页；用全局标签的目标URL与打开来源定位，再接管一个正确编辑器，不连续点击制造重复稿件页。
 
-## ⭐ 编辑页自动发表序列（2026-08-14 真机调通，两轮点击法）
+API已建草稿或管理页有本稿时直接恢复；列表缓存旧值先查询/刷新，不重传或新建同名文章。编辑器未保存先保全正文。富文本粘贴可能异步生效，等待实际段落出现，不把立即回读的占位文字当失败重贴。
 
-未认证号从编辑页到扫码的**全自动序列**（synthetic click 即可，无需 CDP）：
+文件input按所属功能限定：正文图片上传器不是封面上传器。合集创建、文章关联、保存持久化和公开/审核分别记状态。重开检查AI来源/合集回退、简介重复。contenteditable的Ctrl+A替换不可靠时，显式选择目标节点内容，再用原生insertText或受支持粘贴替换，读回完整结果，不反复追加。
 
-```
-1. el.click() 编辑页 mass_send（button/[class*=mass_send]）
-2. 等 ~3.5s → 点 .weui-desktop-dialog 主按钮（.weui-desktop-btn_primary，文案「发表」）
-3. 页面跳转 reprint_confirm=0（转载确认）→ 「发表」弹窗会自动重新弹出
-4. 再点一次主按钮
-5. ✅ safe_check 扫码弹窗出现（.safe_check / [class*=wxcheck]）→ 停下等人扫码
-6. 人扫码确认后：前端自动提交 + check_publish_status 自动轮询 → 发布完成
-```
+历史定位线索`a.weui-desktop-mass-appmsg__title`、`.publish_hover_content`、`#activity-name`、`#js_name`、`mp-common-videosnap`只作查找依据，先观察当前DOM。后台token只在私有操作使用。
 
-- 人工只剩第 6 步的扫码（个人未认证号的平台底线，见 deep-water-cgi.md E1-E7）
-- 监控发布完成：轮询 `appmsgpublish?sub=list` 的 publish_count 递增
-- ⚠️ 若页面跳转导致 hook 丢失，用 localStorage 持久化版（见 deep-water-cgi.md）
+## 发表、扫码与恢复
 
-## 实测情报（选择器与 URL，2026-08-14 核对）
+废止固定等待几秒、连续点两次发表的旧序列。按当前弹窗和明确后置状态推进；synthetic click或原生指针能否生效以本次UI为准，不凭单次旧观察宣称永久反自动化或免验证。
 
-| 目标 | 定位方式 |
-|---|---|
-| 草稿箱页面 URL | `https://mp.weixin.qq.com/cgi-bin/appmsg?begin=0&count=10&type=77&action=list_card&token=<TOKEN>&lang=zh_CN`（`<TOKEN>` 从登录后任一后台页 URL 里取；也可点侧边栏「草稿箱」） |
-| 草稿卡片 | `.weui-desktop-card.weui-desktop-publish` |
-| 「发表」按钮 | 每张卡片右下 `a.weui-desktop-link_send-multi`，文案「发表」，**无需 hover 即在 DOM 可见**；不可点时带 `weui-desktop-link_disable` 类 |
-| 后台首页特征 | URL 含 `/cgi-bin/home` 且带 `token=` 参数（判断登录态是否有效） |
-| 列表筛选 | 顶部有「文章 / 视频」tab 与「输入标题/关键词」搜索框 |
+- 未授权群发：最终弹窗关闭群发通知，读回“未开启群发通知”；重新打开后再次核对。
+- 外部最终提交前持久化attempt。后续“继续发表”等确认按实际语义单次推进并分别记账；不明结果不能清账本重试。
+- 微信验证保留同一稿件与窗口，交管理员/运营者完成；登录二维码不等于本篇发表验证，不绕过验证。
+- 元素截图空白时检查图片加载并核对局部/全页截图，不能凭截图文件存在就让用户扫描。不要下载远程媒体绕过展示限制。
+- 用户完成验证后只读记录；审核中待查。只有唯一已发表行、永久链接、公众页面账号/标题和本期视频交叉核对后才记published。tempkey临时预览地址不是永久链接。
 
-## 登录现实（必读，勿凭旧经验）
+## 离线核验输入
 
-- mp.weixin.qq.com **没有账密登录**，只能管理员/运营者**微信扫码**（手机相机扫真二维码，长按识别无效）。
-  （表情开放平台 sticker.weixin.qq.com 支持账密——那是另一套系统，别混淆。）
-- 因此自动化策略是**登录态持久化复用**：首次人工扫一次码 → 保存 storage_state/cookie →
-  之后自动化直接复用；登录态失效（数小时到数天，无官方保证）才需要人再扫一次。
-  （实测：日常使用的浏览器里 cookie 可存活数天以上，直接进后台。）
-- 风控提示：不要高频自动化操作，动作间留 1~2 秒，每步用截图验证。
+从实际当前UI采集私有JSON，不导出请求头、Cookie或框架内部状态。article_review.py只校验已观察证据，不代替浏览器读取。
 
-## 实现一：agent + 浏览器桥（agent 在场，推荐）
+PLAN.json：
 
-用你运行环境的浏览器自动化能力（ZCode 的 browser-use、kimi-webbridge、Playwright 等）
-按以下步骤操作，**每一步都要截图确认后再进行下一步**：
-
-1. **恢复登录态**：导航到 `https://mp.weixin.qq.com/`。
-   - 直接进入后台（URL 含 `/cgi-bin/home` 且带 `token=`）→ 登录态有效，继续。
-   - 看到二维码页 → 登录态失效：恢复之前保存的 storage_state/cookie 后刷新重试；
-     仍失效 → **打开有头浏览器**，请用户现在扫码，扫码成功后**立即导出并保存登录态**
-     到 skill 目录 `state/`（gitignore；Playwright 存 storage_state，浏览器桥场景
-     直接复用用户日常浏览器的 cookie 更省事）。
-2. **进草稿箱**：导航到「实测情报」表里的草稿箱 URL（token 取当前页面 URL），
-   或点侧边栏「草稿箱」。按标题匹配 `--draft-only` 输出的那篇（顶部有搜索框可精确定位）。
-3. **点发表**：目标草稿卡片右下「发表」（`a.weui-desktop-link_send-multi`，注意跳过
-   带 `weui-desktop-link_disable` 的）→ 弹出确认框（可能要求选择群发/发布、勾选确认）→
-   截图给用户过目（这一步即使有 auto_confirm 也要留截图证据）→ 点「发表/确定」。
-4. **验证**：等待跳转或出现"发表成功"；截图存档到 `state/logs/`（文件名含日期）。
-5. **失败处理**：出现人机验证/异常 → 截图 → 停止重试 → 通知用户人工处理（方案 C）。
-
-> 💡 **kimi-webbridge 通路**（用户本机在用）：daemon `http://127.0.0.1:10086`，
-> `navigate/snapshot/click/screenshot` 等 action（详见其 SKILL.md）。snapshot 的
-> 可访问性树可以直接按文案定位「草稿箱」「发表」，比 CSS 选择器更抗改版。
-
-## 实现二：独立部署 Playwright 脚本（无 agent 环境，如一桐姐的服务器）
-
-```bash
-pip3 install playwright && python3 -m playwright install chromium
-# 首次：有头模式人工扫码，保存登录态
-python3 scripts/publish_browser.py login --state state/mp_storage_state.json
-# 之后：无头使用登录态，把最新一篇指定标题的草稿点发表
-python3 scripts/publish_browser.py publish --title "今天的图" --state state/mp_storage_state.json
+```json
+{"account":"示例公众号","title":"示例文章","native_video_nonce":"example-current-video","video_description":"本期视频说明"}
 ```
 
-`scripts/publish_browser.py` 提供上述 login/publish 子命令（--help 看全参）。
-⚠️ 后台 DOM 会改版：脚本里的选择器是"尽力而为"，失败时按「实现一」的语义步骤
-人工/agent 操作，并顺手把新选择器更新进脚本。
+OBSERVATION.json：
 
-## ⚠️ 2026-08-14 真机实测补充：未认证号的「发表」双重墙
+```json
+{"account":"示例公众号","rows":[{"title":"示例文章","status":"已发表","url":"https://mp.weixin.qq.com/s/example-permanent"}],"article":{"url":"https://mp.weixin.qq.com/s/example-permanent","title":"示例文章","account":"示例公众号","videos":[{"nonce":"example-current-video","description":"本期视频说明"}]}}
+```
 
-对**未认证个人号**真机实测（Edge + kimi-webbridge，发表成功一篇验证）：
+也支持native_video_id；优先用本篇已绑定nonce和完整说明核对，不把上期ID套到本期。不同入口export字符串可能不同，不能只靠两段字符串相同/不同判断同片。无视频文章不传视频期望。手机完整播放需另行实测。
 
-1. **「发表」按钮反自动化**：synthetic `el.click()`、CDP `Input.dispatchMouseEvent`
-   （含完整 moved→pressed→released 序列）、DOM 事件链（mouseover→mousedown→mouseup→click）
-   全部无法触发——平台对发表动作做了真实交互验证（疑似 isTrusted 检测）。
-   → 自动化只能走到"草稿入箱+定位到发表按钮"，**最后一下必须人点**。
-2. **发表确认扫码**：人点「发表」后，平台弹出管理员扫码确认（每次发表都要）。
-   GitHub 上两个主流自动发布项目（WeChatMediaPlatformAutomation/puppeteer、
-   blog-auto-publishing-tools/selenium）同样是人工扫码，**无合法绕过方案**。
-3. **出路对照**：
-   - 已认证号：走方案 A（freepublish API），完全无扫码无浏览器——首选
-   - 未认证号：接受"发布前扫一次码"（比全手动仍省 90% 工序），或走深水区 ↓
-   - 深水区（自担风险）：用 cookie+token 直调后台内部 CGI（appmsgpublish 模式，
-     参考 mp 后台自己的请求）。⚠️ 非公开接口、违反平台协议、有封号风险；
-     需先在浏览器 Network 里抓一次真实发表的请求格式。
-4. 分担扫码：后台「设置→安全中心」可添加**长期运营者**微信号，运营者也能扫码。
-
-## 方案 C：人工兜底话术
-
-> 草稿已放进草稿箱：《{title}》。自动发布通道本次不可用（原因：{errcode/登录态失效}）。
-> 请打开 https://mp.weixin.qq.com → 草稿 → 找到该草稿点「发表」。预计 1 分钟。
-
-任何时候都**不允许**静默失败或假装发布成功。
+独立Playwright部署可参考publish_browser.py --help，但它不是本轮富文本、视频号组件和管理员验证的通用一键实现。仅维护本skill时，不打开发表器或发测试文。

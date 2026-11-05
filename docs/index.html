@@ -353,23 +353,22 @@
     <div class="skill-head">
       <span class="emoji">📣</span>
       <h3>lyzbcy-wechat-autopublish</h3>
-      <span class="ver">公众号全自动运营</span>
+      <span class="ver">公众号图文运营 · v1.1.0</span>
     </div>
-    <p class="skill-tag">微信公众号的"发布"环节 100% 零人工——发布前一次确认，之后的一切交给机器。</p>
+    <p class="skill-tag">公众号图文从可读排版到发表回读：保存、验证与公开结果各有证据。</p>
 
     <div class="field">
       <div class="label">它能做什么</div>
-      <p>一条龙自动发文：<b>取内容（可插拔内容源：周报总结/每日图片/自定义）→ 脱敏 → 发布前问一次你 → 推草稿 → 自动发布 → 回报永久链接</b>。发布走<b>三层降级</b>：①纯官方 API（freepublish，已认证号最稳）②浏览器自动化点发表（未认证号，登录态持久化复用，首次扫一次码）③人工兜底（绝不静默失败）。支持 cron 定时（如每周六 10:00 发周报）。核心脚本<b>零第三方依赖</b>（Python 标准库），自带 47 项离线测试与 dry-run 干跑。</p>
+      <p>整理与脱敏内容，使用内联样式排版，核对封面、本期原生视频、AI声明与合集，保存后重开确认。沿用本篇明确授权，发表前单独核对群发通知；管理员验证后只查询原稿、永久链接与视频身份，避免重复投稿。按已有配置选择官方API或已登录浏览器。附62项离线测试与只读核验脚本。</p>
     </div>
 
     <div class="field">
       <div class="label">适合 / 不适合</div>
       <ul>
-        <li>✅ 定时自动发公众号图文/图片消息（每天生图发文、每周发学习周报）</li>
-        <li>✅ 已经能推草稿箱、但不想每天手动点"发表"的人（这正是它诞生的原因）</li>
-        <li>✅ 只想要"自动发布引擎"、内容自己生成（模块可拆开用）</li>
-        <li>❌ 需要推送到粉丝会话的"群发"营销场景（本 skill 走"发布"接口，不占群发配额也不推送）</li>
-        <li>❌ 不想配置 AppSecret/IP 白名单的人（API 通路需要一次性配置）</li>
+        <li>✅ 公众号知识文章、视频配套推文与有明确授权的定时内容</li>
+        <li>✅ 已有API配置，或使用当前已登录浏览器的编辑与发表任务</li>
+        <li>✅ 本地预览、平台保存与公众页面分别核验</li>
+        <li>管理员验证按平台要求完成；发表不等于群发，手机完整播放需另行验收。</li>
       </ul>
     </div>
 
@@ -381,11 +380,11 @@
 
     <div class="field">
       <div class="label">怎么安装</div>
-      <p>下载 zip → 解压 → 把整个 <code>lyzbcy-wechat-autopublish/</code> 文件夹放到你的 agent skills 目录（确保里面有 <code>SKILL.md</code>）。首次按 SKILL.md「首次设置清单」配置 config.json（AppID/AppSecret + IP 白名单），未认证号额外装 playwright。</p>
+      <p>下载解压到 agent skills 目录。按 SKILL.md 选择已有官方API配置或当前已登录浏览器；支持排版、封面、同片视频与保存重开核验。需要管理员验证时交由用户完成。</p>
     </div>
 
     <div class="dl-row">
-      <a class="btn btn-zip" id="dl-wechat-autopublish" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.4.0/lyzbcy-wechat-autopublish.zip">📦 下载 lyzbcy-wechat-autopublish.zip</a>
+      <a class="btn btn-zip" id="dl-wechat-autopublish" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.56.0/lyzbcy-wechat-autopublish.zip">📦 下载 lyzbcy-wechat-autopublish.zip</a>
       <a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/lyzbcy-wechat-autopublish">查看源码</a>
     </div>
   </article>
@@ -673,7 +672,7 @@
       <li>lyzbcy-study-map：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.0.0/lyzbcy-study-map.zip</code></li>
       <li>lyzbcy-最后的1%：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.1.0/lyzbcy-last-1-percent.zip</code></li>
       <li>lyzbcy-视频生成提示词润色：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.43.0/lyzbcy-video-prompt-polish.zip</code></li>
-      <li>lyzbcy-wechat-autopublish：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.4.0/lyzbcy-wechat-autopublish.zip</code></li>
+      <li>lyzbcy-wechat-autopublish：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.56.0/lyzbcy-wechat-autopublish.zip</code></li>
       <li>lyzbcy-xhs-agent：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.26.0/lyzbcy-xhs-agent.zip</code></li>
       <li>lyzbcy-glm53-zcode-eval：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.5.1/lyzbcy-glm53-zcode-eval.zip</code></li>
       <li>lyzbcy-laotian-cosleader：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.22.0/lyzbcy-laotian-cosleader.zip</code></li>
@@ -722,9 +721,10 @@
 // —— 强制刷新组件配置（发布时与 docs/version.json 同步修改）——
 window.__FR__ = {
   id: 'laoyu-miaomiao-tools',
-  version: '2026.11.06-1',
+  version: '2026.11.06-2',
   registry: 'version.json',
   changelog: [
+    "2026-11-06 公众号skill v1.1.0：排版与保存重开、本期原生视频、发表与群发分离、管理员验证后只读核验；62项离线测试。",
     "2026-11-06 制作skill v0.14.19：连续教学、逐句变化、时间线检查、生图封面、最新数据回顾及公开推文排版核验；下载包v1.55.0",
     "2026-11-04 土豆技术指导 v1.5.2：需求范围约束、共享组件父子联动回归与验证证据分层；下载包v1.54.0",
     "2026-11-02 制作skill v0.14.12与发布skill v1.3.8正式发行：BGM画面试听、完整双语字幕、配音缓存、原创/视频号引用/逐篇群发、封面合集实证与清理核算；双下载包v1.53.0",
@@ -839,7 +839,7 @@ const RELEASES = {
   "study-map": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.0.0/lyzbcy-study-map.zip",
   "last-1-percent": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.1.0/lyzbcy-last-1-percent.zip",
   "video-prompt-polish": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.43.0/lyzbcy-video-prompt-polish.zip",
-  "wechat-autopublish": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.4.0/lyzbcy-wechat-autopublish.zip",
+  "wechat-autopublish": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.56.0/lyzbcy-wechat-autopublish.zip",
   "glm53-zcode-eval": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.5.1/lyzbcy-glm53-zcode-eval.zip",
   "xhs-agent": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.26.0/lyzbcy-xhs-agent.zip",
   "laotian-cosleader": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.22.0/lyzbcy-laotian-cosleader.zip",
@@ -885,7 +885,7 @@ function copyForAI(){
    - 安装：解压后把整个文件夹放到 agent skills 目录（含 SKILL.md）。
    - 下载：${RELEASES['video-prompt-polish']}
 
-4) lyzbcy-wechat-autopublish（公众号全自动运营）
+4) lyzbcy-wechat-autopublish v1.1.0（公众号图文运营）
    - 用途：微信公众号自动发文一条龙：取内容（周报/每日图/自定义内容源）→脱敏→发布前问一次用户→推草稿→自动发布→回报永久链接。发布三层降级：纯API（已认证号）/浏览器自动化（未认证号，登录态复用首次扫一次码）/人工兜底。支持 cron 定时。核心脚本零依赖+47项离线测试。
    - 适合：定时自动发公众号（每天发图、每周发周报）；已能推草稿但不想手动点"发表"的人。不适合要"群发"推送粉丝的场景、不想配 AppSecret/IP白名单的人。
    - 用法示例："帮我设置每周六早上10点自动发一篇本周AI学习总结到公众号，读我的日报目录整理，脱敏后先给我确认再发。"

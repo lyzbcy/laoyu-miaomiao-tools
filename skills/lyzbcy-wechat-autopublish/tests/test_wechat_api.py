@@ -755,24 +755,15 @@ class TestPollAndPublishMethod(FakeServerTestCase):
                     self.cfg(publish_method="yaml"), self.article(tmp), dry_run=True)
 
     def test_multipart_has_sanitized_filename(self):
-        self.fake.expect("/cgi-bin/freepublish/get",
-                         {"errcode": 0, "publish_status": 0,
-                          "article_detail": {"count": 1,
-                                             "item": [{"article_url": "https://s/1"}]}})
-        import tempfile
-        with tempfile.TemporaryDirectory() as tmp:
-            cover = os.path.join(tmp, '怪名字"quoted.png')
-            with open(cover, "wb") as f:
-                f.write(COVER_PNG)
-            article = {"title": "t", "digest": "d",
-                       "content_html": "<p>x</p>", "thumb_image": cover}
-            wechat_api.publish_article(self.cfg(), article, poll_seconds=0.01)
+        # Exercise the wire header without creating a filename illegal on Windows.
+        wechat_api._post_multipart(self.base + "/cgi-bin/material/add_material",
+                                   "media", '怪名字"quoted.png', COVER_PNG, "image/png")
         body = [r[2] for r in self.fake.requests
                 if r[0] == "/cgi-bin/material/add_material"][0]
         self.assertIn(b'name="media"', body)
         match = re.search(rb'filename="([^"]*)"', body)
         self.assertTrue(match)
-        self.assertNotIn(b'"', match.group(1))       # 引号被净化
+        self.assertEqual(match.group(1), '怪名字_quoted.png'.encode('utf-8'))
 
     def test_retry_non_token_error_passes_through(self):
         # 40164（IP 白名单）不应触发 token 重试，直接抛出

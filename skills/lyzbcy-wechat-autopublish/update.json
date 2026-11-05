@@ -1,0 +1,28 @@
+{
+  "name": "lyzbcy-wechat-autopublish",
+  "version": "1.1.0",
+  "sha256": {
+    "CHANGELOG.md": "c1df3aab1a382d5f38bf042de5e88b5130986e31b5aef0830036a87a5a2ebeea",
+    "SKILL.md": "76ac28d065878cea8a80caad5b7cc703d73945f9d74ec332075de8d2368899d4",
+    "article.example.json": "b4e4fa123cb57244f7a3264e2590ce795a2960fda0f21739a0256308d37bbbf3",
+    "body.html": "2b46323f7385ad90ca7d1054bb5f17cf28dedc2bf1812e32256b7c27b4f36b7a",
+    "config.example.json": "122de9e091be34d524cff60c7d94b7c00c0ff5e4c51b361dbb5d9e4229eefb0c",
+    "cover.png": "1b85af5308c76785db6f0f1ba9791adde154c1fde6bb70481d1cf74bf52bfdee",
+    "references/api-reference.md": "d089339e5f20373e6ea0e5c1ebc922ee29eba7eca2647b11444e446b90ae3908",
+    "references/article-layout.md": "bc2d184432dce01e1a417cd415f49d68031f2c3bcffa6244c824e4c8d5190232",
+    "references/browser-playbook.md": "9bb16f8e7aea1e145148c93638c67909506b043652de097a8c24b1a04ed7135b",
+    "references/content-sources.md": "3069cba18d50ec39169a467488d056a52f1a6a920e164563fcde9e641e6a1437",
+    "references/deep-water-cgi.md": "eea912a722622945f6ecb36a89816ea4a24c7c6d6722e6cd3a97f0bd813ca528",
+    "references/iphone-mirroring.md": "9a0a87c62b8a15741025e4df4f8ef3b46bbfea49c9d8d63337b57addea066b9f",
+    "scripts/article_review.py": "45cc6b0ce2e4297e4d7eef6c231ff3923daa023400c657e6359765e66092e0c2",
+    "scripts/click.swift": "925f49db962c47d1cc481d6e462468df53f25f9afa4e37df297dc748b9b3bc44",
+    "scripts/iphone_coords.json": "e46e9a2e43f47f9fa645eee88a54ec072ec4d209a25e9e274667d604d2f492e9",
+    "scripts/publish_browser.py": "d191ac537ca356cd3e56b8334227daa70e9802544d7eb7d9f261b2dd92399995",
+    "scripts/publish_iphone.py": "89a2c1c90c011e281ba553d1562d93b9589b1273c0ca0ed5352a8a64cf0e9428",
+    "scripts/wechat_api.py": "f88450b0603d90103df1803f1a29541d2772abc2198302bdcba57cc74092126f",
+    "tests/test_article_review.py": "4b8a213bff0fe32eb3d1261475bc4dbd9e89e18c3fe68ce8f7af3635912dce95",
+    "tests/test_wechat_api.py": "981deb8c265516cc0dfcbb8f6e60a56ef42c5a5888e946a1d2ddd450077e6ec6",
+    "version.json": "f9a667c5d5978210026fb577be5ed4f35d72e270b50fc20c3d8450a180cb83a1"
+  },
+  "hash_policy": "SHA256 after CRLF-to-LF normalization (legacy updater convention); binary payload preserved byte-for-byte"
+}
