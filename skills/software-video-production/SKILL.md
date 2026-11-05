@@ -1,8 +1,8 @@
 ---
 name: software-video-production
-description: 制作和改版软件演示、生活情境宣传短视频，处理真实操作证据、隐私、视听表达、封面和交付复盘。不替代软件开发或漫剧制作。
+description: 制作和改版软件演示、生活情境宣传及知识讲解短视频，处理真实操作证据、隐私、视听表达、教学样片、封面和交付复盘。不替代软件开发或漫剧制作。
 metadata:
-  version: 0.14.12
+  version: 0.14.19
   source: https://raw.githubusercontent.com/lyzbcy/laoyu-miaomiao-tools/main/skills/software-video-production/SKILL.md
   files:
     - CHANGELOG.md
@@ -10,6 +10,7 @@ metadata:
     - agents/openai.yaml
     - docs/agent.md
     - docs/document.md
+    - docs/teaching-review.md
     - docs/audio.md
     - docs/characters.md
     - docs/creative.md
@@ -66,6 +67,9 @@ metadata:
     - scripts/tests/test_series_state.py
     - docs/series.md
     - docs/cases/algorithm-explainer.md
+    - docs/cases/continuous-teaching.md
+    - scripts/teaching_timeline.py
+    - scripts/tests/test_teaching_timeline.py
     - scripts/workflow_audit.py
     - scripts/closeout.py
     - version.json
@@ -111,7 +115,7 @@ metadata:
 
 ## 人物与系列偏好
 
-信息动效与系列回顾默认苹果风，显式风格配置可覆盖；原三类基础软件镜头保持既有实现。已启用成长系列时，按[系列记录](docs/series.md)核实首发日、上期作品及制作时数据，固定小标记与短暂回顾分开，私人配置不进入公开包。当前要求优先于历史偏好。人物和开屏采用用户已授权的素材，系列偏好读取当前项目的约定，不把某个系列的偏好扩展到其他项目。素材接入见[人物复用](docs/characters.md)；精选表情、光绘和RPG按场景选，不要求每片凑齐。真实屏幕与操作细节保持清晰，字号以手机实际阅读判断。获取渠道、屏幕口令是否朗读、是否允许网址按当次要求，不复用旧产品指令。
+信息动效与系列回顾默认苹果风，显式风格配置可覆盖；原三类基础软件镜头保持既有实现。已启用成长系列且需要平台数据回顾时，先到本次指定平台的实际发布列表核对最新作品，旧账本仅作定位线索；区分成长工作流与算法等内容栏目，再按[系列记录](docs/series.md)核实首发日、上期身份及制作时数据，固定小标记与短暂回顾分开，私人配置不进入公开包。当前要求优先于历史偏好。人物和开屏采用用户已授权的素材，系列偏好读取当前项目的约定，不把某个系列的偏好扩展到其他项目。素材接入见[人物复用](docs/characters.md)；精选表情、光绘和RPG按场景选，不要求每片凑齐。真实屏幕与操作细节保持清晰，字号以手机实际阅读判断。获取渠道、屏幕口令是否朗读、是否允许网址按当次要求，不复用旧产品指令。
 
 ## 工具与边界
 
@@ -122,3 +126,7 @@ metadata:
 版本以frontmatter为准；复盘依据与范围见[lessons](docs/lessons.md)。本包不附第三方视频、人物原图、模型或作者私人项目。
 
 完整收尾与PR邀请须遵守用户最终确认时机；多skill共用收尾状态和临时贡献目录，partial回执不标记最终小结已发。答复后的清理及提交失败处理见上述收尾文档。
+
+## 教学示例台与作者配置
+
+用户要求先审教学、角色辅助讲解或滑梯式递进时，读[教学示例台](docs/teaching-review.md)，先读取当前项目的作者/系列配置。独立角色日常片头按用户要求允许先于教学点题；BGM和音效均优先采用作者指定的已打标库。示例台先给真实可播放的代表段、逐段评分与评语保存，不把缺配音、复用占位或未生成素材记为已完成。具体角色与私人曲库路径留个人配置，不成为所有用户默认。
