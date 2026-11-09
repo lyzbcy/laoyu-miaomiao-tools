@@ -2,7 +2,7 @@
 name: lyzbcy-fitness-tracker
 description: 逐组记录健身训练、查询历史与推荐训练安排；用户练完收尾时生成按部位完整列出动作的训练总结长图，并交付当前对话。普通文字模型填模板即可，无需生图额度；可选发布到用户自行配置的博客。
 metadata:
-  version: "1.3.5"
+  version: "1.3.7"
   files:
     - .gitignore
     - ASSETS.md

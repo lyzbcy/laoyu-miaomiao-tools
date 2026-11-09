@@ -80,7 +80,7 @@ class EnvironmentTest(unittest.TestCase):
         rows, _ = poster.read_records(self.folder/'records.jsonl')
         expected = sum(r['weight']*r['reps'] for r in rows if r['action']=='set')
         self.assertEqual(result['overview']['total_volume'], expected)
-        self.assertEqual(result['overview']['total_sets'], 8)
+        self.assertEqual(result['overview']['total_sets'], 9)
         self.assertEqual(len(result['sessions']), 2)
         self.assertEqual(result['sessions'][0]['duration_min'], 50)
         for key in ['personal_records', 'muscle_balance', 'volume_trend', 'exercises', 'cardio', 'nutrition_link']:
@@ -98,6 +98,16 @@ class EnvironmentTest(unittest.TestCase):
         result = dashboard_data.export_jekyll(self.folder, cfg)
         self.assertEqual(result['personal_records'][0]['note'], 'SECRET')
         self.assertEqual(result['overview']['preferences']['private_marker'], 'PRIVATE')
+
+    def test_dashboard_preserves_two_curated_pr_lanes(self):
+        cfg = runtime.config(self.folder)
+        cfg['personalRecords'] = {'chest': {'卧推': {'lanes': {
+            'regular': {'weight': 70, 'reps': 7, 'date': '2026-01-01'},
+            'limit': {'weight': 100, 'reps': 1, 'date': '2026-01-02'},
+        }}}}
+        rows = dashboard_data.export_jekyll(self.folder, cfg)['personal_records']
+        self.assertEqual([(x['exercise'], x['weight'], x['reps']) for x in rows],
+                         [('卧推 · 极限 PR', 100, 1), ('卧推 · 常规 PR', 70, 7)])
 
     def test_cardio_only_and_empty_legacy_data(self):
         row = {'date':'2026-01-05','ts':'2026-01-05T12:00:00+08:00','action':'cardio','exercise':'跑步','durationMin':25,'activeKcal':200}
@@ -139,3 +149,4 @@ class EnvironmentTest(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+

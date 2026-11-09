@@ -5,6 +5,7 @@ import json
 import os
 from pathlib import Path
 import runtime
+from personal_records import LANE_LABELS
 from datetime import datetime, timedelta, timezone
 from collections import defaultdict
 
@@ -240,15 +241,24 @@ def export_jekyll(folder, config=None):
     for muscle_group, ex_dict in config.get("personalRecords", {}).items():
         for ex_name, pr_data in ex_dict.items():
             ex_name = normalize_exercise(ex_name.replace("_", " "))
-            prs.append({
-                "exercise": label_pullup_pr(ex_name, pr_data.get("weight", 0), pr_data.get("note", "")),
-                "muscle_group": muscle_group,
-                "weight": pr_data.get("weight", 0),
-                "reps": pr_data.get("reps", 0),
-                "note": pr_data.get("note", "") if publish_notes else "",
-                "volume": pr_data.get("weight", 0) * pr_data.get("reps", 0)
-            })
-    prs.sort(key=lambda x: x["volume"], reverse=True)
+            lanes = pr_data.get("lanes") or {}
+            pr_entries = [(label, lanes[key]) for key, label in LANE_LABELS.items() if key in lanes]
+            for label, record in pr_entries or [("", pr_data)]:
+                weight, reps = record.get("weight", 0), record.get("reps", 0)
+                exercise = label_pullup_pr(ex_name, weight, record.get("note", ""))
+                if label:
+                    exercise += f" · {label} PR"
+                prs.append({
+                    "exercise": exercise,
+                    "muscle_group": muscle_group,
+                    "weight": weight,
+                    "reps": reps,
+                    "note": record.get("note", "") if publish_notes else "",
+                    "detail": record.get("detail", ""),
+                    "date": record.get("date", ""),
+                    "volume": (weight or 0) * reps,
+                })
+    prs.sort(key=lambda x: (x["date"] or "", x["exercise"]), reverse=True)
 
     # 训练频率统计
     all_dates = sorted(set(r["date"] for r in records if r.get("action") in ("session_start", "set")))

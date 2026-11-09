@@ -9,6 +9,9 @@ ALIASES = {
     '哑铃二头弯举': '哑铃弯举',
 }
 LB_KG = Decimal('0.45359237')
+LOADED_REP_TARGET = Decimal(12)
+REGULAR_MIN_REPS = Decimal(6)
+LANE_LABELS = {"regular": "常规", "limit": "极限"}
 NUMBER = r'(\d+(?:\.\d+)?)'
 HAND_LOAD = re.compile(r'(?:左右(?:手)?各|双手各|每(?:只|手)|单(?:边|只|手))\s*' + NUMBER + r'\s*(kg|lb|公斤|磅)?', re.I)
 SINGLE_LOAD = re.compile(NUMBER + r'\s*(kg|lb|公斤|磅)\s*单(?:边|只|手)', re.I)
@@ -58,7 +61,7 @@ def candidate(row):
     if not name:
         return None
     reps = number(row.get('reps'))
-    if reps is None or reps <= 0:
+    if reps is None or reps < 1:
         return None
     try:
         achieved = date.fromisoformat(row.get('date', '')).isoformat()
@@ -96,55 +99,26 @@ def candidate(row):
         canonical_name = f'自重引体向上（{variant[0]}）' if variant else '自重引体向上'
     suffix = '片' if unit == 'plate' else ' lb' if unit == 'lb' else ' kg'
     label = '自重' if mode == 'bodyweight' else prefix + format_number(weight) + suffix
+    lane = 'bodyweight' if mode == 'bodyweight' else 'regular' if reps >= REGULAR_MIN_REPS else 'limit'
     return {
-        'key': (canonical_name, equipment, mode),
-        'date': achieved, 'score': (load, reps),
+        'key': (canonical_name, equipment, mode), 'lane': lane,
+        'date': achieved, 'score': (load, reps if mode == 'bodyweight' else min(reps, LOADED_REP_TARGET)),
         'detail': f'{label} × {format_number(reps)}次', 'row': row,
     }
 
 
-def at_least(a, b):
-    return a['score'][0] >= b['score'][0] and a['score'][1] >= b['score'][1]
+def best_record(entries):
+    """Higher load wins. Ties keep the earliest date at the capped score."""
+    return max(sorted(entries, key=lambda entry: entry['date']), key=lambda entry: entry['score'])
 
 
-def better(a, b):
-    return at_least(a, b) and a['score'] != b['score']
-
-
-def preferred_history(frontier, configured):
-    # Older config entries may lack a date. Use them only when the actual set
-    # supplies one and confirms the same recorded load and reps.
-    matching = []
-    for item in frontier:
-        for record in configured:
-            if (number(record.get('weight')), number(record.get('reps'))) != (
-                number(item['row'].get('weight')), number(item['row'].get('reps'))
-            ):
-                continue
-            if record.get('date') and record['date'] != item['date']:
-                continue
-            matching.append(item)
-            break
-    return sorted(matching or frontier, key=lambda x: x['date'])[0] if matching else max(
-        sorted(frontier, key=lambda x: x['date']), key=lambda x: x['score']
-    )
-
-
-def summaries(today_sets, history, report_date, personal_records=None):
+def summaries(today_sets, history, report_date):
     prior = {}
     for row in history:
         if row.get('date', '') >= report_date:
             continue
         if entry := candidate(row):
-            prior.setdefault(entry['key'], []).append(entry)
-
-    configured = {}
-    for group in (personal_records or {}).values():
-        if not isinstance(group, dict):
-            continue
-        for name, record in group.items():
-            if isinstance(record, dict):
-                configured.setdefault(ALIASES.get(name, name), []).append(record)
+            prior.setdefault((entry['key'], entry['lane']), []).append(entry)
 
     today = {}
     for row in today_sets:
@@ -158,14 +132,18 @@ def summaries(today_sets, history, report_date, personal_records=None):
         if len(keys) != 1:
             continue
         key = keys.pop()
-        previous = prior.get(key, [])
-        if not previous:
-            continue
-        frontier = [a for a in previous if not any(better(b, a) for b in previous)]
-        new = [
-            a for a in entries
-            if not any(at_least(b, a) for b in frontier) and any(better(a, b) for b in frontier)
-        ]
-        best = max(new, key=lambda x: x['score']) if new else preferred_history(frontier, configured.get(key[0], []))
-        result[name] = {'new': bool(new), 'detail': best['detail'], 'date': best['date']}
+        lanes = ('bodyweight',) if key[2] == 'bodyweight' else ('regular', 'limit')
+        records = []
+        for lane in lanes:
+            previous = prior.get((key, lane), [])
+            current = [entry for entry in entries if entry['lane'] == lane]
+            if not previous and (not current or lane == 'bodyweight'):
+                continue
+            historical = best_record(previous) if previous else None
+            today_best = best_record(current) if current else None
+            new = bool(historical and today_best and today_best['score'] > historical['score'])
+            best = today_best if new or not historical else historical
+            records.append({'lane': lane, 'new': new, 'detail': best['detail'], 'date': best['date']})
+        if records:
+            result[name] = records
     return result

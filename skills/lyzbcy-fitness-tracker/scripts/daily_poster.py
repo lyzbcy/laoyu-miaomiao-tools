@@ -16,13 +16,12 @@ import tempfile
 from zoneinfo import ZoneInfo
 
 from PIL import Image, ImageDraw, ImageFont, ImageOps
-from personal_records import summaries as pr_summaries
-import runtime
+from personal_records import LANE_LABELS, summaries as pr_summaries
 
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / 'assets' / 'daily-poster'
 TZ = ZoneInfo('Asia/Shanghai')
-VERSION = '1.3.5'
+VERSION = '1.3.7'
 W, H = 1440, 2160
 PAPER, INK, ORANGE, TEAL = '#faf3e6', '#272b28', '#df572e', '#207c70'
 CTA = '获取同款健身记录，可以关注我“捞鱼的博客”公众号，回复“健身”获取。'
@@ -112,7 +111,7 @@ def read_records(path):
     return rows, sha(data)
 
 
-def aggregate(rows, date, personal_records=None):
+def aggregate(rows, date):
     """Read-only ledger aggregation. Never guess bodyweight, sides or free-text fixes."""
     datetime.strptime(date, '%Y-%m-%d')
     day = [r for r in rows if r.get('date') == date]
@@ -200,7 +199,7 @@ def aggregate(rows, date, personal_records=None):
         'exercises': len(exercises), 'uncounted_sets': unknown, 'cardio_sessions': len(cardio),
         'muscles': muscles, 'day_label': label, 'suggested_title': title, 'highlights': highlights,
         'exercise_summaries': [{'name': name, 'detail': set_detail(items)} for name, items in exercises.items()],
-        'body_groups': body_groups(sets, cardio, pr_summaries(sets, history, date, personal_records)),
+        'body_groups': body_groups(sets, cardio, pr_summaries(sets, history, date)),
         'note_count': note_count,
         'volume_basis': ('负重×次数；含标注的器械等效重量估算；自重和未知负重不计入'
                          if history_estimated else '已知公斤重量×次数；磅按标准换算；未标定片数和自重不计入'),
@@ -253,7 +252,7 @@ def body_groups(sets, cardio, records=None):
         result.append({'part': g['part'], 'sets': g['sets'], 'kg': float(g['kg']), 'unknown_load': g['unknown_load'],
                        'estimated_load': g['estimated_load'],
                        'items': [{'name': name, 'detail': full_set_detail(items), 'sets': len(items),
-                                  **({'pr': records[name]} if name in records else {})}
+                                  **({'prs': records[name]} if name in records else {})}
                                  for name, items in g['items'].items()]})
     if cardio:
         result.append({'part': '有氧', 'sets': 0, 'kg': 0,
@@ -264,7 +263,7 @@ def body_groups(sets, cardio, records=None):
 
 def make_input(records, date, brand=None):
     rows, digest = read_records(records)
-    facts = aggregate(rows, date, runtime.config(Path(records).resolve().parent).get('personalRecords'))
+    facts = aggregate(rows, date)
     return {'schema_version': 2, 'source': {'records': str(Path(records).resolve()), 'sha256': digest},
             'facts': facts, 'brand': normalize_brand(brand), 'facts_sha256': sha(json.dumps(facts, sort_keys=True, ensure_ascii=False).encode()),
             'copy': {'title': facts['suggested_title'], 'day_label': facts['day_label'],
@@ -289,8 +288,7 @@ def validate_input(data, allow_stale=False):
         rows, digest = read_records(data['source']['records'])
         if digest != data['source']['sha256']:
             raise ValueError('训练记录已有变化，请重新 prepare，避免生成旧数据')
-        config = runtime.config(Path(data['source']['records']).resolve().parent)
-        if aggregate(rows, facts['date'], config.get('personalRecords')) != facts:
+        if aggregate(rows, facts['date']) != facts:
             raise ValueError('聚合结果不一致，请重新 prepare')
     copy = data['copy']
     for key, limit in [('title', 18), ('day_label', 16), ('tags', 60), ('cheer', 40)]:
@@ -448,19 +446,21 @@ def plan_groups(groups):
         x, y = [48, 736][col], bottoms[col]
         cursor, items = y+122, []
         for item in group['items']:
-            pr = item.get('pr')
-            historical = pr and not pr['new']
-            detail_width = 334 if historical else 588
-            name_width = 454 if pr and pr['new'] else detail_width
-            name_height = line_count(item['name'], name_width, 29, True) * 40
+            records = item.get('prs') or ([item['pr']] if item.get('pr') else [])
+            detail_width = 334 if records else 588
+            name_height = line_count(item['name'], detail_width, 29, True) * 40
             detail_height = line_count(item['detail'], detail_width, 25) * 35
-            score_height = line_count(pr['detail'], 210, 22) * 31 if historical else 0
-            record_height = 70 + score_height if historical else 0
+            cards = []
+            card_y = cursor
+            for record in records:
+                score_height = line_count(record['detail'], 210, 22) * 31
+                card_height = 70 + score_height
+                cards.append({'record': record, 'top': card_y, 'height': card_height, 'score_height': score_height})
+                card_y += card_height + 8
+            record_height = card_y - cursor - 8 if cards else 0
             height = max(name_height + detail_height, record_height)
-            items.append({'item': item, 'y': cursor, 'name_width': name_width,
-                          'name_height': name_height, 'detail_width': detail_width,
-                          'detail_height': detail_height, 'score_height': score_height,
-                          'record_height': record_height, 'height': height})
+            items.append({'item': item, 'y': cursor, 'name_height': name_height, 'detail_width': detail_width,
+                          'detail_height': detail_height, 'cards': cards, 'height': height})
             cursor += height + 23
         bottom = cursor+10
         plans.append({'group': group, 'x': x, 'y': y, 'bottom': bottom, 'items': items})
@@ -538,21 +538,24 @@ def render(data, out, allow_stale=False):
         c.text(meta, (x+36, y+83, x+620, y+119), 24, '#646a60')
         for i, row in enumerate(plan['items']):
             item, yy, nh, dh = row['item'], row['y'], row['name_height'], row['detail_height']
-            c.text(item['name'], (x+34, yy, x+34+row['name_width'], yy+nh), 29, bold=True, min_size=29, max_lines=100)
-            if item.get('pr', {}).get('new'):
-                c.panel((x+503, yy, x+622, yy+37), '#f8c4a4', 12, False)
-                c.text('新 PR', (x+509, yy, x+616, yy+37), 24, '#9f361c', bold=True, center=True)
-            c.text(item['detail'], (x+34, yy+nh, x+34+row['detail_width'], yy+nh+dh),
-                   25, '#596054', min_size=25, max_lines=100)
-            if row['record_height']:
-                pr = item['pr']
-                box_end = yy + row['record_height']
-                score_end = yy + 34 + row['score_height']
-                c.panel((x+380, yy, x+622, box_end), '#eee7f5', 13, False)
-                c.text('历史 PR', (x+396, yy+6, x+606, yy+34), 20, '#6e4784', bold=True)
-                c.text(pr['detail'], (x+396, yy+34, x+606, score_end), 22,
-                       '#4d305f', bold=True, min_size=22, max_lines=100)
-                c.text(pr['date'], (x+396, score_end+2, x+606, box_end-6), 19, '#6e4784', min_size=19)
+            text_end = x + 34 + row['detail_width']
+            c.text(item['name'], (x+34, yy, text_end, yy+nh), 29, bold=True, min_size=29, max_lines=100)
+            c.text(item['detail'], (x+34, yy+nh, text_end, yy+nh+dh), 25, '#596054', min_size=25, max_lines=100)
+            for card in row['cards']:
+                pr = card['record']
+                label = LANE_LABELS.get(pr.get('lane'))
+                title = f"{label} PR" if label else '历史 PR'
+                if pr['new']:
+                    title = f"新{label} PR" if label else '新 PR'
+                top = card['top']
+                box_end = top + card['height']
+                score_end = top + 34 + card['score_height']
+                fill, color, score_color = ('#f8c4a4', '#9f361c', '#793119') if pr['new'] else ('#eee7f5', '#6e4784', '#4d305f')
+                c.panel((x+380, top, x+622, box_end), fill, 13, False)
+                c.text(title, (x+396, top+6, x+606, top+34), 20, color, bold=True)
+                c.text(pr['detail'], (x+396, top+34, x+606, score_end), 22,
+                       score_color, bold=True, min_size=22, max_lines=100)
+                c.text(pr['date'], (x+396, score_end+2, x+606, box_end-6), 19, color, min_size=19)
             if i < len(plan['items'])-1:
                 separator = yy + row['height'] + 10
                 c.d.line((x+34, separator, x+622, separator), fill='#e5dece', width=1)

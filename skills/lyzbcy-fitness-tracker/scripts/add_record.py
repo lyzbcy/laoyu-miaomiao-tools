@@ -109,18 +109,17 @@ def load_exercises():
         return json.load(f)
 
 
+def find_exercise(exercise_name):
+    """Match the user's exercise library by name or explicit alias."""
+    for exercises in load_exercises().get('exercises', {}).values():
+        for exercise in exercises:
+            if exercise['name'] == exercise_name or exercise_name in exercise.get('alias', []):
+                return exercise
+    return {}
+
+
 def find_muscle_group(exercise_name):
-    """从动作库匹配 muscleGroup"""
-    data = load_exercises()
-    if 'exercises' not in data:
-        return None
-    for category, exercises in data['exercises'].items():
-        for ex in exercises:
-            if ex['name'] == exercise_name:
-                return ex.get('primary')
-            if exercise_name in ex.get('alias', []):
-                return ex.get('primary')
-    return None
+    return find_exercise(exercise_name).get('primary')
 
 
 # ── 记录函数 ──────────────────────────────────────────
@@ -136,7 +135,7 @@ def activity_time(date, clock):
 def load_fields(value, unit, equipment=None, plate_estimates=None):
     # weight remains the normalized kg field used by existing consumers.
     if unit == "kg":
-        return {"weight": value}
+        return {"weight": value, **({"equipment": equipment} if equipment else {})}
     weight = float(Decimal(str(value)) * Decimal("0.45359237")) if unit == "lb" else None
     fields = {"weight": weight, "reportedWeight": value, "reportedUnit": unit}
     if equipment:
@@ -175,8 +174,14 @@ def add_set(args):
         print("❌ 无法推断 session，请用 --session 指定 (push/pull/legs/...)", file=sys.stderr)
         sys.exit(1)
 
+    definition = find_exercise(exercise)
+    if definition.get('record_canonical') is True:
+        exercise = definition['name']
+        primary = definition.get('primary')
+        if args.muscle_group and primary and args.muscle_group != primary:
+            raise ValueError(f'{exercise} 在本地动作库属于 {primary}，请用具体动作名称区分别的变式')
     set_num = args.set_num or infer_setnum(exercise, date)
-    muscle_group = args.muscle_group or find_muscle_group(exercise)
+    muscle_group = args.muscle_group or definition.get('primary')
 
     plate_estimates = None
     if args.weight_unit == 'plate' and args.equipment:
