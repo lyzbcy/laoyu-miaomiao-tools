@@ -22,7 +22,7 @@
 | 📕 `lyzbcy-xhs-agent` | 小红书 Agent 浏览器操作：笔记发布/小工具管理/评论逐条处理与结果核验，支持一次性本地附件桥 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.26.0/lyzbcy-xhs-agent.zip) |
 | 👔 `lyzbcy-laotian-cosleader` | 结果导向验收 v1.4.0：通用规则、证据核对与重构示例 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.22.0/lyzbcy-laotian-cosleader.zip) |
 | 🧑‍🏫 `lyzbcy-tudou-mentor` | 前端技术指导 v1.5.2：需求范围约束、联动回归与对照式 CR | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.54.0/lyzbcy-tudou-mentor.zip) |
-| 📊 `lyzbcy-customer-insight-review` v1.0.0 | 客户洞察月报的口径、峰值、话题及产品线分析与业务验收 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.57.0/lyzbcy-customer-insight-review.zip) |
+| 📊 青棠 · `lyzbcy-customer-insight-review` v1.0.0 | 客户洞察月报的口径、峰值、话题及产品线分析与业务验收 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.57.0/lyzbcy-customer-insight-review.zip) |
 | ✍️ `lyzbcy-qinchuan-scriptwriter` v1.1.2 | 勤川剧本法，最终确认后复盘与脱敏贡献邀约 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.43.0/lyzbcy-qinchuan-scriptwriter.zip) |
 | 💬 `lyzbcy-qq-napcat-messenger` v1.1.1 | 官方Node运行包、doctor诊断、目标账号核验、收发回读与还号；本机配置保留，每日后台更新 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.48.0/lyzbcy-qq-napcat-messenger.zip) |
 
