@@ -42,6 +42,7 @@ ASSET_NAMES = {
     "lyzbcy-xhs-agent": "lyzbcy-xhs-agent.zip",
     "lyzbcy-laotian-cosleader": "lyzbcy-laotian-cosleader.zip",
     "lyzbcy-tudou-mentor": "lyzbcy-tudou-mentor.zip",
+    "lyzbcy-customer-insight-review": "lyzbcy-customer-insight-review.zip",
     "lyzbcy-qinchuan-scriptwriter": "lyzbcy-qinchuan-scriptwriter.zip",
     "lyzbcy-qq-napcat-messenger": "lyzbcy-qq-napcat-messenger.zip",
 }
@@ -201,7 +202,7 @@ def main() -> None:
         for p in problems:
             print(f"❌ {p}")
         die("校验未通过")
-    if skill_name in {"lyzbcy-tudou-mentor", "lyzbcy-laotian-cosleader"}:
+    if skill_name in {"lyzbcy-tudou-mentor", "lyzbcy-laotian-cosleader", "lyzbcy-customer-insight-review"}:
         from check_mentor_privacy import inspect
         findings = inspect(skill_dir)
         if findings:
