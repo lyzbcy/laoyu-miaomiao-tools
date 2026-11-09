@@ -2,7 +2,7 @@
 name: lyzbcy-fitness-tracker
 description: 逐组记录健身训练、查询历史与推荐训练安排；用户练完收尾时生成按部位完整列出动作的训练总结长图，并交付当前对话。普通文字模型填模板即可，无需生图额度；可选发布到用户自行配置的博客。
 metadata:
-  version: "1.3.1"
+  version: "1.3.5"
   files:
     - .gitignore
     - ASSETS.md
@@ -38,12 +38,14 @@ metadata:
     - scripts/daily_poster.py
     - scripts/dashboard_data.py
     - scripts/fitness.py
+    - scripts/personal_records.py
     - scripts/publish_dashboard.py
     - scripts/requirements-daily-poster.txt
     - scripts/runtime.py
     - scripts/test_components.py
     - scripts/test_daily_poster.py
     - scripts/test_environment.py
+    - scripts/test_personal_records.py
     - scripts/test_runtime.py
     - scripts/update_dashboard.sh
     - scripts/update_skill.py
@@ -84,6 +86,8 @@ python scripts/add_record.py --data-dir /你的私有数据目录 session_start 
 python scripts/add_record.py --data-dir /你的私有数据目录 set --exercise 坐姿划船 --weight 35 --reps 12
 ```
 
+补记或一次汇报多组时，把每组原报时间传给 `--time HH:MM`，并使用正确的 `--date`。明确的收工时间也传给 `session_end --time`。只有首组时间时用首组作为记录跨度起点。磅使用 `--weight-unit lb` 并传原报重量，片数使用 `--weight-unit plate` 并注明器械。只记录用户明确给出的单手或双手合计口径，器械片数只有命中本机配置中的同一器械估算时才纳入公斤容量，并保留原片数和估算来源。完成后核对实际落盘字段与报告。
+
 未知动作补充用户自己的 `exercises.json`，或显式传 `--muscle-group`；不要猜未知重量。错记时追加 note，不修改历史。半次动作可记0.5，不擅自乘左右侧或双哑铃系数。逐组记录时不自动发正式总结图。
 
 ## 每次练完的收尾
@@ -91,7 +95,7 @@ python scripts/add_record.py --data-dir /你的私有数据目录 set --exercise
 用户明确说“练完了 / 收工”才记结束；仅请求查询、预览不代表收工。
 
 1. 记录真实 `session_end`：`python scripts/add_record.py --data-dir /你的私有数据目录 session_end`。不要因图片或博客失败重复记结束。
-2. 按 [references/daily-poster.md](references/daily-poster.md) prepare，模型填标题、训练日、短句与表情理由，然后 render/check。**全部动作与训练组由脚本按主要部位列出，不能只选前三个。**
+2. 按 [references/daily-poster.md](references/daily-poster.md) prepare，模型填标题、训练日、短句与表情理由，然后 render/check。**全部动作与训练组由脚本按主要部位列出，不能只选前三个。PR 徽标和带日期的历史成绩由账本计算，模型只编辑文案。**
 3. 执行收尾命令：`python scripts/fitness.py finish --workspace /你的私有数据目录 --date YYYY-MM-DD`。它复用新鲜文案，生成并校验 PNG；博客已明确配置启用时，同时更新博客数据。图片与博客结果分别返回，任一失败仍如实交付另一项结果。
 4. 把返回 `image` 的 **PNG附件发送给当前对话用户**，并报告真实博客结果。这是每次收工的固定步骤，不用另问是否要图。仅报本地路径不等于已发图；使用当前平台实际可用的附件工具或MEDIA协议，确认工具接收成功才说已发送。
 

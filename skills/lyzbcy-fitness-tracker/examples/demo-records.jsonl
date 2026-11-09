@@ -1,3 +1,5 @@
+{"ts": "2026-01-03T18:05:00+08:00", "date": "2026-01-03", "action": "set", "exercise": "平板杠铃卧推", "muscleGroup": "chest", "session": "full_body", "weight": 30, "reps": 12, "setNum": 1, "note": "虚构演示记录"}
+{"ts": "2026-01-03T18:10:00+08:00", "date": "2026-01-03", "action": "set", "exercise": "坐姿划船", "muscleGroup": "mid_back", "session": "full_body", "weight": 35, "reps": 10, "setNum": 1, "note": "虚构演示记录"}
 {"ts":"2026-01-05T18:00:00+08:00","date":"2026-01-05","action":"session_start","session":"full_body","note":"虚构示例，不是真人训练历史"}
 {"ts":"2026-01-05T18:05:00+08:00","date":"2026-01-05","action":"set","exercise":"平板杠铃卧推","muscleGroup":"chest","session":"full_body","weight":30,"reps":10,"setNum":1}
 {"ts":"2026-01-05T18:10:00+08:00","date":"2026-01-05","action":"set","exercise":"平板杠铃卧推","muscleGroup":"chest","session":"full_body","weight":30,"reps":8,"setNum":2}

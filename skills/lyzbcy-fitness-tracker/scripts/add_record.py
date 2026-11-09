@@ -23,6 +23,8 @@ import json
 import os
 from pathlib import Path
 import math
+import re
+from decimal import Decimal
 import runtime
 import sys
 from datetime import datetime, timezone, timedelta
@@ -123,6 +125,37 @@ def find_muscle_group(exercise_name):
 
 # ── 记录函数 ──────────────────────────────────────────
 
+def activity_time(date, clock):
+    if not clock:
+        return now_ts()
+    if not re.fullmatch(r"[0-9]{2}:[0-9]{2}(?::[0-9]{2})?", clock):
+        raise ValueError("--time 请用北京时间 HH:MM 或 HH:MM:SS")
+    return datetime.fromisoformat(f"{date}T{clock}").replace(tzinfo=CST).isoformat(timespec="seconds")
+
+
+def load_fields(value, unit, equipment=None, plate_estimates=None):
+    # weight remains the normalized kg field used by existing consumers.
+    if unit == "kg":
+        return {"weight": value}
+    weight = float(Decimal(str(value)) * Decimal("0.45359237")) if unit == "lb" else None
+    fields = {"weight": weight, "reportedWeight": value, "reportedUnit": unit}
+    if equipment:
+        fields["equipment"] = equipment
+    if unit == "plate" and equipment:
+        estimate = (plate_estimates or {}).get(equipment)
+        if estimate is not None:
+            rate = estimate["kg_per_plate"]
+            if isinstance(rate, bool) or not isinstance(rate, (int, float)) or not math.isfinite(rate) or rate <= 0:
+                raise ValueError(f"{equipment} 的片重估算必须为有限正数")
+            fields.update(
+                weight=float(Decimal(str(value)) * Decimal(str(rate))),
+                weightEstimated=True,
+                estimateKgPerPlate=rate,
+                estimateSource=estimate["source"],
+            )
+    return fields
+
+
 def add_set(args):
     """添加一组训练记录"""
     exercise = args.exercise
@@ -145,6 +178,10 @@ def add_set(args):
     set_num = args.set_num or infer_setnum(exercise, date)
     muscle_group = args.muscle_group or find_muscle_group(exercise)
 
+    plate_estimates = None
+    if args.weight_unit == 'plate' and args.equipment:
+        plate_estimates = runtime.config(Path(RECORDS_FILE).parent).get('plate_estimates')
+
     record = {
         'ts': now_ts(),
         'date': date,
@@ -153,17 +190,18 @@ def add_set(args):
         'muscleGroup': muscle_group or 'unknown',
         'session': session,
         'setNum': set_num,
-        'weight': args.weight,
+        **load_fields(args.weight, args.weight_unit, args.equipment, plate_estimates),
         'reps': args.reps,
     }
-    record['endTime'] = record['ts']
+    record['endTime'] = activity_time(date, args.time)
     if args.rpe is not None:
         record['rpe'] = args.rpe
     if args.note:
         record['note'] = args.note
 
     append_record(record)
-    print(f"✅ {exercise} 第{set_num}组: {args.weight}kg×{args.reps}" +
+    unit_label = "片" if args.weight_unit == "plate" else args.weight_unit
+    print(f"✅ {exercise} 第{set_num}组: {args.weight:g}{unit_label}×{args.reps:g}" +
           (f" (RPE {args.rpe})" if args.rpe is not None else ""))
     return record
 
@@ -182,6 +220,8 @@ def add_session_start(args):
         'action': 'session_start',
         'session': session,
     }
+    if args.time:
+        record['endTime'] = activity_time(date, args.time)
     if args.note:
         record['note'] = args.note
 
@@ -205,6 +245,8 @@ def add_session_end(args):
         'action': 'session_end',
         'session': session,
     }
+    if args.time:
+        record['endTime'] = activity_time(date, args.time)
     if args.note:
         record['note'] = args.note
 
@@ -269,7 +311,9 @@ def main():
     # ── set ──
     p_set = subparsers.add_parser('set', help='记录一组训练')
     p_set.add_argument('--exercise', '-e', required=True, help='动作名称')
-    p_set.add_argument('--weight', '-w', type=float, required=True, help='重量(kg)')
+    p_set.add_argument('--weight', '-w', type=float, required=True, help='原始负重数值，单位见 --weight-unit')
+    p_set.add_argument('--weight-unit', type=str.lower, choices=['kg', 'lb', 'plate'], default='kg')
+    p_set.add_argument('--equipment', help='记录器械来源，如示例器械A')
     p_set.add_argument('--reps', '-r', type=float, required=True, help='次数（允许最后半次）')
     p_set.add_argument('--rpe', type=int, help='RPE 1-10')
     p_set.add_argument('--session', '-s', help='push/pull/legs/... (不填自动推断)')
@@ -301,6 +345,9 @@ def main():
     p_note.add_argument('--session', '-s', help='session 类型')
     p_note.add_argument('--date', '-d', help='日期')
 
+    for action_parser in (p_set, p_start, p_end):
+        action_parser.add_argument('--time', help='实际训练时间（北京时间 HH:MM 或 HH:MM:SS）')
+
     args = parser.parse_args()
     global RECORDS_FILE, CONFIG_FILE, EXERCISES_FILE
     folder = Path(args.data_dir).expanduser().resolve()
@@ -329,7 +376,10 @@ def main():
         'bodyweight': add_bodyweight,
         'note': add_note,
     }
-    dispatch[args.command](args)
+    try:
+        dispatch[args.command](args)
+    except ValueError as error:
+        parser.error(str(error))
 
 
 if __name__ == '__main__':

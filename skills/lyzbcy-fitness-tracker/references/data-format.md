@@ -8,15 +8,15 @@
 
 | 字段 | 类型 | 必填 | 说明 |
 |------|------|------|------|
-| `ts` | ISO8601 | ✅ | 记录创建时间（通常等于 endTime，即用户汇报时间） |
-| `endTime` | ISO8601 | set/bodyweight必填 | **该组结束时间**（用户汇报时间 = 刚做完那一刻） |
+| `ts` | ISO8601 | ✅ | 记录创建时间 |
+| `endTime` | ISO8601 | set/bodyweight必填 | 实际训练事件时间，优先使用用户明确报告的时间 |
 | `date` | YYYY-MM-DD | ✅ | 日期，方便按天过滤 |
 | `action` | string | ✅ | `set` / `session_start` / `session_end` / `bodyweight` / `note` |
 | `exercise` | string | set必填 | 动作名称（如"平板杠铃卧推"） |
 | `muscleGroup` | string | set必填 | 主肌群 |
 | `session` | string | ✅ | 当日训练类型：`push` / `pull` / `legs` / `upper` / `lower` / `full_body` / `cardio` |
 | `setNum` | int | set必填 | 第几组（从1开始） |
-| `weight` | float | set必填 | 重量（kg），自重填 0 |
+| `weight` | number 或 null | set必填 | 可汇总的公斤重量，自重填 0，未标定片数填 null |
 | `reps` | number | set必填 | 次数，可记录最后半次（如5.5） |
 | `rpe` | int | 可选 | 感知疲劳度 1-10 |
 | `note` | string | 可选 | 备注 |
@@ -55,7 +55,9 @@
 
 ## ⏱️ endTime 与休息时间计算
 
-用户汇报时间 = 该组结束时间，所以 `endTime` = 收到汇报时的当前时间。
+有明确时间用 `--date YYYY-MM-DD --time HH:MM`，写入 `endTime`。只有实时汇报且未提供具体时间时，才用当前时间。训练结束也支持该参数。
+
+`--weight 30 --weight-unit lb` 保存 `reportedWeight: 30`、`reportedUnit: "lb"`，按 1 lb = 0.45359237 kg 填写 `weight`。`--weight 4.5 --weight-unit plate --equipment 示例器械A` 保存片数和器械来源。没有对应估算时 `weight` 为 null。私有配置中的 `plate_estimates` 可按器械名称提供 `kg_per_plate` 和 `source`，匹配时写入估算的公斤数与 `weightEstimated`。小报保留原片数，估算公斤数和含估算的容量以“约”标识。
 
 **休息时间公式：**
 ```
@@ -76,7 +78,7 @@ restSeconds = (当前组endTime - 上一组endTime) - 上一组动作的estimate
 2. **自动推断 setNum** — 查当天同一 exercise 已有几条，+1 即为当前组号
 3. **自动推断 session** — 查当天 session_start 或最近的记录确定 session 类型
 4. **自动推断 muscleGroup** — 从 exercises.json 匹配，找不到则根据动作名推断
-5. **endTime = 当前时间** — 用户汇报时间即为该组结束时间，ts 也应等同
+5. **endTime = 实际训练时间** — 补录按用户每组给出的时刻填写，`ts` 保留录入时刻
 6. **自动计算休息时间** — 查上一条 set/bodyweight 的 endTime 和估时，算出差值回复用户
 7. **只追加不修改** — 从不修改已有记录，如果用户说"刚才那组记错了"→ 追加一条 note 类型记录说明
 
@@ -139,3 +141,8 @@ restSeconds = (当前组endTime - 上一组endTime) - 上一组动作的estimate
 ```jsonl
 {"ts":"2026-08-01T12:00:00+08:00","date":"2026-08-01","action":"vo2max","value":42.5,"unit":"ml/kg/min","source":"Apple 健康导入"}
 ```
+
+## 器械片数估算
+用同动作、接近的用力程度和有刻度器械作对照，给目标器械建立一个等效负重参考。若对照重量为 W 公斤、次数为 R，目标器械使用 P 片完成 N 次，可按 W × (30 + R) ÷ (P × (30 + N)) 粗估公斤/片。它反映训练表现的等效重量，无法测出配重片的实物重量。器械或滑轮设置变更时应重新核对。
+
+只在私有工作区的 `runtime.local.json` 配置 `plate_estimates`。按器械名分别设定 `kg_per_plate` 和 `source`，来源写明对照条件。录入使用同名 `--equipment`。公开模板使用示例值，实际估算参数随本机环境保存。

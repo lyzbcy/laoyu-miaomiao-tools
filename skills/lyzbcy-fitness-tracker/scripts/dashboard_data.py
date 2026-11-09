@@ -196,17 +196,17 @@ def export_jekyll(folder, config=None):
         if not sess["sets"]:
             continue
         total_sets = len(sess["sets"])
-        total_volume = sum(s.get("weight", 0) * s.get("reps", 0) for s in sess["sets"])
+        total_volume = sum((s.get("weight") or 0) * s.get("reps", 0) for s in sess["sets"])
         exercises_done = sorted(set(s["exercise"] for s in sess["sets"]))
         # 估算时长：有 session_start 用 start→end，没有则用首组→end
         if sess["end"]:
             try:
-                end_ts = datetime.fromisoformat(sess["end"]["ts"].replace("Z", "+00:00")).replace(tzinfo=None)
+                end_ts = datetime.fromisoformat((sess["end"].get("endTime") or sess["end"]["ts"]).replace("Z", "+00:00")).replace(tzinfo=None)
                 if sess["start"]:
-                    start_ts = datetime.fromisoformat(sess["start"]["ts"].replace("Z", "+00:00")).replace(tzinfo=None)
+                    start_ts = datetime.fromisoformat((sess["start"].get("endTime") or sess["start"]["ts"]).replace("Z", "+00:00")).replace(tzinfo=None)
                 elif sess["sets"]:
                     # 无 session_start 时用第一组 set 的时间戳
-                    start_ts = datetime.fromisoformat(sess["sets"][0]["ts"].replace("Z", "+00:00")).replace(tzinfo=None)
+                    start_ts = datetime.fromisoformat((sess["sets"][0].get("endTime") or sess["sets"][0]["ts"]).replace("Z", "+00:00")).replace(tzinfo=None)
                 else:
                     start_ts = None
                 if start_ts:
@@ -218,6 +218,7 @@ def export_jekyll(folder, config=None):
         else:
             duration_min = None
 
+        estimated = any(x.get("weightEstimated") is True for x in sess["sets"])
         session_summaries.append({
             "date": d,
             "split": sess["split"],
@@ -226,8 +227,13 @@ def export_jekyll(folder, config=None):
             "total_volume": round(total_volume, 1),
             "exercises": exercises_done,
             "duration_min": duration_min,
+            **({"volume_estimated": True} if estimated else {}),
             "note": (sess["start"].get("note", "") if sess["start"] else (sess["end"].get("note", "") if sess["end"] else "")) if publish_notes else ""
         })
+        if estimated:
+            note = session_summaries[-1]["note"]
+            session_summaries[-1]["note"] = (note + " · " if note else "") + "训练量含器械片数等效估算"
+
 
     # PR 列表（从 config 提取）
     prs = []
@@ -265,7 +271,7 @@ def export_jekyll(folder, config=None):
     # 肌肉平衡分析
     muscle_volume = defaultdict(float)
     for s in sets:
-        muscle_volume[s.get("muscleGroup", "unknown")] += s.get("weight", 0) * s.get("reps", 0)
+        muscle_volume[s.get("muscleGroup", "unknown")] += (s.get("weight") or 0) * s.get("reps", 0)
 
     muscle_labels = {
         "chest": "胸", "upper_chest": "上胸", "back": "背", "lats": "背阔",
@@ -301,7 +307,7 @@ def export_jekyll(folder, config=None):
         d = parse_date(s["date"])
         # ISO week
         week_key = d.isocalendar()[:2]  # (year, week)
-        weekly_volume[week_key] += s.get("weight", 0) * s.get("reps", 0)
+        weekly_volume[week_key] += (s.get("weight") or 0) * s.get("reps", 0)
         weekly_sessions[week_key] += 1
 
     volume_trend = []
@@ -329,8 +335,8 @@ def export_jekyll(folder, config=None):
     for s in sets:
         ex = s["exercise"]
         exercise_freq[ex] += 1
-        exercise_weight_max[ex] = max(exercise_weight_max[ex], s.get("weight", 0))
-        exercise_volume[ex] += s.get("weight", 0) * s.get("reps", 0)
+        exercise_weight_max[ex] = max(exercise_weight_max[ex], (s.get("weight") or 0))
+        exercise_volume[ex] += (s.get("weight") or 0) * s.get("reps", 0)
 
     top_exercises = sorted(exercise_freq.items(), key=lambda x: x[1], reverse=True)
     # 每个动作的最新数据（最近日期、最高重量、最高次数等）
@@ -341,13 +347,13 @@ def export_jekyll(folder, config=None):
         # 最近的训练组
         last_date = ex_dates[-1] if ex_dates else None
         last_sets = [s for s in ex_sets if s["date"] == last_date] if last_date else []
-        last_weight = max((s.get("weight", 0) for s in last_sets), default=0)
+        last_weight = max(((s.get("weight") or 0) for s in last_sets), default=0)
         last_reps = max((s.get("reps", 0) for s in last_sets), default=0)
 
         exercise_metrics.append({
             "name": ex,
             "total_sets": count,
-            "max_weight": max((s.get("weight", 0) for s in ex_sets), default=0),
+            "max_weight": max(((s.get("weight") or 0) for s in ex_sets), default=0),
             "max_reps": max((s.get("reps", 0) for s in ex_sets), default=0),
             "last_date": last_date,
             "last_weight": last_weight,
@@ -412,7 +418,7 @@ def export_jekyll(folder, config=None):
             "total_sessions_recent_4w": recent_count,
             "avg_sessions_per_week": avg_per_week,
             "total_sets": len(sets),
-            "total_volume": round(sum(s.get("weight", 0) * s.get("reps", 0) for s in sets), 1),
+            "total_volume": round(sum((s.get("weight") or 0) * s.get("reps", 0) for s in sets), 1),
             "date_range": {
                 "first": all_dates[0] if all_dates else None,
                 "last": all_dates[-1] if all_dates else None
@@ -421,7 +427,7 @@ def export_jekyll(folder, config=None):
             # 派生：看板 KPI 卡直接用（避免 Liquid size 过滤器链）
             "muscle_groups_count": len(muscle_volume),
             "exercises_count": len(exercise_metrics),
-            "fun_fact": get_fun_comparison(round(sum(s.get("weight", 0) * s.get("reps", 0) for s in sets), 1))
+            "fun_fact": get_fun_comparison(round(sum((s.get("weight") or 0) * s.get("reps", 0) for s in sets), 1))
         },
         "sessions": session_summaries,
         "personal_records": prs,

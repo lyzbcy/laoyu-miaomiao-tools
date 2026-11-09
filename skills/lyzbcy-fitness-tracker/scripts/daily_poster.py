@@ -16,11 +16,13 @@ import tempfile
 from zoneinfo import ZoneInfo
 
 from PIL import Image, ImageDraw, ImageFont, ImageOps
+from personal_records import summaries as pr_summaries
+import runtime
 
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / 'assets' / 'daily-poster'
 TZ = ZoneInfo('Asia/Shanghai')
-VERSION = '1.3.1'
+VERSION = '1.3.5'
 W, H = 1440, 2160
 PAPER, INK, ORANGE, TEAL = '#faf3e6', '#272b28', '#df572e', '#207c70'
 CTA = '获取同款健身记录，可以关注我“捞鱼的博客”公众号，回复“健身”获取。'
@@ -110,7 +112,7 @@ def read_records(path):
     return rows, sha(data)
 
 
-def aggregate(rows, date):
+def aggregate(rows, date, personal_records=None):
     """Read-only ledger aggregation. Never guess bodyweight, sides or free-text fixes."""
     datetime.strptime(date, '%Y-%m-%d')
     day = [r for r in rows if r.get('date') == date]
@@ -131,6 +133,8 @@ def aggregate(rows, date):
                 total += dec(r['weight']) * reps
         return float(total), uncounted
 
+    today_estimated = any(r.get('weightEstimated') is True for r in sets)
+    history_estimated = any(r.get('weightEstimated') is True for r in history)
     today_kg, unknown = volume(sets)
     history_kg, _ = volume(history)
     times = sorted(t for r in sets + cardio if (t := stamp(r)))
@@ -142,7 +146,10 @@ def aggregate(rows, date):
     complete = bool(end_events and times and end_events[-1] >= times[-1]
                     and (not start_events or end_events[-1] >= start_events[-1]))
     start, end = (start_events[0] if start_events else (times[0] if times else None)), (end_events[-1] if complete else (times[-1] if times else None))
-    exact = bool(start_events and complete)
+    exact = bool(start_events and complete and not any(
+        r.get('action') == 'session_start' and r.get('timeSource') == 'first_set'
+        and stamp(r) == start for r in day
+    ))
     if start and end and end < start:
         raise ValueError('结束时间早于开始时间')
     mins = round((end - start).total_seconds() / 60) if start and end else None
@@ -187,46 +194,66 @@ def aggregate(rows, date):
         'date': date, 'complete': complete, 'start': start.strftime('%H:%M') if start else None,
         'end': end.strftime('%H:%M') if end else None, 'duration_minutes': mins,
         'timing_basis': timing_basis, 'exact_timing': exact, 'today_kg': today_kg,
-        'history_kg': history_kg, 'history_since': min((r['date'] for r in history), default=None),
+        'history_kg': history_kg,
+        'today_estimated': today_estimated, 'history_estimated': history_estimated, 'history_since': min((r['date'] for r in history), default=None),
         'sets': len(sets), 'reps': float(sum((dec(r.get('reps', 0)) for r in sets), Decimal(0))),
         'exercises': len(exercises), 'uncounted_sets': unknown, 'cardio_sessions': len(cardio),
         'muscles': muscles, 'day_label': label, 'suggested_title': title, 'highlights': highlights,
         'exercise_summaries': [{'name': name, 'detail': set_detail(items)} for name, items in exercises.items()],
-        'body_groups': body_groups(sets, cardio),
+        'body_groups': body_groups(sets, cardio, pr_summaries(sets, history, date, personal_records)),
         'note_count': note_count,
-        'volume_basis': '逐组原始记录重量×次数；自重、未知负重不折算；自由文本更正不自动改量',
+        'volume_basis': ('负重×次数；含标注的器械等效重量估算；自重和未知负重不计入'
+                         if history_estimated else '已知公斤重量×次数；磅按标准换算；未标定片数和自重不计入'),
     }
     return facts
 
 
+def load_label(record):
+    unit = record.get('reportedUnit')
+    if unit in {'lb', 'plate'} and record.get('reportedWeight') is not None:
+        label = fmt(record['reportedWeight']) + (' lb' if unit == 'lb' else '片')
+        if unit == 'plate' and record.get('weightEstimated') is True:
+            label += f"（约{fmt(record['weight'])}kg）"
+        if unit == 'plate' and record.get('weight') is None:
+            label += '（未标定）'
+        return label
+    weight = record.get('weight')
+    if weight is None:
+        return '未知负重'
+    return '自重' if dec(weight) == 0 else f"{fmt(weight)}kg"
+
+
 def set_detail(items):
-    parts = Counter(('自重/未知负重' if x.get('weight') in (None, 0) else f"{fmt(x['weight'])}kg") + f" × {x['reps']}次" for x in items)
-    detail = ' / '.join(text + (f' × {n}组' if n > 1 else '') for text, n in parts.items())
-    if len(detail) > 36:
+    detail = full_set_detail(items)
+    if len(detail) > 36 and not any(x.get('reportedUnit') for x in items):
         total = sum((dec(x.get('weight') or 0) * dec(x['reps']) for x in items), Decimal(0))
         detail = f"{len(items)}组 · {fmt(sum(dec(x['reps']) for x in items))}次 · 已记录训练量{fmt(total)}kg"
     return detail
 
 
 def full_set_detail(items):
-    """Preserve every weight/repetition combination; equal sets may be losslessly compressed."""
-    parts = Counter(('未知负重' if x.get('weight') is None else '自重' if dec(x['weight']) == 0
-                     else f"{fmt(x['weight'])}kg") + f" × {fmt(x['reps'])}次" for x in items)
+    """Preserve original load units and all sets in the summary."""
+    parts = Counter(f"{load_label(x)} × {fmt(x['reps'])}次" for x in items)
     return ' / '.join(text + (f' × {n}组' if n > 1 else '') for text, n in parts.items())
 
 
-def body_groups(sets, cardio):
+def body_groups(sets, cardio, records=None):
+    records = records or {}
     grouped = {}
     for r in sets:
         part = BODY_PARTS.get(GROUPS.get(r.get('muscleGroup'), '其他'), '其他部位')
-        g = grouped.setdefault(part, {'part': part, 'items': {}, 'sets': 0, 'kg': Decimal(0)})
+        g = grouped.setdefault(part, {'part': part, 'items': {}, 'sets': 0, 'kg': Decimal(0), 'unknown_load': False, 'estimated_load': False})
         g['items'].setdefault(r.get('exercise', '未命名动作'), []).append(r)
         g['sets'] += 1
+        g['unknown_load'] |= r.get('weight') is None
+        g['estimated_load'] |= r.get('weightEstimated') is True
         g['kg'] += dec(r.get('weight') or 0)*dec(r['reps'])
     result = []
     for g in grouped.values():
-        result.append({'part': g['part'], 'sets': g['sets'], 'kg': float(g['kg']),
-                       'items': [{'name': name, 'detail': full_set_detail(items), 'sets': len(items)}
+        result.append({'part': g['part'], 'sets': g['sets'], 'kg': float(g['kg']), 'unknown_load': g['unknown_load'],
+                       'estimated_load': g['estimated_load'],
+                       'items': [{'name': name, 'detail': full_set_detail(items), 'sets': len(items),
+                                  **({'pr': records[name]} if name in records else {})}
                                  for name, items in g['items'].items()]})
     if cardio:
         result.append({'part': '有氧', 'sets': 0, 'kg': 0,
@@ -237,7 +264,7 @@ def body_groups(sets, cardio):
 
 def make_input(records, date, brand=None):
     rows, digest = read_records(records)
-    facts = aggregate(rows, date)
+    facts = aggregate(rows, date, runtime.config(Path(records).resolve().parent).get('personalRecords'))
     return {'schema_version': 2, 'source': {'records': str(Path(records).resolve()), 'sha256': digest},
             'facts': facts, 'brand': normalize_brand(brand), 'facts_sha256': sha(json.dumps(facts, sort_keys=True, ensure_ascii=False).encode()),
             'copy': {'title': facts['suggested_title'], 'day_label': facts['day_label'],
@@ -262,7 +289,8 @@ def validate_input(data, allow_stale=False):
         rows, digest = read_records(data['source']['records'])
         if digest != data['source']['sha256']:
             raise ValueError('训练记录已有变化，请重新 prepare，避免生成旧数据')
-        if aggregate(rows, facts['date']) != facts:
+        config = runtime.config(Path(data['source']['records']).resolve().parent)
+        if aggregate(rows, facts['date'], config.get('personalRecords')) != facts:
             raise ValueError('聚合结果不一致，请重新 prepare')
     copy = data['copy']
     for key, limit in [('title', 18), ('day_label', 16), ('tags', 60), ('cheer', 40)]:
@@ -420,10 +448,20 @@ def plan_groups(groups):
         x, y = [48, 736][col], bottoms[col]
         cursor, items = y+122, []
         for item in group['items']:
-            nh = line_count(item['name'], 588, 29, True)*40
-            dh = line_count(item['detail'], 588, 25)*35
-            items.append({'item': item, 'y': cursor, 'name_height': nh, 'detail_height': dh})
-            cursor += nh+dh+23
+            pr = item.get('pr')
+            historical = pr and not pr['new']
+            detail_width = 334 if historical else 588
+            name_width = 454 if pr and pr['new'] else detail_width
+            name_height = line_count(item['name'], name_width, 29, True) * 40
+            detail_height = line_count(item['detail'], detail_width, 25) * 35
+            score_height = line_count(pr['detail'], 210, 22) * 31 if historical else 0
+            record_height = 70 + score_height if historical else 0
+            height = max(name_height + detail_height, record_height)
+            items.append({'item': item, 'y': cursor, 'name_width': name_width,
+                          'name_height': name_height, 'detail_width': detail_width,
+                          'detail_height': detail_height, 'score_height': score_height,
+                          'record_height': record_height, 'height': height})
+            cursor += height + 23
         bottom = cursor+10
         plans.append({'group': group, 'x': x, 'y': y, 'bottom': bottom, 'items': items})
         bottoms[col] = bottom+28
@@ -468,7 +506,8 @@ def render(data, out, allow_stale=False):
         c.panel((x, 666, x+656, 1236), color, 24)
         col = TEAL if truck else '#c74621'
         c.text(title, (x+38, 686, x+614, 755), 51, col, True)
-        c.text(fmt(kg/1000)+' 吨', (x+35, 768, x+615, 920), 113, col, True, min_size=55)
+        estimated = facts['history_estimated' if truck else 'today_estimated']
+        c.text(('约 ' if estimated else '')+fmt(kg/1000)+' 吨', (x+35, 768, x+615, 920), 113, col, True, min_size=55)
         c.text(since, (x+38, 916, x+618, 965), 28, min_size=22)
         c.text(comp, (x+38, 977, x+618, 1040), 37, col, True)
         c.text(basis, (x+38, 1045, x+370, 1088), 24)
@@ -487,19 +526,41 @@ def render(data, out, allow_stale=False):
         c.panel((x, y, x+656, plan['bottom']), '#fffaf0', 20)
         c.panel((x+22, y+20, x+634, y+76), '#d8eae2', 12, False)
         c.text(g['part'], (x+40, y+22, x+610, y+73), 35, TEAL, True)
-        meta = f"{len(g['items'])} 个动作 · {g['sets']} 组 · {fmt(g['kg'])} kg" if g['part'] != '有氧' else f"{len(g['items'])} 段有氧"
+        if g['part'] == '有氧':
+            meta = f"{len(g['items'])} 段有氧"
+        else:
+            load = f"{fmt(g['kg'])} kg"
+            if g.get('estimated_load'):
+                load = '约 ' + load
+            if g.get('unknown_load'):
+                load = f"{load} 已折算" if g['kg'] else '重量未折算'
+            meta = f"{len(g['items'])} 个动作 · {g['sets']} 组 · {load}"
         c.text(meta, (x+36, y+83, x+620, y+119), 24, '#646a60')
         for i, row in enumerate(plan['items']):
             item, yy, nh, dh = row['item'], row['y'], row['name_height'], row['detail_height']
-            c.text(item['name'], (x+34, yy, x+622, yy+nh), 29, bold=True, min_size=29, max_lines=100)
-            c.text(item['detail'], (x+34, yy+nh, x+622, yy+nh+dh), 25, '#596054', min_size=25, max_lines=100)
+            c.text(item['name'], (x+34, yy, x+34+row['name_width'], yy+nh), 29, bold=True, min_size=29, max_lines=100)
+            if item.get('pr', {}).get('new'):
+                c.panel((x+503, yy, x+622, yy+37), '#f8c4a4', 12, False)
+                c.text('新 PR', (x+509, yy, x+616, yy+37), 24, '#9f361c', bold=True, center=True)
+            c.text(item['detail'], (x+34, yy+nh, x+34+row['detail_width'], yy+nh+dh),
+                   25, '#596054', min_size=25, max_lines=100)
+            if row['record_height']:
+                pr = item['pr']
+                box_end = yy + row['record_height']
+                score_end = yy + 34 + row['score_height']
+                c.panel((x+380, yy, x+622, box_end), '#eee7f5', 13, False)
+                c.text('历史 PR', (x+396, yy+6, x+606, yy+34), 20, '#6e4784', bold=True)
+                c.text(pr['detail'], (x+396, yy+34, x+606, score_end), 22,
+                       '#4d305f', bold=True, min_size=22, max_lines=100)
+                c.text(pr['date'], (x+396, score_end+2, x+606, box_end-6), 19, '#6e4784', min_size=19)
             if i < len(plan['items'])-1:
-                c.d.line((x+34, yy+nh+dh+10, x+622, yy+nh+dh+10), fill='#e5dece', width=1)
+                separator = yy + row['height'] + 10
+                c.d.line((x+34, separator, x+622, separator), fill='#e5dece', width=1)
     c.sticker(s['rest'], (65, recovery_y, 330, recovery_y+200))
     c.sticker(s['meal'], (1110, recovery_y, 1375, recovery_y+200))
     c.text(copy['cheer'], (350, recovery_y+15, 1090, recovery_y+105), 34, TEAL, True, True, max_lines=2)
     c.text('练完记得休息 · 练后好好吃饭', (350, recovery_y+110, 1090, recovery_y+160), 26, center=True)
-    c.text('训练量＝已记录重量×次数；自重及未知重量未折算。', (70, note_y, 1370, note_y+36), 23, center=True)
+    c.text(facts['volume_basis'], (70, note_y, 1370, note_y+36), 23, center=True)
     c.text('按逐组原始记录统计，未结构化更正未折算；车辆仅作趣味类比。', (70, note_y+39, 1370, note_y+75), 22, center=True)
     c.panel((48, cta_y, 1392, cta_y+150), '#d4e7dc', 16)
     c.text(brand['cta'].replace('回复', '\n回复'), (90, cta_y+15, 1140, cta_y+135), 32, bold=True, min_size=26, max_lines=2)

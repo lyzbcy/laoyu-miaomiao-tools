@@ -80,8 +80,8 @@ class EnvironmentTest(unittest.TestCase):
         rows, _ = poster.read_records(self.folder/'records.jsonl')
         expected = sum(r['weight']*r['reps'] for r in rows if r['action']=='set')
         self.assertEqual(result['overview']['total_volume'], expected)
-        self.assertEqual(result['overview']['total_sets'], 6)
-        self.assertEqual(len(result['sessions']), 1)
+        self.assertEqual(result['overview']['total_sets'], 8)
+        self.assertEqual(len(result['sessions']), 2)
         self.assertEqual(result['sessions'][0]['duration_min'], 50)
         for key in ['personal_records', 'muscle_balance', 'volume_trend', 'exercises', 'cardio', 'nutrition_link']:
             self.assertIn(key, result)
