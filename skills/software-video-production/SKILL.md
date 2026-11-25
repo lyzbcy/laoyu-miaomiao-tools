@@ -2,132 +2,22 @@
 name: software-video-production
 description: 制作和改版软件演示、生活情境宣传及知识讲解短视频，处理真实操作证据、隐私、视听表达、教学样片、封面和交付复盘。不替代软件开发或漫剧制作。
 metadata:
-  version: 0.14.23
+  version: 0.14.25
   source: https://raw.githubusercontent.com/lyzbcy/laoyu-miaomiao-tools/main/skills/software-video-production/SKILL.md
-  files:
-    - CHANGELOG.md
-    - SKILL.md
-    - agents/openai.yaml
-    - docs/agent.md
-    - docs/document.md
-    - docs/teaching-review.md
-    - docs/audio.md
-    - docs/characters.md
-    - docs/creative.md
-    - docs/delivery.md
-    - docs/evolution.md
-    - docs/exemplars.md
-    - docs/lessons.md
-    - docs/music-generation.md
-    - docs/privacy.md
-    - docs/remotion.md
-    - docs/tech.md
-    - docs/workflow.md
-    - references/update.md
-    - scripts/narrate.py
-    - scripts/serve_preview.py
-    - scripts/tests/test_preview_ranges.py
-    - scripts/media_check.py
-    - scripts/update_skill.py
-    - assets/shot-recipes.json
-    - docs/cloud-transcription.md
-    - docs/editing.md
-    - references/tool-workflow.md
-    - scripts/cut_review.py
-    - scripts/edit_plan.py
-    - scripts/transcription_preflight.py
-    - scripts/fixtures/edit-project.json
-    - scripts/fixtures/transcription-request.json
-    - scripts/tests/test_offline_workflow.py
-    - assets/remotion-software/entry.jsx
-    - docs/integration.md
-    - scripts/render_shots.cjs
-    - scripts/render_edl.py
-    - scripts/produce.py
-    - scripts/SyntheticSpeech.cs
-    - scripts/local_transcribe.py
-    - scripts/tests/test_render_integration.py
-    - assets/upstream-entry.tsx
-    - assets/upstream-pins.json
-    - docs/upstream.md
-    - scripts/verify_upstream.py
-    - scripts/render_upstream_shots.cjs
-    - scripts/upstream_native.py
-    - scripts/produce_upstream.py
-    - scripts/tests/test_upstream_gate.py
-    - assets/remotion-software/motion-model.cjs
-    - assets/remotion-software/motion.jsx
-    - docs/motion.md
-    - docs/reference-motion.md
-    - scripts/fixtures/motion-shots.json
-    - scripts/tests/test_motion_models.cjs
-    - assets/remotion-software/series-model.cjs
-    - assets/remotion-software/series.jsx
-    - scripts/series_state.py
-    - scripts/tests/test_series.cjs
-    - scripts/tests/test_series_state.py
-    - docs/series.md
-    - docs/cases/algorithm-explainer.md
-    - docs/cases/continuous-teaching.md
-    - scripts/teaching_timeline.py
-    - scripts/tests/test_teaching_timeline.py
-    - scripts/workflow_audit.py
-    - scripts/closeout.py
-    - version.json
-    - update.json
-    - docs/advanced-cases.md
-    - assets/advanced-cases.json
-    - assets/remotion-software/advanced-model.cjs
-    - assets/remotion-software/advanced.jsx
-    - scripts/select_motion.py
-    - scripts/fixtures/advanced-shots.json
-    - scripts/tests/test_advanced.cjs
-    - scripts/tests/test_select_motion.py
-    - docs/run-summary.md
-    - CONTRIBUTORS.md
 ---
 
 # 软件宣传视频制作
 
-每天首次使用从本skill目录后台执行 `python scripts/update_skill.py --background`，直接继续任务；失败沿用旧版。细节见[更新机制](references/update.md)。
+先读项目入口、采用版本和最新要求。局部改版只回到受影响阶段，复用已确认的表达和素材。
 
-把真实功能拍成愿意看下去的变化。先读当前项目入口，确认采用版本、用户最新反馈和任务范围；按问题读[模块导航](docs/agent.md)，不加载全部案例。用户要求严格流程时，开工先回报实际读取的 SKILL.md 路径、版本与本次执行链；未读取就明确说明。分镜/剪辑、字幕音频、动效、时间线与渲染验收逐项登记实际产物和检查范围，不适用或受阻写具体原因。仅调用 Remotion、FFmpeg 或媒体检查不能证明执行了整套工作流。
+1. **建立证据。** 核实原素材能证明的事件，区分实录与示意。保留源文件和源时间映射，敏感画面按[隐私处理](docs/privacy.md)后再变换或输出。
+2. **先验表达，再批量制作。** 确定观众为何看、能看到什么结果。方案未定时，用实际素材做一段能检验关键表达的有声样片，再锁定剪辑、字幕、动效和声音。完整新片走[制作流程与证据账本](docs/workflow.md)。
+3. **验收最终产物。** 核对本次约定、事实、隐私和实际声画。需要封面时与成片分别验收。记录实际检查范围，用户采用后锁定对应版本。[导出与验收](docs/delivery.md)
+4. **交付或续接投稿。** 交成片及必要重建资料。收到本次发布指令后，将已采用成片、封面、文案和同一项目账本交给 `lyzbcy-video-publish-assistant`。[交接与收尾](docs/run-summary.md)
 
-完整新片在项目内用 `scripts/workflow_audit.py init WORKFLOW.json` 建证据账本；启用系列加 `--series`，用户要求生图封面加 `--image-cover`。按[工作流证据](docs/workflow.md#步骤账本与恢复)记录实际产物，交付前audit；这不强加到换封面、修字幕等局部任务。账本只能检查遗漏和证据变化，不能替代执行、审美判断或完整听审。
+## 按任务读取
 
-工作流同时建立同目录 `closeout.json`：记录经验评估、贡献授权/PR、归档和清理。恢复先status，交付前audit；制作接发布沿用同一份，不因压缩重置。详见[收尾证据](docs/run-summary.md#持久化收尾检查)。
-
-需要中文配音时可沿用哈基米风格的曼波音色偏好，用户当前选择优先；先复用文本、音色、语速与哈希匹配的获准缓存，新生成先核实服务可用性、音色和费用并做短样。`scripts/narrate.py` 是历史 Milora 适配，不代表该试用接口仍可用；下架或需付费即停止该路径，不自动购买、换声或部署本地模型。详见[声音](docs/audio.md#默认中文配音跨电脑)。此默认不要求每片加旁白，也不替代歌曲生成流程。
-
-完整制作沿[生产主线](docs/workflow.md)推进：观看理由→导演方案→有声代表段→全片生产→整体剪辑→交付反馈；按阶段产物与实际效果决定推进或回改。用[制作 document](docs/document.md)承载导演方案，模块按问题读取；局部改版只回到受影响阶段，沿用项目已有文档与账本。
-
-## 制作顺序
-
-1. **核实事件与源时间。** 看原素材的操作、声音与设备关系，登记源清单、哈希、时间边界与隐私；有语音且需按词剪辑或同步字幕时核对字级边界。创意情境与真机证据分别标明；需要删口头词/停顿或重组镜头时按[可回滚剪辑与语义分镜](docs/editing.md)保存候选理由、EDL和剪后字幕映射，不直接改原片。
-2. **先验观看理由与兑现。** 从素材中选一种能成立的[开头机制](docs/creative.md)，把首句与首帧一起检查：看哪里、预测什么、已得什么回报、接着等什么。开头机制未定时用实际素材比较短方案，选对叙事再扩展；已采用的开头可沿用。约3秒、5秒只作观察点。参考的画面事实、创作解释与留存指标按[范例方法](docs/exemplars.md)分开，不把标题或特效数量当留人依据。
-3. **决定信息由谁承载。** 先检查原片录入的游戏声与音乐；需另配BGM时按[画面试听](docs/audio.md#选曲与画面试听)确认具体歌曲和混音后再铺全片。约定字幕语言、显示代称与样式；第一版完整成片就交齐约定字幕，强调花字不能替代口播字幕。 能看懂的交给动作；情绪交给反应或短心声；确有解释缺口才加口播。音乐叙事片可用RPG打字和轻哔声，保持歌曲连续；讲解片按理解需要安排人声，不能用音乐填补信息缺口。见[创意](docs/creative.md)、[声音](docs/audio.md)。
-4. **安排视线和运动。** 制作或改版先读[高级案例与自动选型](docs/advanced-cases.md)，依据段落意图、可用截图和运动限制运行 `scripts/select_motion.py`，主动把适合的案例写入分镜 `motion_case` 并制作代表段；不等用户再次提醒使用高级效果。仅裁切、修字幕或换封面不强加动效。研究玻璃材质、参考片动效或评估 MEP 时读[玻璃动效与代码式剪辑](docs/reference-motion.md)，按需选用，不为风格叠加而叠加。真实操作留出看清的时间，按[镜头配方](docs/editing.md)安排证据，再选择单一主渲染/必要局部叠层。按比较、趋势、目标或因果选择信息动效，空间镜头用于登场或全貌，甩镜用于有语义的交接；无匹配时直接切镜并记录原因。保持观看理由，留出稳定阅读，不设固定动静配额。实心栅格隐私派生物先于动效，按[隐私](docs/privacy.md)复查放大、转场和切点。
-5. **分别验收成片和封面。** 先按[交付复核](docs/delivery.md#交片前的五项内容复核)核对上期回顾、互动请求、开头兑现、常驻BGM和事件音效是否兑现本次约定；不适用、未做与已完成分开记。技术、事实/隐私、实际视听范围、用户评价各自记录。封面负责让人想点开，另按手机缩略图与平台真实裁切验收；成片评分不能转算封面评分。见[交付](docs/delivery.md)。
-6. **锁定与收尾。** 用户采用后锁定成片。用户说“可以了，去全平台发布吧”等继续发布指令时，交接已采用成片、封面、文案和项目运行记录，调用可用的 `lyzbcy-video-publish-assistant` 继续；平台范围与授权按发布skill核对。此时先记制作小结，最终收尾交给发布阶段，合并成一条消息，不提前重复邀约或清理。仅制作交付则由本skill收尾。按[运行小结与经验贡献](docs/run-summary.md)汇总用户问题、实际改版数、最终实现、验收/逐平台结果与未知；盘点旧版本占用，负担大时给清单与保留项询问清理；经验有价值时准备脱敏草案再询问PR。旧版本清理和贡献提交分别授权；用户答复贡献邀请后，按创建清单清理本次自建临时贡献包，无需再次询问清理授权。已有授权不重复确认；已合入贡献见[贡献者名单](CONTRIBUTORS.md)。
-
-## 可运行入口
-
-先按素材与要求选择路径，并核对依赖是否可用：[自研镜头与EDL](docs/integration.md)适合其支持的镜头和剪辑；[原版上游接入](docs/upstream.md)使用固定版本的部分shotcraft组件及video-use助手。两个demo都是合成素材技术验收，不能代替真实成片；上游一键验收入口仅接受合成fixture。无语音或已有校正字幕时不强制转写；需要按词剪辑、生成或对齐字幕时，才选择适用的转写与校对。用户指定原版时不得默默改用自研替代，缺失组件先说明。记录实际路径和未执行项。
-
-## 人物与系列偏好
-
-信息动效与系列回顾默认苹果风，显式风格配置可覆盖；原三类基础软件镜头保持既有实现。已启用成长系列且需要平台数据回顾时，先到本次指定平台的实际发布列表核对最新作品，旧账本仅作定位线索；区分成长工作流与算法等内容栏目，再按[系列记录](docs/series.md)核实首发日、上期身份及制作时数据，固定小标记与短暂回顾分开，私人配置不进入公开包。当前要求优先于历史偏好。人物和开屏采用用户已授权的素材，系列偏好读取当前项目的约定，不把某个系列的偏好扩展到其他项目。素材接入见[人物复用](docs/characters.md)；精选表情、光绘和RPG按场景选，不要求每片凑齐。真实屏幕与操作细节保持清晰，字号以手机实际阅读判断。获取渠道、屏幕口令是否朗读、是否允许网址按当次要求，不复用旧产品指令。
-
-## 工具与边界
-
-复用已有Python、FFmpeg、音频与模型；丰富动效优先参考[Remotion](docs/remotion.md)，重建见[技术](docs/tech.md)。普通中文旁白默认曼波及匹配缓存，用户另选音色时优先；模型识别、歌唱与TTS按真实能力命名。云转写先按[免费用量准入](docs/cloud-transcription.md)测输入时长、核实当前余额、显示消耗与剩余并取得这批上传的明确批准；余额未知/不足不自动付费，离线预检不执行上传。大型下载先说明用途和体量；模型缓存遵从当前用户的盘位与共享限制，并验证离线复用。
-
-不因剪辑任务修改或发布软件、购买服务或发送消息。制作、保存草稿、提交审核、公开发布分别记录；用户确认与Agent独立核验分别标明。抽帧、ASR和响度不能冒充完整试听、用户审美认可或留存证据。
-
-版本以frontmatter为准；复盘依据与范围见[lessons](docs/lessons.md)。本包不附第三方视频、人物原图、模型或作者私人项目。
-
-完整收尾与PR邀请须遵守用户最终确认时机；多skill共用收尾状态和临时贡献目录，partial回执不标记最终小结已发。答复后的清理及提交失败处理见上述收尾文档。
-
-## 教学示例台与作者配置
-
-用户要求先审教学、角色辅助讲解或滑梯式递进时，读[教学示例台](docs/teaching-review.md)，先读取当前项目的作者/系列配置。独立角色日常片头按用户要求允许先于教学点题；BGM和音效均优先采用作者指定的已打标库。示例台先给真实可播放的代表段、逐段评分与评语保存，不把缺配音、复用占位或未生成素材记为已完成。具体角色与私人曲库路径留个人配置，不成为所有用户默认。
+- 改剪辑或同步字幕读[剪辑与时间映射](docs/editing.md)。配音、选曲或混音读[声音](docs/audio.md)，用户已选声音优先复用匹配缓存。普通中文旁白默认哈基米风格的曼波音色；`scripts/narrate.py` 是历史 Milora 适配，试用接口曾观察到下架并需月包，不代表当前可用，生成前先核实服务、音色和费用；下架或需付费即停，不自动购买、换声或部署本地模型。详见[默认中文配音](docs/audio.md#默认中文配音跨电脑)。用创作台画布/剪辑/打标或识别本机工具链版本时读[创作台](docs/creator-studio.md)，不复制旧画布副本进项目。
+- 需要教学、系列回顾或高级动效时，再选[教学样片](docs/teaching-review.md)、[系列](docs/series.md)或[镜头案例](docs/advanced-cases.md)。研究玻璃材质、参考片动效或 MEP 时读[玻璃动效与代码式剪辑](docs/reference-motion.md)。
+- 找其他实现、案例或复盘方法时查[模块索引](docs/agent.md)。已有规则覆盖的问题修执行，单片参数留项目。
+- 每天首次使用按[静默更新](references/update.md)后台查新。

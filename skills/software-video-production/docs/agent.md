@@ -8,12 +8,13 @@
 | 素材事实、目录和时间轴 | [workflow](workflow.md) |
 | 原版shotcraft/video-use实际调用、固定版本与合成验收 | [upstream](upstream.md) |
 | 自研镜头/EDL、按需本地转写与合成验收限制 | [integration](integration.md) |
+| 创作台画布/剪辑/打标接口、版本识别与单份维护边界 | [creator-studio](creator-studio.md) |
 | 字级删除、可回滚EDL、语义分镜、软件镜头与切点 | [editing](editing.md) |
 | 云转写输入测量、免费余额、缓存、重试与上传确认 | [cloud-transcription](cloud-transcription.md) |
 | 五技能能力重叠、官方接口与许可边界 | [工具工作流](../references/tool-workflow.md) |
 | 首帧首句、开头兑现、信息关系、动效与非机械节奏 | [creative](creative.md) |
 | 选参考、制作代表段落 | [exemplars](exemplars.md) |
-| 自动选择高级镜头、六个可执行案例、研究来源与淘汰理由 | [advanced-cases](advanced-cases.md)；制作/改版锁分镜前必读，按意图运行 `scripts/select_motion.py` |
+| 自动选择高级镜头、六个可执行案例、研究来源与淘汰理由 | [advanced-cases](advanced-cases.md)；仅在有相应段落意图、素材及动效需求时选用 |
 | 系列天数、上一期封面和抖音作品数据 | [series](series.md) |
 | 人物图层与动作素材 | [characters](characters.md) |
 | 隐私遮罩 | [privacy](privacy.md) |
@@ -23,8 +24,8 @@
 | 数据、流程、观点、聚焦、转场的可运行动效 | [motion](motion.md) |
 | 玻璃叠层、OpenMotion 分镜、.motion 结构与 MEP 试用 | [玻璃动效与代码式剪辑](reference-motion.md) |
 | 程序化动画与依赖复用 | [remotion](remotion.md)、[tech](tech.md) |
-| 复盘重写、脚本行为验收、锁定与清理 | [evolution](evolution.md) |
-| 完整交付后的运行小结、版本计数、经验评估、PR邀约与署名 | [run-summary](run-summary.md)，每次完整制作/改版收尾必读；正式署名见[贡献者](../CONTRIBUTORS.md) |
+| 复盘重写与脚本行为验收 | [evolution](evolution.md) |
+| 完整交付后的运行小结、版本计数、经验评估、PR邀约与署名 | [run-summary](run-summary.md)；贡献、归档或清理触发时只读对应段 |
 | 结论依据和适用范围 | [lessons](lessons.md) |
 
 本包提供方法和媒体检查脚本，不包含作者的私人项目、人物原图、第三方视频、模型权重或现成渲染工程。素材与运行数据留在使用者项目。

@@ -161,6 +161,17 @@ def main() -> None:
         die(f"版本不一致：SKILL.md={version}，CHANGELOG 顶条={top}。先对齐再打包。")
 
     problems = []
+    if not files and (skill_dir / 'update.json').exists():
+        # 入口不带文件清单的 skill（实现清单已移入更新清单）：按 update.json 校验和打包；
+        # update.json 自身随包，与带 files 清单的 skill 一致
+        try:
+            listed = list(json.loads((skill_dir / 'update.json').read_text(encoding='utf-8')).get('sha256', {}))
+        except (ValueError, AttributeError, TypeError) as error:
+            die(f"{skill_dir}/update.json 无法作为清单读取：{error}")
+        if 'SKILL.md' not in listed:
+            die(f"{skill_dir}/update.json 的清单缺少 SKILL.md")
+        files = listed + ['update.json']
+        print(f"frontmatter 没有 metadata.files，改用 update.json 清单（{len(files)} 个文件）")
     if not files:
         files = ["SKILL.md"]  # 没有 manifest 的老 skill 只校验 SKILL.md
         print("⚠ frontmatter 没有 metadata.files（单文件 skill）")

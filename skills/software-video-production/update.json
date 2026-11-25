@@ -1,18 +1,18 @@
 {
   "name": "software-video-production",
-  "version": "0.14.23",
+  "version": "0.14.25",
   "sha256": {
-    "CHANGELOG.md": "36b0ac0d7f594b749b01a610b20fc7d7d8d11a3ab2bac764cef48bc936d5fecd",
-    "SKILL.md": "d2196446ae732315c302bb6d1e1c1724334db75c5f13bc298b37fa05f8dafb76",
+    "CHANGELOG.md": "e2bff63d457b4dee4311f0e6b22e60b3799fa54b57e089963a5cd26e23173c69",
+    "SKILL.md": "5a07322c1f537eab85a748fc20f277c696045cc2c9d1ad9b270b9db7d018c843",
     "agents/openai.yaml": "fb86e70a02376ffa682fe0802544b9a8e085e6b6d537761ea49d98b759c7ccf1",
-    "docs/agent.md": "d2535de4072a8da69b48e2c3e03f49206e13b0849dd72617c128f4921cac7b03",
+    "docs/agent.md": "ce74106b51e77be01c2498f31fb23900d1eaffaa89d7e0b70f15ced818c9ae9b",
     "docs/document.md": "c2db5a021790b2c903622e8b5661573874eac0c00ff94cfdd228738f49aefbdb",
     "docs/teaching-review.md": "7057aaba7b1f3f2cf72d3eef4bf79be9ab4543cd35c23c6ead3f336a936e00ea",
     "docs/audio.md": "0e1f2a2eb7c764d7cb5c0f3e550e134ef540bba146aa182f0b18ecac1e2dc9cf",
     "docs/characters.md": "29beb2d91bfe25ff0243e5dd77d8a510efafe2409bf3524ca66fab946b4a55c1",
-    "docs/creative.md": "7f3f740967f73aea85414eef8d9c5f1e33bfc65608ff84b794d5417dbadbd2a2",
-    "docs/delivery.md": "484a5177e2a4ec0f31e504ee9a63dc3af3cab2fdb80d37f0b285c14080045f65",
-    "docs/evolution.md": "89492fb1de531602e86a61ccde2f35aa4dd02ab011162aa9b2eca08daf561484",
+    "docs/creative.md": "ed06e1bc670bee2098a9a3611f5a184d24eb879a2c20891fe992964263c8bcff",
+    "docs/delivery.md": "f6e75446979691dd19610ed16a77b817bd5b64f4b60cae361e080b1884daf314",
+    "docs/evolution.md": "0e3ca9c4b8acec8bcd627fdfa3143df432bdd07f93e6336fee2a5c7a310780fd",
     "docs/exemplars.md": "c0665a8a48e479039190ea596d4c2f869b029f6be19f31993255ab4486b8d390",
     "docs/lessons.md": "cd1217c92946a713645485364dfa266f9b5b39bf2a577d96bb139170009e58dd",
     "docs/music-generation.md": "9be1714de2cd0ef765cd5bfd1b2aca3ee9adbececf98aa3d5d50189280489e5f",
@@ -69,8 +69,8 @@
     "scripts/tests/test_teaching_timeline.py": "24f3917fea8df69b1d555d66b26452110d8a689f6c71cc83f5ff21991d2711d4",
     "scripts/workflow_audit.py": "bf8beea3d88f5d4bc12a41741e87e1ebe9bf789fa115dce471331bdea6acf955",
     "scripts/closeout.py": "4dd744a3348df1281560a47bbe5a5715b3d7b0150ccf17e272563a4200b94491",
-    "version.json": "78565ec87d9bd07525908d3374f80ec1e902f1741c69cf3904cbaf1221975462",
-    "docs/advanced-cases.md": "5e6d5dea72295723086ea95e525998851e4924fbbd7f82ae5a27b20625538f67",
+    "version.json": "17d28e89e293934cc2c99e859a1df4e144de9a2932d7ad382c40fdf77b159063",
+    "docs/advanced-cases.md": "258f77d9737d9cdd95e822a62f0e7da73bd0aa7d6d389d0dfb0ce30485c80940",
     "assets/advanced-cases.json": "dcea350cb18338a2b4e8b237eca7ff662f72a27978e42bbb2ef336b8a9eb3665",
     "assets/remotion-software/advanced-model.cjs": "4842a9af6f5ca91a262c1796090fae1797fb3c5e3ce4b5b937a0327c3ac0c86f",
     "assets/remotion-software/advanced.jsx": "029714a1be23944e1e040c3d202138d1b1589817d1c8aaeb052bc3532b0a1c3f",
@@ -78,8 +78,9 @@
     "scripts/fixtures/advanced-shots.json": "54c6a1de8fff451206a5ccd9468a528dbfd8726f56ec46f9e0b08af730d86caa",
     "scripts/tests/test_advanced.cjs": "d41e1d849390e98a7ad1382820dfb511b69f14a2b4a971b843123e37aad41c3b",
     "scripts/tests/test_select_motion.py": "b4c6a16f1880ddd55fe0a91092b581d0a26b68f7d0284c1082815106a40fba57",
-    "docs/run-summary.md": "f6054a051fd295aff282e8f66237ce9b5b9a0315b0584d2c5ae9b9812eb41afb",
+    "docs/run-summary.md": "1876615740609c44b6113787b4fdd1aff6a86f66449cdaef765a919e3ff66fb7",
     "CONTRIBUTORS.md": "8b6b111f9dfb57af6bd3d2dfed4e57661f9d89ab5b9cbcc82f706e85cd17004e",
-    "docs/reference-motion.md": "7480b4923d677dc996237181b902ac9ae641d63e0c4129c5440436d208a39cc2"
+    "docs/reference-motion.md": "7480b4923d677dc996237181b902ac9ae641d63e0c4129c5440436d208a39cc2",
+    "docs/creator-studio.md": "965e61d7f28c78720def4776493c7032262787730b37e1a289876011f75ae933"
   }
 }
