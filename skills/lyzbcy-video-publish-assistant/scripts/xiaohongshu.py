@@ -69,7 +69,14 @@ def confirm_published(p):
         p.b.wait(lambda:'/note-manager' in p.b.state()['url'],timeout=20)
     # This is a filter, not a publication action. The active state is read back below.
     p.b.tap(text='已发布')
-    state=p.b.js(PUBLISHED_ROWS.replace('TITLE',json.dumps(p.item['title'])))
+    def observe():
+        return p.b.js(PUBLISHED_ROWS.replace('TITLE',json.dumps(p.item['title'])))
+    try:
+        # The filter changes before its async list finishes rendering. Read only;
+        # never repeat the publication click when a new card is not visible yet.
+        state=p.b.wait(lambda: (s if s.get('active_tab')=='已发布' and s.get('rows') else False) if (s:=observe()) else False,timeout=12)
+    except UIError:
+        state=observe()
     result=published_gate(state,p.item['title'],p.j['submission_started_at'],p.j.get('video_duration'),expected_note_id=p.j.get('xiaohongshu_note_id'))
     return {'gate':result,'observation':state}
 

@@ -645,14 +645,14 @@
   </article>
   <!-- SKILL 11: video-publish-assistant -->
   <article class="skill skill-detail" id="video-publish-assistant" data-name="lyzbcy-video-publish-assistant" data-grad="linear-gradient(135deg,#102d24 0%,#285d48 58%,#b2d65e 100%)">
-    <div class="skill-head"><span class="emoji">🎬</span><h3>lyzbcy-video-publish-assistant</h3><span class="ver">多平台视频投稿 · v1.3.8</span></div>
+    <div class="skill-head"><span class="emoji">🎬</span><h3>lyzbcy-video-publish-assistant</h3><span class="ver">多平台视频投稿 · v1.3.13</span></div>
     <p class="skill-tag">把成片、封面和文案填进抖音、B站、小红书和YouTube，保存草稿并重开核验；获得本次明确授权后可继续发布。</p>
     <div class="field"><div class="label">它能做什么</div><p>使用已登录的浏览器上传成片，设置多比例封面、标题、正文、分区、话题和AI声明。可恢复CLI用红黄绿状态控制继续、等待和异常处理，避免重复上传与不明结果下重复提交；支持封面裁切验收、草稿重开、B站普通与活动标签分流，以及YouTube私享、Shorts封面和版权检查。新增Edge/Kimi WebBridge只读入口预检、本地桥接独立绕过失效代理、同名话题ID消歧、YouTube重开就绪等待及上传对话框限定；小红书提交回执与后台已发布状态分开核验。保留用户手动修改，每日后台静默更新。</p></div>
     <div class="field"><div class="label">适合 / 边界</div><p>默认准备草稿，正式发布需绑定本次授权与稿件内容。当前脚本适配上述四平台；113项源码回归及45项随包回归通过，本次实桥检查只读、不重复真实投稿，不冒充新增四平台端到端验收。X、快手、视频号、公众号、知乎、掘金仅有扩展策略，尚未提供一键适配；视频号逐片确认，公众号群发单独授权。需要已有浏览器连接工具，不导出Cookie或绕过验证码。</p></div>
     <div class="field"><div class="label">怎么用</div><div class="prompt-box">把这个最终视频和三种比例的封面上传到Edge里的抖音、B站、小红书和YouTube，帮我填好文案和话题，保存草稿，最后由我确认发布。</div></div>
     <div class="field"><div class="label">怎么安装</div><p>下载ZIP，解压后将整个 <code>lyzbcy-video-publish-assistant/</code> 文件夹放到Agent的skills目录。发布脚本使用Python标准库、curl和已有Kimi浏览器扩展；有FFprobe时补充媒体信息，不下载模型或新浏览器。</p></div>
     <div class="field"><div class="label">统一收尾与贡献</div><p>可独立投稿或接续制作skill，共用项目记录并在发布后合并回报一次。新平台适配、碰壁修复与稳定脚本可经用户同意贡献PR；旧文件清理先实测、询问并保留恢复资料。</p></div>
-    <div class="dl-row"><a class="btn btn-zip" id="dl-video-publish-assistant" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.53.0/lyzbcy-video-publish-assistant.zip">📦 下载 lyzbcy-video-publish-assistant.zip</a><a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/lyzbcy-video-publish-assistant">查看源码</a></div>
+    <div class="dl-row"><a class="btn btn-zip" id="dl-video-publish-assistant" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.63.0/lyzbcy-video-publish-assistant.zip">📦 下载 lyzbcy-video-publish-assistant.zip</a><a class="btn btn-src" href="https://github.com/lyzbcy/laoyu-miaomiao-tools/tree/main/skills/lyzbcy-video-publish-assistant">查看源码</a></div>
   <div class="field"><div class="label">本次更新</div><p>逐平台核验原创与AI声明、实际封面和合集关联；同集公众号引用已发表视频号，群发授权逐篇绑定；音乐版权与声明分别记录，保存重开后再报告完成。</p></div>
   </article>
 
@@ -697,7 +697,7 @@
     <ul style="color:var(--muted);font-size:.9rem;margin:6px 0 0">
       <li>lyzbcy-laoyu-ppt：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.61.0/lyzbcy-laoyu-ppt.zip</code></li>
       <li>software-video-production：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.62.0/software-video-production.zip</code></li>
-      <li>lyzbcy-video-publish-assistant：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.53.0/lyzbcy-video-publish-assistant.zip</code></li>
+      <li>lyzbcy-video-publish-assistant：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.63.0/lyzbcy-video-publish-assistant.zip</code></li>
       <li>lyzbcy-study-map：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.0.0/lyzbcy-study-map.zip</code></li>
       <li>lyzbcy-最后的1%：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.1.0/lyzbcy-last-1-percent.zip</code></li>
       <li>lyzbcy-视频生成提示词润色：<code>https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.43.0/lyzbcy-video-prompt-polish.zip</code></li>
@@ -751,9 +751,10 @@
 // —— 强制刷新组件配置（发布时与 docs/version.json 同步修改）——
 window.__FR__ = {
   id: 'laoyu-miaomiao-tools',
-  version: '2026.11.25-3',
+  version: '2026.11.25-4',
   registry: 'version.json',
   changelog: [
+    "2026-11-25 发布技能 v1.3.13：本机维护线首次公开，入口精简，新增视频号、公众号等扩展平台的现场步骤与运行手册，AI 生成声明默认如实设置并写明各平台发布后能否补；下载包v1.63.0",
     "2026-11-25 制作skill v0.14.25：本机线与公开线合并为一条（精简入口、按任务读取），并入创作台接口文档与玻璃动效参考，打包脚本支持按更新清单出包；下载包v1.62.0",
     "2026-11-25 新收录捞鱼风格PPT v1.0.0：品牌玻璃视觉、真实案例、原生点击动画、手机大字高亮讲稿与流程一图流，附 PPTX 结构核验；下载包 v1.61.0",
     "2026-11-25 制作skill v0.14.23：AI生成声明规则与状态记录、玻璃动效与代码式剪辑参考、课件分层脱敏、Windows低内存转写与AAC时间戳核验；下载包v1.60.0",
@@ -873,7 +874,7 @@ const RELEASES = {
   "fitness-tracker": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.59.0/lyzbcy-fitness-tracker.zip",
   "shared-regression": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.32.0/lyzbcy-shared-regression.zip",
   "software-video-production": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.62.0/software-video-production.zip",
-  "video-publish-assistant": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.53.0/lyzbcy-video-publish-assistant.zip",
+  "video-publish-assistant": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.63.0/lyzbcy-video-publish-assistant.zip",
   "study-map": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.0.0/lyzbcy-study-map.zip",
   "last-1-percent": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.1.0/lyzbcy-last-1-percent.zip",
   "video-prompt-polish": "https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.43.0/lyzbcy-video-prompt-polish.zip",
@@ -978,7 +979,7 @@ function copyForAI(){
    - v1.1.0：Node运行包、doctor、目标账号核验、45秒启动截止、本机配置保留与每日后台更新。
    - 下载：${RELEASES['qq-napcat-messenger']}
 
-11) lyzbcy-video-publish-assistant（多平台视频投稿 · v1.3.8）
+11) lyzbcy-video-publish-assistant（多平台视频投稿 · v1.3.13）
    - 用途：以红黄绿状态恢复抖音、B站、小红书和YouTube投稿，核验封面与草稿、避免重复上传和提交；本次明确授权可绑定稿件继续发布，保留人工修改。
    - 边界：113项源码回归和45项随包回归通过；实桥预检只读，不冒充新增四平台端到端验收。X、快手、视频号、公众号、知乎、掘金仅有扩展策略；视频号逐片确认，公众号群发单独授权。不导出Cookie或绕过验证码。
    - 用法：把最终视频上传到抖音、B站、小红书和YouTube，填好内容，保存草稿，最后我来发布。

@@ -17,10 +17,10 @@ def publication_signal(platform,state,expected_title,owned_attempt=False,video_i
     text=state.get('text','');url=state.get('url','')
     if platform=='youtube':
         published=state.get('published_dialog_text','')
-        if expected_title in published and '发布于' in published and (not video_id or video_id in published):
+        if owned_attempt and expected_title in published and ('发布于' in published or all(x in published for x in ('视频发布时间','上传于','分享链接'))) and video_id and video_id in published:
             return light('submit',True,status='published',video_id=video_id)
         row=state.get('matching_row_text','')
-        if expected_title in row and '公开' in row and '草稿' not in row and (not video_id or state.get('matching_row_video_id')==video_id):
+        if expected_title in row and '公开' in row and '草稿' not in row and state.get('row_count',1)==1 and video_id and state.get('matching_row_video_id')==video_id:
             return light('submit',True,status='public',video_id=video_id)
     elif platform=='douyin' and owned_attempt and '发布成功' in text and '/content/manage' in url:
         return light('submit',True,status='submitted')

@@ -3,8 +3,9 @@
 from pathlib import Path
 import argparse,datetime,json,re,shutil,sys,time
 from browser import Browser,UIError,digest
-from prepare_upload import check
+from prepare_upload import check,dimensions
 from youtube import YouTubeDraft
+from publication_registry import record as record_publication
 from gates import light,normalized,publication_signal,review_fingerprint,authorize,activity_plan,validate_context,description_matches
 from bilibili import BilibiliTopics
 from xiaohongshu import apply_topics,confirm_published,RECEIPT_ID
@@ -47,7 +48,7 @@ class Publisher:
         write(self.root/(self.p+'-'+label+'.json'),v)
         # Green steps log proofs. Pixels are useful only for cover crops and
         # exceptional UI; never screenshot every successful text/settings step.
-        if label=='inspect' or label.startswith(('error-','cover-')):
+        if label=='inspect' or label.startswith('error-') or (label.startswith('cover-') and self.item.get('cover_visual_required',False)):
             self.b.screenshot(self.root/(self.p+'-'+label+'.jpg'))
             self.j['screenshots']=self.j.get('screenshots',0)+1
         return v
@@ -115,6 +116,22 @@ class Publisher:
         self.j['cover_review_evidence']={'path':str(evidence.resolve()),'sha256':fingerprint}
         self.persist();return self.j['cover_review_evidence']
 
+    def finish_cover_upload(self,selected=None):
+        # Call only AFTER the platform adapter observed the changed cover UI.
+        if self.item.get('cover_visual_required',False):
+            self.j['cover_visual_review']='pending'
+            return {'status':'set','visual_review':'pending','instruction':'Inspect exceptional platform crop; record review-covers'}
+        ratios={'douyin':['4:3','3:4'],'bilibili':['4:3','16:9'],'xiaohongshu':['3:4']}
+        assets=[(selected['ratio'],Path(selected['path']))] if selected else [(ratio,self.local(self.m['covers'][ratio])) for ratio in ratios[self.p]]
+        proof=[]
+        for ratio,path in assets:
+            w,h=dimensions(path);a,b=map(int,ratio.split(':'))
+            if abs(w/h-a/b)>.01:raise UIError('Prepared cover ratio differs; inspect platform crop')
+            proof.append({'ratio':ratio,'sha256':digest(path),'width':w,'height':h})
+        self.j['cover_visual_review']='passed' # Legacy gate name; this is structural, not visual review.
+        self.j['cover_review_evidence']={'method':'prepared_ratio_and_observed_ui_change','assets':proof,'screenshot_required':False,'visually_reviewed':False}
+        return {'status':'set','visual_review':'passed','verification':'prepared_ratio_and_observed_ui_change'}
+
     def upload(self):
         if self.shown(self.cfg['title']):
             current=self.b.js('(()=>{const e=document.querySelector('+json.dumps(self.cfg['title'])+');return e.value||e.innerText})()')
@@ -172,8 +189,7 @@ class Publisher:
         covers=self.m['covers']
         if self.p=='youtube':
             result=YouTubeDraft(self).covers()
-            self.j['cover_visual_review']=result['visual_review']
-            return result
+            return self.finish_cover_upload(result['cover'])
         elif self.p=='xiaohongshu':
             if self.shown(self.cfg['cover_entry']):self.b.tap(selector=self.cfg['cover_entry'])
             else:
@@ -210,7 +226,7 @@ class Publisher:
                 before=self.b.cover_state();self.b.fill_cover(sel,self.local(covers[ratio]))
                 self.b.wait(lambda:self.b.cover_state()!=before,timeout=12);self.evidence('cover-'+ratio.replace(':','x'))
             self.b.semantic('button','完成')
-        self.j['cover_visual_review']='pending';return {'status':'set','visual_review':'pending','instruction':'Inspect platform preview screenshots; record review with --step review-covers --evidence PATH'}
+        return self.finish_cover_upload()
 
     def declaration(self):
         if self.p=='douyin':
@@ -358,6 +374,7 @@ class Publisher:
         if self.p!='xiaohongshu':return self.confirm()
         report=confirm_published(self)
         write(self.root/(self.p+'-published.json'),report)
+        record_publication(self.root,dict(self.m,video_sha256=self.hash),self.p,report['gate'],self.j)
         return report['gate']
 
     def confirm(self):
@@ -368,6 +385,7 @@ class Publisher:
             if isinstance(note_id,str) and re.fullmatch(r'[a-fA-F0-9]{24}',note_id):
                 self.j['xiaohongshu_note_id']=note_id;self.persist()
         write(self.root/(self.p+'-publication.json'),{'gate':result,'observation':state})
+        record_publication(self.root,dict(self.m,video_sha256=self.hash),self.p,result,self.j)
         return result
 
     def submit(self):
@@ -443,7 +461,7 @@ def main():
                 r[step]=p.run(step)
                 print(json.dumps(p.j['gate'],ensure_ascii=False),flush=True)
                 if p.j['steps'][step]['status']=='pending':r={'next':'Processing; resume same run later, no retransmission','gate':p.j['gate']};break
-                if step=='covers':r={'next':'Review actual cover crop once per ratio, then review-covers','gate':light('cover-review',pending=True)};break
+                if step=='covers' and p.j.get('cover_visual_review')=='pending':r={'next':'Inspect exceptional crop, then review-covers','gate':light('cover-review',pending=True)};break
             else:r={'status':'saved_reopened_verified','gate':p.j.get('gate')}
         else:
             r=p.run(a.step)

@@ -14,7 +14,7 @@
 | 🏋️ `lyzbcy-fitness-tracker` v1.3.7 | 逐组记录，收工时生成带常规与极限 PR 的训练小报，支持实际时间和原始重量单位；无需生图额度，博客可选、私有数据目录；每日静默更新与交付后脱敏贡献 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.59.0/lyzbcy-fitness-tracker.zip) |
 | 🧪 `lyzbcy-shared-regression` v0.1.2 | PRD/设计对照、人工与AI分开留痕；提供本机模板与HTTP检查，每日静默更新 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.32.0/lyzbcy-shared-regression.zip) |
 | 🎞️ `software-video-production` v0.14.25 | 软件视频制作：精简入口与按任务读取，内置高级镜头选型、创作台接口、玻璃动效参考、AI 生成声明规则、交付运行小结与可选经验PR；每日静默更新 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.62.0/software-video-production.zip) |
-| 🎬 `lyzbcy-video-publish-assistant` v1.3.8 | 抖音/B站/小红书/YouTube投稿脚本，支持红黄绿恢复、封面与草稿验收、防重复提交；按本次授权保存草稿或发布 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.53.0/lyzbcy-video-publish-assistant.zip) |
+| 🎬 `lyzbcy-video-publish-assistant` v1.3.13 | 抖音/B站/小红书/YouTube投稿脚本，支持红黄绿恢复、封面与草稿验收、防重复提交；按本次授权保存草稿或发布；含视频号、公众号等扩展平台的现场步骤、多平台运行手册与 AI 生成声明规则 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.63.0/lyzbcy-video-publish-assistant.zip) |
 | 🗺️ `lyzbcy-study-map` | 把难啃的干货拆成有原文依据、能追问、能复述的交互式理解地图 | [Releases](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases) |
 | 🎯 `lyzbcy-最后的1%` | 极限执行元 skill，把任务做到真正完美才停手 | [Releases](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases) |
 | 🎬 `lyzbcy-视频生成提示词润色` v1.7.2 | AI 视频分镜提示词做减法，只留镜头语言 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.43.0/lyzbcy-video-prompt-polish.zip) |

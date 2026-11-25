@@ -2,7 +2,7 @@
 from pathlib import Path
 import sys, unittest
 from types import SimpleNamespace
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'skills/lyzbcy-video-publish-assistant/scripts'))
 from bilibili import BilibiliTopics
@@ -36,20 +36,36 @@ class OrdinaryTags(unittest.TestCase):
 
 
 class CoverControls(unittest.TestCase):
-    def make(self,entries):
+    def make(self,entries,item=None):
+        # Publisher.__init__ always sets item from the manifest's platform entry; __new__ bypasses it, so supply it here.
         p=object.__new__(Publisher);p.p='douyin';p.m={'covers':{'4:3':'landscape','3:4':'portrait'}}
-        p.cfg={'cover_entries':'.cover'};p.j={};p.b=Mock();p.local=Mock(side_effect=lambda x:x);p.evidence=Mock()
+        p.cfg={'cover_entries':'.cover'};p.j={};p.item=item or {};p.b=Mock();p.local=Mock(side_effect=lambda x:x);p.evidence=Mock()
         p.b.js.side_effect=lambda code:entries if 'JSON.stringify([...document.querySelectorAll' in code else True
         p.b.wait.side_effect=lambda fn,**kw:fn()
         p.b.cover_state.side_effect=['before-horizontal','after-horizontal','before-portrait','after-portrait']
         return p
 
+    def structural(self,p,sizes):
+        return patch('publish.dimensions',side_effect=lambda path:sizes[Path(path).name]),patch('publish.digest',return_value='0'*64)
+
     def test_initial_horizontal_canvas_does_not_require_a_same_named_button(self):
-        p=self.make([{'x':1,'y':2}]);p.covers()
+        p=self.make([{'x':1,'y':2}]);dimension,digest=self.structural(p,{'landscape':(400,300),'portrait':(300,400)})
+        with dimension,digest:result=p.covers()
+        # A prepared cover whose ratio matches passes by structure; no visual review is requested.
+        self.assertEqual(result,{'status':'set','visual_review':'passed','verification':'prepared_ratio_and_observed_ui_change'})
         self.assertEqual(p.b.fill_cover.call_count,2)
         p.b.semantic.assert_any_call('button','设置竖封面')
         self.assertNotIn(('button','设置横封面'),[c.args for c in p.b.semantic.call_args_list])
+        self.assertEqual(p.j['cover_visual_review'],'passed')
+
+    def test_requested_visual_review_stays_pending(self):
+        p=self.make([{'x':1,'y':2}],{'cover_visual_required':True})
+        self.assertEqual(p.covers()['visual_review'],'pending')
         self.assertEqual(p.j['cover_visual_review'],'pending')
+
+    def test_mismatched_prepared_cover_ratio_stops(self):
+        p=self.make([{'x':1,'y':2}]);dimension,digest=self.structural(p,{'landscape':(400,400),'portrait':(400,400)})
+        with dimension,digest,self.assertRaises(UIError):p.covers()
 
     def test_ambiguous_cover_entry_stops_without_click(self):
         p=self.make([{'x':1,'y':2}]*3)

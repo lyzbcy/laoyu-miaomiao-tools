@@ -31,9 +31,11 @@ class ReleaseSync(unittest.TestCase):
  def test_zip_matches_manifest_and_source(self):
   with zipfile.ZipFile(R/'dist/lyzbcy-video-publish-assistant.zip') as z:
    self.assertIsNone(z.testzip())
-   files=re.findall(r'^    - (\S+)$',self.skill,re.M)
+   files=re.findall(r'^    - (\S+)$',self.skill,re.M) or list(json.loads((S/'update.json').read_text(encoding='utf8'))['sha256']);files=files if 'update.json' in files else files+['update.json']
    self.assertEqual(set(z.namelist()),{'lyzbcy-video-publish-assistant/'+x for x in files})
    for path in files:self.assertEqual(z.read('lyzbcy-video-publish-assistant/'+path),(S/path).read_bytes().replace(b'\r\n',b'\n'))
+   self.assertEqual({p.relative_to(S).as_posix() for p in S.rglob('*') if p.is_file() and '__pycache__' not in p.parts},set(files))
+   self.assertEqual({p.relative_to(S).as_posix() for p in S.rglob('*') if p.is_file() and '__pycache__' not in p.parts},set(files))
  @unittest.skipUnless(shutil.which('node'),'Node needed')
  def test_inline_scripts_parse(self):
   for script in re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',self.html,re.S):
