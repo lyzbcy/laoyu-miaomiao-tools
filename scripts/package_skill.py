@@ -30,6 +30,7 @@ SKILLS_DIR = REPO_ROOT / "skills"
 
 # skill 目录名 → release asset 文件名（保持稳定，站点链接靠它）
 ASSET_NAMES = {
+    "lyzbcy-laoyu-ppt": "lyzbcy-laoyu-ppt.zip",
     "lyzbcy-fitness-tracker": "lyzbcy-fitness-tracker.zip",
     "lyzbcy-shared-regression": "lyzbcy-shared-regression.zip",
     "software-video-production": "software-video-production.zip",

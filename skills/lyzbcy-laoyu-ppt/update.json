@@ -1,0 +1,11 @@
+{
+  "name": "lyzbcy-laoyu-ppt",
+  "version": "1.0.0",
+  "sha256": {
+    "SKILL.md": "5ea5270068e21ee500d3aed04ea9c57f59999147ef2abebb8bd2391bcfeaf4ac",
+    "CHANGELOG.md": "2b1511d572d071adbf3bf5a4bff5ed79b6d2ba3fd30104d36e6997cd210a975e",
+    "references/visual.md": "f827f9a098fed85353570d5f7d253baf2adcbb85b202fb624a28e2a97aef4060",
+    "references/live.md": "3be4de814d6998f286eadfeb8998559ba74ff5200527a7d06b233c399c14632b",
+    "scripts/verify_pptx.py": "13ed12c55ac48927bf36dc4547c5415c333fe4c25f34d9315b84f82973ade993"
+  }
+}

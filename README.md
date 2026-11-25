@@ -10,6 +10,7 @@
 
 | Skill | 一句话 | 下载 |
 |-------|--------|------|
+| 📊 捞鱼风格PPT · `lyzbcy-laoyu-ppt` v1.0.0 | 可编辑宣讲、真实案例、原生点击动画、手机高亮讲稿与流程图 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.61.0/lyzbcy-laoyu-ppt.zip) |
 | 🏋️ `lyzbcy-fitness-tracker` v1.3.7 | 逐组记录，收工时生成带常规与极限 PR 的训练小报，支持实际时间和原始重量单位；无需生图额度，博客可选、私有数据目录；每日静默更新与交付后脱敏贡献 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.59.0/lyzbcy-fitness-tracker.zip) |
 | 🧪 `lyzbcy-shared-regression` v0.1.2 | PRD/设计对照、人工与AI分开留痕；提供本机模板与HTTP检查，每日静默更新 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.32.0/lyzbcy-shared-regression.zip) |
 | 🎞️ `software-video-production` v0.14.23 | 软件视频制作，内置高级镜头选型、玻璃动效参考、AI 生成声明规则、交付运行小结与可选经验PR；每日静默更新 | [下载 ZIP](https://github.com/lyzbcy/laoyu-miaomiao-tools/releases/download/v1.60.0/software-video-production.zip) |
