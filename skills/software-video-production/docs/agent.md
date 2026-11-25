@@ -21,6 +21,7 @@
 | 歌曲生成与许可、下载身份 | [music-generation](music-generation.md) |
 | 封面、导出与证据分层 | [delivery](delivery.md) |
 | 数据、流程、观点、聚焦、转场的可运行动效 | [motion](motion.md) |
+| 玻璃叠层、OpenMotion 分镜、.motion 结构与 MEP 试用 | [玻璃动效与代码式剪辑](reference-motion.md) |
 | 程序化动画与依赖复用 | [remotion](remotion.md)、[tech](tech.md) |
 | 复盘重写、脚本行为验收、锁定与清理 | [evolution](evolution.md) |
 | 完整交付后的运行小结、版本计数、经验评估、PR邀约与署名 | [run-summary](run-summary.md)，每次完整制作/改版收尾必读；正式署名见[贡献者](../CONTRIBUTORS.md) |
