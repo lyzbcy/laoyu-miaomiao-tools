@@ -79,7 +79,7 @@
     "scripts/tests/test_advanced.cjs": "d41e1d849390e98a7ad1382820dfb511b69f14a2b4a971b843123e37aad41c3b",
     "scripts/tests/test_select_motion.py": "b4c6a16f1880ddd55fe0a91092b581d0a26b68f7d0284c1082815106a40fba57",
     "docs/run-summary.md": "1876615740609c44b6113787b4fdd1aff6a86f66449cdaef765a919e3ff66fb7",
-    "CONTRIBUTORS.md": "8b6b111f9dfb57af6bd3d2dfed4e57661f9d89ab5b9cbcc82f706e85cd17004e",
+    "CONTRIBUTORS.md": "211aa6f830993bbd1778fe7666cc97a8a11e253ad252c671195af52e2f930961",
     "docs/reference-motion.md": "7480b4923d677dc996237181b902ac9ae641d63e0c4129c5440436d208a39cc2",
     "docs/creator-studio.md": "965e61d7f28c78720def4776493c7032262787730b37e1a289876011f75ae933"
   }
