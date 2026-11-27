@@ -1,10 +1,11 @@
 import sys, json, tempfile, unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'scripts'))
-from extension_steps import mutation, read_state, source, UIError
+from extension_steps import mutation, read_state, source, UIError, x_validate_ready, approved_images, native_drop
 from matrix_resume import pending
 from publish import Publisher
-import struct
+import struct, hashlib
+from unittest.mock import Mock
 
 
 class RecoveryTests(unittest.TestCase):
@@ -37,6 +38,31 @@ class RecoveryTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             path=Path(td)/'journal.json';mutation(path,{'text':'old'},'upload',lambda:True)
             with self.assertRaises(UIError):read_state(path,{'text':'new'})
+
+    def test_x_ready_requires_native_text_exact_video_and_enabled_post(self):
+        plan={'text':'exact #AI','video':'v10.mp4','duration_seconds':372}
+        view={'text':plan['text'],'native':plan['text'],'video':True,'status':['v10.mp4: Ready'],'duration':372,'disabled':False}
+        x_validate_ready(view,plan)
+        for change in ({'native':'old'},{'status':['v6.mp4: Ready']},{'video':False},{'disabled':True},{'duration':300}):
+            with self.assertRaises(UIError): x_validate_ready(dict(view,**change),plan)
+
+    def test_approved_ordered_image_manifest_requires_exact_hash_and_source(self):
+        with tempfile.TemporaryDirectory() as td:
+            p=Path(td);f=p/'01.jpg';f.write_bytes(b'image');m=p/'manifest.json'
+            m.write_text(json.dumps({'source_video_sha256':'final','images':[{'order':1,'path':f.name,'sha256':hashlib.sha256(b'image').hexdigest()}]}))
+            plan={'confirmed_this_image_set':True,'image_manifest':str(m),'authorized_image_manifest_sha256':hashlib.sha256(m.read_bytes()).hexdigest(),'video_sha256':'final'}
+            self.assertEqual(approved_images(plan),[str(f)])
+            with self.assertRaises(UIError):approved_images(dict(plan,video_sha256='old'))
+            f.write_bytes(b'changed')
+            with self.assertRaises(UIError):approved_images(plan)
+
+    def test_native_drop_is_selection_not_completion(self):
+        b=Mock();b.target.return_value={'x':30,'y':40};b.wait.return_value={'x':30,'y':40}
+        self.assertEqual(native_drop(b,'.drop',['file']),{'selected':1,'upload_complete':False})
+        self.assertEqual([c.kwargs['type'] for c in b.cdp.call_args_list],['dragEnter','dragOver','drop'])
+        b.reset_mock();b.wait.side_effect=UIError('Drop target is obstructed')
+        with self.assertRaises(UIError):native_drop(b,'.drop',['file'])
+        b.cdp.assert_not_called()
 
     def test_wrong_video_fingerprint_stops_before_upload(self):
         with tempfile.TemporaryDirectory() as td:

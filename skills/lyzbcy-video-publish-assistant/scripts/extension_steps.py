@@ -5,7 +5,7 @@ No account, project, tab or credential is bundled. Plan and journal stay private
 import argparse, hashlib, json, time
 from urllib.parse import urlparse, parse_qs
 from pathlib import Path
-from browser import Browser, UIError
+from browser import Browser, UIError, digest
 
 
 def save(path, value):
@@ -49,11 +49,53 @@ def source(plan):
 
 
 def x_inspect(b):
-    return b.js("""(()=>{const d=[...document.querySelectorAll('[role=dialog]')].at(-1);
-    if(!d)throw Error('Composer dialog missing');return JSON.stringify({
-    text:d.querySelector('[role=textbox]')?.innerText,body:d.innerText,
+    return b.js(r"""(()=>{const visible=e=>!!e?.getClientRects().length;
+    const all=[...document.querySelectorAll('[data-testid=tweetTextarea_0]')].filter(visible);const modal=all.filter(e=>e.closest('[role=dialog]'));const editors=modal.length?modal:all;
+    if(editors.length!==1)throw Error('Unique X composer not found');const q=editors[0];
+    let d=q;while(d&&!d.querySelector('[data-testid=tweetButton],[data-testid=tweetButtonInline]'))d=d.parentElement;
+    if(!d)throw Error('Composer submit missing');const btn=d.querySelector('[data-testid=tweetButton],[data-testid=tweetButtonInline]');
+    const blocks=[...q.querySelectorAll('[data-block=true]')];const native=(blocks.length?blocks:[q]).map(e=>[...e.querySelectorAll('span[data-text=true]')].map(x=>x.innerText).join('')).join('\n');
+    return JSON.stringify({text:q.innerText,native,body:d.innerText,dialog:!!q.closest('[role=dialog]'),button:btn.getAttribute('data-testid'),disabled:btn.disabled,
     status:[...d.querySelectorAll('[role=status]')].map(x=>x.innerText),
-    video:!!d.querySelector('video'),fileInput:!!d.querySelector('input[data-testid=fileInput]')})})()""")
+    video:!!d.querySelector('video'),duration:d.querySelector('video')?.duration,ready:d.querySelector('video')?.readyState,
+    fileInput:!!d.querySelector('input[data-testid=fileInput]'),suggestions:[...document.querySelectorAll('[role=listbox]')].some(visible)})})()""")
+
+
+def x_validate_ready(view, plan):
+    norm=lambda s:' '.join((s or '').split())
+    if norm(view.get('text')) != norm(plan['text']) or norm(view.get('native')) != norm(plan['text']):
+        raise UIError('Native editor text differs; refocus and inspect, never post raw DOM text')
+    if not view['video'] or not any(Path(plan['video']).name in s and 'Ready' in s for s in view['status']) or view.get('disabled'):
+        raise UIError('Current video is not Ready or submit is disabled')
+    if plan.get('duration_seconds') is not None and abs((view.get('duration') or 0)-plan['duration_seconds'])>1:
+        raise UIError('Current video duration differs')
+
+
+def x_dismiss_suggestions(b):
+    if not x_inspect(b)['suggestions']:return
+    # The autocomplete adds an overlay in front of the submit/disclosure controls.
+    # Click real noninteractive space outside it; do not select a suggested tag.
+    target=b.js(r"""(()=>{const q=document.querySelector('[role=dialog] [data-testid=tweetTextarea_0]')||document.querySelector('[data-testid=tweetTextarea_0]'),r=q.getBoundingClientRect();
+    const x=Math.min(innerWidth-8,r.right+15),y=Math.max(8,r.bottom+10),e=document.elementFromPoint(x,y);
+    return e&&!e.closest('a,button,input,[role=button],[role=listbox],[contenteditable=true]')?{x,y}:null})()""")
+    if not target:raise UIError('Hashtag suggestions cover composer; dismiss without changing text')
+    b.point(target['x'],target['y']);b.wait(lambda:not x_inspect(b)['suggestions'],timeout=5)
+
+
+def x_native_ai(b, enabled=True):
+    x_dismiss_suggestions(b)
+    scope='[role=dialog] ' if x_inspect(b)['dialog'] else ''
+    b.tap(selector=scope+'[data-testid=contentDisclosureButton]')
+    def read():
+        return b.js(r"""(()=>{const d=[...document.querySelectorAll('[role=dialog]')].find(e=>e.innerText.includes('Content disclosure')&&e.innerText.includes('Made with AI'));
+        if(!d)return null;const a=[...d.querySelectorAll('input[role=switch]')].filter(x=>x.parentElement.parentElement.innerText.trim()==='Made with AI');
+        if(a.length!==1)return null;const e=a[0],r=e.getBoundingClientRect();const done=[...d.querySelectorAll('button,[role=button]')].filter(x=>x.innerText.trim()==='Done');if(done.length!==1)return null;const dr=done[0].getBoundingClientRect();return {checked:e.checked,x:r.x+r.width/2,y:r.y+r.height/2,done:{x:dr.x+dr.width/2,y:dr.y+dr.height/2}}})()""")
+    state=b.wait(read,timeout=8)
+    if state['checked']!=enabled:
+        b.point(state['x'],state['y']);b.wait(lambda:(read() or {}).get('checked')==enabled,timeout=5)
+    done=read()['done'];b.point(done['x'],done['y'])
+    b.wait(lambda:not read(),timeout=8)
+    return enabled
 
 
 def x_prepare(b, plan, journal):
@@ -62,26 +104,26 @@ def x_prepare(b, plan, journal):
     current = x_inspect(b)
     if current['video'] or (current.get('text') or '').strip():
         raise UIError('Composer is not empty: inspect existing object instead')
+    if plan.get('ai_disclosure', True):x_native_ai(b)
     mutation(journal, plan, 'upload', lambda: b.send('upload', {
-        'selector': '[role=dialog] input[data-testid=fileInput]', 'files': [video]}))
-    b.js("document.querySelector('[role=dialog] [role=textbox]').focus()")
+        'selector': ('[role=dialog] ' if current['dialog'] else '')+'input[data-testid=fileInput]', 'files': [video]}))
+    b.js("(document.querySelector('[role=dialog] [data-testid=tweetTextarea_0]')||document.querySelector('[data-testid=tweetTextarea_0]')).focus()")
     b.insert(plan['text'])
-    return {'status': 'upload_selected', 'next': 'wait Ready, set and verify native AI disclosure; x-submit'}
+    return {'status': 'upload_selected', 'next': 'wait Ready; x-submit rechecks native AI and text'}
 
 
 def x_submit(b, plan, journal):
     source(plan)
     if not plan.get('confirmed_this_video') or plan.get('authorized_sha256') != plan['video_sha256']:
         raise UIError('Explicit authorization bound to this video fingerprint required')
-    view = x_inspect(b)
-    if ' '.join(view['text'].split()) != ' '.join(plan['text'].split()):
-        raise UIError('Current composer copy differs')
-    if not view['video'] or not any(Path(plan['video']).name in s and 'Ready' in s for s in view['status']):
-        raise UIError('Current video is not Ready')
-    if plan.get('ai_disclosure', True) and 'Made with AI' not in view['body']:
-        raise UIError('Set native AI disclosure before submission')
-    return mutation(journal, plan, 'submission', lambda: b.send('click', {
-        'selector': '[role=dialog] [data-testid=tweetButton]'}))
+    x_validate_ready(x_inspect(b),plan)
+    if plan.get('ai_disclosure', True):x_native_ai(b)
+    x_dismiss_suggestions(b)
+    view=x_inspect(b);x_validate_ready(view,plan)
+    selector='[data-testid='+view['button']+']'
+    b.focus();target=b.target(selector=selector)
+    if target['disabled']:raise UIError('Submit disabled')
+    return mutation(journal, plan, 'submission', lambda: b.point(target['x'],target['y']))
 
 
 def x_confirm(b, plan, journal):
@@ -102,6 +144,89 @@ def x_confirm(b, plan, journal):
     state.update(plan_sha256=fingerprint(plan), published=True, url=urls[0], native_id=urls[0].split('/')[-1])
     save(journal, state)
     return {'status': 'published', 'url': urls[0]}
+
+
+def approved_images(plan):
+    manifest=Path(plan['image_manifest']).resolve()
+    if not plan.get('confirmed_this_image_set') or digest(manifest)!=plan.get('authorized_image_manifest_sha256'):
+        raise UIError('Image manifest must match explicit release authorization')
+    data=json.loads(manifest.read_text('utf8'))
+    if data['source_video_sha256']!=plan['video_sha256']:
+        raise UIError('Image source is not the approved final video')
+    entries=data['images'];files=[]
+    if [e['order'] for e in entries]!=list(range(1,len(entries)+1)) or not entries:
+        raise UIError('Image manifest is empty or out of order')
+    for e in entries:
+        file=(manifest.parent/e['path']).resolve()
+        if file.parent!=manifest.parent or digest(file)!=e['sha256']:
+            raise UIError('Image fingerprint/path differs')
+        files.append(str(file))
+    return files
+
+
+def native_drop(b, selector, files):
+    # Use only a previously observed, supported drop zone. A drag in an
+    # unsupported uploader can navigate to file://; verify native readiness.
+    b.focus();b.target(selector=selector)
+    # Scrolling a long article can settle after target() returns. Re-measure
+    # and hit-test the actual observed element before dispatching, not stale XY.
+    r=b.wait(lambda:b.js("(()=>{const a=[...document.querySelectorAll("+json.dumps(selector)+")].filter(e=>e.getClientRects().length);if(a.length!==1)return null;const e=a[0],r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;return e.contains(document.elementFromPoint(x,y))?{x,y}:null})()"),timeout=8)
+    data={'items':[],'files':files,'dragOperationsMask':1}
+    for kind in ('dragEnter','dragOver','drop'):
+        b.cdp('Input.dispatchDragEvent',type=kind,x=r['x'],y=r['y'],data=data)
+    return {'selected':len(files),'upload_complete':False}
+
+
+def image_route_check(b, plan):
+    if b.js('location.href')!=plan['observed_url']:
+        raise UIError('Current editor URL changed; reconcile before upload')
+
+
+def media_drop(b, plan, journal):
+    image_route_check(b,plan)
+    files=approved_images(plan) if 'image_manifest' in plan else [source(plan)]
+    return mutation(journal,plan,'upload',lambda:native_drop(b,plan['observed_drop_selector'],files))
+
+
+def image_sequential(b, plan, journal):
+    files=approved_images(plan);image_route_check(b,plan)
+    # ready_selector is scoped to native remote-backed, completed figures in
+    # the current article editor, not placeholder/preview images.
+    count=lambda:b.js('document.querySelectorAll('+json.dumps(plan['ready_selector'])+').length')
+    for i,file in enumerate(files,1):
+        image_route_check(b,plan)
+        if count()!=i-1:raise UIError('Ready figure count differs; inspect before upload')
+        mutation(journal,plan,'image_'+str(i),lambda:b.send('upload',{'selector':plan['file_input_selector'],'files':[file]}))
+        b.wait(lambda:count()==i,timeout=plan.get('per_image_timeout_seconds',60))
+    return {'selected':len(files),'ready_count':count(),'verify_order_and_full_article':True}
+
+
+def data_image_fingerprints(b, selector):
+    # A data URL in an actual editor is a local preview, not a server receipt.
+    # Return only small hashes/dimensions; never print inline base64 images.
+    cfg=json.dumps(selector)
+    return b.js(r"""(async()=>{const out=[];for(const img of document.querySelectorAll(SEL)){const u=img.getAttribute('src')||'';
+    if(!u.startsWith('data:')){out.push({src:u.slice(0,160),w:img.naturalWidth,h:img.naturalHeight});continue;}
+    const a=Uint8Array.from(atob(u.split(',')[1]),c=>c.charCodeAt(0));
+    const sha=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',a))).map(x=>x.toString(16).padStart(2,'0')).join('');
+    out.push({sha,w:img.naturalWidth,h:img.naturalHeight});}return out})()""".replace('SEL',cfg))
+
+
+def image_sequential_drop(b, plan, journal):
+    files=approved_images(plan);image_route_check(b,plan)
+    expected=[digest(f) for f in files];selector=plan['data_image_selector'];current=lambda:data_image_fingerprints(b,selector)
+    # Only for an editor confirmed to accept native drag at its trailing
+    # paragraph, e.g. Bilibili column. The journal protects each selection.
+    for i,file in enumerate(files,1):
+        image_route_check(b,plan)
+        before=current()
+        if [v.get('sha') for v in before]!=expected[:i-1]:raise UIError('Current image sequence differs; inspect the existing draft, do not replace or repeat')
+        mutation(journal,plan,'image_'+str(i),lambda:native_drop(b,plan['observed_drop_selector'],[file]))
+        b.wait(lambda:len(current())==i,timeout=plan.get('per_image_timeout_seconds',20))
+        after=current()
+        if [v.get('sha') for v in after]!=expected[:i]:raise UIError('Image preview fingerprint/order mismatch')
+        state=read_state(journal,plan);state['confirmed_ordered_images']=after;save(journal,state)
+    return {'selected':len(files),'verified_local_previews':len(files),'upload_complete':False,'next':'Save/reopen same draft and confirm remote image sequence, dimensions, caption, AI, cover and topic before submission'}
 
 
 def shadow_upload(b, plan, journal):
@@ -197,7 +322,7 @@ def channels_order(b, plan, journal):
 
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument('action', choices=['x-inspect', 'x-prepare', 'x-submit', 'x-confirm', 'channels-upload', 'channels-order', 'article-check', 'wechat-confirm'])
+    p.add_argument('action', choices=['x-inspect', 'x-prepare', 'x-submit', 'x-confirm', 'channels-upload', 'channels-order', 'article-check', 'wechat-confirm', 'media-drop', 'image-sequential', 'image-sequential-drop'])
     p.add_argument('--plan', required=True)
     p.add_argument('--journal', required=True)
     args = p.parse_args()
@@ -207,7 +332,7 @@ def main():
     b.send('attach_tab', {'tabId': plan['tab_id']})
     b.focus()
     try:
-        fn = {'x-prepare': x_prepare, 'x-submit': x_submit, 'x-confirm': x_confirm, 'channels-upload': shadow_upload, 'channels-order': channels_order, 'wechat-confirm': wechat_confirm}
+        fn = {'x-prepare': x_prepare, 'x-submit': x_submit, 'x-confirm': x_confirm, 'channels-upload': shadow_upload, 'channels-order': channels_order, 'wechat-confirm': wechat_confirm, 'media-drop':media_drop, 'image-sequential':image_sequential, 'image-sequential-drop': image_sequential_drop}
         result = fn[args.action](b, plan, args.journal) if args.action in fn else x_inspect(b) if args.action == 'x-inspect' else article_check(b, plan)
         print(json.dumps(result, ensure_ascii=False))
     finally:

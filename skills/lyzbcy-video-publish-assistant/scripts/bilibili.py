@@ -48,16 +48,19 @@ class BilibiliTopics:
         # The dialog's search input is discovered from visible DOM attributes,
         # never from an undocumented endpoint or a guessed candidate index.
         def search_input():
-            return self.b.js("(()=>{const es=[...document.querySelectorAll('input')].filter(e=>e.getClientRects().length&&/话题/.test(e.placeholder)&&/搜索/.test(e.placeholder));if(es.length>1)throw Error('Activity search input ambiguous');if(!es.length)return false;es[0].setAttribute('data-activity-search','active');return true})()")
+            return self.b.js("(()=>{const es=[...document.querySelectorAll('input')].filter(e=>e.getClientRects().length&&((/话题/.test(e.placeholder)&&/搜索/.test(e.placeholder))||e.classList.contains('bcc-search-input')));if(es.length>1)throw Error('Activity search input ambiguous');if(!es.length)return false;es[0].setAttribute('data-activity-search','active');return true})()")
         self.b.wait(search_input,timeout=10)
         self.b.edit('input[data-activity-search=active]',topic);self.b.enter('input[data-activity-search=active]')
         def candidate():
             return self.b.js('''(()=>{const name=NAME;const es=[...document.querySelectorAll('button,[role=option],a,span,div')].filter(e=>e.getClientRects().length&&!e.closest('[contenteditable]')&&e.innerText.trim().replace(/^#/,'')===name);const leaf=es.filter(e=>!es.some(x=>x!==e&&e.contains(x)));if(leaf.length>1)throw Error('Activity candidate ambiguous');if(!leaf.length)return false;leaf[0].setAttribute('data-activity-candidate','active');return true})()'''.replace('NAME',json.dumps(topic)))
         self.b.wait(candidate,timeout=12)
         self.b.tap(selector='[data-activity-candidate=active]')
+        # Current modal requires a separate confirmation before the chip appears.
+        if self.b.js("[...document.querySelectorAll('input.bcc-search-input')].some(e=>e.getClientRects().length)"):
+            self.b.tap(text='确定')
         # Do not claim success just because the search result was clicked.
         def selected():
-            return self.b.js('''(()=>{const es=[...document.querySelectorAll('input')].filter(e=>e.getClientRects().length&&/话题/.test(e.placeholder)&&/搜索/.test(e.placeholder));if(es.length)return false;return [...document.querySelectorAll('.label-item-v2-container,[class*=topic],[class*=activity]')].some(e=>e.getClientRects().length&&e.innerText.trim().replace(/^#/,'')===NAME)})()'''.replace('NAME',json.dumps(topic)))
+            return self.b.js('''(()=>{const es=[...document.querySelectorAll('input')].filter(e=>e.getClientRects().length&&((/话题/.test(e.placeholder)&&/搜索/.test(e.placeholder))||e.classList.contains('bcc-search-input')));if(es.length)return false;return [...document.querySelectorAll('.label-item-v2-container,[class*=topic],[class*=activity]')].some(e=>e.getClientRects().length&&e.innerText.trim().replace(/^#/,'')===NAME)})()'''.replace('NAME',json.dumps(topic)))
         self.b.wait(selected,timeout=10)
         self.p.j['bilibili_activity_topic']=topic;self.p.persist()
         return {'topic':topic,'status':'selected_and_read_back'}

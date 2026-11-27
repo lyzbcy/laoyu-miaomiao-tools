@@ -55,3 +55,12 @@ python scripts/publish.py MANIFEST --platform PLATFORM --session SESSION --run-d
 用 `submit --authorization AUTH.json` 单次提交。实际点击前写入 `submission_attempted` 和时间。结果不明运行 `confirm`，按[无回执恢复](receipt-recovery.md)先查当前账号本期记录。小红书另有 `confirm_published`。同一分钟的列表候选需已绑定的回执 ID 才能自动通过，后台终态、公众可访问分别记录。
 
 `run_status.py` 可追加 `--closeout-ledger LEDGER` 查看收尾待办。人工验证的终态可用 `terminal_review`（手工写入 run-dir 的 `<platform>-state.json`）记录状态、原生 ID、视频和文案指纹、证据绝对路径及哈希。证据变化时重新查验。
+
+## 最终母版 → 手机 n 图流（默认准备，与视频单独记录）
+
+先锁定最新版完整成片 SHA256。编写 UTF-8 图文 plan：caption、cards 数组，顶层可选 `kicker`（卡片左上角的小字，由使用者自己填；脚本不内置任何账号或主题）；首卡可指定 cover（已审批封面按 3:4 派生），其余卡依次指定 title、subtitle、frame（成片秒数）、crop（原像素裁切）、lines（大字重点）、sticker（真实精选表情路径，可选）、footer。使用真实母版帧，不用旧剪辑或生成替代证据。带用户原创精选表情；关键文字和头像不贴危险区边缘，避免露其他平台字样。不改变真实数据含义。
+
+    python scripts/prepare_image_flow.py --video FINAL.mp4 --plan PLAN.json --out IMAGE_DIR --content-id CONTENT_ID --expected-sha256 FINAL_HASH
+    python scripts/prepare_image_flow.py --video FINAL.mp4 --plan PLAN.json --out IMAGE_DIR --content-id CONTENT_ID --expected-sha256 FINAL_HASH --verify-only
+
+依赖 Pillow、FFmpeg 与 Windows 系统中文字体。输出 1080×1440 顺序 JPG、manifest.json（源成片指纹、逐图指纹、来源时间点、20 条默认候选平台/形态矩阵，均未授权）。核验逐图和母版指纹、实际手机尺寸及平台字样。母版更新后重新生成并重新审稿，不传用旧版本授权。脚本只做本地准备；图文实际提交沿用运行手册已核验路由，单独建立形态账本和 AI 声明。候选矩阵不是平台能力验证；平台入口、账号权限、上传数量和声明控件须实际确认。未支持的形态如实记录原因，不声称完成。图文和视频状态分别回读，只有对应已批准稿件才可提交。

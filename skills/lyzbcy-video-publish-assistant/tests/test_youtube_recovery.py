@@ -20,8 +20,8 @@ const field=(text,label,hidden=false)=>({innerText:text,label,hidden,
   getClientRects:()=>hidden?[]:[1]});
 function root(fields,hidden=false){return {hidden,getClientRects:()=>hidden?[]:[1],
   querySelectorAll:s=>fields.filter(e=>s.includes('aria-label="'+e.label+'"'))};}
-function row(title,ids=[],hidden=false,buttons=1){return {
-  innerText:'6:11\n'+title+'\n草稿',hidden,attrs:{},
+function row(title,ids=[],hidden=false,buttons=1,description=''){return {
+  innerText:'6:11\n'+title+'\n'+description+'\n草稿',hidden,attrs:{},
   getClientRects:()=>hidden?[]:[1],
   querySelectorAll:s=>s==='a[href]'?ids.map(href=>({href})):
     Array.from({length:buttons},()=>field('编辑草稿','编辑草稿')),
@@ -55,8 +55,8 @@ function row(title,ids=[],hidden=false,buttons=1){return {
         for roots in ('[root(playlist)]', '[root([...video,field("Other","向观看者介绍你的视频（输入 @ 可提及频道）")])]'):
             self.assertFalse(self.fields(roots)['ok'])
 
-    def rows(self, rows):
-        source = DRAFT_ROW.replace('TITLE', json.dumps('Test')).replace('EXPECTED', json.dumps('abcdefghijk'))
+    def rows(self, rows, description=""):
+        source = DRAFT_ROW.replace('TITLE', json.dumps('Test')).replace('EXPECTED', json.dumps('abcdefghijk')).replace('DESCRIPTION', json.dumps(description))
         setup = 'const rows=' + rows + ';const document={querySelectorAll:s=>s==="ytcp-video-row"?rows:rows.filter(e=>e.attrs["data-publish-draft"])}'
         return self.run_js(source, setup)
 
@@ -65,6 +65,13 @@ function row(title,ids=[],hidden=false,buttons=1){return {
 
     def test_two_same_title_linkless_drafts_are_ambiguous(self):
         self.assertFalse(self.rows('[row("Test"),row("Test")]')['ok'])
+
+    def test_same_title_uses_unique_visible_full_description_prefix(self):
+        desc='A unique approved description for the latest version, with specific wording and source.'
+        rows='[row("Test",[],false,1,"Wrong old description"),row("Test",[],false,1,'+json.dumps(desc)+')]'
+        self.assertTrue(self.rows(rows,desc)['value'])
+        duplicate='[row("Test",[],false,1,'+json.dumps(desc)+'),row("Test",[],false,1,'+json.dumps(desc)+')]'
+        self.assertFalse(self.rows(duplicate,desc)['ok'])
 
     def test_explicit_wrong_video_link_is_not_selected(self):
         self.assertFalse(self.rows('[row("Test",["https://studio.youtube.com/video/12345678901/edit"])]')['value'])

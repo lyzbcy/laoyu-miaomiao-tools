@@ -2,7 +2,7 @@
 name: software-video-production
 description: 制作和改版软件演示、生活情境宣传及知识讲解短视频，处理真实操作证据、隐私、视听表达、教学样片、封面和交付复盘。不替代软件开发或漫剧制作。
 metadata:
-  version: 0.14.25
+  version: 0.14.26
   source: https://raw.githubusercontent.com/lyzbcy/laoyu-miaomiao-tools/main/skills/software-video-production/SKILL.md
 ---
 

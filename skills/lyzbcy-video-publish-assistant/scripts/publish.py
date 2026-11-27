@@ -214,9 +214,17 @@ class Publisher:
             if len(es) not in (1,2):raise UIError('Cover entry missing or ambiguous; inspect changed UI')
             self.b.point(es[0]['x'],es[0]['y']);self.b.wait(lambda:self.b.js("!!document.querySelector('[role=dialog] canvas')"))
             # The main cover editor's upload input is distinct from AI reference-image inputs.
-            for ratio,label in [('4:3','设置横封面'),('3:4','设置竖封面')]:
-                # The vertical tab and footer can share text. Prefer the real button.
-                if ratio=='3:4':self.b.semantic('button',label) # Initial horizontal canvas is already active.
+            # The editor opens either vertical or horizontal depending on the current UI release.
+            # Read the actual active step; upload the matching ratio before switching.
+            active_step="([...document.querySelectorAll('div[class*=step-active]')].find(e=>e.getClientRects().length)?.innerText||'').trim()"
+            first=self.b.js(active_step)
+            pairs=[('3:4','设置竖封面'),('4:3','设置横封面')]
+            if first=='设置横封面':pairs.reverse()
+            elif first!='设置竖封面':raise UIError('Cover editor active ratio not identified')
+            for ratio,label in pairs:
+                if self.b.js(active_step)!=label:
+                    self.b.semantic('button',label)
+                    self.b.wait(lambda:self.b.js(active_step)==label,timeout=8)
                 # Both ratio editors may remain mounted. Match the upload area's visible parent,
                 # not its input visibility; inputs themselves are intentionally hidden.
                 if self.cfg.get('cover_input'):sel=self.cfg['cover_input']
@@ -235,7 +243,7 @@ class Publisher:
             sel=self.cfg['declaration_input']
             if self.b.js('document.querySelector('+json.dumps(sel)+').value')!=self.cfg['declaration']:
                 self.b.tap(selector=sel)
-                self.b.wait(lambda:self.cfg['declaration'] in self.body(),timeout=8)
+                self.b.wait_target(text=self.cfg['declaration'],timeout=8)
                 self.tap(self.cfg['declaration'])
                 self.b.wait(lambda:self.b.js('document.querySelector('+json.dumps(sel)+').value')==self.cfg['declaration'],timeout=8)
         elif self.p=='xiaohongshu':
@@ -272,6 +280,19 @@ class Publisher:
         return self.evidence('settings')
 
     def save(self):
+        # The title/form can become available while the media is still transmitting.
+        # Do not click a disabled save control during an observed active upload.
+        if self.p in ('douyin','xiaohongshu'):
+            def upload_pending():
+                text=self.body()
+                return ('上传过程中请不要删除/移动文件' in text and '取消上传' in text) if self.p=='douyin' else ('上传中' in text and '取消上传' in text)
+            if upload_pending():
+                try:self.b.wait(lambda:not upload_pending(),timeout=90)
+                except UIError:
+                    if upload_pending():
+                        return {'status':'processing_pending','light':'yellow','reason':'upload_in_progress_before_save'}
+                    raise
+        if self.p=='xiaohongshu' and '暂未上传视频' in self.body():raise UIError('xiaohongshu_video_missing_before_save')
         if self.j.get('cover_visual_review')=='pending':raise UIError('Cover preview needs visual review; record it before saving')
         if self.p=='youtube':
             return YouTubeDraft(self).save()
@@ -305,7 +326,10 @@ class Publisher:
 
     def verify(self):
         if 'reopen' not in self.j['steps']:raise UIError('Reopen the saved draft before marking verified')
-        s=self.evidence('verified');title_values=[x.get('value') or x.get('text') for x in s['inputs']]
+        s=self.evidence('verified');
+        if self.p=='xiaohongshu' and '暂未上传视频' in s['text']:raise UIError('xiaohongshu_video_missing_after_reopen')
+        if self.p=='xiaohongshu' and '上传中' in s['text'] and '取消上传' in s['text']:return {'status':'processing_pending','light':'yellow','reason':'upload_in_progress_after_reopen'}
+        title_values=[x.get('value') or x.get('text') for x in s['inputs']]
         if self.item['title'] not in title_values:raise UIError('Saved title differs')
         editor=YouTubeDraft(self).read_fields()['description'] if self.p=='youtube' else self.b.js('document.querySelector('+json.dumps(self.cfg['editor'])+').innerText')
         if not description_matches(self.item['description'],editor,self.p):raise UIError('Saved description differs')
