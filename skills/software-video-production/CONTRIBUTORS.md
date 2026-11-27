@@ -10,4 +10,4 @@
 
 ## 本次经验贡献
 
-- [lyzbcy](https://github.com/lyzbcy)：可执行讲解关键帧、逐步聚焦与知识复习唱词结构与步骤证据账本。[PR #1](https://github.com/lyzbcy/laoyu-miaomiao-tools/pull/1)，本条随该PR合入后生效。
+- [lyzbcy](https://github.com/lyzbcy)：可执行讲解关键帧、逐步聚焦与知识复习唱词结构与步骤证据账本。[PR #1](https://github.com/lyzbcy/laoyu-miaomiao-tools/pull/1)；手机竖屏安全区、多平台成片平台中性、翻译层保全原画与片尾停留时间的交付规则。[PR #2](https://github.com/lyzbcy/laoyu-miaomiao-tools/pull/2)，各条随对应 PR 合入后生效。

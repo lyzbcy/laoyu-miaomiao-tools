@@ -2,7 +2,7 @@
 name: lyzbcy-video-publish-assistant
 description: 在已登录浏览器中准备抖音、B站、小红书和YouTube投稿，以红黄绿门禁恢复上传、核对封面和文案，按本次授权保存草稿或正式发布。
 metadata:
-  version: 1.3.13
+  version: 1.3.14
   source: https://raw.githubusercontent.com/lyzbcy/laoyu-miaomiao-tools/main/skills/lyzbcy-video-publish-assistant/SKILL.md
 ---
 
@@ -13,7 +13,7 @@ metadata:
 3. **单次提交并核验。** 点提交前记尝试。结果不明、审核中或用户已手动提交时，按本期记录只读核验，避免重复上传或提交。回执区分草稿、受理、审核、平台内发布和公众可访问。
 4. **交付回执。** 逐平台报告实际状态、可验证链接和待办。接续制作时沿用同一项目及收尾账本。[收尾与恢复资料](references/closeout.md)
 
-正式版 1.3.13（2026-11-25），GitHub 发行包 v1.63.0。源码、安装与发行版本分别核对。
+开发版 1.3.14（2026-11-27），待合入，未正式发行。当前正式版 1.3.13（2026-11-25），GitHub 发行包 v1.63.0。源码、安装与发行版本分别核对。
 
 ## AI 生成声明
 
@@ -35,3 +35,6 @@ metadata:
 - 未见提交回执、用户已接管或富文本有歧义时查[恢复路径](references/receipt-recovery.md)。
 - 用户选择扩展平台时查[扩展路由](references/expansion.md)。多期批量查[矩阵](references/matrix.md)，跨平台串行与扫码查[运行手册](references/multiplatform-runbook.md)，游戏、活动或限时任务查[专项日志](references/game-release-log.md)。
 - 每天首次使用按[静默更新](references/update.md)后台查新。维护时查[离线回归与同步](references/regression.md)。
+
+## 默认双形态投稿（创作者本人工作流）
+同一期最终最新完整成片默认同时准备视频与手机 n 图流，而不只给视频平台。先从最终母版真实帧提取重点、配大字和精选原创表情，生成独立图文稿与顺序指纹：运行 scripts/prepare_image_flow.py；操作参数见 references/automation.md。对支持图文的分发平台逐个平台核对入口（包括已有视频投稿的平台，可各发一条）。图文、动态、社区图片、文章等按实际可用入口处理；图片数上限不够时分批且保留原顺序。每种形态独立记录账号、指纹、声明、授权、入口与回执；不得以视频成功代替图文成功，也不得跨版本使用旧授权。发布前先核对最终母版审批和相应稿件授权，预检脚本只准备本地文件，不执行提交。

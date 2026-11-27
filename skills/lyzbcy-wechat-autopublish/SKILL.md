@@ -2,7 +2,7 @@
 name: lyzbcy-wechat-autopublish
 description: 准备、排版、保存与发表微信公众号图文，处理官方API、已登录浏览器、管理员验证、视频号引用和发表回读；支持明确授权的定时任务。不保证免扫码，不把发表与群发混为一谈。
 metadata:
-  version: 1.1.0
+  version: 1.1.1
   files:
     - CHANGELOG.md
     - SKILL.md
@@ -17,12 +17,14 @@ metadata:
     - references/deep-water-cgi.md
     - references/iphone-mirroring.md
     - scripts/article_review.py
+    - scripts/prepare_article_import.py
     - scripts/click.swift
     - scripts/iphone_coords.json
     - scripts/publish_browser.py
     - scripts/publish_iphone.py
     - scripts/wechat_api.py
     - tests/test_article_review.py
+    - tests/test_article_import.py
     - tests/test_wechat_api.py
     - version.json
     - update.json

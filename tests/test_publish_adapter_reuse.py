@@ -36,11 +36,12 @@ class OrdinaryTags(unittest.TestCase):
 
 
 class CoverControls(unittest.TestCase):
-    def make(self,entries,item=None):
+    def make(self,entries,item=None,active='设置横封面'):
         # Publisher.__init__ always sets item from the manifest's platform entry; __new__ bypasses it, so supply it here.
         p=object.__new__(Publisher);p.p='douyin';p.m={'covers':{'4:3':'landscape','3:4':'portrait'}}
         p.cfg={'cover_entries':'.cover'};p.j={};p.item=item or {};p.b=Mock();p.local=Mock(side_effect=lambda x:x);p.evidence=Mock()
-        p.b.js.side_effect=lambda code:entries if 'JSON.stringify([...document.querySelectorAll' in code else True
+        # The cover editor names its active ratio step; a release may open either ratio first.
+        p.b.js.side_effect=lambda code:entries if 'JSON.stringify([...document.querySelectorAll' in code else active if 'step-active' in code else True
         p.b.wait.side_effect=lambda fn,**kw:fn()
         p.b.cover_state.side_effect=['before-horizontal','after-horizontal','before-portrait','after-portrait']
         return p
@@ -57,6 +58,18 @@ class CoverControls(unittest.TestCase):
         p.b.semantic.assert_any_call('button','设置竖封面')
         self.assertNotIn(('button','设置横封面'),[c.args for c in p.b.semantic.call_args_list])
         self.assertEqual(p.j['cover_visual_review'],'passed')
+
+    def test_initial_vertical_canvas_uploads_portrait_first_then_switches(self):
+        p=self.make([{'x':1,'y':2}],active='设置竖封面');dimension,digest=self.structural(p,{'landscape':(400,300),'portrait':(300,400)})
+        with dimension,digest:p.covers()
+        self.assertEqual([c.args[1] for c in p.b.fill_cover.call_args_list],['portrait','landscape'])
+        p.b.semantic.assert_any_call('button','设置横封面')
+        self.assertNotIn(('button','设置竖封面'),[c.args for c in p.b.semantic.call_args_list])
+
+    def test_unknown_active_step_stops_before_upload(self):
+        p=self.make([{'x':1,'y':2}],active='')
+        with self.assertRaises(UIError):p.covers()
+        p.b.fill_cover.assert_not_called()
 
     def test_requested_visual_review_stays_pending(self):
         p=self.make([{'x':1,'y':2}],{'cover_visual_required':True})

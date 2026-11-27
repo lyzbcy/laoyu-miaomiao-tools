@@ -65,10 +65,19 @@ class Browser:
 
     def target(self,selector=None,text=None,scope='body'):
         # Exact matching excludes editor content and preview copies. Prefer buttons/labels.
-        code='''(()=>{const cfg=CFG;const root=document.querySelector(cfg.scope);if(!root)throw Error('Scope missing');let es=cfg.selector?[...root.querySelectorAll(cfg.selector)]:[...root.querySelectorAll('button,[role=button],[role=option],label,a,span,div,ytcp-button,tp-yt-paper-radio-button,yt-formatted-string')].filter(e=>e.innerText?.trim()===cfg.text&&!e.closest('[contenteditable=true]'));es=es.filter(e=>{const r=e.getBoundingClientRect();return r.width>0&&r.height>0&&getComputedStyle(e).visibility!=='hidden'});if(!cfg.selector){es=es.filter(e=>!es.some(other=>other!==e&&e.contains(other)));}if(es.length!==1)throw Error('Ambiguous/missing UI target '+JSON.stringify({cfg,count:es.length}));const e=es[0];e.scrollIntoView({block:'center',behavior:'instant'});const r=e.getBoundingClientRect();return JSON.stringify({x:r.x+r.width/2,y:r.y+r.height/2,tag:e.tagName,text:(e.innerText||e.getAttribute('aria-label')||'').trim(),disabled:e.disabled||e.getAttribute('aria-disabled')==='true'})})()'''.replace('CFG',json.dumps(dict(selector=selector,text=text,scope=scope),ensure_ascii=False))
+        code='''(()=>{const cfg=CFG;const root=document.querySelector(cfg.scope);if(!root)throw Error('Scope missing');let es=cfg.selector?[...root.querySelectorAll(cfg.selector)]:[...root.querySelectorAll('button,[role=button],[role=option],[role=menuitem],[role=menuitemradio],li,label,a,span,div,ytcp-button,tp-yt-paper-radio-button,yt-formatted-string')].filter(e=>e.innerText?.trim()===cfg.text&&!e.closest('[contenteditable=true]'));es=es.filter(e=>{const r=e.getBoundingClientRect();return r.width>0&&r.height>0&&getComputedStyle(e).visibility!=='hidden'});if(!cfg.selector){es=es.filter(e=>!es.some(other=>other!==e&&e.contains(other)));}if(es.length!==1)throw Error('Ambiguous/missing UI target '+JSON.stringify({cfg,count:es.length}));const e=es[0];e.scrollIntoView({block:'center',behavior:'instant'});const r=e.getBoundingClientRect();return JSON.stringify({x:r.x+r.width/2,y:r.y+r.height/2,tag:e.tagName,text:(e.innerText||e.getAttribute('aria-label')||'').trim(),disabled:e.disabled||e.getAttribute('aria-disabled')==='true'})})()'''.replace('CFG',json.dumps(dict(selector=selector,text=text,scope=scope),ensure_ascii=False))
         result=self.js(code)
         # A scroll can settle asynchronously. Re-measure at click time.
         return result
+
+    def wait_target(self,selector=None,text=None,scope='body',timeout=8):
+        """Wait for a unique rendered control, rather than body text."""
+        def ready():
+            try:return self.target(selector,text,scope)
+            except UIError as exc:
+                if 'Ambiguous/missing UI target' in str(exc) and '"count":0' in str(exc).replace(chr(92)+chr(34),chr(34)):return None
+                raise
+        return self.wait(ready,timeout=timeout)
 
     def tap(self,selector=None,text=None,scope='body'):
         self.focus() # Focus emulation can change layout; measure after it is enabled.
